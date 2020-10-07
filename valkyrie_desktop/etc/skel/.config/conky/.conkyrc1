@@ -1,0 +1,22 @@
+use_xft yes
+xftfont M+2VM+IPAG circle:size=12
+default_color A7D5DE
+default_shade_color 031111
+update_interval 1
+own_window yes
+own_window_type normal
+#own_window_type override
+own_window_transparent yes
+double_buffer yes
+alignment bottom_left
+gap_x 6
+gap_y 0
+use_spacer no
+minimum_size 1300 0
+draw_borders no
+border_margin 1
+draw_shades yes
+
+
+TEXT
+${alignc}Cpu: ${color 34B4B4}${cpu}%   ${color}${cpugraph 10,80 25D2D0 34B4B4} ${color 34B4B4} | ${color }Memory: ${color 34B4B4}$mem/$memmax - $memperc% ${color 34B4B4} ${membar 6,80}${color 34B4B4} |${color }Net: ${color 34B4B4}${font}${downspeed eth0} ${color}  ${downspeedgraph eth0 10,80 25D2D0 34B4B4}  ${color 34B4B4} ${totaldown eth0} Down | ${color 34B4B4}${upspeed eth0} ${color} ${upspeedgraph eth0 10,80 25D2D0 34B4B4}  ${color 909090}${color 34B4B4}${totalup eth0} Up |${color} Home: ${color 34B4B4}${fs_free /home}  / ${fs_size /home}  - ${fs_free_perc /home}%

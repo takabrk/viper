@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2007-2010 PlayOnLinux Team
+# Copyright (C) 2011 Pâris Quentin
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# This is the startup script (after POL server)
+
+[ "$PLAYONLINUX" = "" ] && exit 0
+[ "$POL_PORT" = "0" ] && exit 1 # I need the server here
+
+source "$PLAYONLINUX/lib/sources"
+
+export XQUARTZ_VERSION="2.7.11"
+
+
+install_x11()
+{
+
+	XQuartzUrl="http://dl.bintray.com/xquartz/downloads/XQuartz-$XQUARTZ_VERSION.dmg"
+	FilePrefix="XQuartz"
+
+	STEP_TITLE="XQuartz"
+
+	XQuartz_Message="$(eval_gettext "PlayOnMac needs to install XQuartz to work properly.")"
+	XQuartz_Message2="$(eval_gettext "PlayOnMac will help you to simplify this step")"
+	POL_SetupWindow_free_presentation "$STEP_TITLE" "$XQuartz_Message\n\n$XQuartz_Message2"
+
+	POL_SetupWindow_menu_num "$XQuartz_Message" "$STEP_TITLE" "$(eval_gettext "Please download XQuartz for me")~$(eval_gettext "I've downloaded the file by myself") ($FilePrefix-$XQUARTZ_VERSION.dmg)~$(eval_gettext "Don't install XQuartz for the moment")" "~"
+
+	if [ "$APP_ANSWER" = "0" ]
+	then
+		cd "$POL_USER_ROOT/tmp/"
+		POL_SetupWindow_download "$(eval_gettext "Downloading XQuartz")" "$STEP_TITLE" "$XQuartzUrl"
+		got_xquartz="true"
+	fi
+	if [ "$APP_ANSWER" = "1" ]
+	then
+		POL_SetupWindow_browse "$(eval_gettext "Where is") $FilePrefix-$XQUARTZ_VERSION.dmg ?" "$STEP_TITLE"
+		cd "$(dirname "$APP_ANSWER")"
+		got_xquartz="true"
+	fi
+
+	if [ "$got_xquartz" = "true" ]
+	then
+		POL_SetupWindow_wait_next_signal "$(eval_gettext "Installing XQuartz...")" "$STEP_TITLE"
+		open $FilePrefix-$XQUARTZ_VERSION.dmg
+		while [ ! -d "/Volumes/$FilePrefix-$XQUARTZ_VERSION" ]
+		do
+			sleep 1
+		done
+		/System/Library/CoreServices/Installer.app/Contents/MacOS/Installer /Volumes/$FilePrefix-$XQUARTZ_VERSION/$FilePrefix.pkg
+		umount /Volumes/$FilePrefix-$XQUARTZ_VERSION
+
+		POL_SetupWindow_message "$(eval_gettext "XQuartz has been installed.")" "$STEP_TITLE"
+		launchctl load "/Library/LaunchAgents/org.macosforge.xquartz.startx.plist"
+
+	fi
+
+
+	if [ ! -e "/Applications/Utilities/XQuartz.app" ] && [ ! "$OSX_VERSION" = "11" ]
+	then
+		POL_SetupWindow_message "$(eval_gettext "Unable to install XQuartz! You must install it to use wine properly.")" "$STEP_TITLE"
+	fi
+
+}
+
+
+
+
+# Plugins
+install_plugins

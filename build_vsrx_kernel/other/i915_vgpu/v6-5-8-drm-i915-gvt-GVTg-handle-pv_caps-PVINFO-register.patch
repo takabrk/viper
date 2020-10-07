@@ -1,0 +1,50 @@
+diff --git a/drivers/gpu/drm/i915/gvt/handlers.c b/drivers/gpu/drm/i915/gvt/handlers.c
+index 7732caa..fd2f72c 100644
+--- a/drivers/gpu/drm/i915/gvt/handlers.c
++++ b/drivers/gpu/drm/i915/gvt/handlers.c
+@@ -1194,6 +1194,7 @@ static int pvinfo_mmio_read(struct intel_vgpu *vgpu, unsigned int offset,
+ 		break;
+ 	case 0x78010:	/* vgt_caps */
+ 	case 0x7881c:
++	case _vgtif_reg(pv_caps):
+ 		break;
+ 	default:
+ 		invalid_read = true;
+@@ -1267,6 +1268,9 @@ static int pvinfo_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
+ 	case _vgtif_reg(g2v_notify):
+ 		ret = handle_g2v_notification(vgpu, data);
+ 		break;
++	case _vgtif_reg(pv_caps):
++		DRM_INFO("vgpu id=%d pv caps =0x%x\n", vgpu->id, data);
++		break;
+ 	/* add xhot and yhot to handled list to avoid error log */
+ 	case _vgtif_reg(cursor_x_hot):
+ 	case _vgtif_reg(cursor_y_hot):
+diff --git a/drivers/gpu/drm/i915/gvt/vgpu.c b/drivers/gpu/drm/i915/gvt/vgpu.c
+index 44ce3c2..3ecc45a 100644
+--- a/drivers/gpu/drm/i915/gvt/vgpu.c
++++ b/drivers/gpu/drm/i915/gvt/vgpu.c
+@@ -47,6 +47,7 @@ void populate_pvinfo_page(struct intel_vgpu *vgpu)
+ 	vgpu_vreg_t(vgpu, vgtif_reg(vgt_caps)) = VGT_CAPS_FULL_PPGTT;
+ 	vgpu_vreg_t(vgpu, vgtif_reg(vgt_caps)) |= VGT_CAPS_HWSP_EMULATION;
+ 	vgpu_vreg_t(vgpu, vgtif_reg(vgt_caps)) |= VGT_CAPS_HUGE_GTT;
++	vgpu_vreg_t(vgpu, vgtif_reg(vgt_caps)) |= VGT_CAPS_PV;
+ 
+ 	vgpu_vreg_t(vgpu, vgtif_reg(avail_rs.mappable_gmadr.base)) =
+ 		vgpu_aperture_gmadr_base(vgpu);
+@@ -531,6 +532,7 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
+ 	struct intel_gvt *gvt = vgpu->gvt;
+ 	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
+ 	intel_engine_mask_t resetting_eng = dmlr ? ALL_ENGINES : engine_mask;
++	int pv_caps = vgpu_vreg_t(vgpu, vgtif_reg(pv_caps));
+ 
+ 	gvt_dbg_core("------------------------------------------\n");
+ 	gvt_dbg_core("resseting vgpu%d, dmlr %d, engine_mask %08x\n",
+@@ -562,6 +564,7 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
+ 
+ 		intel_vgpu_reset_mmio(vgpu, dmlr);
+ 		populate_pvinfo_page(vgpu);
++		vgpu_vreg_t(vgpu, vgtif_reg(pv_caps)) = pv_caps;
+ 		intel_vgpu_reset_display(vgpu);
+ 
+ 		if (dmlr) {

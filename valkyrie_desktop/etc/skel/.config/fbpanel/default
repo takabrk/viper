@@ -1,0 +1,255 @@
+########################################
+## fbpanel configuration file         ##
+########################################
+
+Global {
+    edge = bottom
+    allign = left
+    margin = 0
+    widthtype = percent
+    width = 100
+    heighttype = pixel
+    height = 32
+    transparent = true
+    tintcolor = #d3d3d3
+    alpha = 30
+    setdocktype = true
+    setpartialstrut = true
+    autohide = false
+    heightWhenHidden = 2
+    roundcorners = true
+    roundcornersradius = 20
+    layer = below
+    setlayer = true
+    MaxElemHeight = 32
+}
+#Plugin{
+#     type=menu
+#     config{
+#        image = /usr/share/icons/start-here.png
+#          systemmenu{
+#          }
+#      }
+#}
+#Plugin {
+#    type = launchbar
+#    edge = left
+#    config {
+#      button {
+#	    tooltip = Web Browser
+#        icon = chromium-browser
+#	    action = chromium-browser --disk-cache-dir="/tmp" --allow-file-access-from-files %u
+#      }
+#     button {
+#	    tooltip = Web Browser
+#        icon = firefox
+#	    action = firefox
+#      }
+#      button{
+#            icon=gimp
+#            tooltip = GIMP
+#            action = gimp
+#      }
+#      button{
+#          image = /usr/share/icons/gnome/24x24/devices/audio-headset.png
+#          tooltip = GNOME MPV
+#          action = gnome-mpv
+#      }
+#      button{
+#            icon = vlc
+#            tooltip = vlc
+#            action = vlc
+#      }
+#      button{
+#	    icon = smplayer
+#	    tooltip = smplayer
+#            action=smplayer
+#      }
+#      button{
+#            icon = kodi
+#            tooltip = Kodi
+#            action = kodi
+#      }
+#      button{
+#	    icon = applications-multimedia
+#	    tooltip = Shotcut
+#	    action = /opt/Shotcut-180814.glibc2.14-x86_64.AppImage
+#      }
+#      button{
+#            icon=simplescreenrecorder
+#            tooltip=SimpleScreenRecorder
+#            action=simplescreenrecorder --logfile
+#      }
+#      button{
+#            icon = avidemux2.6-qt
+#            tool = Avidemux
+#            action = avidemux3_qt5
+#      }
+#      button{
+#            icon = hb-icon
+#            tool = Handbrake
+#            action = ghb
+#      }
+#      button{
+#	    icon = audacious
+#	    tooltip = audacious
+#            action=nice -n -1 audacious
+#      }
+#     button{
+#            icon=audacity
+#            tooltip=Audacity
+#            action=audacity %F
+#      }
+#     button{
+#            icon = PCSX2
+#            tooltip = Playstation2 Emulator
+#            action = nice -n -1 env GDK_BACKEND=x11 __GL_THREADED_OPTIMIZATIONS=1 PCSX2
+#            
+#      }
+#      button{
+#           icon = ppsspp
+#            tooltip = PPSSPP
+#            action = ppsspp
+#      }
+#      button{
+#           icon = playonlinux
+#           tooltip = PlayOnLinux
+#           action = playonlinux
+#      }
+      #button{
+      #      icon = dolphin-emu
+      #      tooltip = Dolphin
+      #      action = dolphin-emu
+      #}
+#      button {
+#           image = /usr/share/icons/vipertools_icon.png
+#           tooltip = Viper Tools
+#            action = xfce4-terminal --hide-menubar -x sh -c 'cd ~/viper && python vipertools.py; read'
+#      }
+#       button{
+#           icon = system-file-manager
+#            tooltip = PCManFM
+#            action = pcmanfm-qt
+#       }
+       #button {
+       #     icon = utilities-terminal
+       #     tooltip = Terminal
+       #     action = xfce4-terminal
+       # 		}
+#	button{
+#	     icon = synaptic
+#	     tooltip = synaptic
+#	     action = gksu synaptic
+#	}
+		button{
+			icon = multimedia-volume-control
+			tooltip = Sound Volume
+                       action = gnome-alsamixer
+		}
+#	button{
+#		icon = lightdm-gtk-greeter-settings
+#		tooltip = Setting Manager
+#		#action = chromium-browser --disk-cache-dir="/tmp" --app="http://localhost:8000"
+#                action=~/vsrx_settings/vsrx_settings.py
+#	}
+#	button{
+#		icon = utilities-system-monitor
+#		tooltip = System Monitor
+#		action = xfce4-taskmanager
+#	}
+#    }
+#}
+Plugin {
+    type = space
+    config {
+        size = 5
+    }
+}
+plugin {
+    type = taskbar
+    expand = true
+    config {
+        ShowIconified = true
+        ShowMapped = true
+        ShowAllDesks = false
+        tooltips = true
+        IconsOnly = false
+        MaxTaskWidth = 150
+    }
+}
+Plugin{
+	type = pager
+	config{
+		showwallpaper = true
+	}
+}
+#Plugin {
+#    type = cpu
+#    config {
+#        Color = red
+#    }
+#}
+#Plugin {
+#    type = mem
+#    config {
+#        ShowSwap = true
+#    }
+#}
+#Plugin {
+#    type = net
+#    config {
+#        interface = eth0
+#        TxLimit = 20
+#        RxLimit = 190
+#        TxColor = violet
+#        RxColor = blue
+#    }
+#}
+#Plugin{
+#	type = tray
+#}
+#Plugin {
+#    type = space
+#    config {
+#        size = 10
+#   }
+#}
+#Plugin {
+#    type = wincmd
+#    config {
+#        icon = gnome-fs-desktop
+#        tooltip = ウインドウをすべて最小化
+#           }
+#      }
+#}
+#Plugin {
+#    type = tclock
+#    config {
+#        # 2 line view, time in bold above and date below
+#        ClockFmt = <span size="x-large" color="#ff0000"><b>%x:%H:%M</b></span>
+#        TooltipFmt = %A %x
+        #Action = xmessage Please define some command
+#        ShowCalendar = true
+#        ShowTooltip = true
+#    }
+#}
+#Plugin {
+#    type = dclock
+#    config {
+#        ShowSeconds = false
+#        HoursView = 24
+#        Color = white
+#    }
+#}
+Plugin {
+    type = launchbar
+    edge = left
+    config {
+		button{
+			icon = gnome-shutdown
+			tooltip = logout
+			#action=/opt/openbox-logout.py
+                        action=lxsession-logout
+		}
+	}
+}

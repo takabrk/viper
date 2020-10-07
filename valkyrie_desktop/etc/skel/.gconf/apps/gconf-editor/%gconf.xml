@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="recents" mtime="1333098620" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>/desktop/gnome/interface/gtk-im-module</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>/desktop/gnome/interface/buttons_have_icons</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>/desktop/gnome/file_views/icon_theme</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>/desktop/gnome/applications/window_manager/current</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>/apps/gksu/sudo-mode</stringvalue>
+		</li>
+	</entry>
+</gconf>

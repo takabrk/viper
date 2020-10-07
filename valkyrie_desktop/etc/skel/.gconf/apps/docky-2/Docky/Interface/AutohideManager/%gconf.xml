@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="UpdateDelay" mtime="1407053942" type="int" value="200"/>
+	<entry name="UnhideDelay" mtime="1407053942" type="int" value="0"/>
+</gconf>

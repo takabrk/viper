@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="use_http_proxy" mtime="1433822035" type="bool" value="false"/>
+	<entry name="use_same_proxy" mtime="1337672844" type="bool" value="false"/>
+</gconf>

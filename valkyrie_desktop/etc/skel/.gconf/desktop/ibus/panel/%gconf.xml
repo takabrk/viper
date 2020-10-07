@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="show" mtime="1406774735" type="int" value="1"/>
+	<entry name="use_custom_font" mtime="1406169485" type="bool" value="true"/>
+	<entry name="show_im_name" mtime="1406169481" type="bool" value="true"/>
+	<entry name="custom_font" mtime="1406774701" type="string">
+		<stringvalue>IPA Pゴシック 11</stringvalue>
+	</entry>
+</gconf>

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+##
+#  Project: Ubuntu Builder - A handy tool to build your own Ubuntu based distribution
+#  Author: Francesco Muriana <f.muriana@hotmail.it>
+#  Copyright: 2010-2013 Francesco Muriana
+#  License: GPL-2+
+#  This program is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by the Free
+#  Software Foundation; either version 2 of the License, or (at your option)
+#  any later version.
+#
+#  This program is distributed in the hope that it will be useful, but WITHOUT
+#  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+#  more details.
+#
+#  On Debian GNU/Linux systems, the full text of the GNU General Public License
+#  can be found in the file /usr/share/common-licenses/GPL-2.
+##
+
+. vsrx_builder/extras/config
+
+(echo
+echo STARTING SYNAPTIC
+echo
+
+xhost +local:
+cp /etc/hosts $FSPATH/etc/
+
+mount --bind /dev $FSPATH/dev
+mount --bind /var/run/dbus $FSPATH/var/lib/dbus
+mount --bind /var/run/dbus $FSPATH/var/run/dbus
+
+touch $FSPATH/tmp/script.bash
+cat > $FSPATH/tmp/script.bash << "EOF"
+#################### CHROOT ENVIRONMENT ####################
+#!/bin/bash
+
+export HOME=/root
+export LC_ALL=C
+mount none -t proc /proc
+mount none -t sysfs /sys
+mount none -t devpts /dev/pts
+
+if [ ! -e /usr/sbin/synaptic ]; then
+	apt-get update -q
+	apt-get install -y synaptic
+fi
+EOF
+######################### on EXIT #########################
+echo "synaptic
+apt-get clean
+rm -rf /tmp/*
+rm -rf /root/.synaptic/log
+rm -rf /etc/hosts
+umount -lf /proc
+umount -lf /sys
+umount -lf /dev/pts
+umount -lf /var/lib/dbus
+umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
+
+chroot $FSPATH sh /tmp/script.bash
+umount -l $FSPATH/dev
+
+xhost -local:
+) | tee -a /home/ubuntu-builder/ubuntu-builder.log

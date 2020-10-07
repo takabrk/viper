@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2007-2011 Pâris Quentin
+# Copyright (C) 2007-2010 PlayOnLinux Team
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+
+# This script install POL packages
+OLDDIR="$PWD"
+[ "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+
+usage() {
+    	local self="$(basename "$0")"
+	echo "$(eval_gettext "Usage: ")"
+	echo "    $self [-b] [--browse]"
+	echo "    $(eval_gettext "	Choose a file")"
+	echo "    $self [-e] [--extract] <Package filename>"
+ 	echo "    $(eval_gettext "	Extract the package")"
+	echo "    $self [-i] [--install] <Package filename>"
+	echo "    $(eval_gettext "	Install the package")"
+	echo "    $self [-h] [--help]"
+	echo "    $(eval_gettext "	Show this message")"
+}
+
+echo "$(eval_gettext '$APPLICATION_TITLE package manager: ')$VERSION"
+if [ "$1" = "--version" ]
+then
+	echo "$APPLICATION_TITLE $VERSION"
+	exit 0
+fi
+if [ "$3" = "-g" -o "$3" = "--gui" ]
+then
+	error_c="error"
+else
+	error_c="echo"
+fi
+if [ "$1" = "-h" -o "$1" = "--help" -o "$1" = "" ]
+then
+	usage
+elif [ "$1" = "-b" -o "$1" = "--browse" ]
+then
+	POL_SetupWindow_Init
+	POL_SetupWindow_browse "$(eval_gettext 'Choose a package to install')" "$(eval_gettext 'PlayOnLinux package manager')" '' '*.pol'
+	POL_SetupWindow_Close
+	if [ -n "$APP_ANSWER" ]
+	then
+		exec bash "$PLAYONLINUX/playonlinux-pkg" -i "$APP_ANSWER" -g
+	fi
+elif [ "$1" = "-e" -o "$1" = "--extract" ]
+then
+	cd "$OLDDIR"
+	PACKAGE="$2"
+	TMP="$POL_USER_ROOT/tmp/"
+	echo ""
+	echo "Opening $2"
+	if [ ! -e "$PACKAGE" ]
+	then 
+		$error_c "$(eval_gettext 'Unable to find the file: ')$2"
+		exit 1
+	fi
+	ext=$(echo $PACKAGE | awk -F "." '{print $NF}')
+	if [ ! "$ext" = "pol" ]
+	then
+		$error_c "$(eval_gettext "This file: ")$2$(eval_gettext " isn't a valid PlayOnLinux package!")"
+		exit 1
+	fi
+	echo "Extracting..."
+	mkdir package
+	tar -xf "$PACKAGE" -C ./package
+elif [ "$1" = "-i" -o "$1" = "--install" ]
+then
+	cd "$OLDDIR" 
+	PACKAGE="$2"
+	TMP="$POL_USER_ROOT/tmp/"
+	echo ""
+	echo "Opening $2"
+	if [ ! -e "$PACKAGE" ]
+	then 
+		$error_c "$(eval_gettext "This file: ")$2$(eval_gettext " does not exist!")"
+		exit 1
+	fi
+	ext=$(echo $PACKAGE | awk -F "." '{print $NF}')
+	if [ ! "$ext" = "pol" ]
+	then
+		$error_c "$(eval_gettext "This file: ")$2$(eval_gettext " isn't a valid PlayOnLinux package!")"
+		exit 1
+	fi
+	rm -r "$TMP/pkg/" 2> /dev/null
+	mkdir -p "$TMP/pkg/"
+	cp "$2" "$TMP/pkg"
+	cd "$TMP/pkg"
+	echo "$(eval_gettext "Extracting: ")$2..."
+	tar -xf *.pol
+	if [ $? -eq 2 ]
+	then
+		$error_c "$(eval_gettext "This file: ")$2$(eval_gettext " isn't a valid PlayOnLinux package!")"
+		exit 1
+	fi
+	if [ ! -e "$TMP/pkg/playonlinux/main" ]
+	then
+		$error_c "$(eval_gettext "This file: ")$2$(eval_gettext " isn't a valid PlayOnLinux package!")"
+		exit 1
+	fi
+	echo "$(eval_gettext "Running...")"
+	export SCRIPT_DIRECTORY="$TMP/pkg/files/"
+	bash "$TMP/pkg/playonlinux/main"
+	rm -r "$TMP/pkg/" 2> /dev/null
+	echo "$(eval_gettext "Cleaning...")"
+else
+	usage
+	exit 1
+fi
+exit 0

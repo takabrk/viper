@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="Realtek_ALC887-VD-Digital" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Speaker" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Rear_Mic_Boost" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Rear_Mic" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Capture" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Line_Boost" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Line" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-LFE" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Center" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Surround" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Front_Mic_Boost" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Front_Mic" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Front" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-PCM" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Headphone" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Master" mtime="1541653929" type="bool" value="true"/>
+</gconf>

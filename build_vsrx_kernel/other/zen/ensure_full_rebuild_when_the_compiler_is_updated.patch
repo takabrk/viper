@@ -1,0 +1,96 @@
+From 8b59cd81dc5e724eaea283fa6006985891c7bff4 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 23 Apr 2020 23:23:52 +0900
+Subject: [PATCH] kbuild: ensure full rebuild when the compiler is updated
+
+Commit 21c54b774744 ("kconfig: show compiler version text in the top
+comment") added the environment variable, CC_VERSION_TEXT in the comment
+of the top Kconfig file. It can detect the compiler update, and invoke
+the syncconfig because all environment variables referenced in Kconfig
+files are recorded in include/config/auto.conf.cmd
+
+This commit makes it a CONFIG option in order to ensure the full rebuild
+when the compiler is updated.
+
+This works like follows:
+
+include/config/kconfig.h contains "CONFIG_CC_VERSION_TEXT" in the comment
+block.
+
+The top Makefile specifies "-include $(srctree)/include/linux/kconfig.h"
+to guarantee it is included from all kernel source files.
+
+fixdep parses every source file and all headers included from it,
+searching for words prefixed with "CONFIG_". Then, fixdep finds
+CONFIG_CC_VERSION_TEXT in include/config/kconfig.h and adds
+include/config/cc/version/text.h into every .*.cmd file.
+
+When the compiler is updated, syncconfig is invoked because init/Kconfig
+contains the reference to the environment variable CC_VERTION_TEXT.
+CONFIG_CC_VERSION_TEXT is updated to the new version string, and
+include/config/cc/version/text.h is touched.
+
+In the next rebuild, Make will rebuild every files since the timestamp
+of include/config/cc/version/text.h is newer than that of target.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+ Kconfig                 |  2 --
+ include/linux/kconfig.h |  2 ++
+ init/Kconfig            | 17 +++++++++++++++++
+ 3 files changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/Kconfig b/Kconfig
+index e10b3ee084d4d..745bc773f5670 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -5,8 +5,6 @@
+ #
+ mainmenu "Linux/$(ARCH) $(KERNELVERSION) Kernel Configuration"
+ 
+-comment "Compiler: $(CC_VERSION_TEXT)"
+-
+ source "scripts/Kconfig.include"
+ 
+ source "init/Kconfig"
+diff --git a/include/linux/kconfig.h b/include/linux/kconfig.h
+index cc8fa109cfa3e..9d12c970f18f5 100644
+--- a/include/linux/kconfig.h
++++ b/include/linux/kconfig.h
+@@ -2,6 +2,8 @@
+ #ifndef __LINUX_KCONFIG_H
+ #define __LINUX_KCONFIG_H
+ 
++/* CONFIG_CC_VERSION_TEXT (Do not delete this comment. See help in Kconfig) */
++
+ #include <generated/autoconf.h>
+ 
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+diff --git a/init/Kconfig b/init/Kconfig
+index 2bc63a361033a..ed1d82c9f1dfa 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -8,6 +8,23 @@ config DEFCONFIG_LIST
+ 	default "/boot/config-$(shell,uname -r)"
+ 	default "arch/$(SRCARCH)/configs/$(KBUILD_DEFCONFIG)"
+ 
++config CC_VERSION_TEXT
++	string
++	default "$(CC_VERSION_TEXT)"
++	help
++	  This is used in unclear ways:
++
++	  - Re-run Kconfig when the compiler is updated
++	    The 'default' property references the environment variable,
++	    CC_VERSION_TEXT so it is recorded in include/config/auto.conf.cmd.
++	    When the compiler is updated, Kconfig will be invoked.
++
++	  - Ensure full rebuild when the compier is updated
++	    include/linux/kconfig.h contains this option in the comment line so
++	    fixdep adds include/config/cc/version/text.h into the auto-generated
++	    dependency. When the compiler is updated, syncconfig will touch it
++	    and then every file will be rebuilt.
++
+ config CC_IS_GCC
+ 	def_bool $(success,echo "$(CC_VERSION_TEXT)" | grep -q gcc)
+ 

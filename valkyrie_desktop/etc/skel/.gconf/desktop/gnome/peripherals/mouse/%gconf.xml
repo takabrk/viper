@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="cursor_theme" mtime="1333464209" type="string">
+		<stringvalue>Adwaita</stringvalue>
+	</entry>
+</gconf>

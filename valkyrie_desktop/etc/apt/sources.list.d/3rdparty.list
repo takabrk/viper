@@ -1,0 +1,121 @@
+#grub-customizer
+deb http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu bionic main
+
+#Japanese Team
+deb http://ppa.launchpad.net/japaneseteam/ppa/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/japaneseteam/ppa/ubuntu bionic main
+
+#Atom
+deb http://ppa.launchpad.net/webupd8team/atom/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/webupd8team/atom/ubuntu bionic main
+
+#Boot Repair
+deb http://ppa.launchpad.net/yannubuntu/boot-repair/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/yannubuntu/boot-repair/ubuntu bionic main
+
+#Docker
+deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+# deb-src [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+
+#Wine
+deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main
+# deb-src https://dl.winehq.org/wine-builds/ubuntu/ bionic main
+
+#Flatpack
+deb http://ppa.launchpad.net/alexlarsson/flatpak/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/alexlarsson/flatpak/ubuntu bionic main
+
+#Canonical Kernel Team
+deb http://ppa.launchpad.net/canonical-kernel-team/ppa/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/canonical-kernel-team/ppa/ubuntu bionic main
+
+#VirtualBox
+#deb http://download.virtualbox.org/virtualbox/debian bionic non-free contrib
+
+#UNetbootin etc.
+deb http://ppa.launchpad.net/gezakovacs/ppa/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/gezakovacs/ppa/ubuntu bionic main
+
+#Graphics Driver
+deb http://ppa.launchpad.net/graphics-drivers/ppa/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/graphics-drivers/ppa/ubuntu bionic main
+
+#ubuntu-toolchain-r
+deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main
+
+#Xanmod kernel
+# deb http://deb.xanmod.org releases main
+
+#SDL2/libfaudio0
+deb http://ppa.launchpad.net/cybermax-dexter/sdl2-backport/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/cybermax-dexter/sdl2-backport/ubuntu bionic main
+
+#ROCM
+# deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main
+
+#Palemoon
+# deb http://download.opensuse.org/repositories/home:/stevenpusser/xUbuntu_18.04/ /
+
+#Sayonara Player
+deb http://ppa.launchpad.net/lucioc/sayonara/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/lucioc/sayonara/ubuntu bionic main
+
+#Avidemux
+deb http://ppa.launchpad.net/ubuntuhandbook1/avidemux/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/ubuntuhandbook1/avidemux/ubuntu bionic main
+
+#SMPlayer/SMTube
+deb http://download.opensuse.org/repositories/home:/smplayerdev/xUbuntu_18.04/ /
+
+#OBS Tool
+deb http://ppa.launchpad.net/obsproject/obs-studio/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/obsproject/obs-studio/ubuntu bionic main
+
+#Handbrake
+deb http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu bionic main
+
+#GIMP
+deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main
+
+#Audacious
+deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main
+
+#Intel Media Driver
+deb http://ppa.launchpad.net/morphis/intel-media/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/morphis/intel-media/ubuntu bionic main
+
+#Mesa 20
+deb http://ppa.launchpad.net/paulo-miguel-dias/mesa/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/paulo-miguel-dias/mesa/ubuntu bionic main
+
+#PPSSPP
+deb http://ppa.launchpad.net/ppsspp/testing/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/ppsspp/testing/ubuntu bionic main
+
+#PlayOnLinux
+# deb http://deb.playonlinux.com/ bionic main
+
+#PCSX2
+# deb http://ppa.launchpad.net/pcsx2-team/pcsx2-daily/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/pcsx2-team/pcsx2-daily/ubuntu bionic main
+
+#RetoroArch
+# deb http://ppa.launchpad.net/libretro/stable/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/libretro/stable/ubuntu bionic main
+
+#Lutris
+deb http://ppa.launchpad.net/lutris-team/lutris/ubuntu bionic main
+# deb-src http://ppa.launchpad.net/lutris-team/lutris/ubuntu bionic main
+
+#Steam
+deb [arch=amd64,i386] http://repo.steampowered.com/steam/ precise steam
+# deb-src [arch=amd64,i386] http://repo.steampowered.com/steam/ precise steam
+
+#VScode
+deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+

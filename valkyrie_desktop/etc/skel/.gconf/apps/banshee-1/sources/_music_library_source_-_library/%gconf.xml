@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="library-location" mtime="1402819494" type="string">
+		<stringvalue>/media</stringvalue>
+	</entry>
+	<entry name="move-on-info-save" mtime="1350832892" type="bool" value="false"/>
+	<entry name="copy-on-import" mtime="1350832892" type="bool" value="false"/>
+	<entry name="expanded" mtime="1402806868" type="bool" value="false"/>
+</gconf>

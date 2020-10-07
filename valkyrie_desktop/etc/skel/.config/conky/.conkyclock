@@ -1,0 +1,21 @@
+use_xft yes
+xftfont M+2VM+IPAG circle:size=12
+default_color fcfcfc
+default_shade_color 031111
+update_interval 1
+own_window yes
+own_window_type override
+#own_window_type desktop
+own_window_transparent yes
+double_buffer yes
+alignment bottom_right
+gap_x 0
+gap_y 50
+TEXT
+${color orange}${font Andale Mono:size=20}${sysname}${kernel} ${machine}${font}${color}
+|${hr}
+${voffset 10}${font Andale Mono:size=50}${time %A}${font}${voffset -10}
+${voffset 10}${font Andale Mono:size=50}${time %B} 
+${time %e}${font}${voffset -10}
+${font Andale Mono:size=150}${time %H:%M}${font}
+

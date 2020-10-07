@@ -1,0 +1,884 @@
+[
+    {
+        "id": "abegakuin",
+        "name": "安部学院高校",
+        "address": "東京都北区栄町35-4",
+        "description": "安倍学院高校"
+    },
+    {
+        "id": "aikoku",
+        "name": "愛国高校",
+        "address": "東京都江戸川区西小岩5-7-1",
+        "description": "愛国高校"
+    },
+    {
+        "id": "aikokugakuendaigakufuzoku",
+        "name": "愛国学園大学附属高校",
+        "address": "茨城県龍ケ崎市若柴町2747",
+        "description": "愛国学園大学附属高校"
+    },
+    {
+        "id": "aikokugakuendaigakufuzokuyotukaido",
+        "name": "愛国学園大学附属四街道高校",
+        "address": "千葉県四街道市四街道1532-16",
+        "description": "愛国学園大学附属四街道高校"
+    },
+    {
+        "id": "akikusagakuen",
+        "name": "秋草学園高校",
+        "address": "埼玉県狭山市堀兼2404",
+        "description": "秋草学園高校"
+    },
+    {
+        "id": "akitawayo",
+        "name": "秋田和洋女子高等学校",
+        "address": "秋田県秋田市千秋明徳町2-26",
+        "description": "秋田和洋女子高等学校"
+    },
+    {
+        "id": "aomoriakinohoshi",
+        "name": "青森明の星高校",
+        "address": "青森青森市浪打二丁目６番32号",
+        "description": "青森明の星高校"
+    },
+    {
+        "id": "asahikawafujijyoshi",
+        "name": "旭川藤女子高等学校",
+        "address": "北海道旭川市花咲町6丁目3899",
+        "description": "旭川藤女子高等学校"
+    },
+    {
+        "id": "ashikagatankidaigakufuzoku",
+        "name": "足利短期大学附属高校",
+        "address": "栃木県足利市本城3-2120",
+        "description": "足利短期大学附属高校"
+    },
+    {
+        "id": "atomigakuen",
+        "name": "跡見学園高校",
+        "address": "東京都文京区大塚一丁目5番9号",
+        "description": "跡見学園高校"
+    },
+    {
+        "id": "chibagakuen",
+        "name": "千葉学園高校",
+        "address": "青森県八戸市類家一丁目1番11号",
+        "description": "千葉学園高校"
+    },
+    {
+        "id": "chibahoyo",
+        "name": "千葉萌陽高校",
+        "address": "千葉県香取市佐原イ3371番地",
+        "description": "千葉萌陽高校"
+    },
+    {
+        "id": "chibaseishin",
+        "name": "千葉聖心高校",
+        "address": "千葉県千葉市中央区道場北一丁目17番6",
+        "description": "千葉聖心高校"
+    },
+    {
+        "id": "chiyodajyogakuen",
+        "name": "千代田女学園中学校・高等学校",
+        "address": "東京都千代田区四番町11番地8",
+        "description": "千代田女学園中学校・高等学校"
+    },
+    {
+        "id": "denenchoufufutaba",
+        "name": "田園調布雙葉中学校・高等学校",
+        "address": "東京都世田谷区玉川田園調布1-20-9",
+        "description": "田園調布雙葉中学校・高等学校"
+    },
+    {
+        "id": "denenchoufugakuen",
+        "name": "田園調布学園中等部・高等部",
+        "address": "東京都世田谷区東玉川2-21-8",
+        "description": "田園調布学園中等部・高等部"
+    },
+    {
+        "id": "doushisyajyoshi",
+        "name": "同志社女子中学校・高等学校",
+        "address": "京都府京都市上京区今出川通寺町西入ル",
+        "description": "同志社女子中学校・高等学校"
+    },
+    {
+        "id": "edogawajyoshi",
+        "name": "江戸川女子高校",
+        "address": "東京都江戸川区東小岩五丁目22番1",
+        "description": "江戸川女子高校"
+    },
+    {
+        "id": "fujijyoshi",
+        "name": "不二女子高校",
+        "address": "千葉県市川市八幡四丁目５番７号",
+        "description": "不二女子高校"
+    },
+    {
+        "id": "fujijyoshihigh",
+        "name": "藤女子中学校・高等学校",
+        "address": "札幌市北区北16条西2丁目",
+        "description": "藤女子中学校・高等学校"
+    },
+    {
+        "id": "fukushimakeniwakidaiichi",
+        "name": "福島県磐城第一高校",
+        "address": "福島県いわき市内郷御厩町上宿11",
+        "description": "福島県磐城第一高校"
+    },
+    {
+        "id": "gakusyuin",
+        "name": "学習院女子中・高等科",
+        "address": "東京都新宿区戸山三丁目20番1号",
+        "description": "学習院女子中・高等科"
+    },
+    {
+        "id": "gifujyoshi",
+        "name": "岐阜女子高等学校",
+        "address": "岐阜県羽島郡岐南町三宅1-130",
+        "description": "岐阜女子高等学校"
+    },
+    {
+        "id": "hakodateotuma",
+        "name": "函館大妻高等学校",
+        "address": "北海道函館市柳町14-23",
+        "description": "函館大妻高等学校"
+    },
+    {
+        "id": "hakodatesirayurigakuen",
+        "name": "函館白百合学園中学校・高等学校",
+        "address": "北海道函館市山の手2丁目6-3",
+        "description": "函館白百合学園中学校・高等学校"
+    },
+    {
+        "id": "hokuseigakuenjyoshi",
+        "name": "北星学園女子中学高等学校",
+        "address": "札幌市中央区南4条西17丁目2-2",
+        "description": "北星学園女子中学高等学校"
+    },
+    {
+        "id": "iaijyoshi",
+        "name": "遺愛女子中学校・高等学校",
+        "address": "北海道函館市杉並町23-11",
+        "description": "遺愛女子中学校・高等学校"
+    },
+    {
+        "id": "iidajyoshi",
+        "name": "飯田女子高等学校",
+        "address": "長野県飯田市上郷飯沼3135-3",
+        "description": "飯田女子高等学校"
+    },
+    {
+        "id": "ikueinishi",
+        "name": "育英西中学校・高等学校",
+        "address": "奈良県奈良市三松四丁目637番1号",
+        "description": "育英西中学校・高等学校"
+    },
+    {
+        "id": "inanishi",
+        "name": "伊那西高等学校",
+        "address": "長野県伊那市西春近4851",
+        "description": "伊那西高等学校"
+    },
+    {
+        "id": "ishinomakisakurazuka",
+        "name": "石巻市立桜坂高等学校",
+        "address": "宮城県石巻市日和が丘二丁目11番8号",
+        "description": "石巻市立桜坂高等学校"
+    },
+    {
+        "id": "iwatejyoshi",
+        "name": "岩手女子高等学校",
+        "address": "岩手県盛岡市大沢川原1丁目5-34",
+        "description": "岩手女子高等学校"
+    },
+    {
+        "id": "jissenjyosigakuen",
+        "name": "実践女子学園中学校・高等学校",
+        "address": "東京都渋谷区東一丁目1番11号",
+        "description": "実践女子学園中学校・高等学校"
+    },
+    {
+        "id": "jiyugakuen",
+        "name": "自由学園女子部中等科・高等科",
+        "address": "東京都東久留米市学園町1-8-15",
+        "description": "自由学園女子部中等科・高等科"
+    },
+    {
+        "id": "jyoshibijyutudaigakufuzoku",
+        "name": "女子美術大学付属高等学校・中学校",
+        "address": "東京都杉並区和田一丁目49番8号",
+        "description": "女子美術大学付属高等学校・中学校"
+    },
+    {
+        "id": "jyoshigakuin",
+        "name": "女子学院中学校・高等学校",
+        "address": "東京都千代田区一番町22番10号",
+        "description": "女子学院中学校・高等学校"
+    },
+    {
+        "id": "jyoshiseigakuin",
+        "name": "女子聖学院中学校・高等学校",
+        "address": "東京都北区中里三丁目12番2号",
+        "description": "女子聖学院中学校・高等学校"
+    },
+    {
+        "id": "jyumonji",
+        "name": "十文字中学・高等学校",
+        "address": "東京都豊島区北大塚一丁目10番33号",
+        "description": "十文字中学・高等学校"
+    },
+    {
+        "id": "jyuntokujyoshi",
+        "name": "潤徳女子高等学校",
+        "address": "東京都足立区千住二丁目11番",
+        "description": "潤徳女子高等学校"
+    },
+    {
+        "id": "kachoujyoshi",
+        "name": "華頂女子中学校・高等学校",
+        "address": "京都府京都市東山区林下町3-456",
+        "description": "華頂女子中学校・高等学校"
+    },
+    {
+        "id": "kagoshimajyunshin",
+        "name": "鹿児島純心女子中学校・高等学校",
+        "address": "鹿児島県鹿児島市唐湊四丁目22番2号",
+        "description": "鹿児島純心女子中学校・高等学校"
+    },
+    {
+        "id": "kagoshimakenritunodajyoshi",
+        "name": "鹿児島県立野田女子高等学校",
+        "address": "鹿児島県出水市野田町下名5454番地",
+        "description": "鹿児島県立野田女子高等学校"
+    },
+    {
+        "id": "kagoshimashiritukagoshimajyoshi",
+        "name": "鹿児島市立鹿児島女子高等学校",
+        "address": "鹿児島県鹿児島市玉里町27番1号",
+        "description": "鹿児島市立鹿児島女子高等学校"
+    },
+    {
+        "id": "kainanshiritukainansimatu",
+        "name": "海南市立海南下津高等学校",
+        "address": "和歌山県海南市下津町丸田87",
+        "description": "海南市立海南下津高等学校"
+    },
+    {
+        "id": "kamakurajyogakuin",
+        "name": "鎌倉女学院中学校・高等学校",
+        "address": "神奈川県鎌倉市由比ガ浜二丁目10番4号",
+        "description": "鎌倉女学院中学校・高等学校"
+    },
+    {
+        "id": "kamakurajyoshidaigaku",
+        "name": "鎌倉女子大学中等部・高等部",
+        "address": "神奈川県鎌倉市岩瀬1420",
+        "description": "鎌倉女子大学中等部・高等部"
+    },
+    {
+        "id": "kamatajyoshi",
+        "name": "蒲田女子高等学校",
+        "address": "東京都大田区本羽田一丁目4番1号",
+        "description": "蒲田女子高等学校"
+    },
+    {
+        "id": "kanagawagakuen",
+        "name": "神奈川学園中学校・高等学校",
+        "address": "神奈川県横浜市神奈川区沢渡18",
+        "description": "神奈川学園中学校・高等学校"
+    },
+    {
+        "id": "kandajyogakuen",
+        "name": "神田女学園中学校・高等学校",
+        "address": "東京都千代田区猿楽町2-3-6",
+        "description": "神田女学園中学校・高等学校"
+    },
+    {
+        "id": "kanreishirayurigakuen",
+        "name": "函嶺白百合学園中学校・高等学校",
+        "address": "神奈川県足柄下郡箱根町強羅1320",
+        "description": "函嶺白百合学園中学校・高等学校"
+    },
+    {
+        "id": "kaorigaokariberute/sakairiberaru",
+        "name": "香ヶ丘リベルテ高等学校・堺リベラル中学校",
+        "address": "大阪府堺市堺区浅香山町一丁2番20号",
+        "description": "香ヶ丘リベルテ高等学校・堺リベラル中学校"
+    },
+    {
+        "id": "karitasujyoshi",
+        "name": "カリタス女子中学校・高等学校",
+        "address": "神奈川県川崎市多摩区中野島4-6-1",
+        "description": "カリタス女子中学校・高等学校"
+    },
+    {
+        "id": "kawamura",
+        "name": "川村中学校・高等学校",
+        "address": "東京都豊島区目白二丁目22番3号",
+        "description": "川村中学校・高等学校"
+    },
+    {
+        "id": "kayasiritukayajyoshi",
+        "name": "鹿屋市立鹿屋女子高等学校",
+        "address": "鹿児島県鹿屋市西原一丁目24番35号",
+        "description": "鹿屋市立鹿屋女子高等学校"
+    },
+    {
+        "id": "keikajyoshi",
+        "name": "京華女子中学高等学校",
+        "address": "東京都文京区白山五丁目13番5号",
+        "description": "京華女子中学高等学校"
+    },
+    {
+        "id": "keiogijyukujyoshi",
+        "name": "慶應義塾女子高等学校",
+        "address": "東京都港区三田2-17-23",
+        "description": "慶應義塾女子高等学校"
+    },
+    {
+        "id": "keisenjyogakuen",
+        "name": "恵泉女学園中学・高等学校",
+        "address": "東京都世田谷区船橋5-8-1",
+        "description": "恵泉女学園中学・高等学校"
+    },
+    {
+        "id": "kichijyojijyoshi",
+        "name": "吉祥女子中学校・高等学校",
+        "address": "東京都武蔵野市吉祥寺東町四丁目12番20号",
+        "description": "吉祥女子中学校・高等学校"
+    },
+    {
+        "id": "kichijyoujyoshi",
+        "name": "吉祥女子中学校・高等学校",
+        "address": "東京都武蔵野市吉祥寺東町四丁目12番20号",
+        "description": "吉祥女子中学校・高等学校"
+    },
+    {
+        "id": "kikuchijyoshi",
+        "name": "菊池女子高等学校",
+        "address": "熊本県菊池市隈府1081",
+        "description": "菊池女子高等学校"
+    },
+    {
+        "id": "kinjyougakuin",
+        "name": "金城学院中学校・高等学校",
+        "address": "愛知県名古屋市東区白壁4-64",
+        "description": "金城学院中学校・高等学校"
+    },
+    {
+        "id": "kinrankai",
+        "name": "金蘭会中学校・高等学校",
+        "address": "大阪府大阪市北区大淀南三丁目3番7号",
+        "description": "金蘭会中学校・高等学校"
+    },
+    {
+        "id": "kitakamakurajyoshigakuen",
+        "name": "北鎌倉女子学園中学校・高等学校",
+        "address": "神奈川県鎌倉市山ノ内913",
+        "description": "北鎌倉女子学園中学校・高等学校"
+    },
+    {
+        "id": "kitamifujijyoshi",
+        "name": "北見藤女子高等学校",
+        "address": "北海道北見市三楽町213",
+        "description": "北見藤女子高等学校"
+    },
+    {
+        "id": "kitatoshima",
+        "name": "北豊島中学校・高等学校",
+        "address": "東京都荒川区東尾久6-34-24",
+        "description": "北豊島中学校・高等学校"
+    },
+    {
+        "id": "kobe_jyogakuin",
+        "name": "神戸女学院中学部・高等学部",
+        "address": "兵庫県西宮市岡田山4-1",
+        "description": "神戸女学院中学部・高等学部"
+    },
+    {
+        "id": "kobe_kaisei_jyoshigakuin",
+        "name": "神戸海星女子学院中学校・高等学校",
+        "address": "兵庫県神戸市灘区青谷町二丁目7番1号",
+        "description": "神戸海星女子学院中学校・高等学校"
+    },
+    {
+        "id": "koenjyoshi",
+        "name": "光塩女子学院中等科・高等科",
+        "address": "東京都杉並区高円寺南二丁目33番28号",
+        "description": "光塩女子学院中等科・高等科"
+    },
+    {
+        "id": "komatubarajyoshi",
+        "name": "小松原女子高校",
+        "address": "埼玉県さいたま市浦和区東岸町10-36",
+        "description": "小松原女子高校"
+    },
+    {
+        "id": "komazawagakuen",
+        "name": "駒沢学園女子中学校・高等学校",
+        "address": "東京都稲城市坂浜238",
+        "description": "駒沢学園女子中学校・高等学校"
+    },
+    {
+        "id": "koriyamajyoshitankidaigakufuzoku",
+        "name": "郡山女子大学附属高校",
+        "address": "福島県郡山市開成三丁目25番2号",
+        "description": "郡山女子大学附属高校"
+    },
+    {
+        "id": "koujimachijyoshi",
+        "name": "麹町学園女子中学校・高等学校",
+        "address": "東京都千代田区麹町三丁目8番地",
+        "description": "麹町学園女子中学校・高等学校"
+    },
+    {
+        "id": "koukagakuen",
+        "name": "晃華学園中学校・高等学校",
+        "address": "東京都調布市佐須町5-28-1",
+        "description": "晃華学園中学校・高等学校"
+    },
+    {
+        "id": "kouranjyogakkou",
+        "name": "香蘭女学校中等科・高等科",
+        "address": "東京都品川区旗の台六丁目22番21号",
+        "description": "香蘭女学校中等科・高等科"
+    },
+    {
+        "id": "kouseigakuen",
+        "name": "佼成学園女子中学校・高等学校",
+        "address": "東京都世田谷区給田2-1-1",
+        "description": "佼成学園女子中学校・高等学校"
+    },
+    {
+        "id": "kunimotojyoshi",
+        "name": "国本女子中学校・高等学校",
+        "address": "東京都世田谷区喜多見8-15-33",
+        "description": "国本女子中学校・高等学校"
+    },
+    {
+        "id": "kwassui",
+        "name": "活水中学校・高等学校",
+        "address": "長崎県長崎市宝栄町15-11",
+        "description": "活水中学校・高等学校"
+    },
+    {
+        "id": "kyoritujyoshi",
+        "name": "共立女子中学高等学校",
+        "address": "東京都千代田区一ツ橋二丁目2番1号",
+        "description": "共立女子中学高等学校"
+    },
+    {
+        "id": "kyoritujyoshidaini",
+        "name": "共立女子第二中学校・高等学校",
+        "address": "東京都八王子市元八王子町二丁目786番地",
+        "description": "共立女子第二中学校・高等学校"
+    },
+    {
+        "id": "kyotokouka",
+        "name": "京都光華中学校・高等学校",
+        "address": "京都府京都市右京区西京極野田町39",
+        "description": "京都光華中学校・高等学校"
+    },
+    {
+        "id": "kyotonishiyama",
+        "name": "京都西山高等学校",
+        "address": "京都府向日市寺戸町西野辺25",
+        "description": "京都西山高等学校"
+    },
+    {
+        "id": "kyotoseibogakuin",
+        "name": "京都聖母学院中学・高等学校",
+        "address": "京都府京都市伏見区深草田谷町1番地",
+        "description": "京都聖母学院中学・高等学校"
+    },
+    {
+        "id": "kyotoseikajyoshi",
+        "name": "京都精華女子中学校・高等学校",
+        "address": "京都府京都市左京区吉田河原町5-1",
+        "description": "京都精華女子中学校・高等学校"
+    },
+    {
+        "id": "kyoto_jyoshi",
+        "name": "京都女子中学校・高等学校",
+        "address": "京都府京都市東山区今熊野北日吉町17",
+        "description": "京都女子中学校・高等学校"
+    },
+    {
+        "id": "kyouritujyoshi",
+        "name": "共立女子中学高等学校",
+        "address": "東京都千代田区一ツ橋二丁目2番1号",
+        "description": "共立女子中学高等学校"
+    },
+    {
+        "id": "kyouritujyoshidaini",
+        "name": "共立女子第二中学校・高等学校",
+        "address": "東京都八王子市元八王子町二丁目786番地",
+        "description": "共立女子第二中学校・高等学校"
+    },
+    {
+        "id": "maehashijyoshi",
+        "name": "群馬県立前橋女子高等学校",
+        "address": "群馬県前橋市紅雲町二丁目19番1号",
+        "description": "群馬県立前橋女子高等学校"
+    },
+    {
+        "id": "mitojyoshi",
+        "name": "水戸女子高校",
+        "address": "茨城県水戸市上水戸一丁目2番1号",
+        "description": "水戸女子高校"
+    },
+    {
+        "id": "miyagigakuin",
+        "name": "宮城学院高校",
+        "address": "宮城県仙台市青葉区桜ヶ丘九丁目1番1号",
+        "description": "宮城学院高校"
+    },
+    {
+        "id": "moriokashirayuri",
+        "name": "盛岡白百合学園高校",
+        "address": "岩手県盛岡市山岸四丁目29-16",
+        "description": "盛岡白百合学園高校"
+    },
+    {
+        "id": "notredame",
+        "name": "ノートルダム女学院中学校・高等学校",
+        "address": "京都府京都市左京区鹿ヶ谷桜谷町110",
+        "description": "ノートルダム女学院中学校・高等学校"
+    },
+    {
+        "id": "obayashiseisinjyoshigakuin",
+        "name": "小林聖心女子学院小学校・中学校・高等学校",
+        "address": "兵庫県宝塚市塔の町3-113",
+        "description": "小林聖心女子学院小学校・中学校・高等学校"
+    },
+    {
+        "id": "ochanomizujyoshidaigakufuzoku",
+        "name": "お茶の水女子大学附属高等学校",
+        "address": "東京都文京区大塚二丁目1番1号",
+        "description": "お茶の水女子大学附属高等学校"
+    },
+    {
+        "id": "okuchimeikogakuen",
+        "name": "大口明光学園中学校・高等学校",
+        "address": "鹿児島県伊佐市大口里1830",
+        "description": "大口明光学園中学校・高等学校"
+    },
+    {
+        "id": "onogakuen",
+        "name": "小野学園女子中学・高等学校",
+        "address": "東京都品川区西大井一丁目6番13号",
+        "description": "小野学園女子中学・高等学校"
+    },
+    {
+        "id": "osakajyoshitankidaigaku",
+        "name": "大阪女子短期大学高等学校",
+        "address": "大阪府藤井寺市春日丘三丁目8番1号",
+        "description": "大阪女子短期大学高等学校"
+    },
+    {
+        "id": "osakakokusaitakii",
+        "name": "大阪国際滝井高等学校",
+        "address": "大阪府守口市馬場町2丁目8番24号",
+        "description": "大阪国際滝井高等学校"
+    },
+    {
+        "id": "osakakuneijyogakuin",
+        "name": "大阪薫英女学院中学校・高等学校",
+        "address": "大阪府摂津市正雀一丁目4番1号",
+        "description": "大阪薫英女学院中学校・高等学校"
+    },
+    {
+        "id": "osakaseibojyogakuin",
+        "name": "大阪聖母女学院中学校・高等学校",
+        "address": "大阪府寝屋川市美井町18-10",
+        "description": "大阪聖母女学院中学校・高等学校"
+    },
+    {
+        "id": "osakaseikeijyoshi",
+        "name": "大阪成蹊女子高等学校",
+        "address": "大阪市東淀川区相川三丁目10-62",
+        "description": "大阪成蹊女子高等学校"
+    },
+    {
+        "id": "osakasinaijyogakuin",
+        "name": "大阪信愛女学院",
+        "address": "大阪府大阪市城東区古市二丁目7番30号",
+        "description": "大阪信愛女学院"
+    },
+    {
+        "id": "osaka_jyogakuin",
+        "name": "大阪女学院高校",
+        "address": "大阪府大阪市中央区玉造2丁目26-54",
+        "description": "大阪女学院高校"
+    },
+    {
+        "id": "otani(osaka)",
+        "name": "大谷中学校・高等学校 (大阪府)",
+        "address": "大阪市阿倍野区共立通2丁目8番4号",
+        "description": "大谷中学校・高等学校 (大阪府)"
+    },
+    {
+        "id": "otuma",
+        "name": "大妻中学高等学校",
+        "address": "東京都千代田区三番町12番地",
+        "description": "大妻中学高等学校"
+    },
+    {
+        "id": "otumanakano",
+        "name": "大妻中野中学校・高等学校",
+        "address": "東京都中野区上高田2-3-7",
+        "description": "大妻中野中学校・高等学校"
+    },
+    {
+        "id": "otumaranzan",
+        "name": "大妻嵐山高校",
+        "address": "埼玉県比企郡嵐山町菅谷558",
+        "description": "大妻嵐山高校"
+    },
+    {
+        "id": "otumatama",
+        "name": "大妻多摩高等学校・中学校",
+        "address": "東京都多摩市唐木田二丁目7番地1",
+        "description": "大妻多摩高等学校・中学校"
+    },
+    {
+        "id": "ouin",
+        "name": "桜蔭高校",
+        "address": "東京都文京区本郷一丁目5番25号",
+        "description": "桜蔭高校"
+    },
+    {
+        "id": "oukagakuen",
+        "name": "桜花学園高等学校",
+        "address": "愛知県名古屋市昭和区緑町1-7",
+        "description": "桜花学園高等学校"
+    },
+    {
+        "id": "oukajyogakuin",
+        "name": "桜華女学院高校",
+        "address": "東京都東村山市富士見町二丁目5番1号",
+        "description": "桜華女学院高校"
+    },
+    {
+        "id": "oyugakuenjyoshi",
+        "name": "鴎友学園女子中学校・高等学校",
+        "address": "東京都世田谷区宮坂一丁目5番30号",
+        "description": "鴎友学園女子中学校・高等学校"
+    },
+    {
+        "id": "pool_jyogakuin",
+        "name": "プール学院中学校・高等学校",
+        "address": "大阪府大阪市生野区勝山北一丁目19番31号",
+        "description": "プール学院中学校・高等学校"
+    },
+    {
+        "id": "sakuranoseibo",
+        "name": "桜の聖母学院中学校・高等学校",
+        "address": "福島県福島市野田町七丁目11番1号",
+        "description": "桜の聖母学院中学校・高等学校"
+    },
+    {
+        "id": "sapporoseisinjyoshi",
+        "name": "札幌聖心女子学院中学校・高等学校",
+        "address": "北海道札幌市中央区宮の森2条16丁目10-1",
+        "description": "札幌聖心女子学院中学校・高等学校"
+    },
+    {
+        "id": "seibigakuen",
+        "name": "星美学園中学校・高等学校",
+        "address": "東京都北区赤羽台四丁目2-14",
+        "description": "星美学園中学校・高等学校"
+    },
+    {
+        "id": "seidominikogakuen",
+        "name": "聖ドミニコ学園中学校・高等学校",
+        "address": "東京都世田谷区岡本1-10-1",
+        "description": "聖ドミニコ学園中学校・高等学校"
+    },
+    {
+        "id": "seidominikogakuin",
+        "name": "聖ドミニコ学院高校",
+        "address": "宮城県仙台市青葉区角五郎2-2-14",
+        "description": "聖ドミニコ学院高校"
+    },
+    {
+        "id": "seijyogakuen",
+        "name": "成女学園中学校・成女高等学校",
+        "address": "東京都新宿区富久町7番30号",
+        "description": "成女学園中学校・成女高等学校"
+    },
+    {
+        "id": "seireijyoshitankidaigakufuzoku",
+        "name": "聖霊女子短期大学附属高校",
+        "address": "秋田県秋田市南通みその町4-82",
+        "description": "聖霊女子短期大学附属高校"
+    },
+    {
+        "id": "seishinjyoshi",
+        "name": "聖心女子学院初等科・中等科・高等科",
+        "address": "東京都港区白金4-11-1",
+        "description": "聖心女子学院初等科・中等科・高等科"
+    },
+    {
+        "id": "sendaishirayurigakuen",
+        "name": "仙台白百合学園高校",
+        "address": "宮城県仙台市泉区柴山一丁目2番1号",
+        "description": "仙台白百合学園高校"
+    },
+    {
+        "id": "shibatajyoshi",
+        "name": "柴田女子高校",
+        "address": "青森県弘前市豊原一丁目2番1号",
+        "description": "柴田女子高校"
+    },
+    {
+        "id": "shimokitazawaseitoku",
+        "name": "下北沢成徳高等学校",
+        "address": "東京都世田谷区代田六丁目12番39号",
+        "description": "下北沢成徳高等学校"
+    },
+    {
+        "id": "shinagawaetoile",
+        "name": "品川エトワール女子高等学校",
+        "address": "東京都品川区南品川5-12-4",
+        "description": "品川エトワール女子高等学校"
+    },
+    {
+        "id": "shinagawajyoshi",
+        "name": "品川女子学院中等部・高等部",
+        "address": "東京都品川区北品川三丁目3番12号",
+        "description": "品川女子学院中等部・高等部"
+    },
+    {
+        "id": "shiraumegakuen",
+        "name": "白梅学園高等学校・清修中学校",
+        "address": "東京都小平市小川町1-830",
+        "description": "白梅学園高等学校・清修中学校"
+    },
+    {
+        "id": "shirayurigakuen",
+        "name": "白百合学園中学校・高等学校",
+        "address": "東京都千代田区九段北二丁目4番1号",
+        "description": "白百合学園中学校・高等学校"
+    },
+    {
+        "id": "shitennouji",
+        "name": "四天王寺中学校・高等学校",
+        "address": "大阪府大阪市天王寺区四天王寺1丁目11番73号",
+        "description": "四天王寺中学校・高等学校"
+    },
+    {
+        "id": "syoueijyoshigakuin",
+        "name": "頌栄女子学院中学校・高等学校",
+        "address": "東京都港区白金台2-26-5",
+        "description": "頌栄女子学院中学校・高等学校"
+    },
+    {
+        "id": "syouwajyoshidaigakufuzoku",
+        "name": "昭和女子大学附属昭和中学校・高等学校",
+        "address": "東京都世田谷区太子堂一丁目7番",
+        "description": "昭和女子大学附属昭和中学校・高等学校"
+    },
+    {
+        "id": "syukutokusc",
+        "name": "淑徳SC中等部・高等部",
+        "address": "東京都文京区小石川3-14-3",
+        "description": "淑徳SC中等部・高等部"
+    },
+    {
+        "id": "syukutokuyono",
+        "name": "淑徳与野高校",
+        "address": "埼玉県さいたま市中央区円阿弥2-11-26",
+        "description": "淑徳与野高校"
+    },
+    {
+        "id": "tachikawajyoshi",
+        "name": "立川女子高等学校",
+        "address": "東京都立川市高松町3-12-1",
+        "description": "立川女子高等学校"
+    },
+    {
+        "id": "taiseijyoshi",
+        "name": "大成女子高校",
+        "address": "茨城県水戸市五軒町三丁目2番地61号",
+        "description": "大成女子高校"
+    },
+    {
+        "id": "takasakijyoshi",
+        "name": "群馬県立高崎女子高等学校",
+        "address": "群馬県高崎市稲荷町20",
+        "description": "群馬県立高崎女子高等学校"
+    },
+    {
+        "id": "takinogawajyoshigakuen",
+        "name": "瀧野川女子学園中学校・高等学校",
+        "address": "東京都北区上中里一丁目27番7号",
+        "description": "瀧野川女子学園中学校・高等学校"
+    },
+    {
+        "id": "tamagawaseigakuin",
+        "name": "玉川聖学院中等部・高等部",
+        "address": "東京都世田谷区奥沢七丁目11番22号",
+        "description": "玉川聖学院中等部・高等部"
+    },
+    {
+        "id": "tokiwagigakuen",
+        "name": "常盤木学園高等学校",
+        "address": "宮城県仙台市青葉区小田原四丁目3番20号",
+        "description": "常盤木学園高等学校"
+    },
+    {
+        "id": "tokyojyogakkan",
+        "name": "東京女学館中学校・高等学校",
+        "address": "東京都渋谷区広尾三丁目7番16号",
+        "description": "東京女学館中学校・高等学校"
+    },
+    {
+        "id": "tomiokahigashi",
+        "name": "群馬県立富岡東高等学校",
+        "address": "群馬県富岡市富岡118-6",
+        "description": "群馬県立富岡東高等学校"
+    },
+    {
+        "id": "turukawa",
+        "name": "鶴川高等学校",
+        "address": "東京都町田市三輪町122",
+        "description": "鶴川高等学校"
+    },
+    {
+        "id": "uekusagakuendaigakufuzoku",
+        "name": "植草学園大学附属高校",
+        "address": "千葉県千葉市中央区弁天2-8-9",
+        "description": "植草学園大学附属高校"
+    },
+    {
+        "id": "urawaakinohoshijyoshi",
+        "name": "浦和明の星女子中学・高等学校",
+        "address": "埼玉県さいたま市緑区東浦和6-4-19",
+        "description": "浦和明の星女子中学・高等学校"
+    },
+    {
+        "id": "utawareimei",
+        "name": "浦和麗明高等学校",
+        "address": "埼玉県さいたま市浦和区東岸町10-36",
+        "description": "浦和麗明高等学校"
+    },
+    {
+        "id": "utunomiyabunseijyoshi",
+        "name": "宇都宮文星女子高校",
+        "address": "栃木県宇都宮市北一の沢町24番35号",
+        "description": "宇都宮文星女子高校"
+    },
+    {
+        "id": "utunomiyakaiseijyoshi",
+        "name": "宇都宮海星女子高校",
+        "address": "栃木県宇都宮市上籠谷町3776番地",
+        "description": "宇都宮海星女子高校"
+    },
+    {
+        "id": "wayokonodaijyoshi",
+        "name": "和洋国府台女子高校",
+        "address": "千葉県市川市国府台二丁目3番1号",
+        "description": "和洋国府台女子高校"
+    }
+]

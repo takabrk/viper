@@ -1,0 +1,1409 @@
+From patchwork Tue Jan  7 16:30:32 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jens Axboe <axboe@kernel.dk>
+X-Patchwork-Id: 11321157
+Return-Path: <SRS0=BJAb=24=vger.kernel.org=linux-block-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id 34158109A
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:43 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.kernel.org (Postfix) with ESMTP id 0489521744
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:43 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="iE9fLIYW"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1728196AbgAGQam (ORCPT
+        <rfc822;patchwork-linux-block@patchwork.kernel.org>);
+        Tue, 7 Jan 2020 11:30:42 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:33422 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727559AbgAGQam (ORCPT
+        <rfc822;linux-block@vger.kernel.org>); Tue, 7 Jan 2020 11:30:42 -0500
+Received: by mail-io1-f67.google.com with SMTP id z8so53226927ioh.0
+        for <linux-block@vger.kernel.org>;
+ Tue, 07 Jan 2020 08:30:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=7ierO3fX9pg4Gi2HSO0ZNBZgupNQhVcF7l9T7m010bY=;
+        b=iE9fLIYWLVue+QCNBgZ6WAUnlF92DkJScpWRYmQaSlYn9rzu1QQXqVLcw68oZpIVDx
+         3bYHqVtTC9opOxilNMQUkRRT4GtHlt/s/6LmyM0QBZNkG7cJ31C0BVkB94loVCBCLPyJ
+         Qe3xzBcvB0cWfKLJcP3sohPDwydLJDNHJ5XRySU4UnrTuVlumXX54jVEWmqFA5O67vpM
+         +PhUEQ53a/k4zgdeF6pfIszzNLwnCyvV98bWs5Zl944vCkciHO1CIfHvR7JKi7ugFzQi
+         3g/ISmWWxgPtzUSA22YhGMrfwGZCkFPrlvqzQNAa3DwfKcsnt3y1eQN/gI2PCoDad1dG
+         Ubdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=7ierO3fX9pg4Gi2HSO0ZNBZgupNQhVcF7l9T7m010bY=;
+        b=F8zQyKFQwXY8bDEx+hTPVhgZVs7MEYJybRrnQz7ZKs4smIgMIz5liR1RPA+0RZQsFd
+         Vx4jNhsWZrkJfLii9kKADGI9BKr8MTiVW9lJVxqh9ovXXcnLrCO5dTCS1wkfGZ5JdEEe
+         QJHloObzoCOggw81XYbBWDa7GpkYXyLybHUn3lVu0QepQ+LG936qfxePmg4zrGvMipOd
+         PIqWiIBv6o+1UbGyB637uIp66zY7J7tQVCTf8LRIfwRGLxpK1QzojfukRrgyBPFFc/Hf
+         UAo/LHuQf9mITPbZYfwnOnCGJH0VucV86BAE6rPnC1rIl1C1nAD2hUG0Hzusb6Ss+7ZZ
+         3Q7A==
+X-Gm-Message-State: APjAAAV6UOqCoxaW6ZlcLxK+nmlaskHo5lWpdv1tg5jK/93RdDbbOoq+
+        A0lrcF6SnkXA5G7eY05SekTF3EkaA7Q=
+X-Google-Smtp-Source: 
+ APXvYqxWBCuBKvtMEKGJi1yaLbWsCdNL7cl0E8EYXTg+aimtg9IWXePmqKvEsG2h4XtXK3gZhIjtKw==
+X-Received: by 2002:a02:c942:: with SMTP id u2mr306377jao.49.1578414640862;
+        Tue, 07 Jan 2020 08:30:40 -0800 (PST)
+Received: from x1.localdomain ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id w11sm20639ilh.55.2020.01.07.08.30.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:30:40 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 1/6] sbitmap: remove cleared bitmask
+Date: Tue,  7 Jan 2020 09:30:32 -0700
+Message-Id: <20200107163037.31745-2-axboe@kernel.dk>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200107163037.31745-1-axboe@kernel.dk>
+References: <20200107163037.31745-1-axboe@kernel.dk>
+MIME-Version: 1.0
+Sender: linux-block-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-block.vger.kernel.org>
+X-Mailing-List: linux-block@vger.kernel.org
+
+This is in preparation for doing something better, which doesn't need
+us to maintain two sets of bitmaps.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ include/linux/sbitmap.h | 25 +-----------
+ lib/sbitmap.c           | 88 +++++------------------------------------
+ 2 files changed, 10 insertions(+), 103 deletions(-)
+
+diff --git a/include/linux/sbitmap.h b/include/linux/sbitmap.h
+index e40d019c3d9d..7cdd82e0e0dd 100644
+--- a/include/linux/sbitmap.h
++++ b/include/linux/sbitmap.h
+@@ -27,16 +27,6 @@ struct sbitmap_word {
+ 	 * @word: word holding free bits
+ 	 */
+ 	unsigned long word ____cacheline_aligned_in_smp;
+-
+-	/**
+-	 * @cleared: word holding cleared bits
+-	 */
+-	unsigned long cleared ____cacheline_aligned_in_smp;
+-
+-	/**
+-	 * @swap_lock: Held while swapping word <-> cleared
+-	 */
+-	spinlock_t swap_lock;
+ } ____cacheline_aligned_in_smp;
+ 
+ /**
+@@ -251,7 +241,7 @@ static inline void __sbitmap_for_each_set(struct sbitmap *sb,
+ 					   sb->depth - scanned);
+ 
+ 		scanned += depth;
+-		word = sb->map[index].word & ~sb->map[index].cleared;
++		word = sb->map[index].word;
+ 		if (!word)
+ 			goto next;
+ 
+@@ -307,19 +297,6 @@ static inline void sbitmap_clear_bit(struct sbitmap *sb, unsigned int bitnr)
+ 	clear_bit(SB_NR_TO_BIT(sb, bitnr), __sbitmap_word(sb, bitnr));
+ }
+ 
+-/*
+- * This one is special, since it doesn't actually clear the bit, rather it
+- * sets the corresponding bit in the ->cleared mask instead. Paired with
+- * the caller doing sbitmap_deferred_clear() if a given index is full, which
+- * will clear the previously freed entries in the corresponding ->word.
+- */
+-static inline void sbitmap_deferred_clear_bit(struct sbitmap *sb, unsigned int bitnr)
+-{
+-	unsigned long *addr = &sb->map[SB_NR_TO_INDEX(sb, bitnr)].cleared;
+-
+-	set_bit(SB_NR_TO_BIT(sb, bitnr), addr);
+-}
+-
+ static inline void sbitmap_clear_bit_unlock(struct sbitmap *sb,
+ 					    unsigned int bitnr)
+ {
+diff --git a/lib/sbitmap.c b/lib/sbitmap.c
+index 33feec8989f1..af6d6578809f 100644
+--- a/lib/sbitmap.c
++++ b/lib/sbitmap.c
+@@ -9,38 +9,6 @@
+ #include <linux/sbitmap.h>
+ #include <linux/seq_file.h>
+ 
+-/*
+- * See if we have deferred clears that we can batch move
+- */
+-static inline bool sbitmap_deferred_clear(struct sbitmap *sb, int index)
+-{
+-	unsigned long mask, val;
+-	bool ret = false;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&sb->map[index].swap_lock, flags);
+-
+-	if (!sb->map[index].cleared)
+-		goto out_unlock;
+-
+-	/*
+-	 * First get a stable cleared mask, setting the old mask to 0.
+-	 */
+-	mask = xchg(&sb->map[index].cleared, 0);
+-
+-	/*
+-	 * Now clear the masked bits in our free word
+-	 */
+-	do {
+-		val = sb->map[index].word;
+-	} while (cmpxchg(&sb->map[index].word, val, val & ~mask) != val);
+-
+-	ret = true;
+-out_unlock:
+-	spin_unlock_irqrestore(&sb->map[index].swap_lock, flags);
+-	return ret;
+-}
+-
+ int sbitmap_init_node(struct sbitmap *sb, unsigned int depth, int shift,
+ 		      gfp_t flags, int node)
+ {
+@@ -80,7 +48,6 @@ int sbitmap_init_node(struct sbitmap *sb, unsigned int depth, int shift,
+ 	for (i = 0; i < sb->map_nr; i++) {
+ 		sb->map[i].depth = min(depth, bits_per_word);
+ 		depth -= sb->map[i].depth;
+-		spin_lock_init(&sb->map[i].swap_lock);
+ 	}
+ 	return 0;
+ }
+@@ -91,9 +58,6 @@ void sbitmap_resize(struct sbitmap *sb, unsigned int depth)
+ 	unsigned int bits_per_word = 1U << sb->shift;
+ 	unsigned int i;
+ 
+-	for (i = 0; i < sb->map_nr; i++)
+-		sbitmap_deferred_clear(sb, i);
+-
+ 	sb->depth = depth;
+ 	sb->map_nr = DIV_ROUND_UP(sb->depth, bits_per_word);
+ 
+@@ -136,24 +100,6 @@ static int __sbitmap_get_word(unsigned long *word, unsigned long depth,
+ 	return nr;
+ }
+ 
+-static int sbitmap_find_bit_in_index(struct sbitmap *sb, int index,
+-				     unsigned int alloc_hint, bool round_robin)
+-{
+-	int nr;
+-
+-	do {
+-		nr = __sbitmap_get_word(&sb->map[index].word,
+-					sb->map[index].depth, alloc_hint,
+-					!round_robin);
+-		if (nr != -1)
+-			break;
+-		if (!sbitmap_deferred_clear(sb, index))
+-			break;
+-	} while (1);
+-
+-	return nr;
+-}
+-
+ int sbitmap_get(struct sbitmap *sb, unsigned int alloc_hint, bool round_robin)
+ {
+ 	unsigned int i, index;
+@@ -172,8 +118,10 @@ int sbitmap_get(struct sbitmap *sb, unsigned int alloc_hint, bool round_robin)
+ 		alloc_hint = 0;
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+-		nr = sbitmap_find_bit_in_index(sb, index, alloc_hint,
+-						round_robin);
++		nr = __sbitmap_get_word(&sb->map[index].word,
++					sb->map[index].depth, alloc_hint,
++					!round_robin);
++
+ 		if (nr != -1) {
+ 			nr += index << sb->shift;
+ 			break;
+@@ -198,7 +146,6 @@ int sbitmap_get_shallow(struct sbitmap *sb, unsigned int alloc_hint,
+ 	index = SB_NR_TO_INDEX(sb, alloc_hint);
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+-again:
+ 		nr = __sbitmap_get_word(&sb->map[index].word,
+ 					min(sb->map[index].depth, shallow_depth),
+ 					SB_NR_TO_BIT(sb, alloc_hint), true);
+@@ -207,9 +154,6 @@ int sbitmap_get_shallow(struct sbitmap *sb, unsigned int alloc_hint,
+ 			break;
+ 		}
+ 
+-		if (sbitmap_deferred_clear(sb, index))
+-			goto again;
+-
+ 		/* Jump to next index. */
+ 		index++;
+ 		alloc_hint = index << sb->shift;
+@@ -229,43 +173,29 @@ bool sbitmap_any_bit_set(const struct sbitmap *sb)
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+-		if (sb->map[i].word & ~sb->map[i].cleared)
++		if (sb->map[i].word)
+ 			return true;
+ 	}
+ 	return false;
+ }
+ EXPORT_SYMBOL_GPL(sbitmap_any_bit_set);
+ 
+-static unsigned int __sbitmap_weight(const struct sbitmap *sb, bool set)
++static unsigned int sbitmap_weight(const struct sbitmap *sb)
+ {
+ 	unsigned int i, weight = 0;
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+ 		const struct sbitmap_word *word = &sb->map[i];
+ 
+-		if (set)
+-			weight += bitmap_weight(&word->word, word->depth);
+-		else
+-			weight += bitmap_weight(&word->cleared, word->depth);
++		weight += bitmap_weight(&word->word, word->depth);
+ 	}
+ 	return weight;
+ }
+ 
+-static unsigned int sbitmap_weight(const struct sbitmap *sb)
+-{
+-	return __sbitmap_weight(sb, true);
+-}
+-
+-static unsigned int sbitmap_cleared(const struct sbitmap *sb)
+-{
+-	return __sbitmap_weight(sb, false);
+-}
+-
+ void sbitmap_show(struct sbitmap *sb, struct seq_file *m)
+ {
+ 	seq_printf(m, "depth=%u\n", sb->depth);
+-	seq_printf(m, "busy=%u\n", sbitmap_weight(sb) - sbitmap_cleared(sb));
+-	seq_printf(m, "cleared=%u\n", sbitmap_cleared(sb));
++	seq_printf(m, "busy=%u\n", sbitmap_weight(sb));
+ 	seq_printf(m, "bits_per_word=%u\n", 1U << sb->shift);
+ 	seq_printf(m, "map_nr=%u\n", sb->map_nr);
+ }
+@@ -570,7 +500,7 @@ void sbitmap_queue_clear(struct sbitmap_queue *sbq, unsigned int nr,
+ 	 * is in use.
+ 	 */
+ 	smp_mb__before_atomic();
+-	sbitmap_deferred_clear_bit(&sbq->sb, nr);
++	sbitmap_clear_bit_unlock(&sbq->sb, nr);
+ 
+ 	/*
+ 	 * Pairs with the memory barrier in set_current_state() to ensure the
+
+From patchwork Tue Jan  7 16:30:33 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jens Axboe <axboe@kernel.dk>
+X-Patchwork-Id: 11321159
+Return-Path: <SRS0=BJAb=24=vger.kernel.org=linux-block-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id 472EF138C
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:44 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.kernel.org (Postfix) with ESMTP id 1EC7E21744
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:44 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="q8UUJEHt"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1728202AbgAGQan (ORCPT
+        <rfc822;patchwork-linux-block@patchwork.kernel.org>);
+        Tue, 7 Jan 2020 11:30:43 -0500
+Received: from mail-io1-f65.google.com ([209.85.166.65]:33422 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728173AbgAGQan (ORCPT
+        <rfc822;linux-block@vger.kernel.org>); Tue, 7 Jan 2020 11:30:43 -0500
+Received: by mail-io1-f65.google.com with SMTP id z8so53226980ioh.0
+        for <linux-block@vger.kernel.org>;
+ Tue, 07 Jan 2020 08:30:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=yCLM2cnBgeTta+e+ayFzNbSJeH6itn7C1lQKp+lkSFA=;
+        b=q8UUJEHtZYF0qgFGs337yV6/4NWvNbL7/ycbWwlnTu+pLf0plhHuEMtn0jlIPKuwgZ
+         dAwPlia8YBgR/c8wM20PrL84a/N/QvcGEokYvlGY0LKHXJk3oAEdQX17gA7yCjaAx1OC
+         iqb56MV93CIoswntSPYrfy6kVOEfNJ16/T1HdDlaiOAGyOuba9N6xxUIJqsT1u35+Y7K
+         FgT0mz6fnaWxp56zAdMbHPjNh0yOU6HDFCr64ilb76C+PVM5iLtEIXyw2uLgrG1/vaYI
+         e3Z8gYQ27PCVsBfKxLN+JsjPstqkvT72yd4u5gAMz7qO0SfZOyRnyzC9FUHCiSiIntFH
+         sphg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=yCLM2cnBgeTta+e+ayFzNbSJeH6itn7C1lQKp+lkSFA=;
+        b=b5b/Ha+m0PbR7K7pLchBxzTmTubz3oWjC5JiymCH0dLbEVCF53Vbr5x9N2zJbyYGFg
+         fHJuQIXdonlVGFWswY5pe+tY4SsqrU430IY0i+l0sZVEleomBAyR+7/VKqzs2dghNmbX
+         BVfzDjOt7AZKJc9esKEVeEt/UGtTpCXQa6yJkMKlWiq/GOhddpeWMvZUHuc0PPuhyLDI
+         CnqLy9ljXAaSQ2vyQwksf3MqjkQxPB+6jMvgYVdjbVFB/fcjBxjz36M5zE4kFX19mN7E
+         p/vNDV/19BChOA17WeHrFcQ1XH9ghBo67xNZZig69f+p3E32IrG1WNOr6TtQeRVdC9C7
+         LVLg==
+X-Gm-Message-State: APjAAAXGGmf1Hg4N6iHxrEyjtY1T5M3mMmwQb1uCd/zNWCoLytiglyf2
+        6HlEIOe/ym6cC53voPfOPqD1EDLW0+g=
+X-Google-Smtp-Source: 
+ APXvYqwnREfcIgFdh8UiAnhkchDkkSKJ6+5pYnIyDhSPC9JFFFZyb+MV0NJwZJyJrJNR1quj08b/6Q==
+X-Received: by 2002:a5d:8483:: with SMTP id t3mr54338027iom.127.1578414641784;
+        Tue, 07 Jan 2020 08:30:41 -0800 (PST)
+Received: from x1.localdomain ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id w11sm20639ilh.55.2020.01.07.08.30.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:30:41 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 2/6] sbitmap: add batch tag retrieval
+Date: Tue,  7 Jan 2020 09:30:33 -0700
+Message-Id: <20200107163037.31745-3-axboe@kernel.dk>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200107163037.31745-1-axboe@kernel.dk>
+References: <20200107163037.31745-1-axboe@kernel.dk>
+MIME-Version: 1.0
+Sender: linux-block-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-block.vger.kernel.org>
+X-Mailing-List: linux-block@vger.kernel.org
+
+This allows retrieving a batch of tags by the caller, instead of getting
+them one at the time.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ include/linux/sbitmap.h | 21 +++++++++
+ lib/sbitmap.c           | 97 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 118 insertions(+)
+
+diff --git a/include/linux/sbitmap.h b/include/linux/sbitmap.h
+index 7cdd82e0e0dd..0d686b64a4b8 100644
+--- a/include/linux/sbitmap.h
++++ b/include/linux/sbitmap.h
+@@ -366,6 +366,27 @@ static inline void sbitmap_queue_free(struct sbitmap_queue *sbq)
+  */
+ void sbitmap_queue_resize(struct sbitmap_queue *sbq, unsigned int depth);
+ 
++/**
++ * __sbitmap_queue_get_batch() - Try to allocate a batch of free tags from a
++ * &struct sbitmap_queue with preemption already disabled.
++ * @sbq: Bitmap queue to allocate from.
++ * @offset: tag offset
++ * @mask: mask of free tags
++ *
++ * Return: Zero if successful, non-zero if not
++ */
++int __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, unsigned int *offset,
++			      unsigned long *mask);
++
++/**
++ * __sbitmap_queue_clear_batch() - Free a batch a tags
++ * @sbq: Bitmap queue to allocate from.
++ * @offset: tag offset
++ * @mask: mask of free tags
++ */
++void __sbitmap_queue_clear_batch(struct sbitmap_queue *sbq, unsigned int offset,
++				 unsigned long mask);
++
+ /**
+  * __sbitmap_queue_get() - Try to allocate a free bit from a &struct
+  * sbitmap_queue with preemption already disabled.
+diff --git a/lib/sbitmap.c b/lib/sbitmap.c
+index af6d6578809f..530d1a1e15c6 100644
+--- a/lib/sbitmap.c
++++ b/lib/sbitmap.c
+@@ -137,6 +137,45 @@ int sbitmap_get(struct sbitmap *sb, unsigned int alloc_hint, bool round_robin)
+ }
+ EXPORT_SYMBOL_GPL(sbitmap_get);
+ 
++static int __sbitmap_get_batch(struct sbitmap *sb, unsigned int index,
++			       unsigned long *ret)
++{
++	unsigned long val, new_val;
++
++	do {
++		val = sb->map[index].word;
++
++		*ret = ~val;
++		if (sb->map[index].depth != BITS_PER_LONG)
++			*ret &= (1UL << sb->map[index].depth) - 1;
++		if (!*ret)
++			return -1;
++
++		new_val = val | *ret;
++		if (cmpxchg(&sb->map[index].word, val, new_val) == val)
++			break;
++	} while (1);
++
++	return 0;
++}
++
++static unsigned int sbitmap_get_batch(struct sbitmap *sb, unsigned int index,
++				      unsigned long *ret)
++{
++	int i;
++
++	for (i = 0; i < sb->map_nr; i++) {
++		if (!__sbitmap_get_batch(sb, index, ret))
++			return index;
++
++		/* Jump to next index. */
++		if (++index >= sb->map_nr)
++			index = 0;
++	}
++
++	return -1U;
++}
++
+ int sbitmap_get_shallow(struct sbitmap *sb, unsigned int alloc_hint,
+ 			unsigned long shallow_depth)
+ {
+@@ -348,6 +387,64 @@ void sbitmap_queue_resize(struct sbitmap_queue *sbq, unsigned int depth)
+ }
+ EXPORT_SYMBOL_GPL(sbitmap_queue_resize);
+ 
++void __sbitmap_queue_clear_batch(struct sbitmap_queue *sbq, unsigned int index,
++				 unsigned long mask)
++{
++	index >>= sbq->sb.shift;
++	do {
++		unsigned long val = sbq->sb.map[index].word;
++		unsigned long new_val = ~(val & mask);
++
++		if (cmpxchg(&sbq->sb.map[index].word, val, new_val) == val)
++			break;
++	} while (1);
++
++	/*
++	 * Pairs with the memory barrier in set_current_state() to ensure the
++	 * proper ordering of clear_bit_unlock()/waitqueue_active() in the waker
++	 * and test_and_set_bit_lock()/prepare_to_wait()/finish_wait() in the
++	 * waiter. See the comment on waitqueue_active().
++	 */
++	smp_mb__after_atomic();
++	sbitmap_queue_wake_up(sbq);
++}
++
++int __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, unsigned int *offset,
++			      unsigned long *mask)
++{
++	struct sbitmap *sb = &sbq->sb;
++	unsigned long __mask = 0;
++	unsigned int hint, depth;
++	unsigned int index;
++
++	hint = this_cpu_read(*sbq->alloc_hint);
++	depth = READ_ONCE(sb->depth);
++	if (unlikely(hint >= depth))
++		hint = depth ? prandom_u32() % depth : 0;
++
++	index = sbitmap_get_batch(&sbq->sb, SB_NR_TO_INDEX(sb, hint), &__mask);
++
++	if (index == -1U) {
++		/* If the map is full, a hint won't do us much good. */
++		this_cpu_write(*sbq->alloc_hint, 0);
++		return 1;
++	}
++
++	/*
++	 * Only update the hint if we used it. We might not have gotten a
++	 * full 'count' worth of bits, but pretend we did. Even if we didn't,
++	 * we want to advance to the next index since we failed to get a full
++	 * batch in this one.
++	 */
++	hint = (index + 1) << sb->shift;
++	if (hint >= depth - 1)
++		hint = 0;
++	this_cpu_write(*sbq->alloc_hint, hint);
++	*offset = index << sb->shift;
++	*mask = __mask;
++	return 0;
++}
++
+ int __sbitmap_queue_get(struct sbitmap_queue *sbq)
+ {
+ 	unsigned int hint, depth;
+
+From patchwork Tue Jan  7 16:30:34 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jens Axboe <axboe@kernel.dk>
+X-Patchwork-Id: 11321161
+Return-Path: <SRS0=BJAb=24=vger.kernel.org=linux-block-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id 708781580
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:44 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.kernel.org (Postfix) with ESMTP id 4D0DE2146E
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:44 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="1d+W57Rz"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1728173AbgAGQan (ORCPT
+        <rfc822;patchwork-linux-block@patchwork.kernel.org>);
+        Tue, 7 Jan 2020 11:30:43 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:46663 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727559AbgAGQan (ORCPT
+        <rfc822;linux-block@vger.kernel.org>); Tue, 7 Jan 2020 11:30:43 -0500
+Received: by mail-io1-f67.google.com with SMTP id t26so53255152ioi.13
+        for <linux-block@vger.kernel.org>;
+ Tue, 07 Jan 2020 08:30:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=QX8yZUBrOqiAGP6vlQsEk/ggNO5z+OMPNA91V6ToLSk=;
+        b=1d+W57RzX1j2qLwiyoZK/MNAKYv2Vhx+KdlMlr6Ah1F3LoDy+PLwIE9XBqV6UpLIHM
+         3alPEKrF+ZLp084rXlsfi2KqkKobz1+yCcd1xADmuj5XkTfAxigepvooACGy/pAzLnJZ
+         As844RluVUEw+f9EN7iqzXWaU4ZfPCNUTiNr+LeUT8+ajqn2YQO3eGuTnzNo8gj3mD9T
+         FY/IARUWCytq8h4m9UeusFd1pYptuMiK0nH+4oVKgqWYWRMf3FICVIiMaKFIQUK7t6cT
+         817wPdWlcJR/lwyiMVmcamQ6q6wWWlxf+h4U53LlD2Hw85sKwfk+m7PspfkvNXdSvgXT
+         Le2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=QX8yZUBrOqiAGP6vlQsEk/ggNO5z+OMPNA91V6ToLSk=;
+        b=LDYxtl1EIGwOPABHYLRI6DsYayVXck7r8tvIs38BM2dt4a5yfntHtsJ0rsYLbraZtL
+         VwZOic4nUKb4zrTcBYo8lR7yPERY6mi1KRR2Yr9rAIb9zoDDu2nAHG6L081JnWo7WryG
+         3vtyf72HH2xzcxG9uic6lc/nSM3+h5ECOjXNijJPw5QcAFZmtTflizkC2+nsKTcRGIgI
+         Z8uoMFkvjCzEHiofI9O1jBYU2b9N0gaGcwf5r1z6rA5e/F2muL6M3Je7lMZF4xlm6GZu
+         08TexVrWvi7z3MvBKyiVa05gttQdTbep5bp08Dalzq+7bL7MM9hldC2WbqNBzP1yqD+g
+         GClA==
+X-Gm-Message-State: APjAAAXQC/gnUy6vlYT8+MDGhJlJyl5GOhabI19PLmIUSCR1EJRdX3gV
+        lWdYvR/gkXd4enlOahdz/mRVM0LJUYQ=
+X-Google-Smtp-Source: 
+ APXvYqw0HoSUBH2PNRQpv/NDXOQ5NebMk5aAcJVJnCz0o2D0j79+YN3GWrv8t6kQrYf9gNz0cJ1whg==
+X-Received: by 2002:a6b:7e02:: with SMTP id i2mr72395384iom.172.1578414642605;
+        Tue, 07 Jan 2020 08:30:42 -0800 (PST)
+Received: from x1.localdomain ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id w11sm20639ilh.55.2020.01.07.08.30.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:30:42 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 3/6] blk-mq: remove 'clear_ctx_on_error'
+Date: Tue,  7 Jan 2020 09:30:34 -0700
+Message-Id: <20200107163037.31745-4-axboe@kernel.dk>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200107163037.31745-1-axboe@kernel.dk>
+References: <20200107163037.31745-1-axboe@kernel.dk>
+MIME-Version: 1.0
+Sender: linux-block-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-block.vger.kernel.org>
+X-Mailing-List: linux-block@vger.kernel.org
+
+We used to have this because getting the ctx meant disabling preemption,
+but that hasn't been the case since commit c05f42206f4d.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ block/blk-mq.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index a12b1763508d..6a68e8a246dc 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -338,7 +338,6 @@ static struct request *blk_mq_get_request(struct request_queue *q,
+ 	struct elevator_queue *e = q->elevator;
+ 	struct request *rq;
+ 	unsigned int tag;
+-	bool clear_ctx_on_error = false;
+ 	u64 alloc_time_ns = 0;
+ 
+ 	blk_queue_enter_live(q);
+@@ -348,10 +347,8 @@ static struct request *blk_mq_get_request(struct request_queue *q,
+ 		alloc_time_ns = ktime_get_ns();
+ 
+ 	data->q = q;
+-	if (likely(!data->ctx)) {
++	if (likely(!data->ctx))
+ 		data->ctx = blk_mq_get_ctx(q);
+-		clear_ctx_on_error = true;
+-	}
+ 	if (likely(!data->hctx))
+ 		data->hctx = blk_mq_map_queue(q, data->cmd_flags,
+ 						data->ctx);
+@@ -376,8 +373,6 @@ static struct request *blk_mq_get_request(struct request_queue *q,
+ 
+ 	tag = blk_mq_get_tag(data);
+ 	if (tag == BLK_MQ_TAG_FAIL) {
+-		if (clear_ctx_on_error)
+-			data->ctx = NULL;
+ 		blk_queue_exit(q);
+ 		return NULL;
+ 	}
+
+From patchwork Tue Jan  7 16:30:35 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jens Axboe <axboe@kernel.dk>
+X-Patchwork-Id: 11321163
+Return-Path: <SRS0=BJAb=24=vger.kernel.org=linux-block-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id B1E3B109A
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:45 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.kernel.org (Postfix) with ESMTP id 92302214D8
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:45 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="Vzb4SfLm"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1728215AbgAGQap (ORCPT
+        <rfc822;patchwork-linux-block@patchwork.kernel.org>);
+        Tue, 7 Jan 2020 11:30:45 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:41818 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727559AbgAGQao (ORCPT
+        <rfc822;linux-block@vger.kernel.org>); Tue, 7 Jan 2020 11:30:44 -0500
+Received: by mail-io1-f67.google.com with SMTP id c16so49674286ioo.8
+        for <linux-block@vger.kernel.org>;
+ Tue, 07 Jan 2020 08:30:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=02WrhvT9MKXQhtl97p5XQGxAO2MSQtzBgMftZca/EuU=;
+        b=Vzb4SfLmtU9ydglHlUg6Zvup5x8KKL6YDpM8lDj5NZ/2ukxjRjthzofc0egDfd0C8l
+         NQpSTYEEGeLso2YNd9rA6Kw/5QL6e0O1Du8q/LprxXPEAyEzV6HLieYhLb35SLbnKRB1
+         hGVQjk4jiAbY4dKAItrvTqrPf4CdfduZofT6nNMQhQMqsO0kx6lEr+12xiYnTM1VQ/ju
+         vdGRfEF4p6kg7e+gVXHIsTI7COmTIeXzfoJnv6Uz1mRy/t5/G+kIHaJXISHO5FOw0DpA
+         U1rtpA4KsmK2+a6hHc8y9eISzxyHshjGajoNHZ6+BI4qkF/5gTS/5XGDfOUTl/eNwqV+
+         hEAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=02WrhvT9MKXQhtl97p5XQGxAO2MSQtzBgMftZca/EuU=;
+        b=dE8AHZu76Mek6haopXwe8q+7/c1l91wra6VpFDKwpIBpEal5ceas0SZIHQ4+/zV5H0
+         w64TwC1bra2mFHZlZFuaOU+MhBT2/jkjpnvdQbJ/YMv76yvgTCTI9KxMhnpMB+5T55Xy
+         ifDD1aMiSVc/V3mq+elw4ZByxtgqjNRLctm7FEzKRn2I2pm9yLNUZVpBlEU+sildK+Jn
+         gIpHYHIqFLWe2zVeDmW3MRkT9Q1aCoeUf5AmqA9iz2fp29lRBsuErsf2rr6TPK8N7QtA
+         JC3HT2LbbYJ/n2crhUeLaplHg5z90LSFWMazMvA3kuuPUtQba04m7PSp2+ER8LMyfZWu
+         BFnA==
+X-Gm-Message-State: APjAAAWsylw2JGfXtV+iZRkzW0G6JvuYj19CU5wTpzcrc/sVDC2kZsJ8
+        GkWtylBPLG5b2zOj4gCafaDHY9vFePI=
+X-Google-Smtp-Source: 
+ APXvYqxs1shqYGXMydjb8G1l7MR1UrtYHQbMSGbx8oI9O7vGaXuxgG0y+RZCrtZV51iu2zhNkCxUcQ==
+X-Received: by 2002:a5d:9d03:: with SMTP id j3mr74245831ioj.266.1578414643410;
+        Tue, 07 Jan 2020 08:30:43 -0800 (PST)
+Received: from x1.localdomain ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id w11sm20639ilh.55.2020.01.07.08.30.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:30:42 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4/6] blk-mq: remove ctx->queue
+Date: Tue,  7 Jan 2020 09:30:35 -0700
+Message-Id: <20200107163037.31745-5-axboe@kernel.dk>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200107163037.31745-1-axboe@kernel.dk>
+References: <20200107163037.31745-1-axboe@kernel.dk>
+MIME-Version: 1.0
+Sender: linux-block-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-block.vger.kernel.org>
+X-Mailing-List: linux-block@vger.kernel.org
+
+We only use this for a lookup in the sysfs code, replace with getting
+the queue off the default set of hardware queues.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ block/blk-mq-sysfs.c | 4 ++--
+ block/blk-mq.c       | 2 --
+ block/blk-mq.h       | 1 -
+ 3 files changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/block/blk-mq-sysfs.c b/block/blk-mq-sysfs.c
+index 062229395a50..1f3cb13f932e 100644
+--- a/block/blk-mq-sysfs.c
++++ b/block/blk-mq-sysfs.c
+@@ -69,7 +69,7 @@ static ssize_t blk_mq_sysfs_show(struct kobject *kobj, struct attribute *attr,
+ 
+ 	entry = container_of(attr, struct blk_mq_ctx_sysfs_entry, attr);
+ 	ctx = container_of(kobj, struct blk_mq_ctx, kobj);
+-	q = ctx->queue;
++	q = ctx->hctxs[0]->queue;
+ 
+ 	if (!entry->show)
+ 		return -EIO;
+@@ -90,7 +90,7 @@ static ssize_t blk_mq_sysfs_store(struct kobject *kobj, struct attribute *attr,
+ 
+ 	entry = container_of(attr, struct blk_mq_ctx_sysfs_entry, attr);
+ 	ctx = container_of(kobj, struct blk_mq_ctx, kobj);
+-	q = ctx->queue;
++	q = ctx->hctxs[0]->queue;
+ 
+ 	if (!entry->store)
+ 		return -EIO;
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 6a68e8a246dc..a36764c38bfb 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2439,8 +2439,6 @@ static void blk_mq_init_cpu_queues(struct request_queue *q,
+ 		for (k = HCTX_TYPE_DEFAULT; k < HCTX_MAX_TYPES; k++)
+ 			INIT_LIST_HEAD(&__ctx->rq_lists[k]);
+ 
+-		__ctx->queue = q;
+-
+ 		/*
+ 		 * Set local node, IFF we have more than one hw queue. If
+ 		 * not, we remain on the home node of the device
+diff --git a/block/blk-mq.h b/block/blk-mq.h
+index eaaca8fc1c28..d15ef0bafe29 100644
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -32,7 +32,6 @@ struct blk_mq_ctx {
+ 	/* incremented at completion time */
+ 	unsigned long		____cacheline_aligned_in_smp rq_completed[2];
+ 
+-	struct request_queue	*queue;
+ 	struct blk_mq_ctxs      *ctxs;
+ 	struct kobject		kobj;
+ } ____cacheline_aligned_in_smp;
+
+From patchwork Tue Jan  7 16:30:36 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jens Axboe <axboe@kernel.dk>
+X-Patchwork-Id: 11321165
+Return-Path: <SRS0=BJAb=24=vger.kernel.org=linux-block-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id DF2BD1580
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:45 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.kernel.org (Postfix) with ESMTP id BD9D824676
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:45 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="wjlq1zjB"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1727559AbgAGQap (ORCPT
+        <rfc822;patchwork-linux-block@patchwork.kernel.org>);
+        Tue, 7 Jan 2020 11:30:45 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:39306 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728211AbgAGQap (ORCPT
+        <rfc822;linux-block@vger.kernel.org>); Tue, 7 Jan 2020 11:30:45 -0500
+Received: by mail-il1-f195.google.com with SMTP id x5so92819ila.6
+        for <linux-block@vger.kernel.org>;
+ Tue, 07 Jan 2020 08:30:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=2BW/+gMpZdTdHWrn1WIdKhoFLPpDw2eRNjy+zYRAURM=;
+        b=wjlq1zjBAeXCI8DhGRTwNyDmsQm8o08HsZgIzTO9g+2QTMQodzTXOw71S41tktKEke
+         wV9lqfBX5OKIrd6CLIMsBmg1TlrSDSCbYbye05ttAS9X1Tcrsom+gyXz03easYTGayyH
+         iZ7hrbFXty2oBZ1aUcMXwU9XEXbi/TTv7RBQ0DxoQiAEfRPJLgrbcLv52Rlm/6TWXXeh
+         sJbOHA/jNDhSEZsCjByWScKCeOr82wMTz3scZDJzYktCN/NfcuCbYZevDttYoxmZ4MCG
+         qxF6EXP8JhyOSvwtUJAcJ85Sz0Fscv0c85hzMf4TjHzjjPrHWP3BRYJUmBStEueUqzN9
+         H6HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=2BW/+gMpZdTdHWrn1WIdKhoFLPpDw2eRNjy+zYRAURM=;
+        b=GMShwJHFxsnV4VXzPjGwyR6JKh3I3HpBLLuMtx4RcP0LsxpglNSoghbm1LrQqAjcoX
+         V318pHt1kA7vVRWaDTs1BGygWds6nSfIDXqcL4hrVDjr1fAkO28hR7PeoBzS2138O0UE
+         DO0RGvsFdQ7jEAYY5BNRyI5zmAu+fn/mN/Le1iDgOxbWzKW1KRwNFOMIe96gnLcAIaEe
+         hQirYAI30jr6tqlKUu1GoyMyYN4ThIWApf9Xus7jUvLzQDjNowBGfrk3pEROXFdwalWA
+         OvhB5w0rvKZTBGBqOUzoCwskWWjjMSuV2UuOpNYCixz4ghJVvMfUbWklwyTye3adHvdZ
+         QA9A==
+X-Gm-Message-State: APjAAAVFjsQhBBSFxnIH+Mq9at0NnOle0ntewBiQA2DaKc4dGswqkG2n
+        f5hKmVRApTLBKIp8fwUjyqyIb+MhNwk=
+X-Google-Smtp-Source: 
+ APXvYqwH3sj+q6hKpGvjbTndIRuuXVv8zMG2IS0NAaDMbYx45aAeX4QZ6OO+WZBathFQjFvt9Aq1/A==
+X-Received: by 2002:a92:405b:: with SMTP id n88mr56573490ila.95.1578414644111;
+        Tue, 07 Jan 2020 08:30:44 -0800 (PST)
+Received: from x1.localdomain ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id w11sm20639ilh.55.2020.01.07.08.30.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:30:43 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5/6] blk-mq: add struct blk_mq_ctx_type
+Date: Tue,  7 Jan 2020 09:30:36 -0700
+Message-Id: <20200107163037.31745-6-axboe@kernel.dk>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200107163037.31745-1-axboe@kernel.dk>
+References: <20200107163037.31745-1-axboe@kernel.dk>
+MIME-Version: 1.0
+Sender: linux-block-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-block.vger.kernel.org>
+X-Mailing-List: linux-block@vger.kernel.org
+
+This only holds the dispatch list for now, and there should be no
+functional changes in this patch. This is in preparation for adding more
+items to the per-ctx type structure.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ block/blk-mq-debugfs.c |  6 +++---
+ block/blk-mq-sched.c   |  4 ++--
+ block/blk-mq.c         | 22 +++++++++++-----------
+ block/blk-mq.h         |  6 +++++-
+ 4 files changed, 21 insertions(+), 17 deletions(-)
+
+diff --git a/block/blk-mq-debugfs.c b/block/blk-mq-debugfs.c
+index b3f2ba483992..e789f830ff59 100644
+--- a/block/blk-mq-debugfs.c
++++ b/block/blk-mq-debugfs.c
+@@ -622,14 +622,14 @@ static int hctx_dispatch_busy_show(void *data, struct seq_file *m)
+ 	return 0;
+ }
+ 
+-#define CTX_RQ_SEQ_OPS(name, type)					\
++#define CTX_RQ_SEQ_OPS(name, __type)					\
+ static void *ctx_##name##_rq_list_start(struct seq_file *m, loff_t *pos) \
+ 	__acquires(&ctx->lock)						\
+ {									\
+ 	struct blk_mq_ctx *ctx = m->private;				\
+ 									\
+ 	spin_lock(&ctx->lock);						\
+-	return seq_list_start(&ctx->rq_lists[type], *pos);		\
++	return seq_list_start(&ctx->type[__type].rq_list, *pos);		\
+ }									\
+ 									\
+ static void *ctx_##name##_rq_list_next(struct seq_file *m, void *v,	\
+@@ -637,7 +637,7 @@ static void *ctx_##name##_rq_list_next(struct seq_file *m, void *v,	\
+ {									\
+ 	struct blk_mq_ctx *ctx = m->private;				\
+ 									\
+-	return seq_list_next(v, &ctx->rq_lists[type], pos);		\
++	return seq_list_next(v, &ctx->type[__type].rq_list, pos);	\
+ }									\
+ 									\
+ static void ctx_##name##_rq_list_stop(struct seq_file *m, void *v)	\
+diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
+index ca22afd47b3d..52368c9005e5 100644
+--- a/block/blk-mq-sched.c
++++ b/block/blk-mq-sched.c
+@@ -313,7 +313,7 @@ static bool blk_mq_attempt_merge(struct request_queue *q,
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+-	if (blk_mq_bio_list_merge(q, &ctx->rq_lists[type], bio, nr_segs)) {
++	if (blk_mq_bio_list_merge(q, &ctx->type[type].rq_list, bio, nr_segs)) {
+ 		ctx->rq_merged++;
+ 		return true;
+ 	}
+@@ -335,7 +335,7 @@ bool __blk_mq_sched_bio_merge(struct request_queue *q, struct bio *bio,
+ 
+ 	type = hctx->type;
+ 	if ((hctx->flags & BLK_MQ_F_SHOULD_MERGE) &&
+-			!list_empty_careful(&ctx->rq_lists[type])) {
++			!list_empty_careful(&ctx->type[type].rq_list)) {
+ 		/* default per sw-queue merge */
+ 		spin_lock(&ctx->lock);
+ 		ret = blk_mq_attempt_merge(q, hctx, ctx, bio, nr_segs);
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index a36764c38bfb..cc48a0ffa5ec 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -953,7 +953,7 @@ static bool flush_busy_ctx(struct sbitmap *sb, unsigned int bitnr, void *data)
+ 	enum hctx_type type = hctx->type;
+ 
+ 	spin_lock(&ctx->lock);
+-	list_splice_tail_init(&ctx->rq_lists[type], flush_data->list);
++	list_splice_tail_init(&ctx->type[type].rq_list, flush_data->list);
+ 	sbitmap_clear_bit(sb, bitnr);
+ 	spin_unlock(&ctx->lock);
+ 	return true;
+@@ -985,13 +985,13 @@ static bool dispatch_rq_from_ctx(struct sbitmap *sb, unsigned int bitnr,
+ 	struct dispatch_rq_data *dispatch_data = data;
+ 	struct blk_mq_hw_ctx *hctx = dispatch_data->hctx;
+ 	struct blk_mq_ctx *ctx = hctx->ctxs[bitnr];
+-	enum hctx_type type = hctx->type;
++	struct blk_mq_ctx_type *type = &ctx->type[hctx->type];
+ 
+ 	spin_lock(&ctx->lock);
+-	if (!list_empty(&ctx->rq_lists[type])) {
+-		dispatch_data->rq = list_entry_rq(ctx->rq_lists[type].next);
++	if (!list_empty(&type->rq_list)) {
++		dispatch_data->rq = list_entry_rq(type->rq_list.next);
+ 		list_del_init(&dispatch_data->rq->queuelist);
+-		if (list_empty(&ctx->rq_lists[type]))
++		if (list_empty(&type->rq_list))
+ 			sbitmap_clear_bit(sb, bitnr);
+ 	}
+ 	spin_unlock(&ctx->lock);
+@@ -1648,9 +1648,9 @@ static inline void __blk_mq_insert_req_list(struct blk_mq_hw_ctx *hctx,
+ 	trace_block_rq_insert(hctx->queue, rq);
+ 
+ 	if (at_head)
+-		list_add(&rq->queuelist, &ctx->rq_lists[type]);
++		list_add(&rq->queuelist, &ctx->type[type].rq_list);
+ 	else
+-		list_add_tail(&rq->queuelist, &ctx->rq_lists[type]);
++		list_add_tail(&rq->queuelist, &ctx->type[type].rq_list);
+ }
+ 
+ void __blk_mq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
+@@ -1701,7 +1701,7 @@ void blk_mq_insert_requests(struct blk_mq_hw_ctx *hctx, struct blk_mq_ctx *ctx,
+ 	}
+ 
+ 	spin_lock(&ctx->lock);
+-	list_splice_tail_init(list, &ctx->rq_lists[type]);
++	list_splice_tail_init(list, &ctx->type[type].rq_list);
+ 	blk_mq_hctx_mark_pending(hctx, ctx);
+ 	spin_unlock(&ctx->lock);
+ }
+@@ -2256,8 +2256,8 @@ static int blk_mq_hctx_notify_dead(unsigned int cpu, struct hlist_node *node)
+ 	type = hctx->type;
+ 
+ 	spin_lock(&ctx->lock);
+-	if (!list_empty(&ctx->rq_lists[type])) {
+-		list_splice_init(&ctx->rq_lists[type], &tmp);
++	if (!list_empty(&ctx->type[type].rq_list)) {
++		list_splice_init(&ctx->type[type].rq_list, &tmp);
+ 		blk_mq_hctx_clear_pending(hctx, ctx);
+ 	}
+ 	spin_unlock(&ctx->lock);
+@@ -2437,7 +2437,7 @@ static void blk_mq_init_cpu_queues(struct request_queue *q,
+ 		__ctx->cpu = i;
+ 		spin_lock_init(&__ctx->lock);
+ 		for (k = HCTX_TYPE_DEFAULT; k < HCTX_MAX_TYPES; k++)
+-			INIT_LIST_HEAD(&__ctx->rq_lists[k]);
++			INIT_LIST_HEAD(&__ctx->type[k].rq_list);
+ 
+ 		/*
+ 		 * Set local node, IFF we have more than one hw queue. If
+diff --git a/block/blk-mq.h b/block/blk-mq.h
+index d15ef0bafe29..271f16771499 100644
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -12,13 +12,17 @@ struct blk_mq_ctxs {
+ 	struct blk_mq_ctx __percpu	*queue_ctx;
+ };
+ 
++struct blk_mq_ctx_type {
++	struct list_head		rq_list;
++};
++
+ /**
+  * struct blk_mq_ctx - State for a software queue facing the submitting CPUs
+  */
+ struct blk_mq_ctx {
+ 	struct {
+ 		spinlock_t		lock;
+-		struct list_head	rq_lists[HCTX_MAX_TYPES];
++		struct blk_mq_ctx_type	type[HCTX_MAX_TYPES];
+ 	} ____cacheline_aligned_in_smp;
+ 
+ 	unsigned int		cpu;
+
+From patchwork Tue Jan  7 16:30:37 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jens Axboe <axboe@kernel.dk>
+X-Patchwork-Id: 11321167
+Return-Path: <SRS0=BJAb=24=vger.kernel.org=linux-block-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id 5358C138C
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:47 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.kernel.org (Postfix) with ESMTP id 1E70A214D8
+	for <patchwork-linux-block@patchwork.kernel.org>;
+ Tue,  7 Jan 2020 16:30:47 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="StTWK5U+"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1728232AbgAGQaq (ORCPT
+        <rfc822;patchwork-linux-block@patchwork.kernel.org>);
+        Tue, 7 Jan 2020 11:30:46 -0500
+Received: from mail-io1-f65.google.com ([209.85.166.65]:33426 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728211AbgAGQaq (ORCPT
+        <rfc822;linux-block@vger.kernel.org>); Tue, 7 Jan 2020 11:30:46 -0500
+Received: by mail-io1-f65.google.com with SMTP id z8so53227185ioh.0
+        for <linux-block@vger.kernel.org>;
+ Tue, 07 Jan 2020 08:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=808gT1Y36I+X7TMZYPU45C+Csxwz1EcBkhYsh3Skylk=;
+        b=StTWK5U+ZGQ75LHJE4RH6XoqfqgcsYnjhD1TzhIOcpU1mmGQ1rGZQVsPSdzwhliZoZ
+         9K91Aald6wXDbq08cVBr246D0mIs52iirxhpu8S0UxjtmVUcj+DyMnHUIXzP5oCeSjHu
+         AwEB56Uab2iVRy29XJSML+XqIrTRbTMzuT+uPPIlCK+t6wIxO79wD3cPpMd92joRbB0i
+         Fl1s1gQmLqQqxfAN7w+eIwxabMGVnloR6HS+zW5HX3njSKl3FSoeA6ANZRxZb9Upkdoc
+         cLln7Jfp2epf5etFQDg7gGRqAkqSzb/G+NJsGPv1AGCqFG8kfokNrf07A/YsSeFVVjU5
+         1bpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=808gT1Y36I+X7TMZYPU45C+Csxwz1EcBkhYsh3Skylk=;
+        b=W9di0Ioanm+VZgCSMKjygwAO8PhSErFLD2IFaoLmown4xzJ6O6CK6S0vVNZ3pqCB7E
+         nVTJ93AYI8vwE/22imhaGbgPQpPpDyrEWfe+zIohbsSI/HUPNe8nEi1nyAs+UKvbnrHs
+         DHysMgAXAA+ikNUDMyBRgFB+EplewFaO96GOQa16gLvbnMTdbi7cfh3mMTb0iDoqrnhd
+         4E4wks63AZrZrkPrceDQfPjbUE88sq9NlXdXhYdqkiVjzLwlP+0aed5XojItLcJqYTGZ
+         wBaQ8rJALm1XCIKPxxCNByQgTf68YieyaaafOJUxV21awXt5G8bRYxsX9I0bZ/ZuKn4+
+         ULvQ==
+X-Gm-Message-State: APjAAAXmT6j8ivWQ/rRPvmwJ0lhxdv3bx/z6gkrkBvehgmEVz1/lXHcd
+        RXpuSzWbVsERWI3HU1SA8izOztyXQvc=
+X-Google-Smtp-Source: 
+ APXvYqwo30c7CbCIlI7Zaq+uTanp84LdWXc8wSuPdWZ53O0AiXTLC25EMzBpuHC5Bx2JUOvzRuZsfQ==
+X-Received: by 2002:a05:6602:153:: with SMTP id
+ v19mr73047222iot.290.1578414645128;
+        Tue, 07 Jan 2020 08:30:45 -0800 (PST)
+Received: from x1.localdomain ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id w11sm20639ilh.55.2020.01.07.08.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:30:44 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6/6] blk-mq: allocate tags in batches
+Date: Tue,  7 Jan 2020 09:30:37 -0700
+Message-Id: <20200107163037.31745-7-axboe@kernel.dk>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200107163037.31745-1-axboe@kernel.dk>
+References: <20200107163037.31745-1-axboe@kernel.dk>
+MIME-Version: 1.0
+Sender: linux-block-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-block.vger.kernel.org>
+X-Mailing-List: linux-block@vger.kernel.org
+
+Instead of grabbing tags one by one, grab a batch and store the local
+cache in the software queue. Then subsequent tag allocations can just
+grab free tags from there, without having to hit the shared tag map.
+
+We flush these batches out if we run out of tags on the hardware queue.
+The intent here is this should rarely happen.
+
+This works very well in practice, with anywhere from 40-60 batch counts
+seen regularly in testing.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ block/blk-mq-debugfs.c |  18 +++++++
+ block/blk-mq-tag.c     | 104 ++++++++++++++++++++++++++++++++++++++++-
+ block/blk-mq-tag.h     |   3 ++
+ block/blk-mq.c         |  16 +++++--
+ block/blk-mq.h         |   5 ++
+ include/linux/blk-mq.h |   2 +
+ 6 files changed, 144 insertions(+), 4 deletions(-)
+
+diff --git a/block/blk-mq-debugfs.c b/block/blk-mq-debugfs.c
+index e789f830ff59..914be72d080e 100644
+--- a/block/blk-mq-debugfs.c
++++ b/block/blk-mq-debugfs.c
+@@ -659,6 +659,23 @@ CTX_RQ_SEQ_OPS(default, HCTX_TYPE_DEFAULT);
+ CTX_RQ_SEQ_OPS(read, HCTX_TYPE_READ);
+ CTX_RQ_SEQ_OPS(poll, HCTX_TYPE_POLL);
+ 
++static ssize_t ctx_tag_hit_write(void *data, const char __user *buf,
++				    size_t count, loff_t *ppos)
++{
++	struct blk_mq_ctx *ctx = data;
++
++	ctx->tag_hit = ctx->tag_refill = 0;
++	return count;
++}
++
++static int ctx_tag_hit_show(void *data, struct seq_file *m)
++{
++	struct blk_mq_ctx *ctx = data;
++
++	seq_printf(m, "hit=%lu refills=%lu\n", ctx->tag_hit, ctx->tag_refill);
++	return 0;
++}
++
+ static int ctx_dispatched_show(void *data, struct seq_file *m)
+ {
+ 	struct blk_mq_ctx *ctx = data;
+@@ -800,6 +817,7 @@ static const struct blk_mq_debugfs_attr blk_mq_debugfs_ctx_attrs[] = {
+ 	{"read_rq_list", 0400, .seq_ops = &ctx_read_rq_list_seq_ops},
+ 	{"poll_rq_list", 0400, .seq_ops = &ctx_poll_rq_list_seq_ops},
+ 	{"dispatched", 0600, ctx_dispatched_show, ctx_dispatched_write},
++	{"tag_hit", 0600, ctx_tag_hit_show, ctx_tag_hit_write},
+ 	{"merged", 0600, ctx_merged_show, ctx_merged_write},
+ 	{"completed", 0600, ctx_completed_show, ctx_completed_write},
+ 	{},
+diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
+index fbacde454718..94c1f16c6c71 100644
+--- a/block/blk-mq-tag.c
++++ b/block/blk-mq-tag.c
+@@ -99,6 +99,100 @@ static int __blk_mq_get_tag(struct blk_mq_alloc_data *data,
+ 		return __sbitmap_queue_get(bt);
+ }
+ 
++static void ctx_flush_ipi(void *data)
++{
++	struct blk_mq_hw_ctx *hctx = data;
++	struct sbitmap_queue *bt = &hctx->tags->bitmap_tags;
++	struct blk_mq_ctx *ctx;
++	unsigned int i;
++
++	ctx = __blk_mq_get_ctx(hctx->queue, smp_processor_id());
++
++	for (i = 0; i < hctx->queue->tag_set->nr_maps; i++) {
++		struct blk_mq_ctx_type *type = &ctx->type[i];
++
++		if (!type->tags)
++			continue;
++
++		__sbitmap_queue_clear_batch(bt, type->tag_offset, type->tags);
++		type->tags = 0;
++	}
++	atomic_dec(&hctx->flush_pending);
++}
++
++void blk_mq_tag_ctx_flush_batch(struct blk_mq_hw_ctx *hctx,
++				struct blk_mq_ctx *ctx)
++{
++	atomic_inc(&hctx->flush_pending);
++	smp_call_function_single(ctx->cpu, ctx_flush_ipi, hctx, false);
++}
++
++static void blk_mq_tag_flush_batches(struct blk_mq_hw_ctx *hctx)
++{
++	if (atomic_cmpxchg(&hctx->flush_pending, 0, hctx->nr_ctx))
++		return;
++	preempt_disable();
++	if (cpumask_test_cpu(smp_processor_id(), hctx->cpumask))
++		ctx_flush_ipi(hctx);
++	smp_call_function_many(hctx->cpumask, ctx_flush_ipi, hctx, false);
++	preempt_enable();
++}
++
++void blk_mq_tag_queue_flush_batches(struct request_queue *q)
++{
++	struct blk_mq_hw_ctx *hctx;
++	unsigned int i;
++
++	queue_for_each_hw_ctx(q, hctx, i)
++		blk_mq_tag_flush_batches(hctx);
++}
++
++static int blk_mq_get_tag_batch(struct blk_mq_alloc_data *data)
++{
++	struct blk_mq_hw_ctx *hctx = data->hctx;
++	struct blk_mq_ctx_type *type;
++	struct blk_mq_ctx *ctx = data->ctx;
++	struct blk_mq_tags *tags;
++	struct sbitmap_queue *bt;
++	int tag = -1;
++
++	if (!ctx || (data->flags & BLK_MQ_REQ_INTERNAL))
++		return -1;
++
++	tags = hctx->tags;
++	bt = &tags->bitmap_tags;
++	/* don't do batches for round-robin or (very) sparse maps */
++	if (bt->round_robin || bt->sb.shift < ilog2(BITS_PER_LONG) - 1)
++		return -1;
++
++	/* we could make do with preempt disable, but we need to block flush */
++	local_irq_disable();
++	if (unlikely(ctx->cpu != smp_processor_id()))
++		goto out;
++
++	type = &ctx->type[hctx->type];
++
++	if (type->tags) {
++get_tag:
++		ctx->tag_hit++;
++
++		tag = __ffs(type->tags);
++		type->tags &= ~(1UL << tag);
++		tag += type->tag_offset;
++out:
++		local_irq_enable();
++		return tag;
++	}
++
++	/* no current tag cache, attempt to refill a batch */
++	if (!__sbitmap_queue_get_batch(bt, &type->tag_offset, &type->tags)) {
++		ctx->tag_refill++;
++		goto get_tag;
++	}
++
++	goto out;
++}
++
+ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
+ {
+ 	struct blk_mq_tags *tags = blk_mq_tags_from_data(data);
+@@ -116,8 +210,13 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
+ 		bt = &tags->breserved_tags;
+ 		tag_offset = 0;
+ 	} else {
+-		bt = &tags->bitmap_tags;
+ 		tag_offset = tags->nr_reserved_tags;
++
++		tag = blk_mq_get_tag_batch(data);
++		if (tag != -1)
++			goto found_tag;
++
++		bt = &tags->bitmap_tags;
+ 	}
+ 
+ 	tag = __blk_mq_get_tag(data, bt);
+@@ -152,6 +251,9 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
+ 		if (tag != -1)
+ 			break;
+ 
++		if (!(data->flags & BLK_MQ_REQ_RESERVED))
++			blk_mq_tag_flush_batches(data->hctx);
++
+ 		bt_prev = bt;
+ 		io_schedule();
+ 
+diff --git a/block/blk-mq-tag.h b/block/blk-mq-tag.h
+index 15bc74acb57e..b5964fff1630 100644
+--- a/block/blk-mq-tag.h
++++ b/block/blk-mq-tag.h
+@@ -34,6 +34,9 @@ extern int blk_mq_tag_update_depth(struct blk_mq_hw_ctx *hctx,
+ extern void blk_mq_tag_wakeup_all(struct blk_mq_tags *tags, bool);
+ void blk_mq_queue_tag_busy_iter(struct request_queue *q, busy_iter_fn *fn,
+ 		void *priv);
++void blk_mq_tag_queue_flush_batches(struct request_queue *q);
++void blk_mq_tag_ctx_flush_batch(struct blk_mq_hw_ctx *hctx,
++				struct blk_mq_ctx *ctx);
+ 
+ static inline struct sbq_wait_state *bt_wait_ptr(struct sbitmap_queue *bt,
+ 						 struct blk_mq_hw_ctx *hctx)
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index cc48a0ffa5ec..81140f61a7c9 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2255,6 +2255,8 @@ static int blk_mq_hctx_notify_dead(unsigned int cpu, struct hlist_node *node)
+ 	ctx = __blk_mq_get_ctx(hctx->queue, cpu);
+ 	type = hctx->type;
+ 
++	blk_mq_tag_ctx_flush_batch(hctx, ctx);
++
+ 	spin_lock(&ctx->lock);
+ 	if (!list_empty(&ctx->type[type].rq_list)) {
+ 		list_splice_init(&ctx->type[type].rq_list, &tmp);
+@@ -2436,8 +2438,10 @@ static void blk_mq_init_cpu_queues(struct request_queue *q,
+ 
+ 		__ctx->cpu = i;
+ 		spin_lock_init(&__ctx->lock);
+-		for (k = HCTX_TYPE_DEFAULT; k < HCTX_MAX_TYPES; k++)
++		for (k = HCTX_TYPE_DEFAULT; k < HCTX_MAX_TYPES; k++) {
+ 			INIT_LIST_HEAD(&__ctx->type[k].rq_list);
++			__ctx->type[k].tags = 0;
++		}
+ 
+ 		/*
+ 		 * Set local node, IFF we have more than one hw queue. If
+@@ -2521,6 +2525,7 @@ static void blk_mq_map_swqueue(struct request_queue *q)
+ 			}
+ 
+ 			hctx = blk_mq_map_queue_type(q, j, i);
++			ctx->type[j].tags = 0;
+ 			ctx->hctxs[j] = hctx;
+ 			/*
+ 			 * If the CPU is already set in the mask, then we've
+@@ -2542,9 +2547,11 @@ static void blk_mq_map_swqueue(struct request_queue *q)
+ 			BUG_ON(!hctx->nr_ctx);
+ 		}
+ 
+-		for (; j < HCTX_MAX_TYPES; j++)
++		for (; j < HCTX_MAX_TYPES; j++) {
+ 			ctx->hctxs[j] = blk_mq_map_queue_type(q,
+ 					HCTX_TYPE_DEFAULT, i);
++			ctx->type[j].tags = 0;
++		}
+ 	}
+ 
+ 	queue_for_each_hw_ctx(q, hctx, i) {
+@@ -3298,8 +3305,11 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 	if (nr_hw_queues < 1 || nr_hw_queues == set->nr_hw_queues)
+ 		return;
+ 
+-	list_for_each_entry(q, &set->tag_list, tag_set_list)
++	list_for_each_entry(q, &set->tag_list, tag_set_list) {
++		blk_mq_tag_queue_flush_batches(q);
+ 		blk_mq_freeze_queue(q);
++	}
++
+ 	/*
+ 	 * Switch IO scheduler to 'none', cleaning up the data associated
+ 	 * with the previous scheduler. We will switch back once we are done
+diff --git a/block/blk-mq.h b/block/blk-mq.h
+index 271f16771499..b6095cc50921 100644
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -14,6 +14,10 @@ struct blk_mq_ctxs {
+ 
+ struct blk_mq_ctx_type {
+ 	struct list_head		rq_list;
++
++	/* tag batch cache */
++	unsigned long			tags;
++	unsigned int			tag_offset;
+ };
+ 
+ /**
+@@ -23,6 +27,7 @@ struct blk_mq_ctx {
+ 	struct {
+ 		spinlock_t		lock;
+ 		struct blk_mq_ctx_type	type[HCTX_MAX_TYPES];
++		unsigned long		tag_hit, tag_refill;
+ 	} ____cacheline_aligned_in_smp;
+ 
+ 	unsigned int		cpu;
+diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
+index 11cfd6470b1a..2c6a8657a72c 100644
+--- a/include/linux/blk-mq.h
++++ b/include/linux/blk-mq.h
+@@ -140,6 +140,8 @@ struct blk_mq_hw_ctx {
+ 	 */
+ 	atomic_t		nr_active;
+ 
++	atomic_t		flush_pending;
++
+ 	/** @cpuhp_dead: List to store request if some CPU die. */
+ 	struct hlist_node	cpuhp_dead;
+ 	/** @kobj: Kernel object for sysfs. */

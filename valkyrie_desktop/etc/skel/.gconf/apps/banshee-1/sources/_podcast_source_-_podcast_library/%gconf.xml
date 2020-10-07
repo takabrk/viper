@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="expanded" mtime="1404042850" type="bool" value="true"/>
+	<entry name="library-location" mtime="1402819494" type="string">
+		<stringvalue>/home/valkyrie/Podcasts</stringvalue>
+	</entry>
+</gconf>

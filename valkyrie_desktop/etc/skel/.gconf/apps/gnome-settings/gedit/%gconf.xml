@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="history-gedit2_replace_with_entry" mtime="1300705952" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>new spider</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>remove</stringvalue>
+		</li>
+	</entry>
+	<entry name="history-gedit2_search_for_entry" mtime="1301646157" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>plymouth</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>$script</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>python</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>raster</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>timer</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>spider</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>initialize</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>-enable-optimize</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>firefox</stringvalue>
+		</li>
+	</entry>
+</gconf>

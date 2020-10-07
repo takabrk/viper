@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2007-2010 PlayOnLinux Team
+# Copyright (C) 2011 Pâris Quentin
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# This script run automatically a .exe file
+[ "$PLAYONLINUX" = "" ] && exit 
+source "$PLAYONLINUX/lib/sources"
+
+TITLE="$(eval_gettext 'Automatic installation')"
+
+NOBUGREPORT="YES"
+
+POL_SetupWindow_Init # Open the window no matter what
+
+if [ "$POL_OS" = "Mac" ]; then
+	# PlayOnMac not initialized yet ? Wait until it's done
+	if [ ! -e "/Applications/Utilities/XQuartz.app" -a "$OSX_VERSION" != "11" ]; then
+		POL_SetupWindow_wait_next_signal "$(eval_gettext 'Waiting XQuartz to be installed')" "$TITLE"
+		sleep 1
+		#bash "$PLAYONLINUX/bash/first_use" & #### FIXME ! Tests to do
+	fi
+	while [ ! -e "/Applications/Utilities/XQuartz.app" -a "$OSX_VERSION" != "11" ]; do
+		sleep 1
+	done
+fi 
+
+if [ ! "$1" = "" ]; then # Double click on an .exe, handle it
+	file=$(basename "$1")
+	line="$1"
+	if [ ! "${line::1}" = "/" ]; then
+		line="$WorkingDirectory/$line"
+	fi
+	Prefix="$(POL_Wine_GetPrefixFromPath "$line")"
+
+	if [ ! "$Prefix" = "" ]; then
+		POL_Debug_Message "Running into a virtual drive : $prefix"
+		POL_SetupWindow_Close # Pas besoin de toi
+		dir="$(dirname "$line")"
+		POL_Wine_SelectPrefix "$Prefix"
+		cd "$dir"
+		POL_Wine "$line"
+	
+		exit 0
+	fi
+else
+	exit 1
+fi
+
+
+#######################################
+# Getting the MD5 sum                 #
+#######################################
+
+
+POL_SetupWindow_wait_next_signal "$(eval_gettext '$APPLICATION_TITLE is analysing your application')" "$APPLICATION_TITLE" 
+sleep 5 # Give some time to download the md5 signatures file
+md5=$(POL_MD5_file "$line")
+md5file="$POL_USER_ROOT/configurations/md5"
+md5scripts="$POL_USER_ROOT/configurations/listes/md5sums"
+md5sreplace=$(cat $md5scripts | grep $md5 | $SED s/" $md5"/""/)
+
+#############################################
+# Known program, use the associated script? #
+#############################################
+if [ ! "$(cat $md5scripts | grep $md5)" = "" ]; then 
+		POL_SetupWindow_question "$(eval_gettext "We have detected that the program you want to install is :")\n\n$md5sreplace\n\n$(eval_gettext 'Do you want $APPLICATION_TITLE to install it automatically for you?')" "$TITLE"
+		if [ "$APP_ANSWER" = "TRUE" ]
+		then
+			POL_SetupWindow_Close
+			export POL_SELECTED_FILE="$line"
+			export POL_SELECTED_MD5="$md5"
+			bash "$PLAYONLINUX/bash/install" "$md5sreplace"
+			exit 0
+		fi
+fi
+
+#######################################
+# The program is not known.           #
+#######################################
+
+
+POL_SetupWindow_free_presentation "$TITLE" "$(eval_gettext 'Welcome to $APPLICATION_TITLE assistant.\nIt will help you to install $file on your computer.\n\nBe careful! This program is not officially supported by $APPLICATION_TITLE.\nTherefore, it might not work as expected')"
+POL_SetupWindow_textbox "$(eval_gettext 'What is the name of you program?')" "$TITLE"
+PRGM_NAME="$APP_ANSWER"
+
+PREFIX_NAME=`echo "$PRGM_NAME"| tr -c [[a-zA-Z0-9]\.] '_'`
+
+POL_Wine_SelectPrefix "$PREFIX_NAME"
+POL_Wine_PrefixCreate
+POL_Wine_WaitBefore "$PRGM_NAME"
+cp "$line" "$WINEPREFIX/drive_c/"
+cd "$WINEPREFIX/drive_c"
+POL_Wine "$(basename "$line")"
+POL_Wine_WaitExit "$PRGM_NAME"
+POL_SetupWindow_shortcut_creator
+POL_SetupWindow_message "$(eval_gettext 'Installation finished.')" "$TITLE"
+
+
+
+POL_SetupWindow_Close
+exit 0

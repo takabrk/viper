@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sudo apt-get install -y mecab mecab-utils mecab-naist-jdic  mecab-naist-jdic-eucjp mecab-jumandic
+sudo apt-get install open-jtalk open-jtalk-mecab-naist-jdic

@@ -1,0 +1,23 @@
+From 675731949fc3116570b7d838fcfa61ec49ef523b Mon Sep 17 00:00:00 2001
+From: "Kernel Builder (tangerine)" <ubuntu-kernel-bot@canonical.com>
+Date: Thu, 14 May 2020 23:30:07 -0400
+Subject: [PATCH 2/4] adhoc: from __future__ import syncconfig
+
+Signed-off-by: Kernel Builder (tangerine) <ubuntu-kernel-bot@canonical.com>
+---
+ scripts/kconfig/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index 297c1bf..1b87aaf 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -295,3 +295,5 @@ $(obj)/%.moc: $(src)/%.h $(obj)/.tmp_qtcheck
+ $(obj)/gconf.glade.h: $(obj)/gconf.glade
+ 	$(Q)intltool-extract --type=gettext/glade --srcdir=$(srctree) \
+ 	$(obj)/gconf.glade
++
++syncconfig: silentoldconfig
+-- 
+2.7.4
+

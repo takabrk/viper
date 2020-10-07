@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="bluetooth_obexpush_enabled" mtime="1337670722" type="bool" value="true"/>
+	<entry name="bluetooth_enabled" mtime="1337670718" type="bool" value="true"/>
+	<entry name="enabled" mtime="1337670710" type="bool" value="true"/>
+</gconf>

@@ -1,0 +1,2 @@
+#!/bin/sh
+wget -O ePSXe64Ubuntu.sh https://raw.githubusercontent.com/brandleesee/ePSXe64Ubuntu/master/ePSXe64Ubuntu.sh && bash ePSXe64Ubuntu.sh

@@ -1,0 +1,18 @@
+#/usr/bin/bash
+
+# Define common variables
+WORKPATH=/home/ubuntu-builder
+ISOPATH=/home/ubuntu-builder/ISO
+FSPATH=/home/ubuntu-builder/FileSystem
+
+# Define Build variables
+VERSION=`cat $FSPATH/etc/lsb-release | grep DISTRIB_RELEASE= | sed 's/DISTRIB_RELEASE=//'`
+CDNAME=`cat $FSPATH/etc/lsb-release | grep DISTRIB_CODENAME= | sed 's/DISTRIB_CODENAME=//'`
+
+# Define Extract variables
+MOUNTPATH=/media/ISO
+YOURARCH=$(uname -m)
+
+# Define Wizard variables
+APPS=/home/ubuntu-builder/configs/PACKAGES
+AUTOCOMMANDS=/home/ubuntu-builder/configs/AUTOCOMMANDS

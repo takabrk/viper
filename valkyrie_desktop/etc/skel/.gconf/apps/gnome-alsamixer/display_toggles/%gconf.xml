@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="Realtek_ALC887-VD-Loopback_Mixing" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Input_Source" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Channel_Mode" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-Auto-Mute_Mode" mtime="1541653929" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-IEC958_Default_PCM" mtime="1471260980" type="bool" value="true"/>
+	<entry name="Realtek_ALC887-VD-IEC958" mtime="1498053027" type="bool" value="true"/>
+</gconf>

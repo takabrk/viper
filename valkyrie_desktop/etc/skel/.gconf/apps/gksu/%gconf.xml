@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="sudo-mode" mtime="1298474650" type="bool" value="true"/>
+	<entry name="save-keyring" mtime="1298474108" type="string">
+		<stringvalue>default</stringvalue>
+	</entry>
+	<entry name="save-to-keyring" mtime="1298474107" type="bool" value="true"/>
+</gconf>
