@@ -59,7 +59,7 @@ case $e_num in
            patch -p1 < ../other/zen/Add_sysctl_and_CONFIG_to_disallow_unprivileged.patch
            patch -p1 < ../other/zen/Add_an_option_to_make_threadirqs_the_default.patch
            patch -p1 < ../other/0001-futex-patches.patch
-           patch -p1 < ../other/anv_Implement_VK_EXT_transform_feedback_on_Gen7.patch
+           #patch -p1 < ../other/anv_Implement_VK_EXT_transform_feedback_on_Gen7.patch
            #patch -p1 < ../other/i915_vgpu/v6-1-8-drm-i915-introduced-vgpu-pv-capability.patch
            #patch -p1 < ../other/i915_vgpu/v6-2-8-drm-i915-vgpu-shared-memory-setup-for-pv-optimization.patch
            #patch -p1 < ../other/i915_vgpu/v6-3-8-drm-i915-vgpu-ppgtt-update-pv-optimization.patch
