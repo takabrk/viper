@@ -149,7 +149,7 @@
      Many programs reserve space automatically, but you can use this in other
      cases. -->
   <margins>
-    <top>40</top>
+    <top>0</top>
     <bottom>0</bottom>
     <left>0</left>
     <right>0</right>
@@ -160,11 +160,11 @@
     <floatingX>0</floatingX>
     <floatingY>0</floatingY>
     <noStrut>no</noStrut>
-    <stacking>Above</stacking>
+    <stacking>Normal</stacking>
     <!-- 'Above', 'Normal', or 'Below' -->
     <direction>Vertical</direction>
     <!-- 'Vertical' or 'Horizontal' -->
-    <autoHide>no</autoHide>
+    <autoHide>yes</autoHide>
     <hideDelay>300</hideDelay>
     <!-- in milliseconds (1000 = 1 second) -->
     <showDelay>300</showDelay>
@@ -296,7 +296,7 @@
         <action name="UnmaximizeFull"/>
         <action name="MoveResizeTo"><x>center</x><y>center</y><width>50%</width><height>50%</height></action>
     </keybind>
-    <keybind key="C-space">
+    <keybind key="C-W-space">
       <action name="Execute">
         <execute>gmrun</execute>
       </action>
@@ -314,6 +314,11 @@
     <keybind key="C-W-i">
       <action name="Execute">
         <execute>amixer sset Master 5%- unmute</execute>
+      </action>
+    </keybind>
+        <keybind key="C-W-p">
+      <action name="Execute">
+        <execute>xset dpms force standby</execute>
       </action>
     </keybind>
   </keyboard>

@@ -19,10 +19,10 @@
 #stalonetray --dockapp-mode simple &
 
 #xfce4-power-manager
-#xfce4-power-manager &
+xfce4-power-manager &
 
 #lxqt-powermanagement
-lxqt-powermanagement &
+#lxqt-powermanagement &
 
 #network manager
 #nm-applet --sm-disable &

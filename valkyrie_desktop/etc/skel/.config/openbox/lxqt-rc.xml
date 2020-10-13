@@ -316,6 +316,11 @@
         <execute>amixer sset Master 5%- unmute</execute>
       </action>
     </keybind>
+    <keybind key="C-W-p">
+      <action name="Execute">
+        <execute>xset dpms force standby</execute>
+      </action>
+    </keybind>
   </keyboard>
   <mouse>
     <dragThreshold>8</dragThreshold>

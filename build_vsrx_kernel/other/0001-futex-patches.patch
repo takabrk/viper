@@ -1,4 +1,4 @@
-From 35ea42cdf0373d8408f3ed4157a482ec46859e82 Mon Sep 17 00:00:00 2001
+From c7cc007f526d73c7e24f2997b8fc2eec327a0ec1 Mon Sep 17 00:00:00 2001
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 Date: Thu, 13 Feb 2020 18:45:22 -0300
 Subject: [PATCH 1/4] futex: Implement mechanism to wait on any of several
@@ -115,10 +115,10 @@ index a89eb0acc..a3e760886 100644
 +
  #endif /* _UAPI_LINUX_FUTEX_H */
 diff --git a/kernel/futex.c b/kernel/futex.c
-index e646661f6..d4916ef0e 100644
+index a5876694a..10cdc6ae5 100644
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -214,6 +214,8 @@ struct futex_pi_state {
+@@ -197,6 +197,8 @@ struct futex_pi_state {
   * @rt_waiter:		rt_waiter storage for use with requeue_pi
   * @requeue_pi_key:	the requeue_pi target futex key
   * @bitset:		bitset for the optional bitmasked wakeup
@@ -127,7 +127,7 @@ index e646661f6..d4916ef0e 100644
   *
   * We use this hashed waitqueue, instead of a normal wait_queue_entry_t, so
   * we can wake only the relevant ones (hashed queues may be shared).
-@@ -236,6 +238,8 @@ struct futex_q {
+@@ -219,6 +221,8 @@ struct futex_q {
  	struct rt_mutex_waiter *rt_waiter;
  	union futex_key *requeue_pi_key;
  	u32 bitset;
@@ -136,7 +136,7 @@ index e646661f6..d4916ef0e 100644
  } __randomize_layout;
  
  static const struct futex_q futex_q_init = {
-@@ -2349,6 +2353,29 @@ static int unqueue_me(struct futex_q *q)
+@@ -2304,6 +2308,29 @@ static int unqueue_me(struct futex_q *q)
  	return ret;
  }
  
@@ -166,7 +166,7 @@ index e646661f6..d4916ef0e 100644
  /*
   * PI futexes can not be requeued and must remove themself from the
   * hash bucket. The hash bucket lock (i.e. lock_ptr) is held on entry
-@@ -2712,6 +2739,211 @@ static int futex_wait_setup(u32 __user *uaddr, u32 val, unsigned int flags,
+@@ -2662,6 +2689,211 @@ static int futex_wait_setup(u32 __user *uaddr, u32 val, unsigned int flags,
  	return ret;
  }
  
@@ -378,7 +378,7 @@ index e646661f6..d4916ef0e 100644
  static int futex_wait(u32 __user *uaddr, unsigned int flags, u32 val,
  		      ktime_t *abs_time, u32 bitset)
  {
-@@ -3836,6 +4068,43 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
+@@ -3774,6 +4006,43 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
  	return -ENOSYS;
  }
  
@@ -422,7 +422,7 @@ index e646661f6..d4916ef0e 100644
  
  SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
  		struct __kernel_timespec __user *, utime, u32 __user *, uaddr2,
-@@ -3848,7 +4117,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+@@ -3786,7 +4055,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
  
  	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
  		      cmd == FUTEX_WAIT_BITSET ||
@@ -432,7 +432,7 @@ index e646661f6..d4916ef0e 100644
  		if (unlikely(should_fail_futex(!(op & FUTEX_PRIVATE_FLAG))))
  			return -EFAULT;
  		if (get_timespec64(&ts, utime))
-@@ -3857,7 +4127,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+@@ -3795,7 +4065,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
  			return -EINVAL;
  
  		t = timespec64_to_ktime(ts);
@@ -441,7 +441,7 @@ index e646661f6..d4916ef0e 100644
  			t = ktime_add_safe(ktime_get(), t);
  		tp = &t;
  	}
-@@ -3869,6 +4139,25 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+@@ -3807,6 +4077,25 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
  	    cmd == FUTEX_CMP_REQUEUE_PI || cmd == FUTEX_WAKE_OP)
  		val2 = (u32) (unsigned long) utime;
  
@@ -467,7 +467,7 @@ index e646661f6..d4916ef0e 100644
  	return do_futex(uaddr, op, val, tp, uaddr2, val2, val3);
  }
  
-@@ -4031,6 +4320,58 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
+@@ -3969,6 +4258,58 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
  #endif /* CONFIG_COMPAT */
  
  #ifdef CONFIG_COMPAT_32BIT_TIME
@@ -526,7 +526,7 @@ index e646661f6..d4916ef0e 100644
  SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
  		struct old_timespec32 __user *, utime, u32 __user *, uaddr2,
  		u32, val3)
-@@ -4042,14 +4383,15 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
+@@ -3980,14 +4321,15 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
  
  	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
  		      cmd == FUTEX_WAIT_BITSET ||
@@ -544,7 +544,7 @@ index e646661f6..d4916ef0e 100644
  			t = ktime_add_safe(ktime_get(), t);
  		tp = &t;
  	}
-@@ -4057,6 +4399,19 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
+@@ -3995,6 +4337,19 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
  	    cmd == FUTEX_CMP_REQUEUE_PI || cmd == FUTEX_WAKE_OP)
  		val2 = (int) (unsigned long) utime;
  
@@ -565,10 +565,10 @@ index e646661f6..d4916ef0e 100644
  }
  #endif /* CONFIG_COMPAT_32BIT_TIME */
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.29.0.rc0
 
 
-From 61655c4b918b89a24c76ef3b0bbc2eed4f70e9da Mon Sep 17 00:00:00 2001
+From 9724a513f41c0ac50c5188ae98c702716a029bf0 Mon Sep 17 00:00:00 2001
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 Date: Thu, 13 Feb 2020 18:45:23 -0300
 Subject: [PATCH 2/4] selftests: futex: Add FUTEX_WAIT_MULTIPLE timeout test
@@ -700,10 +700,10 @@ index ddbcfc9b7..bb103bef4 100644
   * futex_wake() - wake one or more tasks blocked on uaddr
   * @nr_wake:	wake up to this many tasks
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.29.0.rc0
 
 
-From 78594b3d1c06e2c3ef07589d824be78d07a881cb Mon Sep 17 00:00:00 2001
+From b368c17e9dea7544897752da84b0bed15ffdabe0 Mon Sep 17 00:00:00 2001
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 Date: Thu, 13 Feb 2020 18:45:24 -0300
 Subject: [PATCH 3/4] selftests: futex: Add FUTEX_WAIT_MULTIPLE wouldblock test
@@ -784,10 +784,10 @@ index 0ae390ff8..bcbac0429 100644
  	return ret;
  }
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.29.0.rc0
 
 
-From 161aa0db36803f8a8b5ee687c336d7a051779363 Mon Sep 17 00:00:00 2001
+From 74304f5894b6711d5371e353f70bdb65fd21c9d2 Mon Sep 17 00:00:00 2001
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 Date: Thu, 13 Feb 2020 18:45:25 -0300
 Subject: [PATCH 4/4] selftests: futex: Add FUTEX_WAIT_MULTIPLE wake up test
@@ -1024,5 +1024,5 @@ index 1acb6ace1..a8be94f28 100755
 +echo
 +./futex_wait_multiple $COLOR
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.29.0.rc0
 
