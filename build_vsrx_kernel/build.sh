@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/10/13
+#2020/10/15
 
 while getopts e: OPT
 do
@@ -13,7 +13,7 @@ done
 VERSIONBASE="5.9"
 VERSIONPOINT="5.9.0"
 MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.202.patch"
-BMQPATCH="prjc_v5.9-r0"
+PROJCPATCH="prjc_v5.9-r0"
 PREEMPT_RT="patch-5.9-rc2-rt1"
 #THREADS ="4"
 case $e_num in
@@ -22,6 +22,8 @@ case $e_num in
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            cd linux-$VERSIONBASE
            cp -a ../other/REPORTING-BUGS ./
+           cp -a ../other/config_custom.txt ./
+           mv config_custom.txt .config
            #cp -a ../aufs5-standalone-aufs5.x-rcN/Documentation ./
            #cp -a ../aufs5-standalone-aufs5.x-rcN/fs ./
            #cp -a ../aufs5-standalone-aufs5.x-rcN/include ./
@@ -31,7 +33,7 @@ case $e_num in
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
            patch -p1 < ../other/zstd.patch
            patch -p1 < ../other/uksm/uksm-5.9.patch
-           #patch -p1 < ../other/FSGSBASE.patch
+           patch -p1 < ../other/FSGSBASE.patch
            patch -p1 < ../other/add-acs-overrides.patch
            patch -p1 < ../other/introduce_per-task_latency_nice_for_scheduler_hints.patch
            patch -p1 <../other/ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch
@@ -43,19 +45,15 @@ case $e_num in
            patch -p1 < ../other/zen/ZEN_Unrestrict_CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3.patch
            patch -p1 < ../other/zen/ZEN_INTERACTIVE_Base_config_item.patch
            patch -p1 < ../other/zen/ZEN_INTERACTIVE_Tune_CFS_for_interactivity.patch
-           patch -p1 < ../other/zen/ZEN_Add_OpenRGB_patches.patch
-           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Tune_ondemand_governor_for_interactivity.patch
            patch -p1 < ../other/LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch
            patch -p1 < ../other/LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch
            patch -p1 < ../other/LL/0004-mm-set-2048-for-address_space-level-file-read-ahead-.patch
-           #patch -p1 < ../other/0001-futex-patches.patch
+           patch -p1 < ../other/0001-futex-patches.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-pvl
            ;;
     core)
            cd linux-$VERSIONPOINT-pvl
-           cp -a ../other/config_custom.txt ./
-           mv config_custom.txt .config
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
@@ -73,11 +71,10 @@ case $e_num in
            sudo dpkg -i *.deb
            sudo update-grub
            ;;
-    bmq) 
+    projc) 
            cd linux-$VERSIONPOINT-pvl
-           patch -p1 < ../other/bmq/$BMQPATCH.patch
-           cp -a ../other/config_custom.txt ./
-           mv config_custom.txt .config
+           patch -p1 < ../other/bmq/$PROJCPATCH.patch
+           patch -p1 < ../other/bmq/0001-sched-alt-Fix-compilation-erro-in-pelt.c.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers

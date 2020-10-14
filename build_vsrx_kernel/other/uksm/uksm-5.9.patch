@@ -1,6 +1,6 @@
-From 02d5bf9af0e21c1ce121bd584015227e1174ec6a Mon Sep 17 00:00:00 2001
+From f42301ac9bd5f710a643173a7fb150d8ca327dc3 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Mon, 12 Oct 2020 18:59:05 +0200
+Date: Tue, 13 Oct 2020 00:10:13 +0200
 Subject: [PATCH] UKSM for 5.9
 
 Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
@@ -1334,7 +1334,7 @@ index bdd19f5b9..52544ecb4 100644
  
 diff --git a/mm/uksm.c b/mm/uksm.c
 new file mode 100644
-index 000000000..1ad1f4a0f
+index 000000000..b67ebadb9
 --- /dev/null
 +++ b/mm/uksm.c
 @@ -0,0 +1,5615 @@
@@ -4037,11 +4037,11 @@ index 000000000..1ad1f4a0f
 +				FOLL_GET | FOLL_MIGRATION | FOLL_REMOTE);
 +		if (IS_ERR_OR_NULL(page))
 +			break;
-+		if (PageKsm(page))
++		if (PageKsm(page)) {
 +			ret = handle_mm_fault(vma, addr,
 +					      FAULT_FLAG_WRITE | FAULT_FLAG_REMOTE,
 +					      NULL);
-+		else
++		} else
 +			ret = VM_FAULT_WRITE;
 +		put_page(page);
 +	} while (!(ret & (VM_FAULT_WRITE | VM_FAULT_SIGBUS | VM_FAULT_SIGSEGV | VM_FAULT_OOM)));
