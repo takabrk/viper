@@ -11,7 +11,7 @@ do
   esac
 done
 VERSIONBASE="5.9"
-VERSIONPOINT="5.9.0"
+VERSIONPOINT="5.9.1"
 MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.202.patch"
 PROJCPATCH="prjc_v5.9-r0"
 PREEMPT_RT="patch-5.9-rc2-rt1"
@@ -39,7 +39,7 @@ case $e_num in
            patch -p1 <../other/ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch
            patch -p1 < ../other/ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch
            rm -r ../linux-$VERSIONBASE.tar.xz
-           #patch -p1 < ../linux/patch-$VERSIONPOINT
+           patch -p1 < ../linux/patch-$VERSIONPOINT
            patch -p1 < ../other/zen/ZEN_Add_VHBA_driver.patch
            patch -p1 < ../other/zen/ZEN_Enable_additional_CPU_Optimizations_for_GCC_v10_1.patch
            patch -p1 < ../other/zen/ZEN_Unrestrict_CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3.patch
