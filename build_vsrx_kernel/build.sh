@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/10/15
+#2020/10/20
 
 while getopts e: OPT
 do
@@ -12,8 +12,8 @@ do
 done
 VERSIONBASE="5.9"
 VERSIONPOINT="5.9.1"
-MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.202.patch"
-PROJCPATCH="prjc_v5.9-r0"
+MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.204"
+PROJCPATCH="prjc_v5.9-r1"
 PREEMPT_RT="patch-5.9-rc2-rt1"
 #THREADS ="4"
 case $e_num in
@@ -22,8 +22,6 @@ case $e_num in
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            cd linux-$VERSIONBASE
            cp -a ../other/REPORTING-BUGS ./
-           cp -a ../other/config_custom.txt ./
-           mv config_custom.txt .config
            #cp -a ../aufs5-standalone-aufs5.x-rcN/Documentation ./
            #cp -a ../aufs5-standalone-aufs5.x-rcN/fs ./
            #cp -a ../aufs5-standalone-aufs5.x-rcN/include ./
@@ -31,26 +29,31 @@ case $e_num in
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
-           patch -p1 < ../other/zstd.patch
-           patch -p1 < ../other/uksm/uksm-5.9.patch
-           patch -p1 < ../other/FSGSBASE.patch
-           patch -p1 < ../other/add-acs-overrides.patch
-           patch -p1 < ../other/introduce_per-task_latency_nice_for_scheduler_hints.patch
-           patch -p1 <../other/ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch
-           patch -p1 < ../other/ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch
-           rm -r ../linux-$VERSIONBASE.tar.xz
-           patch -p1 < ../linux/patch-$VERSIONPOINT
+           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Base_config_item.patch
+           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Tune_CFS_for_interactivity.patch
+           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Add_help_text_for_the_MuQSS_tweaks.patch
+           patch -p1 < ../other/zen/Add_help_text_for_the_BFQ_tweaks.patch
+           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Increase_default_writeback_thresholds.patch
+           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Tune_ondemand_governor_for_interactivity.patch
+           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Enable_background_reclaim_of_hugepages.patch
            patch -p1 < ../other/zen/ZEN_Add_VHBA_driver.patch
            patch -p1 < ../other/zen/ZEN_Enable_additional_CPU_Optimizations_for_GCC_v10_1.patch
            patch -p1 < ../other/zen/ZEN_Unrestrict_CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3.patch
-           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Base_config_item.patch
-           patch -p1 < ../other/zen/ZEN_INTERACTIVE_Tune_CFS_for_interactivity.patch
+           cp -a ../other/config_custom.txt ./
+           mv config_custom.txt .config
            patch -p1 < ../other/LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch
            patch -p1 < ../other/LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch
            patch -p1 < ../other/LL/0004-mm-set-2048-for-address_space-level-file-read-ahead-.patch
+           patch -p1 <../other/ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch
+           patch -p1 < ../other/ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch
+           patch -p1 < ../other/uksm-5.9.patch
+           patch -p1 < ../other/add-acs-overrides.patch
+           patch -p1 < ../other/introduce_per-task_latency_nice_for_scheduler_hints.patch
            patch -p1 < ../other/0001-futex-patches.patch
+           patch -p1 < ../linux/patch-$VERSIONPOINT
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-pvl
+           rm -r linux-$VERSIONBASE.tar.xz
            ;;
     core)
            cd linux-$VERSIONPOINT-pvl
@@ -71,10 +74,9 @@ case $e_num in
            sudo dpkg -i *.deb
            sudo update-grub
            ;;
-    projc) 
+    prjc) 
            cd linux-$VERSIONPOINT-pvl
-           patch -p1 < ../other/bmq/$PROJCPATCH.patch
-           patch -p1 < ../other/bmq/0001-sched-alt-Fix-compilation-erro-in-pelt.c.patch
+           patch -p1 < ../other/$PROJCPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
@@ -94,24 +96,21 @@ case $e_num in
            ;;
      muqss)
            cd linux-$VERSIONPOINT-pvl
-           patch -p1 -F 4  < ../muqss/$MUQSSPATCH.patch
-           cp -a ../other/config_custom.txt ./
-           mv config_custom.txt .config
+           patch -p1 < ../other/ck1/$MUQSSPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #sudo make modules_install
+           #cd linux-$VERSIONBASE-pvl
+           #sudo make modules_install -j4
            #cd ../
-           #rm -r linux_modules-$VERSIONPOINT-pvl
-           #mkdir linux_modules-$VERSIONPOINT-pvl
-           #make INSTALL_MOD_PATH=linux_modules-$VERSIONPOINT-pvl modules_install
+           #rm -r linux_modules
+           #mkdir linux_modules
            #cd linux-$VERSIONPOINT-pvl
+           #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
            zip -r linux-$VERSIONPOINT-pvl.zip linux-$VERSIONPOINT-pvl
-           #zip -r linux_modules-$VERSIONPOINT-pvl.zip linux_modules-$VERSIONPOINT-pvl
            sudo rm -r linux-$VERSIONPOINT-pvl
-           #rm -r linux_modules-$VERSIONPOINT-pvl
            sudo dpkg -i *.deb
            sudo update-grub
            ;;

@@ -1,6 +1,6 @@
-From f42301ac9bd5f710a643173a7fb150d8ca327dc3 Mon Sep 17 00:00:00 2001
+From e3d505d9527809052c79f3e6cd4803c782321373 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Tue, 13 Oct 2020 00:10:13 +0200
+Date: Thu, 15 Oct 2020 01:11:12 +0200
 Subject: [PATCH] UKSM for 5.9
 
 Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
@@ -22,9 +22,9 @@ Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
  mm/ksm.c                    |   11 -
  mm/memory.c                 |   33 +-
  mm/mmap.c                   |   37 +
- mm/uksm.c                   | 5615 +++++++++++++++++++++++++++++++++++
+ mm/uksm.c                   | 5614 +++++++++++++++++++++++++++++++++++
  mm/vmstat.c                 |    3 +
- 19 files changed, 6540 insertions(+), 27 deletions(-)
+ 19 files changed, 6539 insertions(+), 27 deletions(-)
  create mode 100644 Documentation/vm/uksm.txt
  create mode 100644 include/linux/sradix-tree.h
  create mode 100644 include/linux/uksm.h
@@ -1334,10 +1334,10 @@ index bdd19f5b9..52544ecb4 100644
  
 diff --git a/mm/uksm.c b/mm/uksm.c
 new file mode 100644
-index 000000000..b67ebadb9
+index 000000000..e4732c00b
 --- /dev/null
 +++ b/mm/uksm.c
-@@ -0,0 +1,5615 @@
+@@ -0,0 +1,5614 @@
 +/*
 + * Ultra KSM. Copyright (C) 2011-2012 Nai Xia
 + *
@@ -2245,7 +2245,7 @@ index 000000000..b67ebadb9
 +	 * page->mapping is naturally ordered after reading node->kpfn,
 +	 * but on Alpha we need to be more careful.
 +	 */
-+	smp_mb();
++	smp_rmb();
 +
 +	if (READ_ONCE(page->mapping) != expected_mapping)
 +		goto stale;
@@ -4033,14 +4033,13 @@ index 000000000..b67ebadb9
 +
 +	do {
 +		cond_resched();
-+		page = follow_page(vma, addr,
-+				FOLL_GET | FOLL_MIGRATION | FOLL_REMOTE);
++		page = follow_page(vma, addr, FOLL_GET | FOLL_MIGRATION | FOLL_REMOTE);
 +		if (IS_ERR_OR_NULL(page))
 +			break;
 +		if (PageKsm(page)) {
 +			ret = handle_mm_fault(vma, addr,
 +					      FAULT_FLAG_WRITE | FAULT_FLAG_REMOTE,
-+					      NULL);
++                                             NULL);
 +		} else
 +			ret = VM_FAULT_WRITE;
 +		put_page(page);
