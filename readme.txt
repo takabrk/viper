@@ -13,46 +13,40 @@ $ scripts/install_libraryapps
 ・カスタムカーネルビルド機能
 ・APTでアプリケーションをインストールした時にエラーが発生した場合に再度正常にインストール出来るようにする機能
 ・競艇予想や数字選択式宝くじ予想などの機能を追加します。
-・Ubuntu系LinuxディストリビューションにオリジナルのLinuxディストリビューションであるVSRXで構築しているデスクトップ環境を導入
+・Ubuntu系LinuxディストリビューションにオリジナルのLinuxディストリビューションであるPhantom Valkyrie Linuxで構築しているデスクトップ環境を導入
 ・jsay.pyでは、OpenJtalkを使ってコンピューターを喋らせる
 ・tmpfs_ramdisk_slider.pyでは、tmpfsのRAMDISK量を調整
 ・animationSVGのフォルダにあるスクリプトで、アニメーションGIFのようなアニメーションSVG、APNGを作成
 Ubuntu系Linuxディストリビューションのリマスター機能
-・人工知能によって自動的に作文を行い、それを読み上げる機能
+・人口音声による朗読機能
 ・システムのチューンアップ機能
 ・UNetbootinを使ってポータブルSSDにLiveUSB環境を構築
-・Linux版ePSXeをインストール
-・D-bus版Jackサーバを起動
-・youtube-dlを使ったダウンロード機能
+・ダウンロード機能
 ・VAAPI対応ffmpegとiHD Driverを使ったQSVハードウェアエンコード機能
 ・PulseAudio+Jack Mode、PulseAudio Modeの切り替え
 
 ◇カスタムカーネルをビルドする
-Viper Toolsの「Build Custom Kernel(BMQ)」「Build Custom Kernel(MuQSS+CK1)」のボタンを押すとビルドを開始し、ビルド後はインストールします。また、端末上でのコマンド入力による実行も可能です。この機能を使う事でカスタムカーネル「VSRXカーネル」を半自動で作る事が出来ます。使い方は、エミュレータで以下のコマンドを入力して実行します。
+端末上でのコマンド入力による実行も可能です。この機能を使う事でカスタムカーネル「Phantom Valkyrie Linuxカーネル」を半自動で作る事が出来ます。使い方は、エミュレータで以下のコマンドを入力して実行します。
 
-1.zen-tuneカーネルに、Aufs・UKSM・Ubuntu・zstd・grasky's gccの各パッチを当てて、ベースとなるカスタムカーネルのソースコードを作成
+1.公式のlinuxカーネルに、各パッチを当てて、ベースとなるカスタムカーネルのソースコードを作成
 
 $./build.sh -e base
 
-2.BMQ版PVLカーネルをビルド
+2.BMQ版カスタムカーネルをビルド
 
 $./build.sh -e bmq
 
-3.MuQSS版PVLカーネルをビルド
+3.MuQSS版カスタムカーネルをビルド
 
 $./build.sh -e muqss
 
-4.PREEMPT_RT版PVLカーネルをビルド
+4.PREEMPT_RT版カスタムカーネルをビルド
 
 $./build.sh -e rt
 
 ◇UNetbootinを使ってポータブルSSDにLiveUSB環境を構築
 $cd scripts
 $./unetbootin_command
-
-◇Linux版ePSXeをインストール
-$cd scripts
-$./install_epsxe
 
 ◇D-bus版Jackサーバを起動
 $cd scripts
@@ -62,9 +56,6 @@ $./jack_start
 
 $cd sounds
 $./hq-sounds.sh
-
-◇APTでアプリケーションをインストールした時にエラーが発生した場合に再度正常にインストール出来るようにする機能
-Viper Toolsの「Install Application fixed」ボタンを押します。
 
 
 ◇Ubuntu系Linuxディストリビューション対応のアプリケーションのインストール
