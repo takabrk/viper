@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8 -*-
-#download_youtube.py @takamitsu hamada 20190914
+#downloader.py @takamitsu hamada 20201026
 #mainsite : http://vsrx.site
 
 import sys,os,os.path,json
@@ -17,7 +17,7 @@ except:
 
 class download_youtube(object):
     def __init__(self):
-        gladefile = "download_youtube.ui"
+        gladefile = "downloader.ui"
         self.tree = Gtk.Builder()
         self.tree.add_from_file(os.path.dirname(os.path.abspath(__file__)) + "/" + gladefile)
         dic = {
@@ -40,7 +40,7 @@ class download_youtube(object):
         Gtk.main()
     def on_button1_clicked(self,widget):
         msg1 = self.entry1.get_text()
-        cmd = "./download_youtube.sh %s" % (msg1)
+        cmd = "./downloader.sh %s" % (msg1)
         sp.call(cmd.strip().split(" "))
     def on_button2_clicked(self,widget):
         Gtk.main_quit()

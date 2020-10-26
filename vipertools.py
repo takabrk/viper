@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8 -*-
-#vipertools.py @takamitsu hamada 20200506
+#vipertools.py @takamitsu hamada 20201026
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -100,10 +100,10 @@ class valkyrie_setting(object):
 #create apng and asvg
     def on_apng_asvg_clicked(self,widget):
         sp.run("python3 alice/apng_asvg.py".strip().split(" "))
-#download youtube
+#downloader
     def on_download_youtube_clicked(self,widget):
-        os.chdir("download_youtube")
-        sp.run("python3 download_youtube.py".strip().split(" "))
+        os.chdir("downloader")
+        sp.run("python3 downloader.py".strip().split(" "))
         os.chdir("../")
 #encode movie with QSV
     def on_movie_enc_clicked(self,widget):

@@ -437,7 +437,7 @@
             </child>
             <child>
               <object class="GtkButton" id="download_youtube">
-                <property name="label" translatable="yes">download youtube</property>
+                <property name="label" translatable="yes">downloader</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
