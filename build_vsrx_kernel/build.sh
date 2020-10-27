@@ -29,73 +29,73 @@ case $e_num in
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
-           patch -p1 < ../other/pvl.patch
+           patch -p1 < ../other/noir.patch
            cd ../
-           mv linux-$VERSIONBASE linux-$VERSIONPOINT-pvl
+           mv linux-$VERSIONBASE linux-$VERSIONPOINT-noir
            rm -r linux-$VERSIONBASE.tar.xz
            ;;
     core)
-           cd linux-$VERSIONPOINT-pvl
+           cd linux-$VERSIONPOINT-noir
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-pvl
+           #cd linux-$VERSIONBASE-noir
            #sudo make modules_install -j4
            #cd ../
            #rm -r linux_modules
            #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-pvl
+           #cd linux-$VERSIONPOINT-noir
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT-pvl.zip linux-$VERSIONPOINT-pvl
-           sudo rm -r linux-$VERSIONPOINT-pvl
+           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
+           sudo rm -r linux-$VERSIONPOINT-noir
            sudo dpkg -i *.deb
            sudo update-grub
            ;;
     prjc) 
-           cd linux-$VERSIONPOINT-pvl
+           cd linux-$VERSIONPOINT-noir
            patch -p1 < ../other/$PROJCPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-pvl
+           #cd linux-$VERSIONBASE-noir
            #sudo make modules_install -j4
            #cd ../
            #rm -r linux_modules
            #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-pvl
+           #cd linux-$VERSIONPOINT-noir
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT-pvl.zip linux-$VERSIONPOINT-pvl
-           sudo rm -r linux-$VERSIONPOINT-pvl
+           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
+           sudo rm -r linux-$VERSIONPOINT-noir
            sudo dpkg -i *.deb
            sudo update-grub
            ;;
      muqss)
-           cd linux-$VERSIONPOINT-pvl
+           cd linux-$VERSIONPOINT-noir
            patch -p1 < ../other/ck1/$MUQSSPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-pvl
+           #cd linux-$VERSIONBASE-noir
            #sudo make modules_install -j4
            #cd ../
            #rm -r linux_modules
            #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-pvl
+           #cd linux-$VERSIONPOINT-noir
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT-pvl.zip linux-$VERSIONPOINT-pvl
-           sudo rm -r linux-$VERSIONPOINT-pvl
+           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
+           sudo rm -r linux-$VERSIONPOINT-noir
            sudo dpkg -i *.deb
            sudo update-grub
            ;;
     muqss_distcc)
-           mv zen-kernel-$VERSIONBASE2-zen-tune linux-$VERSIONPOINT2-pvl
-           cd linux-$VERSIONPOINT2-pvl
+           mv zen-kernel-$VERSIONBASE2-zen-tune linux-$VERSIONPOINT2-noir
+           cd linux-$VERSIONPOINT2-noir
            patch  -p1 < ../muqss/$MUQSSPATCH
            patch  -p1 -F 3 < ../linux/patch-$VERSIONPOINT2
            make xconfig
@@ -105,38 +105,38 @@ case $e_num in
             sudo MAKEFLAGS="CC=distcc" BUILD_TIME="/usr/bin/time" CONCURRENCY_LEVEL=$(distcc -j) make-kpkg --rootcmd fakeroot --initrd kernel_image kernel_headers
            cd ../
            sudo dpkg -i *.deb
-           cd linux-$VERSIONPOINT2-pvl
+           cd linux-$VERSIONPOINT2-noir
            #sudo make modules_install -j4
            #cd ../
            #rm -r linux_modules
            #mkdir linux_modules
-           #cd linux-$VERSIONBASE2-pvl
+           #cd linux-$VERSIONBASE2-noir
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT2-pvl.zip linux-$VERSIONPOINT2-pvl
-           sudo rm -r linux-$VERSIONPOINT2-pvl
+           zip -r linux-$VERSIONPOINT2-noir.zip linux-$VERSIONPOINT2-noir
+           sudo rm -r linux-$VERSIONPOINT2-noir
            sudo update-grub
            ;;
     rt) 
-           cd linux-$VERSIONPOINT-pvl
+           cd linux-$VERSIONPOINT-noir
            patch -p1 -F 4 < ../rt/$PREEMPT_RT.patch
            cp -a ../other/config_custom.txt ./
            mv config_custom.txt .config
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-pvl
+           #cd linux-$VERSIONBASE-noir
            #sudo make modules_install -j4
            #cd ../
            #rm -r linux_modules
            #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-pvl
+           #cd linux-$VERSIONPOINT-noir
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT-pvl.zip linux-$VERSIONPOINT-pvl
-           sudo rm -r linux-$VERSIONPOINT-pvl
+           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
+           sudo rm -r linux-$VERSIONPOINT-noir
            sudo dpkg -i *.deb
            sudo update-grub
            ;;

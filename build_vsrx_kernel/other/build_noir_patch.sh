@@ -23,5 +23,5 @@ cat zen/ZEN_INTERACTIVE_Base_config_item.patch \
        0001-futex-patches.patch \
        ../linux/patch-$VERSIONPOINT \
        custom_config.patch \
-       > pvl.patch
+       > noir.patch
 
