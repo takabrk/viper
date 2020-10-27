@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/10/25
+#2020/10/27
 
 while getopts e: OPT
 do
@@ -18,7 +18,7 @@ PREEMPT_RT="patch-5.9-rc2-rt1"
 #THREADS ="4"
 case $e_num in
     base)
-           #wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
+           wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            cd linux-$VERSIONBASE
            cp -a ../other/REPORTING-BUGS ./
@@ -32,7 +32,7 @@ case $e_num in
            patch -p1 < ../other/pvl.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-pvl
-           #rm -r linux-$VERSIONBASE.tar.xz
+           rm -r linux-$VERSIONBASE.tar.xz
            ;;
     core)
            cd linux-$VERSIONPOINT-pvl
