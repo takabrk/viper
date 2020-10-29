@@ -1,6 +1,6 @@
 ◇インストール方法
 
-1.右クリック→「Install Phantom Valkyrie Linux」→インストール
+1.右クリック→「Install Valkyrie Linux」→インストール
 
 2.OSのインストールが終わった後に出てくるダイアログで「試用を続ける」を選択する。選択後に自動的にboot-repairが起動。
 

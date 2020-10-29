@@ -203,22 +203,22 @@
 			</item>
 		</menu>
 		<menu icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" id="root-menu-334956-315947" label="Game">
-			<item icon="/usr/share/icons/suru-plus-master/apps/22/playonlinux.svg" label="PlayOnLinux(Windows)">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/playonlinux.svg" label="Windows">
 				<action name="Execute">
 					<execute>/opt/playonlinux/playonlinux</execute>
 				</action>
 			</item>
-			<item icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" label="Mednafen(Multi)">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" label="PS/SFC/FC/MD/PCE">
 				<action name="Execute">
 					<execute>/opt/mednaffe</execute>
 				</action>
 			</item>
-			<item icon="/usr/share/icons/suru-plus-master/apps/22/PCSX2.svg" label="PCSX2(PlayStation2)">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/PCSX2.svg" label="PlayStation2">
 				<action name="Execute">
 					<execute>sh -c &quot;env GDK_BACKEND=x11 __GL_THREADED_OPTIMIZATIONS=1 /opt/pcsx2.AppImage&quot;</execute>
 				</action>
 			</item>
-			<item icon="/usr/share/icons/suru-plus-master/apps/22/ppsspp.svg" label="PPSSPP(PSP)">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/ppsspp.svg" label="PSP">
 				<action name="Execute">
 					<execute>ppsspp</execute>
 				</action>
@@ -228,18 +228,33 @@
 					<execute>steam</execute>
 				</action>
 			</item>
-			<item label="Kega Fusion">
+			<item label="MegaDrive/Genesis">
 				<action name="Execute">
 					<execute>/opt/Fusion/Fusion</execute>
 				</action>
 			</item>
-			<item icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" label="Yabause(sega saturn)">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" label="Sega Saturn">
 				<action name="Execute">
 					<execute>yabause</execute>
 				</action>
 			</item>
+			<item label="Dream Cast">
+				<action name="Execute">
+					<execute>~/redream</execute>
+				</action>
+			</item>
 		</menu>
 		<menu icon="/usr/share/icons/suru-plus-master/apps/22/settings.svg" id="root-menu-454350" label="Settings">
+			<item label="Network Manager">
+				<action name="Execute">
+					<execute>nm-connection-editor</execute>
+				</action>
+			</item>
+			<item label="Bluetooth Manager">
+				<action name="Execute">
+					<execute>blueman-manager</execute>
+				</action>
+			</item>
 			<item label="lxqt-config">
 				<action name="Execute">
 					<execute>lxqt-config</execute>
@@ -311,7 +326,7 @@
 				<execute>boot-repair-pkexec</execute>
 			</action>
 		</item>
-		<item label="About Phantom Valkyrie Linux">
+		<item label="About Valkyrie Linux">
 			<action name="Execute">
 				<execute>python3 ~/viper/scripts/info.py</execute>
 			</action>

@@ -1,13 +1,13 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/10/27
+#2020/10/29
 
 while getopts e: OPT
 do
   case $OPT in
       e) e_num=$OPTARG
-         ;;\
+         ;;
   esac
 done
 VERSIONBASE="5.9"
@@ -29,14 +29,17 @@ case $e_num in
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
-           patch -p1 < ../other/noir.patch
+           #patch -p1 < ../other/noir.patch
+           patch -p1 < ../other/LL/0003kai-sched-core-nr_migrate-256-increases-number-of-tasks-.patch
+           patch -p1 < ../other/introduce_per-task_latency_nice_for_scheduler_hints.patch
+           #patch -p1 < ../other/0001kai-futex-patches.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-noir
            rm -r linux-$VERSIONBASE.tar.xz
            ;;
     core)
            cd linux-$VERSIONPOINT-noir
-           #make xconfig
+           make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
            #cd linux-$VERSIONBASE-noir
@@ -101,7 +104,7 @@ case $e_num in
            make xconfig
            sudo make-kpkg clean
            #sudo CC="distcc gcc" CXX="distcc g++" make-kpkg -j4 --initrd linux_image linux_headers
-           #sudo CONCURRENCY_LEVEL=4 MAKEFLAGS="CC=distcc\ gcc" make-kpkg -j4 --initrd linux_image linux_headers
+           #sudo CONCURRENCY_LEVEL=4 MAKEFLAGS="CC=distcc gcc" make-kpkg -j4 --initrd linux_image linux_headers
             sudo MAKEFLAGS="CC=distcc" BUILD_TIME="/usr/bin/time" CONCURRENCY_LEVEL=$(distcc -j) make-kpkg --rootcmd fakeroot --initrd kernel_image kernel_headers
            cd ../
            sudo dpkg -i *.deb

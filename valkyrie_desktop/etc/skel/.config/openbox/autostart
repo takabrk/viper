@@ -1,13 +1,13 @@
 #!/bin/sh
 #System sound
 #compton
-#compton &
+compton &
 
 #fbpanel
 #fbpanel -p default &
 
 #lxqt-panel
-#lxqt-panel &
+lxqt-panel &
 
 #lemonbar
 #( sleep 1s && bash ~/viper/scripts/lemonbar.sh | lemonbar -p -F#FFFFFFFF -B#FF222222 -f "DejaVu Sans Mono"-8 -f FontAwesome-8) &
