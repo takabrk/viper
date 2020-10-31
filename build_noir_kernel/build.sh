@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/10/29
+#2020/10/30
 
 while getopts e: OPT
 do
@@ -11,7 +11,7 @@ do
   esac
 done
 VERSIONBASE="5.9"
-VERSIONPOINT="5.9.1"
+VERSIONPOINT="5.9.2"
 MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.204"
 PROJCPATCH="prjc_v5.9-r1"
 PREEMPT_RT="patch-5.9-rc2-rt1"
@@ -29,10 +29,7 @@ case $e_num in
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
            #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
-           #patch -p1 < ../other/noir.patch
-           patch -p1 < ../other/LL/0003kai-sched-core-nr_migrate-256-increases-number-of-tasks-.patch
-           patch -p1 < ../other/introduce_per-task_latency_nice_for_scheduler_hints.patch
-           #patch -p1 < ../other/0001kai-futex-patches.patch
+           patch -p1 < ../patches/noir.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-noir
            rm -r linux-$VERSIONBASE.tar.xz
@@ -58,7 +55,7 @@ case $e_num in
            ;;
     prjc) 
            cd linux-$VERSIONPOINT-noir
-           patch -p1 < ../other/$PROJCPATCH.patch
+           patch -p1 < ../patches/other/$PROJCPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
@@ -78,7 +75,7 @@ case $e_num in
            ;;
      muqss)
            cd linux-$VERSIONPOINT-noir
-           patch -p1 < ../other/ck1/$MUQSSPATCH.patch
+           patch -p1 < ../patches/ck1/$MUQSSPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
@@ -96,11 +93,8 @@ case $e_num in
            sudo dpkg -i *.deb
            sudo update-grub
            ;;
-    muqss_distcc)
-           mv zen-kernel-$VERSIONBASE2-zen-tune linux-$VERSIONPOINT2-noir
-           cd linux-$VERSIONPOINT2-noir
-           patch  -p1 < ../muqss/$MUQSSPATCH
-           patch  -p1 -F 3 < ../linux/patch-$VERSIONPOINT2
+    distcc)
+           cd linux-$VERSIONPOINT-noir
            make xconfig
            sudo make-kpkg clean
            #sudo CC="distcc gcc" CXX="distcc g++" make-kpkg -j4 --initrd linux_image linux_headers
@@ -108,24 +102,21 @@ case $e_num in
             sudo MAKEFLAGS="CC=distcc" BUILD_TIME="/usr/bin/time" CONCURRENCY_LEVEL=$(distcc -j) make-kpkg --rootcmd fakeroot --initrd kernel_image kernel_headers
            cd ../
            sudo dpkg -i *.deb
-           cd linux-$VERSIONPOINT2-noir
+           cd linux-$VERSIONPOINT-noir
            #sudo make modules_install -j4
            #cd ../
            #rm -r linux_modules
            #mkdir linux_modules
-           #cd linux-$VERSIONBASE2-noir
+           #cd linux-$VERSIONBASE-noir
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT2-noir.zip linux-$VERSIONPOINT2-noir
-           sudo rm -r linux-$VERSIONPOINT2-noir
+           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
+           sudo rm -r linux-$VERSIONPOINT-noir
            sudo update-grub
            ;;
     rt) 
            cd linux-$VERSIONPOINT-noir
-           patch -p1 -F 4 < ../rt/$PREEMPT_RT.patch
-           cp -a ../other/config_custom.txt ./
-           mv config_custom.txt .config
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
