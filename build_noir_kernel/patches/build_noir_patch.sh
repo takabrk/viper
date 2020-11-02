@@ -3,7 +3,7 @@ truncate noir.patch --size 0
 VERSIONPOINT="5.9.3"
 cat linux/patch-$VERSIONPOINT \
        custom_config.patch \
-       UKSM/uksm-5.9.patch \
+       UKSM/uksm-5.9kai.patch \
        other/add-acs-overrides.patch \
        LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
        LL/0003kai2-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \

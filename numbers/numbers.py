@@ -716,6 +716,7 @@ class allnumbers(object):
         n4a = sorted(set(zip(rs,[n4.make_box(n4.full_num34).count(i) for i in rs])))
 
 #File writing
+        sssmini = str([format(i[0],'02') for i in n3a])
         #print(str([i[0] for i in n3a]) + "\n")
         sss3 = str([format(i[0],'03') for i in n3b])
         print(str(sss3)+"\n")
@@ -726,7 +727,7 @@ class allnumbers(object):
         with open("numbers.txt","w") as f:
 #ミニ予想数字
             #f.write("◇ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
-            f.write("◇ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
+            f.write("◇ミニ予想数字\n"+ sssmini + "\n"+str(len([i[0] for i in n3a]))+"個\n")
             #f.write("◇ミニ予想数字 "+ str(n3a) + "\n")
 #Numbers3予想数字
             f.write("◇ナンバーズ3予想数字\n"+sss3+"\n"+str(len([i[0] for i in n3b]))+"個\n")
