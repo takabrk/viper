@@ -7,14 +7,14 @@ diff --git a/init/init_task.c b/init/init_task.c
 index 9e5cbe5eab7b..0d7d865519b8 100644
 --- a/init/init_task.c
 +++ b/init/init_task.c
-@@ -69,6 +69,7 @@ struct task_struct init_task
+@@ -85,6 +85,7 @@
  	.prio		= MAX_PRIO - 20,
  	.static_prio	= MAX_PRIO - 20,
  	.normal_prio	= MAX_PRIO - 20,
 +	.latency_nice	= 0,
+ #endif
  	.policy		= SCHED_NORMAL,
  	.cpus_ptr	= &init_task.cpus_mask,
- 	.cpus_mask	= CPU_MASK_ALL,
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
 index 8e6f38073ab3..866ea3d2d284 100644
 --- a/kernel/sched/core.c
@@ -222,14 +222,14 @@ diff --git a/include/linux/sched.h b/include/linux/sched.h
 index 2e9199bf947b..cf23c147dd36 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -679,6 +679,7 @@ struct task_struct {
+@@ -712,6 +712,7 @@
  	int				static_prio;
  	int				normal_prio;
  	unsigned int			rt_priority;
 +	int				latency_nice;
- 
- 	const struct sched_class	*sched_class;
- 	struct sched_entity		se;
+ #ifdef CONFIG_SCHED_MUQSS
+ 	int time_slice;
+ 	u64 deadline;
 diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
 index 8331bc04aea2..2a96dadc9752 100644
 --- a/kernel/sched/debug.c
