@@ -1,10 +1,13 @@
 #!/bin/sh
 truncate noir.patch --size 0
-VERSIONPOINT="5.9.2"
+VERSIONPOINT="5.9.3"
 cat linux/patch-$VERSIONPOINT \
        custom_config.patch \
        UKSM/uksm-5.9.patch \
        other/add-acs-overrides.patch \
+       LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
+       LL/0003kai2-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
+       LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
        zen/ZEN_INTERACTIVE_Base_config_item.patch \
        zen/ZEN_INTERACTIVE_Tune_CFS_for_interactivity.patch \
        zen/ZEN_INTERACTIVE_Add_help_text_for_the_MuQSS_tweaks.patch \
@@ -12,13 +15,11 @@ cat linux/patch-$VERSIONPOINT \
        zen/ZEN_INTERACTIVE_Increase_default_writeback_thresholds.patch \
        zen/ZEN_INTERACTIVE_Tune_ondemand_governor_for_interactivity.patch \
        zen/ZEN_INTERACTIVE_Enable_background_reclaim_of_hugepages.patch \
-       zen/ZEN_INTERACTIVE_Increase_max_number_of_tasks_rebalanced_at_once.patch \
+       zen/ZEN_INTERACTIVE_Increase_max_number_of_tasks_rebalanced_at_once_kai.patch \
        zen/ZEN_Add_VHBA_driver.patch \
        zen/ZEN_Enable_additional_CPU_Optimizations_for_GCC_v10_1.patch \
        zen/ZEN_Unrestrict_CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3.patch \
        zen/ZEN_Add_OpenRGB_patches.patch \
-       LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
-       LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
        ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch \
        ck1/0005-Special-case-calls-of-schedule_timeout-1-to-use-the-.patch \
        ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch \
