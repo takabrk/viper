@@ -21,8 +21,13 @@ cat linux/patch-$VERSIONPOINT \
        zen/ZEN_Enable_additional_CPU_Optimizations_for_GCC_v10_1.patch \
        zen/ZEN_Unrestrict_CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3.patch \
        zen/ZEN_Add_OpenRGB_patches.patch \
+       zen/mm_Disable_watermark_boosting_by_default.patch \
+       zen/vfs_keep_inodes_with_page_cache_off_the_inode_shrinker_LRU.patch \
+       zen/ZEN_Add_an_option_to_make_threadirqs_the_default.patch \
        ck1/0001-MultiQueue-Skiplist-Scheduler-v0.204.patch \
        ck1/muqss_Fix_build_error_on_config_leak.patch \
+       ck1/0002-Make-preemptible-kernel-default.patch \
+       ck1/0003-Expose-vmsplit-for-our-poor-32-bit-users.patch \
        ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch \
        ck1/0005-Special-case-calls-of-schedule_timeout-1-to-use-the-.patch \
        ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch \
@@ -30,7 +35,7 @@ cat linux/patch-$VERSIONPOINT \
        ck1/0008-Replace-all-calls-to-schedule_timeout_interruptible-.patch \
        ck1/0009-Replace-all-calls-to-schedule_timeout_uninterruptibl.patch \
        ck1/0010-Don-t-use-hrtimer-overlay-when-pm_freezing-since-som.patch \
-       ck1/0012-Make-threaded-IRQs-optionally-the-default-which-can-.patch \
+       ck1/0011-Make-hrtimer-granularity-and-minimum-hrtimeout-confi.patch \
        ck1/0014-Swap-sucks.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints_kai.patch \
        xanmod/0001-sched-autogroup-Add-kernel-parameter-and-config-opti.patch \
@@ -65,6 +70,5 @@ cat linux/patch-$VERSIONPOINT \
        intel/0027-Don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch \
        intel/0028-Port-microcode-patches.patch \
        intel/0029-clearlinux-Add-pageflip-patches.patch \
-       other/0001-fsgsbase-patches.patch \
        > noir.patch
 
