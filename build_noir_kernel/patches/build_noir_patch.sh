@@ -11,7 +11,8 @@ cat linux/patch-$VERSIONPOINT \
        zen/ZEN_INTERACTIVE_Base_config_item.patch \
        zen/ZEN_INTERACTIVE_Tune_CFS_for_interactivity.patch \
        zen/ZEN_INTERACTIVE_Add_help_text_for_the_MuQSS_tweaks.patch \
-       zen/Add_help_text_for_the_BFQ_tweaks.patch \
+       zen/ZEN_Add_CONFIG_to_rename_the_mq-deadline_scheduler.patch \
+       zen/use_kyber.patch \
        zen/ZEN_INTERACTIVE_Increase_default_writeback_thresholds.patch \
        zen/ZEN_INTERACTIVE_Tune_ondemand_governor_for_interactivity.patch \
        zen/ZEN_INTERACTIVE_Enable_background_reclaim_of_hugepages.patch \
@@ -35,7 +36,35 @@ cat linux/patch-$VERSIONPOINT \
        xanmod/0001-sched-autogroup-Add-kernel-parameter-and-config-opti.patch \
        VALVE/futex_Implement_mechanism_to_wait_on_any_of_several_futexes.patch \
        VALVE/futex_Add_Proton_compatibility_code.patch \
-       other/0001-block-patches.patch \
-       intel/0001-clearlinux-patches.patch \
+       other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O-.patch \
+       other/0005-block-bfq-Disable-low_latency-when-blk_iolatency-is-.patch \
+       intel/0001-i8042-decrease-debug-message-level-to-info.patch \
+       intel/0002-Increase-the-ext4-default-commit-age.patch \
+       intel/0003-silence-rapl.patch \
+       intel/0004-pci-pme-wakeups.patch \
+       intel/0005-ksm-wakeups.patch \
+       intel/0006-intel_idle-tweak-cpuidle-cstates.patch \
+       intel/0007-bootstats-add-printk-s-to-measure-boot-time-in-more-.patch \
+       intel/0008-smpboot-reuse-timer-calibration.patch \
+       intel/0009-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch \
+       intel/0010-Initialize-ata-before-graphics.patch \
+       intel/0011-give-rdrand-some-credit.patch \
+       intel/0012-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch \
+       intel/0013-kernel-time-reduce-ntp-wakeups.patch \
+       intel/0014-init-wait-for-partition-and-retry-scan.patch \
+       intel/0015-print-fsync-count-for-bootchart.patch \
+       intel/0017-Enable-stateless-firmware-loading.patch \
+       intel/0018-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch \
+       intel/0019-xattr-allow-setting-user.-attributes-on-symlinks-by-.patch \
+       intel/0020-use-lfence-instead-of-rep-and-nop.patch \
+       intel/0021-do-accept-in-LIFO-order-for-cache-efficiency.patch \
+       intel/0022-locking-rwsem-spin-faster.patch \
+       intel/0023-ata-libahci-ignore-staggered-spin-up.patch \
+       intel/0024-print-CPU-that-faults.patch \
+       intel/0026-nvme-workaround.patch \
+       intel/0027-Don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch \
+       intel/0028-Port-microcode-patches.patch \
+       intel/0029-clearlinux-Add-pageflip-patches.patch \
+       other/0001-fsgsbase-patches.patch \
        > noir.patch
 

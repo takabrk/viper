@@ -35887,16 +35887,16 @@ index 3ba674b64fa9f..69dd0d1aa30b2 100644
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2020-10-30 14:26:26.450725688 +0900
-+++ .config	2020-10-30 14:36:31.066907225 +0900
-@@ -0,0 +1,10103 @@
+--- /dev/null	2020-11-03 14:43:56.066737207 +0900
++++ .config	2020-11-03 17:25:10.879514538 +0900
+@@ -0,0 +1,10113 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.9.2 Kernel Configuration
++# Linux/x86_64 5.9.3-noir-v2 Kernel Configuration
 +#
-+CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
++CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 10.2.0-5ubuntu1~20.04) 10.2.0"
 +CONFIG_CC_IS_GCC=y
-+CONFIG_GCC_VERSION=90300
++CONFIG_GCC_VERSION=100200
 +CONFIG_LD_VERSION=234000000
 +CONFIG_CLANG_VERSION=0
 +CONFIG_CC_CAN_LINK=y
@@ -35911,6 +35911,7 @@ index 000000000000..dcbcaa389249
 +# General setup
 +#
 +CONFIG_ZEN_INTERACTIVE=y
++CONFIG_SCHED_MUQSS=y
 +CONFIG_INIT_ENV_ARG_LIMIT=32
 +# CONFIG_COMPILE_TEST is not set
 +CONFIG_LOCALVERSION=""
@@ -35963,6 +35964,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR=y
 +CONFIG_GENERIC_IRQ_RESERVATION_MODE=y
 +CONFIG_IRQ_FORCED_THREADING=y
++# CONFIG_FORCE_IRQ_THREADING is not set
 +CONFIG_SPARSE_IRQ=y
 +# CONFIG_GENERIC_IRQ_DEBUGFS is not set
 +# end of IRQ subsystem
@@ -35987,7 +35989,6 @@ index 000000000000..dcbcaa389249
 +# CONFIG_NO_HZ_IDLE is not set
 +CONFIG_NO_HZ_FULL=y
 +CONFIG_CONTEXT_TRACKING=y
-+# CONFIG_CONTEXT_TRACKING_FORCE is not set
 +# CONFIG_NO_HZ is not set
 +CONFIG_HIGH_RES_TIMERS=y
 +# end of Timers subsystem
@@ -36032,7 +36033,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_RCU_FANOUT_LEAF=16
 +# CONFIG_RCU_FAST_NO_HZ is not set
 +CONFIG_RCU_BOOST=y
-+CONFIG_RCU_BOOST_PRIO=99
 +CONFIG_RCU_BOOST_DELAY=331
 +CONFIG_RCU_NOCB_CPU=y
 +# CONFIG_TASKS_TRACE_RCU_READ_MB is not set
@@ -36057,8 +36057,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH=y
 +CONFIG_CC_HAS_INT128=y
 +CONFIG_ARCH_SUPPORTS_INT128=y
-+CONFIG_NUMA_BALANCING=y
-+CONFIG_NUMA_BALANCING_DEFAULT_ENABLED=y
 +CONFIG_CGROUPS=y
 +CONFIG_PAGE_COUNTER=y
 +CONFIG_MEMCG=y
@@ -36067,9 +36065,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_BLK_CGROUP=y
 +CONFIG_CGROUP_WRITEBACK=y
 +CONFIG_CGROUP_SCHED=y
-+CONFIG_FAIR_GROUP_SCHED=y
-+# CONFIG_CFS_BANDWIDTH is not set
-+# CONFIG_RT_GROUP_SCHED is not set
 +CONFIG_UCLAMP_TASK_GROUP=y
 +CONFIG_CGROUP_PIDS=y
 +CONFIG_CGROUP_RDMA=y
@@ -36078,7 +36073,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_CPUSETS=y
 +CONFIG_PROC_PID_CPUSET=y
 +CONFIG_CGROUP_DEVICE=y
-+CONFIG_CGROUP_CPUACCT=y
 +CONFIG_CGROUP_PERF=y
 +CONFIG_CGROUP_BPF=y
 +# CONFIG_CGROUP_DEBUG is not set
@@ -36091,7 +36085,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_PID_NS=y
 +CONFIG_NET_NS=y
 +CONFIG_CHECKPOINT_RESTORE=y
-+CONFIG_SCHED_AUTOGROUP=y
 +# CONFIG_SYSFS_DEPRECATED is not set
 +CONFIG_RELAY=y
 +CONFIG_BLK_DEV_INITRD=y
@@ -36319,8 +36312,16 @@ index 000000000000..dcbcaa389249
 +CONFIG_NR_CPUS_DEFAULT=8192
 +CONFIG_NR_CPUS=8192
 +CONFIG_SCHED_SMT=y
++CONFIG_SMT_NICE=y
 +CONFIG_SCHED_MC=y
 +CONFIG_SCHED_MC_PRIO=y
++# CONFIG_RQ_NONE is not set
++CONFIG_RQ_SMT=y
++# CONFIG_RQ_MC is not set
++# CONFIG_RQ_MC_LLC is not set
++# CONFIG_RQ_SMP is not set
++# CONFIG_RQ_ALL is not set
++CONFIG_SHARERQ=1
 +CONFIG_X86_LOCAL_APIC=y
 +CONFIG_X86_IO_APIC=y
 +CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
@@ -36847,6 +36848,7 @@ index 000000000000..dcbcaa389249
 +# IO Schedulers
 +#
 +CONFIG_MQ_IOSCHED_DEADLINE=y
++# CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT is not set
 +CONFIG_MQ_IOSCHED_KYBER=y
 +CONFIG_IOSCHED_BFQ=y
 +CONFIG_BFQ_GROUP_IOSCHED=y
@@ -40242,6 +40244,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_I2C_ISCH=m
 +CONFIG_I2C_ISMT=m
 +CONFIG_I2C_PIIX4=m
++# CONFIG_I2C_NCT6775 is not set
 +CONFIG_I2C_NFORCE2=m
 +CONFIG_I2C_NFORCE2_S4985=m
 +# CONFIG_I2C_NVIDIA_GPU is not set
@@ -45590,7 +45593,14 @@ index 000000000000..dcbcaa389249
 +#
 +# Library routines
 +#
++
++#
++# RAID 6
++#
 +CONFIG_RAID6_PQ=m
++# CONFIG_RAID6_FORCE_ALGO is not set
++# end of RAID 6
++
 +CONFIG_RAID6_PQ_BENCHMARK=y
 +CONFIG_LINEAR_RANGES=y
 +# CONFIG_PACKING is not set
@@ -45714,7 +45724,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_ARCH_HAS_PMEM_API=y
 +CONFIG_MEMREGION=y
 +CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE=y
-+CONFIG_ARCH_HAS_UACCESS_MCSAFE=y
++CONFIG_ARCH_HAS_COPY_MC=y
 +CONFIG_ARCH_STACKWALK=y
 +CONFIG_SBITMAP=y
 +CONFIG_PARMAN=m
@@ -53418,15 +53428,95 @@ index 4230466d9b519..b6ccbc5d679aa 100644
  config BROKEN
  	bool
  
-From 28fa0a60c03d82a2ee37f90af73395fb0de94e5f Mon Sep 17 00:00:00 2001
+From 42ac71a8d484230e5d87f3b62bb59d6e997a3099 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
-Date: Mon, 27 Jan 2020 18:11:05 +0100
-Subject: [PATCH] ZEN: INTERACTIVE: Use BFQ as our elevator
+Date: Mon, 25 Nov 2019 22:53:25 +0100
+Subject: [PATCH] ZEN: Add CONFIG to rename the mq-deadline scheduler
 
-Add a scheduler even to multi-queue block devices: We prefer
-interactivity to throughput and want BFQ if possible.
 ---
+ block/Kconfig.iosched | 9 +++++++++
+ block/elevator.c      | 4 ++++
+ block/mq-deadline.c   | 4 ++++
+ 3 files changed, 17 insertions(+)
 
+diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
+index 2f2158e05a91c..92a47e48fb3ed 100644
+--- a/block/Kconfig.iosched
++++ b/block/Kconfig.iosched
+@@ -9,6 +9,15 @@ config MQ_IOSCHED_DEADLINE
+ 	help
+ 	  MQ version of the deadline IO scheduler.
+ 
++config MQ_IOSCHED_DEADLINE_NODEFAULT
++	bool "Rename mq-deadline scheduler to mq-deadline-nodefault"
++	depends on MQ_IOSCHED_DEADLINE
++	default n
++	help
++	  This renames the mq-deadline scheduler to "mq-deadline-nodefault" and
++	  also drops its alias of "deadline". This can prevent existing
++	  userspace from forcing this scheduler over the kernel's choice.
++
+ config MQ_IOSCHED_KYBER
+ 	tristate "Kyber I/O scheduler"
+ 	default y
+diff --git a/block/elevator.c b/block/elevator.c
+index 90ed7a28c21d3..0a55c7aa9249f 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -631,7 +631,11 @@ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
+ 
++#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++	return elevator_get(q, "mq-deadline-nodefault", false);
++#else
+ 	return elevator_get(q, "mq-deadline", false);
++#endif
+ }
+ 
+ /*
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index b57470e154c8f..8303fdd129bcb 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -792,8 +792,12 @@ static struct elevator_type mq_deadline = {
+ 	.queue_debugfs_attrs = deadline_queue_debugfs_attrs,
+ #endif
+ 	.elevator_attrs = deadline_attrs,
++#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
++	.elevator_name = "mq-deadline-nodefault",
++#else
+ 	.elevator_name = "mq-deadline",
+ 	.elevator_alias = "deadline",
++#endif
+ 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+ 	.elevator_owner = THIS_MODULE,
+ };
+---
+ block/elevator.c | 6 +++++-
+ init/Kconfig     | 4 ++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/block/elevator.c b/block/elevator.c
+index 0a55c7aa9249f..214ca53eed6ca 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -628,10 +628,14 @@ static inline bool elv_support_iosched(struct request_queue *q)
+  */
+ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ {
++#ifndef CONFIG_ZEN_INTERACTIVE
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
++#endif
+ 
+-#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_IOSCHED_KYBER)
++	return elevator_get(q, "kyber", false);
++#elif defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
+ 	return elevator_get(q, "mq-deadline-nodefault", false);
+ #else
+ 	return elevator_get(q, "mq-deadline", false);
 diff --git a/init/Kconfig b/init/Kconfig
 index f8f25c21f2a8c..b79e2c2232573 100644
 --- a/init/Kconfig
@@ -53437,7 +53527,7 @@ index f8f25c21f2a8c..b79e2c2232573 100644
  
 +	  --- Block Layer ----------------------------------------
 +
-+	    Default scheduler.........: mq-deadline -> bfq
++	    Default scheduler.........: mq-deadline -> kyber
 +
  config BROKEN
  	bool
@@ -69872,74 +69962,6 @@ index 6f4bea76df460..03d89fe7b8392 100644
  			t = ktime_add_safe(ktime_get(), t);
  		tp = &t;
  	}
-From 69d568bc17b201b4f97525667b7541ad107f3b52 Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Thu, 2 Jul 2020 19:16:43 +0200
-Subject: [PATCH 1/5] block, Kconfig.iosched: set default value of IOSCHED_BFQ
- to yes
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- block/Kconfig.iosched | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
-index 2f2158e05a91..e58b2953ac16 100644
---- a/block/Kconfig.iosched
-+++ b/block/Kconfig.iosched
-@@ -5,13 +5,11 @@ menu "IO Schedulers"
- 
- config MQ_IOSCHED_DEADLINE
- 	tristate "MQ deadline I/O scheduler"
--	default y
- 	help
- 	  MQ version of the deadline IO scheduler.
- 
- config MQ_IOSCHED_KYBER
- 	tristate "Kyber I/O scheduler"
--	default y
- 	help
- 	  The Kyber I/O scheduler is a low-overhead scheduler suitable for
- 	  multiqueue and other fast devices. Given target latencies for reads and
-@@ -20,6 +18,7 @@ config MQ_IOSCHED_KYBER
- 
- config IOSCHED_BFQ
- 	tristate "BFQ I/O scheduler"
-+	default y
- 	help
- 	BFQ I/O scheduler for BLK-MQ. BFQ distributes the bandwidth of
- 	of the device among all processes according to their weights,
--- 
-2.29.0
-
-
-From 72eee443276c27a84146c1dcb6bce06e075b9a5d Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Thu, 2 Jul 2020 19:26:24 +0200
-Subject: [PATCH 2/5] block: Fix depends for BLK_DEV_ZONED
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- block/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/Kconfig b/block/Kconfig
-index bbad5e8bbffe..1178237cea27 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -83,7 +83,7 @@ config BLK_DEV_INTEGRITY_T10
- 
- config BLK_DEV_ZONED
- 	bool "Zoned block device support"
--	select MQ_IOSCHED_DEADLINE
-+	select IOSCHED_BFQ
- 	help
- 	Block layer zoned block device support. This option enables
- 	support for ZAC/ZBC/ZNS host-managed and host-aware zoned block
--- 
-2.29.0
-
-
 From 2b4a8df3bc834d92d83d8dc0366454f974e7a502 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Mon, 25 Nov 2019 13:45:35 +0100
@@ -69967,76 +69989,6 @@ index 868e11face00..e31743454144 100644
  void blk_queue_flag_clear(unsigned int flag, struct request_queue *q);
 -- 
 2.29.0
-
-
-From 4dac6918e19299c68b3995bca3ff09cc9bcea069 Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Fri, 3 Jul 2020 12:58:15 +0200
-Subject: [PATCH 4/5] block: Add CONFIG to rename the mq-deadline scheduler
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- block/Kconfig.iosched | 9 +++++++++
- block/elevator.c      | 4 ++++
- block/mq-deadline.c   | 4 ++++
- 3 files changed, 17 insertions(+)
-
-diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
-index e58b2953ac16..9e5a3c5c6390 100644
---- a/block/Kconfig.iosched
-+++ b/block/Kconfig.iosched
-@@ -8,6 +8,15 @@ config MQ_IOSCHED_DEADLINE
- 	help
- 	  MQ version of the deadline IO scheduler.
- 
-+config MQ_IOSCHED_DEADLINE_NODEFAULT
-+	bool "Rename mq-deadline scheduler to mq-deadline-nodefault"
-+	depends on MQ_IOSCHED_DEADLINE
-+	default n
-+	help
-+	  This renames the mq-deadline scheduler to "mq-deadline-nodefault" and
-+	  also drops its alias of "deadline". This can prevent existing
-+	  userspace from forcing this scheduler over the kernel's choice.
-+
- config MQ_IOSCHED_KYBER
- 	tristate "Kyber I/O scheduler"
- 	help
-diff --git a/block/elevator.c b/block/elevator.c
-index 90ed7a28c21d..0a55c7aa9249 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -631,7 +631,11 @@ static struct elevator_type *elevator_get_default(struct request_queue *q)
- 	if (q->nr_hw_queues != 1)
- 		return NULL;
- 
-+#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
-+	return elevator_get(q, "mq-deadline-nodefault", false);
-+#else
- 	return elevator_get(q, "mq-deadline", false);
-+#endif
- }
- 
- /*
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index b57470e154c8..8303fdd129bc 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -792,8 +792,12 @@ static struct elevator_type mq_deadline = {
- 	.queue_debugfs_attrs = deadline_queue_debugfs_attrs,
- #endif
- 	.elevator_attrs = deadline_attrs,
-+#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
-+	.elevator_name = "mq-deadline-nodefault",
-+#else
- 	.elevator_name = "mq-deadline",
- 	.elevator_alias = "deadline",
-+#endif
- 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
- 	.elevator_owner = THIS_MODULE,
- };
--- 
-2.29.0
-
 
 From cbe7debd96c7ba47d8df30af53baaad371bfe69b Mon Sep 17 00:00:00 2001
 From: Alexandre Frade <kernel@xanmod.org>
@@ -70132,7 +70084,6 @@ index d3eda4803..843765c2c 100644
 -- 
 2.29.0.rc0
 
-
 From 24ce15cd29b76828abe9a50f1ad9a576d68398b3 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 11 Jan 2016 10:01:44 -0600
@@ -70168,7 +70119,6 @@ index 08f904943..e1dbaf1b1 100644
 -- 
 2.29.0.rc0
 
-
 From 022c3438a1878780f77a8ff8ff0a9908ea6f5a77 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Mar 2016 11:22:09 -0600
@@ -70193,7 +70143,6 @@ index 983d75bd5..0b3f50502 100644
  		return -ENODEV;
 -- 
 2.29.0.rc0
-
 
 From 98c223d870ae71aa3e54095d46b6c8afa9feb85f Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
@@ -70221,7 +70170,6 @@ index e39c54997..b92d51ee1 100644
  {
 -- 
 2.29.0.rc0
-
 
 From eff3d7567b0b04c8c91c6b7d79c558c2ff2139c4 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
@@ -70274,7 +70222,6 @@ index 9afccc36d..42328775e 100644
  				ksmd_should_run() || kthread_should_stop());
 -- 
 2.29.0.rc0
-
 
 From ffe211515d4eb547737d3d5e6bd6918f3ee79639 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
@@ -70496,7 +70443,6 @@ index 9a810e4a7..f38fccf39 100644
 -- 
 2.29.0.rc0
 
-
 From 573bb651a1f7822adbd8ed3de4336ab859069889 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 11 Feb 2015 16:05:23 -0600
@@ -70529,7 +70475,6 @@ index cdaab3088..209fd9d9e 100644
 -- 
 2.29.0.rc0
 
-
 From 54e49bb955fcfae99e3b1b8424aec4fc0dcff988 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 11 Feb 2015 17:28:14 -0600
@@ -70557,7 +70502,6 @@ index 49d925043..704733712 100644
  		return cpu_data(sibling).loops_per_jiffy;
 -- 
 2.29.0.rc0
-
 
 From 31ddd85334eb124697afb031ac9de544709f2120 Mon Sep 17 00:00:00 2001
 From: Jim Kukunas <james.t.kukunas@linux.intel.com>
@@ -70715,7 +70659,6 @@ index 6d5e5000f..4a8f2b74a 100644
 -- 
 2.29.0.rc0
 
-
 From 9e496bfa83b8fbffaf83938a1ef949e0db097ec5 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Thu, 2 Jun 2016 23:36:32 -0500
@@ -70766,7 +70709,6 @@ index c0cd1b907..af1e2fb3a 100644
 -- 
 2.29.0.rc0
 
-
 From 0238bbf0e5de0c3013a9ffadee9240ab03b4e9f9 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Fri, 29 Jul 2016 19:10:52 +0000
@@ -70797,7 +70739,6 @@ index d20ba1b10..bcad0c960 100644
 -- 
 2.29.0.rc0
 
-
 From 11c4965a3bb7d29467496520a45927b64bcd0a2f Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Fri, 6 Jan 2017 15:34:09 +0000
@@ -70826,7 +70767,6 @@ index 2135ee7c8..306a16790 100644
 -- 
 2.29.0.rc0
 
-
 From f08d51d18d96c07babbfa7320f2adbbe9a5727fc Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 29 Apr 2017 22:24:34 +0000
@@ -70851,7 +70791,6 @@ index 069ca78fb..22d82f21f 100644
  	/* Compute the needed delay that will get to tv_nsec == target_nsec */
 -- 
 2.29.0.rc0
-
 
 From 882639c0041c8597cf5f05d76465d51680d28aae Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
@@ -70905,7 +70844,6 @@ index b5f9604d0..6022ead20 100644
 -- 
 2.29.0.rc0
 
-
 From b072ee4d7994404b3a6d2396fea7fbc67aa8af7a Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Tue, 20 Jun 2017 20:19:08 +0000
@@ -70958,78 +70896,6 @@ index 36c54265b..acbdf8f3f 100644
 -- 
 2.29.0.rc0
 
-
-From 66fea22a038ca007700435df612b5ec53ccd7a35 Mon Sep 17 00:00:00 2001
-From: "Brett T. Warden" <brett.t.warden@intel.com>
-Date: Mon, 13 Aug 2018 04:01:21 -0500
-Subject: [PATCH 16/29] Add boot option to allow unsigned modules
-
-Add module.sig_unenforce boot parameter to allow loading unsigned kernel
-modules. Parameter is only effective if CONFIG_MODULE_SIG_FORCE is
-enabled and system is *not* SecureBooted.
-
-Signed-off-by: Brett T. Warden <brett.t.warden@intel.com>
-Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
----
- kernel/module.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/kernel/module.c b/kernel/module.c
-index 1c5cff34d..d753f5ef7 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -56,6 +56,7 @@
- #include <linux/bsearch.h>
- #include <linux/dynamic_debug.h>
- #include <linux/audit.h>
-+#include <linux/efi.h>
- #include <uapi/linux/module.h>
- #include "module-internal.h"
- 
-@@ -272,6 +273,10 @@ static void module_assert_mutex_or_preempt(void)
- 
- static bool sig_enforce = IS_ENABLED(CONFIG_MODULE_SIG_FORCE);
- module_param(sig_enforce, bool_enable_only, 0644);
-+/* Allow disabling module signature requirement by adding boot param */
-+static bool sig_unenforce = false;
-+module_param(sig_unenforce, bool_enable_only, 0644);
-+
- 
- /*
-  * Export sig_enforce kernel cmdline parameter to allow other subsystems rely
-@@ -397,6 +402,8 @@ extern const s32 __start___kcrctab_unused[];
- extern const s32 __start___kcrctab_unused_gpl[];
- #endif
- 
-+extern struct boot_params boot_params;
-+
- #ifndef CONFIG_MODVERSIONS
- #define symversion(base, idx) NULL
- #else
-@@ -4443,6 +4450,19 @@ static const struct proc_ops modules_proc_ops = {
- static int __init proc_modules_init(void)
- {
- 	proc_create("modules", 0, NULL, &modules_proc_ops);
-+
-+#ifdef CONFIG_MODULE_SIG_FORCE
-+	switch (boot_params.secure_boot) {
-+	case efi_secureboot_mode_unset:
-+	case efi_secureboot_mode_unknown:
-+	case efi_secureboot_mode_disabled:
-+		/*
-+		 * sig_unenforce is only applied if SecureBoot is not
-+		 * enabled.
-+		 */
-+		sig_enforce = !sig_unenforce;
-+	}
-+#endif
- 	return 0;
- }
- module_init(proc_modules_init);
--- 
-2.29.0.rc0
-
-
 From 8e0828b72152faaeeef7085bd2cc659df2e8315f Mon Sep 17 00:00:00 2001
 From: William Douglas <william.douglas@intel.com>
 Date: Wed, 20 Jun 2018 17:23:21 +0000
@@ -71057,7 +70923,6 @@ index 63b9714a0..cd8853ec0 100644
  	"/lib/firmware/" UTS_RELEASE,
 -- 
 2.29.0.rc0
-
 
 From 278f01313730fbb57c745328cf8fe0382ce04bbb Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
@@ -71103,7 +70968,6 @@ index 45f3750aa..317f8326d 100644
  
 -- 
 2.29.0.rc0
-
 
 From e17493b2b6082a4495ab2e0cf7853c4b6318c190 Mon Sep 17 00:00:00 2001
 From: Alan Cox <alan@linux.intel.com>
@@ -71161,7 +71025,6 @@ index 386b45676..cabada890 100644
 -- 
 2.29.0.rc0
 
-
 From 258add0393a5bb3809ecc1b0494b438b4e6659c1 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 8 Dec 2018 18:21:32 +0000
@@ -71186,7 +71049,6 @@ index 57b1a7034..e2c45674f 100644
  static __always_inline void cpu_relax(void)
 -- 
 2.29.0.rc0
-
 
 From 8f4a49b72d8b224bbbb97a2c9ee018b26ed32476 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
@@ -71277,7 +71139,6 @@ index b457dd2d6..500fdb1bb 100644
 -- 
 2.29.0.rc0
 
-
 From 68df830be78d363b6f579f902bfa9af079fc4031 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sun, 18 Feb 2018 23:35:41 +0000
@@ -71312,7 +71173,6 @@ index f11b9bd34..1bbfcc1e0 100644
  
 -- 
 2.29.0.rc0
-
 
 From 7a01a1ad65ef3e05528f95bd28f4f8b03f713feb Mon Sep 17 00:00:00 2001
 From: Joe Konno <joe.konno@intel.com>
@@ -71356,7 +71216,6 @@ index ea5bf5f4c..6adee9c99 100644
 -- 
 2.29.0.rc0
 
-
 From 861f448c841496b8afdefa5f544c67980b55a2d7 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 10 Aug 2019 03:19:04 +0000
@@ -71386,34 +71245,6 @@ index 6e3e8a124..cbd0ae2bc 100644
 -- 
 2.29.0.rc0
 
-
-From bd890eaa2c3ca9c66748b23c3b273ec7800c7e2a Mon Sep 17 00:00:00 2001
-From: Jim Kukunas <james.t.kukunas@linux.intel.com>
-Date: Sat, 2 Nov 2019 00:59:52 +0000
-Subject: [PATCH 25/29] fix bug in ucode force reload revision check
-
-If force_ucode_load==true, reload ucode even if revision # is identical.
----
- arch/x86/kernel/cpu/microcode/intel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index 6a99535d7..d7e0e35ab 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -815,7 +815,7 @@ static enum ucode_state apply_microcode_intel(int cpu)
- 	 * already.
- 	 */
- 	rev = intel_get_microcode_revision();
--	if (rev >= mc->hdr.rev) {
-+	if (rev > mc->hdr.rev || (rev == mc->hdr.rev && !force_ucode_load)) {
- 		ret = UCODE_OK;
- 		goto out;
- 	}
--- 
-2.29.0.rc0
-
-
 From c983e26b23de635b78cf2e847f47cab93c493588 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 11 Nov 2019 23:12:11 +0000
@@ -71438,7 +71269,6 @@ index 893e29624..8996583e9 100644
  		 "max power saving latency for new devices; use PM QOS to change per device");
 -- 
 2.29.0.rc0
-
 
 From a25c7490fa7941abfd6a9477c40ecea5c45d7ba2 Mon Sep 17 00:00:00 2001
 From: Alexander Koskovich <zvnexus@outlook.com>
@@ -71479,7 +71309,6 @@ index b0eb5ece9..5dc056d31 100644
  		return -ENODEV;
 -- 
 2.29.0.rc0
-
 
 From 54efbf1b52096dfcedb206b90fbaf4adf8883f4a Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
@@ -71655,7 +71484,6 @@ index d7e0e35ab..fa4809786 100644
  					     uci->cpu_sig.sig,
 -- 
 2.29.0.rc0
-
 
 From 58c8af5a28abe6921d8ef3dd3867442c4180006c Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
@@ -72002,4 +71830,231 @@ index 4e796ff4d..26c98520c 100644
  
 -- 
 2.29.0.rc0
+
+From d792a77289823800f22ae7f9cb8f624b04f459b7 Mon Sep 17 00:00:00 2001
+From: Borislav Petkov <bp@suse.de>
+Date: Thu, 20 Aug 2020 11:10:15 +0200
+Subject: [PATCH 1/3] x86/entry/64: Correct the comment over
+ SAVE_AND_SET_GSBASE
+
+Add the proper explanation why an LFENCE is not needed in the FSGSBASE
+case.
+
+Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200821090710.GE12181@zn.tnic
+---
+ arch/x86/entry/entry_64.S | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index d977079a7d02..748c2db3c54e 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -842,8 +842,9 @@ SYM_CODE_START_LOCAL(paranoid_entry)
+ 	 * retrieve and set the current CPUs kernel GSBASE. The stored value
+ 	 * has to be restored in paranoid_exit unconditionally.
+ 	 *
+-	 * The MSR write ensures that no subsequent load is based on a
+-	 * mispredicted GSBASE. No extra FENCE required.
++	 * The unconditional write to GS base below ensures that no subsequent
++	 * loads based on a mispredicted GS base can happen, therefore no LFENCE
++	 * is needed here.
+ 	 */
+ 	SAVE_AND_SET_GSBASE scratch_reg=%rax save_reg=%rbx
+ 	ret
+-- 
+2.29.1.59.gf9b6481aed
+
+
+From f026c1c3dc5765cf6cbadd6c5c1aa22ad675e223 Mon Sep 17 00:00:00 2001
+From: Borislav Petkov <bp@suse.de>
+Date: Tue, 18 Aug 2020 12:28:31 +0200
+Subject: [PATCH 2/3] x86/fsgsbase: Replace static_cpu_has() with
+ boot_cpu_has()
+
+ptrace and prctl() are not really fast paths to warrant the use of
+static_cpu_has() and cause alternatives patching for no good reason.
+Replace with boot_cpu_has() which is simple and fast enough.
+
+No functional changes.
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200818103715.32736-1-bp@alien8.de
+---
+ arch/x86/include/asm/fsgsbase.h | 4 ++--
+ arch/x86/kernel/process_64.c    | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
+index d552646411a9..35cff5f2becf 100644
+--- a/arch/x86/include/asm/fsgsbase.h
++++ b/arch/x86/include/asm/fsgsbase.h
+@@ -57,7 +57,7 @@ static inline unsigned long x86_fsbase_read_cpu(void)
+ {
+ 	unsigned long fsbase;
+ 
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE))
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
+ 		fsbase = rdfsbase();
+ 	else
+ 		rdmsrl(MSR_FS_BASE, fsbase);
+@@ -67,7 +67,7 @@ static inline unsigned long x86_fsbase_read_cpu(void)
+ 
+ static inline void x86_fsbase_write_cpu(unsigned long fsbase)
+ {
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE))
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
+ 		wrfsbase(fsbase);
+ 	else
+ 		wrmsrl(MSR_FS_BASE, fsbase);
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index 9afefe325acb..df342bedea88 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -407,7 +407,7 @@ unsigned long x86_gsbase_read_cpu_inactive(void)
+ {
+ 	unsigned long gsbase;
+ 
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
+ 		unsigned long flags;
+ 
+ 		local_irq_save(flags);
+@@ -422,7 +422,7 @@ unsigned long x86_gsbase_read_cpu_inactive(void)
+ 
+ void x86_gsbase_write_cpu_inactive(unsigned long gsbase)
+ {
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
+ 		unsigned long flags;
+ 
+ 		local_irq_save(flags);
+@@ -439,7 +439,7 @@ unsigned long x86_fsbase_read_task(struct task_struct *task)
+ 
+ 	if (task == current)
+ 		fsbase = x86_fsbase_read_cpu();
+-	else if (static_cpu_has(X86_FEATURE_FSGSBASE) ||
++	else if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
+ 		 (task->thread.fsindex == 0))
+ 		fsbase = task->thread.fsbase;
+ 	else
+@@ -454,7 +454,7 @@ unsigned long x86_gsbase_read_task(struct task_struct *task)
+ 
+ 	if (task == current)
+ 		gsbase = x86_gsbase_read_cpu_inactive();
+-	else if (static_cpu_has(X86_FEATURE_FSGSBASE) ||
++	else if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
+ 		 (task->thread.gsindex == 0))
+ 		gsbase = task->thread.gsbase;
+ 	else
+-- 
+2.29.1.59.gf9b6481aed
+
+
+From 3df83cc530de27995168882135e7f94407e8b5ba Mon Sep 17 00:00:00 2001
+From: Andy Lutomirski <luto@kernel.org>
+Date: Wed, 26 Aug 2020 10:00:46 -0700
+Subject: [PATCH 3/3] selftests/x86/fsgsbase: Test PTRACE_PEEKUSER for GSBASE
+ with invalid LDT GS
+
+This tests commit:
+
+  8ab49526b53d ("x86/fsgsbase/64: Fix NULL deref in 86_fsgsbase_read_task")
+
+Unpatched kernels will OOPS.
+
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c618ae86d1f757e01b1a8e79869f553cb88acf9a.1598461151.git.luto@kernel.org
+---
+ tools/testing/selftests/x86/fsgsbase.c | 65 ++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+
+diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
+index 0056e2597f53..7161cfc2e60b 100644
+--- a/tools/testing/selftests/x86/fsgsbase.c
++++ b/tools/testing/selftests/x86/fsgsbase.c
+@@ -443,6 +443,68 @@ static void test_unexpected_base(void)
+ 
+ #define USER_REGS_OFFSET(r) offsetof(struct user_regs_struct, r)
+ 
++static void test_ptrace_write_gs_read_base(void)
++{
++	int status;
++	pid_t child = fork();
++
++	if (child < 0)
++		err(1, "fork");
++
++	if (child == 0) {
++		printf("[RUN]\tPTRACE_POKE GS, read GSBASE back\n");
++
++		printf("[RUN]\tARCH_SET_GS to 1\n");
++		if (syscall(SYS_arch_prctl, ARCH_SET_GS, 1) != 0)
++			err(1, "ARCH_SET_GS");
++
++		if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0)
++			err(1, "PTRACE_TRACEME");
++
++		raise(SIGTRAP);
++		_exit(0);
++	}
++
++	wait(&status);
++
++	if (WSTOPSIG(status) == SIGTRAP) {
++		unsigned long base;
++		unsigned long gs_offset = USER_REGS_OFFSET(gs);
++		unsigned long base_offset = USER_REGS_OFFSET(gs_base);
++
++		/* Read the initial base.  It should be 1. */
++		base = ptrace(PTRACE_PEEKUSER, child, base_offset, NULL);
++		if (base == 1) {
++			printf("[OK]\tGSBASE started at 1\n");
++		} else {
++			nerrs++;
++			printf("[FAIL]\tGSBASE started at 0x%lx\n", base);
++		}
++
++		printf("[RUN]\tSet GS = 0x7, read GSBASE\n");
++
++		/* Poke an LDT selector into GS. */
++		if (ptrace(PTRACE_POKEUSER, child, gs_offset, 0x7) != 0)
++			err(1, "PTRACE_POKEUSER");
++
++		/* And read the base. */
++		base = ptrace(PTRACE_PEEKUSER, child, base_offset, NULL);
++
++		if (base == 0 || base == 1) {
++			printf("[OK]\tGSBASE reads as 0x%lx with invalid GS\n", base);
++		} else {
++			nerrs++;
++			printf("[FAIL]\tGSBASE=0x%lx (should be 0 or 1)\n", base);
++		}
++	}
++
++	ptrace(PTRACE_CONT, child, NULL, NULL);
++
++	wait(&status);
++	if (!WIFEXITED(status))
++		printf("[WARN]\tChild didn't exit cleanly.\n");
++}
++
+ static void test_ptrace_write_gsbase(void)
+ {
+ 	int status;
+@@ -529,6 +591,9 @@ int main()
+ 	shared_scratch = mmap(NULL, 4096, PROT_READ | PROT_WRITE,
+ 			      MAP_ANONYMOUS | MAP_SHARED, -1, 0);
+ 
++	/* Do these tests before we have an LDT. */
++	test_ptrace_write_gs_read_base();
++
+ 	/* Probe FSGSBASE */
+ 	sethandler(SIGILL, sigill, 0);
+ 	if (sigsetjmp(jmpbuf, 1) == 0) {
+-- 
+2.29.1.59.gf9b6481aed
 
