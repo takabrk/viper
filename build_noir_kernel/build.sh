@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/11/5
+#2020/11/6
 
 while getopts e: OPT
 do
@@ -11,24 +11,20 @@ do
   esac
 done
 VERSIONBASE="5.9"
-VERSIONPOINT="5.9.4"
-MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.204"
-PROJCPATCH="prjc_v5.9-r1"
-PREEMPT_RT="patch-5.9-rc2-rt1"
-#THREADS ="4"
+VERSIONPOINT="5.9.6"
 case $e_num in
     base)
            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            cd linux-$VERSIONBASE
            cp -a ../other/REPORTING-BUGS ./
-           #cp -a ../aufs5-standalone-aufs5.x-rcN/Documentation ./
-           #cp -a ../aufs5-standalone-aufs5.x-rcN/fs ./
-           #cp -a ../aufs5-standalone-aufs5.x-rcN/include ./
-           #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-base.patch
-           #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
-           #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
-           #patch -p1 < ../aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
+           #cp -a ../patches/aufs5-standalone-aufs5.x-rcN/Documentation ./
+           #cp -a ../patches/aufs5-standalone-aufs5.x-rcN/fs ./
+           #cp -a ../patches/aufs5-standalone-aufs5.x-rcN/include ./
+           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-base.patch
+           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
+           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
+           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
            patch -p1 < ../patches/noir.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-noir
@@ -36,46 +32,6 @@ case $e_num in
            ;;
     core)
            cd linux-$VERSIONPOINT-noir
-           make xconfig
-           sudo make-kpkg clean
-           time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-noir
-           #sudo make modules_install -j4
-           #cd ../
-           #rm -r linux_modules
-           #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-noir
-           #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
-           sudo make-kpkg clean
-           cd ../
-           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
-           sudo rm -r linux-$VERSIONPOINT-noir
-           sudo dpkg -i *.deb
-           sudo update-grub
-           ;;
-    prjc) 
-           cd linux-$VERSIONPOINT-noir
-           patch -p1 < ../patches/other/$PROJCPATCH.patch
-           make xconfig
-           sudo make-kpkg clean
-           time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-noir
-           #sudo make modules_install -j4
-           #cd ../
-           #rm -r linux_modules
-           #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-noir
-           #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
-           sudo make-kpkg clean
-           cd ../
-           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
-           sudo rm -r linux-$VERSIONPOINT-noir
-           sudo dpkg -i *.deb
-           sudo update-grub
-           ;;
-     muqss)
-           cd linux-$VERSIONPOINT-noir
-           patch -p1 < ../patches/ck1/$MUQSSPATCH.patch
            make xconfig
            sudo make-kpkg clean
            time sudo make-kpkg -j3 --initrd linux_image linux_headers
@@ -113,25 +69,6 @@ case $e_num in
            cd ../
            zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
            sudo rm -r linux-$VERSIONPOINT-noir
-           sudo update-grub
-           ;;
-    rt) 
-           cd linux-$VERSIONPOINT-noir
-           make xconfig
-           sudo make-kpkg clean
-           time sudo make-kpkg -j3 --initrd linux_image linux_headers
-           #cd linux-$VERSIONBASE-noir
-           #sudo make modules_install -j4
-           #cd ../
-           #rm -r linux_modules
-           #mkdir linux_modules
-           #cd linux-$VERSIONPOINT-noir
-           #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
-           sudo make-kpkg clean
-           cd ../
-           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
-           sudo rm -r linux-$VERSIONPOINT-noir
-           sudo dpkg -i *.deb
            sudo update-grub
            ;;
 esac
