@@ -1,52 +1,53 @@
-The Python application "Viper Tools"
+Linux application "Viper Tools"
 Web site URL : http://vsrx.work
 Created by takamitsu hamada
+update:11/5/2020
 
-詳しいリファレンスは、http://vsrx.work/viperdocs/index.htmlで公開しています。
+詳しいリファレンスは、以下で公開しています。
+
+http://vsrx.work/viperdocs/index.html
 
 このアプリケーションを使うには、Pythonなどをインストールする必要があります。
 「install_libraryapps」というシェルスクリプトがありますので、これを端末で起動させれば、必要なソフトウェアやライブラリをインストールします。
 
 $ scripts/install_libraryapps
 
+To use the reading features, you need to install Open Jtalk, Mecab, and mecab-python3.
+
+$ sudo apt install open-jtalk open-jtalk-mecab-naist-jdic mecab
+$ sudo pip install mecab-python3
+
+[動作環境]
+・Ubuntu 18.04
+・Python 3.6,Python2.7
+・GTK+3
+・libglade
+・xfce4-terminal
+
 [主な機能]
-・カスタムカーネルビルド機能
-・APTでアプリケーションをインストールした時にエラーが発生した場合に再度正常にインストール出来るようにする機能
-・競艇予想や数字選択式宝くじ予想などの機能を追加します。
-・Ubuntu系LinuxディストリビューションにオリジナルのLinuxディストリビューションであるPhantom Valkyrie Linuxで構築しているデスクトップ環境を導入
-・jsay.pyでは、OpenJtalkを使ってコンピューターを喋らせる
-・tmpfs_ramdisk_slider.pyでは、tmpfsのRAMDISK量を調整
-・animationSVGのフォルダにあるスクリプトで、アニメーションGIFのようなアニメーションSVG、APNGを作成
-Ubuntu系Linuxディストリビューションのリマスター機能
-・人口音声による朗読機能
-・システムのチューンアップ機能
-・UNetbootinを使ってポータブルSSDにLiveUSB環境を構築
-・ダウンロード機能
+・カーネルビルド機能。
+・競艇予想や数字選択式宝くじ予想機能
+・Ubuntu系LinuxディストリビューションをオリジナルのLinuxディストリビューションである「Valkyrie Linux」のデスクトップ環境に変換する機能
+・OpenJtalkを使ってコンピューターを喋らせる機能
+・tmpfsのRAMDISK量の調整機能
+・アニメーションGIFのようなアニメーションSVG、APNGを作成する機能
+・アプリケーションやライブラリのインストール
+・OSのリマスター機能
+・ChromiumにGoogle Chrome内蔵のWidevineを入れる事が出来る「install widevine」機能
+・動画ダウンロード機能
 ・VAAPI対応ffmpegとiHD Driverを使ったQSVハードウェアエンコード機能
-・PulseAudio+Jack Mode、PulseAudio Modeの切り替え
 
 ◇カスタムカーネルをビルドする
-端末上でのコマンド入力による実行も可能です。この機能を使う事でカスタムカーネル「Phantom Valkyrie Linuxカーネル」を半自動で作る事が出来ます。使い方は、エミュレータで以下のコマンドを入力して実行します。
+build_noir_kernelディレクトリの直下にあるbuild.shがあります。
+端末上でのコマンド入力による実行も可能です。この機能を使う事でカスタムカーネル「Noir Linux kernel」を半自動で作る事が出来ます。使い方は、エミュレータで以下のコマンドを入力して実行します。
 
 1.公式のlinuxカーネルに、各パッチを当てて、ベースとなるカスタムカーネルのソースコードを作成
 
 $./build.sh -e base
 
-2.BMQ版カスタムカーネルをビルド
+2.カスタムカーネルをビルド
 
-$./build.sh -e bmq
-
-3.MuQSS版カスタムカーネルをビルド
-
-$./build.sh -e muqss
-
-4.PREEMPT_RT版カスタムカーネルをビルド
-
-$./build.sh -e rt
-
-◇UNetbootinを使ってポータブルSSDにLiveUSB環境を構築
-$cd scripts
-$./unetbootin_command
+$./build.sh -e core
 
 ◇D-bus版Jackサーバを起動
 $cd scripts
@@ -57,25 +58,13 @@ $./jack_start
 $cd sounds
 $./hq-sounds.sh
 
-
-◇Ubuntu系Linuxディストリビューション対応のアプリケーションのインストール
-vipertools.pyにPCSX2・ffmpeg・Virtualbox・Flash・Firefox・LaTex・R・gedaのインストール項目、Pepper Flash Pluginのアップデート項目がありますので、これらを使って、色々なソフトウェアをインストール出来ます。
-
 ◇viperクラスとメソッドを使う
 必要なライブラリのインストールは、端末で以下のようにして実行します。
 $python viper.py import
 
 各種メソッドは、viper.pyを該当するスクリプトにimport文を使ってインポートして使っていきます。
 
-◇ブラウザ機能
-端末で以下のようにして起動
-$cd browser
-$browser.py
-
-◇Valkyrie SRXのデスクトップ環境を構築する機能
-端末から「python vipertools.py」と入力して起動して項目を選択する。
-
-◇Valkyrie SRXの起動音声を切り替える機能
+◇Valkyrie Linuxの起動音声を切り替える機能
 端末から「python vipertools.py」と入力して起動して項目を選択する。
 
 ◇tmpfs_ramdisk_slider.py
@@ -84,12 +73,6 @@ tmpfsのRAMディスクの容量を変更出来ます。
 
 ◇コンピューターに喋らせる機能
 端末から「python vipertools.py」と入力して起動して項目を選択する。
-
-・端末を使って以下のように入力して使います。
-$python viper.py jsay こんにちは string
-
-・特定のテキストファイルを読ませる
-$python viper.py jsay テキストファイル名 data
 
 ◇宝くじ予想機能
 端末から「python vipertools.py」と入力して起動して項目を選択する。
@@ -100,17 +83,6 @@ $python viper.py jsay テキストファイル名 data
 $python kyotei.py 1111 2222 3333 4444 5555 6666
 
 データベースはSQLiteを使っています。
-
-出力された結果は、そのままでは当たらない事が多いので、3連単で選ぶ例を示しておきます。
-順位はこのスクリプトで出した指数順位
-・6位-2位-3位
-・4位-3位-2位
-・3位-2位-1位
-・5位-2位-3位
-・4位-2位-3位
-・3位-2位-5位
-・1位-5位-6位
-・1位-3位−5位
 
 ◇アニメーションSVG機能
 端末から「python vipertools.py」と入力して起動して項目を選択する。
@@ -163,7 +135,6 @@ $python viper.py rotatejpg inputdir -90
 
 このコマンドの意味は、「inputdirに入っているJPEG画像を一括で-90度回転させて上書き保存する」というものです。
 
-
 ◇音声ファイルエンコード機能
 この機能には、「MP3→AAC,Ogg Vorbis(mp3aac,mp3ogg)」、「AAC→MP3,Ogg Vorbis(aacmp3,aacogg)」、「Ogg Vorbis→MP3(oggmp3)」の５方式の音声ファイルのフォーマットやコンテナをエンコードする事が出来ます。
 以下のコマンドを入力して使います。
@@ -173,22 +144,10 @@ $python viper.py mp3ogg xxx 128
 上の例は、xxx.mp3というファイルをOgg Vorbisで作成したxxx.oggというファイルにビットレート128kbpsで変換する事が出来ます。
 Pythonモジュールであるviper.pyの後に、モード・ファイル名（拡張子含まない）・ビットレートの順に指定していきます。
 
-ffmpegを使っていますので、Ubuntu 16.04LTSをベースにしたLinuxディストリビューションを使っている場合には、viper.pyで必要なライブラリなどをインストールする事が可能です。
-この機能を使うには、以下のようにします。
-
-$python viper.py import
-
-◇ペネトレーションテストツールのインストール
-vipertools.pyを起動させて、「Install Penatration Test」の項目にチェックをしてOKボタンを押すとインストールが可能です。
-サーバなどにおいてネットワークの脆弱性を発見するのに役立つツールをインストールします。
-
 ◇Waifu2Xを使用する
 waifu2x.pyをベースにしたスクリプトが組み込まれており、画像を綺麗に拡大する事が可能になります。
 使い方は、「Waifu2x」ボタンを押してアプリを起動させます。
 入力ファイルと出力ファイルを記載し、Modelの項目には「scale2x」「noise1」「noise2」のいずれかを指定します。
-
-◇JPEGファイルの容量を軽量化する
-Imagetoolsには、JPEGエンコーダー「Guetzli」が使えるようになっており、これを使う事でJPEGファイルを軽量化出来ます。
 
 ◇ChromiumにGoogle Chrome内蔵のWidevineを入れる
 最近のGoogle Chromeには、Widevineプラグインと呼ばれるデジタル著作権管理されているコンテンツを見る為のプラグインを搭載しています。
