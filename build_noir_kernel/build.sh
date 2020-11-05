@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/11/2
+#2020/11/5
 
 while getopts e: OPT
 do
@@ -11,7 +11,7 @@ do
   esac
 done
 VERSIONBASE="5.9"
-VERSIONPOINT="5.9.3"
+VERSIONPOINT="5.9.4"
 MUQSSPATCH="0001-MultiQueue-Skiplist-Scheduler-v0.204"
 PROJCPATCH="prjc_v5.9-r1"
 PREEMPT_RT="patch-5.9-rc2-rt1"

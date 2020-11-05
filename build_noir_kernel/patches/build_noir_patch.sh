@@ -1,6 +1,6 @@
 #!/bin/sh
 truncate noir.patch --size 0
-VERSIONPOINT="5.9.3"
+VERSIONPOINT="5.9.4"
 cat linux/patch-$VERSIONPOINT \
        custom_config.patch \
        UKSM/uksm-5.9kai.patch \
@@ -70,5 +70,6 @@ cat linux/patch-$VERSIONPOINT \
        intel/0027-Don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch \
        intel/0028-Port-microcode-patches.patch \
        intel/0029-clearlinux-Add-pageflip-patches.patch \
+       add_noir_version.patch \
        > noir.patch
 
