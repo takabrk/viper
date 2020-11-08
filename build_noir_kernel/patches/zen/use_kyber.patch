@@ -17,7 +17,7 @@ index 0a55c7aa9249f..214ca53eed6ca 100644
 +#endif
  
 -#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
-+#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_IOSCHED_KYBER)
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_MQ_IOSCHED_KYBER)
 +	return elevator_get(q, "kyber", false);
 +#elif defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
  	return elevator_get(q, "mq-deadline-nodefault", false);
