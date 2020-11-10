@@ -71,5 +71,11 @@ cat linux/patch-$VERSIONPOINT \
        intel/0028-Port-microcode-patches.patch \
        intel/0029-clearlinux-Add-pageflip-patches.patch \
        add_noir_version.patch \
+       other/0001-ntfs3-patches.patch \
+       ubuntu/futex_Handle_transient_ownerless_rtmutex_state_correctly.patch \
+       ubuntu/UBUNTU_SAUCE_tools_hv_lsvmbus_add_manual_page.patch \
+       ubuntu/UBUNTU_SAUCE_add_vmlinux.strip_to_BOOT_TARGETS1_on_powerpc.patch \
+       ubuntu/base_packaging.patch \
+       ubuntu/debian_changelog.patch \
+       ubuntu/configs_based_on_Ubuntu-5.10-5.10.0-2.3_kai.patch \
        > noir.patch
-
