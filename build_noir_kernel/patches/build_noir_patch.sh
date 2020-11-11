@@ -1,6 +1,6 @@
 #!/bin/sh
 truncate noir.patch --size 0
-VERSIONPOINT="5.9.6"
+VERSIONPOINT="5.9.7"
 cat linux/patch-$VERSIONPOINT \
        custom_config.patch \
        UKSM/uksm-5.9kai.patch \
@@ -72,7 +72,6 @@ cat linux/patch-$VERSIONPOINT \
        intel/0029-clearlinux-Add-pageflip-patches.patch \
        add_noir_version.patch \
        other/0001-ntfs3-patches.patch \
-       ubuntu/futex_Handle_transient_ownerless_rtmutex_state_correctly.patch \
        ubuntu/UBUNTU_SAUCE_tools_hv_lsvmbus_add_manual_page.patch \
        ubuntu/UBUNTU_SAUCE_add_vmlinux.strip_to_BOOT_TARGETS1_on_powerpc.patch \
        ubuntu/base_packaging.patch \
