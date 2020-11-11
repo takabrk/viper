@@ -12,7 +12,7 @@
 #
 # Stephane Lesimple
 #
-VERSION='0.43'
+VERSION='0.44+'
 
 trap 'exit_cleanup' EXIT
 trap '_warn "interrupted, cleaning up..."; exit_cleanup; exit 1' INT
@@ -485,12 +485,14 @@ is_cpu_vulnerable()
 			if [ -n "$cpupart" ] && [ -n "$cpuarch" ]; then
 				# Cortex-R7 and Cortex-R8 are real-time and only used in medical devices or such
 				# I can't find their CPU part number, but it's probably not that useful anyway
-				# model R7 R8 A8  A9  A12 A15 A17 A57 A72 A73 A75 A76
-				# part   ?  ? c08 c09 c0d c0f c0e d07 d08 d09 d0a d0b?
-				# arch  7? 7? 7   7   7   7   7   8   8   8   8   8
+				# model R7 R8 A8  A9  A12 A15 A17 A57 A72 A73 A75 A76 Neoverse-N1 A77
+				# part   ?  ? c08 c09 c0d c0f c0e d07 d08 d09 d0a d0b d0c         d0d
+				# arch  7? 7? 7   7   7   7   7   8   8   8   8   8   8           8
 				#
 				# Whitelist identified non-vulnerable processors, use vulnerability information from 
 				# https://developer.arm.com/support/arm-security-updates/speculative-processor-vulnerability
+				# Partnumbers can be found here:
+				# https://github.com/gcc-mirror/gcc/blob/master/gcc/config/arm/arm-cpus.in
 				#
 				# Maintain cumulative check of vulnerabilities -
 				# if at least one of the cpu is vulnerable, then the system is vulnerable
@@ -529,13 +531,13 @@ is_cpu_vulnerable()
 					[ -z "$variant3a" ] && variant3a=immune
 					variant4=vuln
 					_debug "checking cpu$i: armv8 A75 non vulnerable to variant 3a"
-				elif [ "$cpuarch" = 8 ] && echo "$cpupart" | grep -q -w -e 0xd0b; then
+				elif [ "$cpuarch" = 8 ] && echo "$cpupart" | grep -q -w -e 0xd0b -e 0xd0c -e 0xd0d; then
 					variant1=vuln
 					[ -z "$variant2" ] && variant2=immune
 					[ -z "$variant3" ] && variant3=immune
 					[ -z "$variant3a" ] && variant3a=immune
 					variant4=vuln
-					_debug "checking cpu$i: armv8 A76 non vulnerable to variant 2, 3 & 3a"
+					_debug "checking cpu$i: armv8 A76/A77/NeoverseN1 non vulnerable to variant 2, 3 & 3a"
 				elif [ "$cpuarch" -le 7 ] || { [ "$cpuarch" = 8 ] && [ $(( cpupart )) -lt $(( 0xd07 )) ]; } ; then
 					[ -z "$variant1" ] && variant1=immune
 					[ -z "$variant2" ] && variant2=immune
@@ -888,6 +890,8 @@ update_fwdb()
 		echo ERROR "downloaded file seems invalid"
 		return 1
 	fi
+	sqlite3 "$mcedb_tmp" "alter table Intel add column origin text"
+	sqlite3 "$mcedb_tmp" "update Intel set origin='mce'"
 
 	echo OK "MCExtractor database revision $mcedb_revision dated $mcedb_date"
 
@@ -925,10 +929,17 @@ update_fwdb()
 		_version=$(echo "$_line" | awk '{print $8}')
 		_version=$(( _version ))
 		_version=$(printf "0x%08X" "$_version")
-		_sqlstm="$(printf "INSERT INTO Intel (cpuid,version,yyyymmdd) VALUES (\"%s\",\"%s\",\"%s\");" "$(printf "%08X" "$_cpuid")" "$(printf "%08X" "$_version")" "$_date")"
+		_sqlstm="$(printf "INSERT INTO Intel (origin,cpuid,version,yyyymmdd) VALUES (\"%s\",\"%s\",\"%s\",\"%s\");" "intel" "$(printf "%08X" "$_cpuid")" "$(printf "%08X" "$_version")" "$_date")"
 		sqlite3 "$mcedb_tmp" "$_sqlstm"
 	done
-	_intel_latest_date=$(sqlite3 "$mcedb_tmp" "SELECT yyyymmdd from Intel ORDER BY yyyymmdd DESC LIMIT 1;")
+	_intel_timestamp=$(stat -c %Y "$intel_tmp/Intel-Linux-Processor-Microcode-Data-Files-main/license" 2>/dev/null)
+	if [ -n "$_intel_timestamp" ]; then
+		# use this date, it matches the last commit date
+		_intel_latest_date=$(date +%Y%m%d -d @"$_intel_timestamp")
+	else
+		echo "Falling back to the latest microcode date"
+		_intel_latest_date=$(sqlite3 "$mcedb_tmp" "SELECT yyyymmdd from Intel WHERE origin = 'intel' ORDER BY yyyymmdd DESC LIMIT 1;")
+	fi
 	echo DONE "(version $_intel_latest_date)"
 
 	dbdate=$(echo "$mcedb_date" | tr -d '/')
@@ -3117,7 +3128,7 @@ check_cpu_vulnerabilities()
 {
 	_info     "* CPU vulnerability to the speculative execution attack variants"
 	for cve in $supported_cve_list; do
-		_info_nol "  * Vulnerable to $cve ($(cve2name "$cve")): "
+		_info_nol "  * Affected by $cve ($(cve2name "$cve")): "
 		if is_cpu_vulnerable "$cve"; then
 			pstatus yellow YES
 		else
@@ -5553,7 +5564,7 @@ exit 0  # ok
 # The builtin version follows, but the user can download an up-to-date copy (to be stored in his $HOME) by using --update-fwdb
 # To update the builtin version itself (by *modifying* this very file), use --update-builtin-fwdb
 
-# %%% MCEDB v163.20200930+i20200904
+# %%% MCEDB v165.20201021+i20200616
 # I,0x00000611,0x00000B27,19961218
 # I,0x00000612,0x000000C6,19961210
 # I,0x00000616,0x000000C6,19961210
@@ -5827,12 +5838,12 @@ exit 0  # ok
 # I,0x000706E2,0x00000042,20190420
 # I,0x000706E3,0x81000008,20181002
 # I,0x000706E4,0x00000046,20190905
-# I,0x000706E5,0x0000009E,20200722
+# I,0x000706E5,0x000000A0,20200730
 # I,0x00080650,0x00000018,20180108
 # I,0x000806A0,0x00000010,20190507
-# I,0x000806A1,0x00000027,20200612
+# I,0x000806A1,0x00000028,20200626
 # I,0x000806C0,0x00000068,20200402
-# I,0x000806C1,0x00000060,20200904
+# I,0x000806C1,0x00000066,20200925
 # I,0x000806D0,0x0000002E,20200709
 # I,0x000806E9,0x000000DE,20200527
 # I,0x000806EA,0x000000E0,20200617
@@ -5846,12 +5857,12 @@ exit 0  # ok
 # I,0x000906ED,0x000000DE,20200524
 # I,0x000A0650,0x000000BE,20191010
 # I,0x000A0651,0x000000C2,20191113
-# I,0x000A0652,0x000000DE,20200607
-# I,0x000A0653,0x000000DE,20200607
+# I,0x000A0652,0x000000E0,20200708
+# I,0x000A0653,0x000000E0,20200708
 # I,0x000A0654,0x000000C6,20200123
-# I,0x000A0655,0x000000DE,20200607
-# I,0x000A0660,0x000000DE,20200607
-# I,0x000A0661,0x000000DE,20200607
+# I,0x000A0655,0x000000E2,20200914
+# I,0x000A0660,0x000000E0,20200708
+# I,0x000A0661,0x000000E0,20200702
 # I,0x000A0670,0x00000002,20200304
 # I,0x000A0680,0x80000002,20200121
 # A,0x00000F00,0x02000008,20070614
@@ -5943,4 +5954,4 @@ exit 0  # ok
 # A,0x00A00F10,0x0A00100F,20200624
 # A,0x00A20F00,0x0A200025,20200121
 # A,0x00A20F10,0x0A201009,20200821
-# A,0x00A50F00,0x0A500008,20200710
+# A,0x00A50F00,0x0A50000B,20200821
