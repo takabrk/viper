@@ -12,7 +12,6 @@ cat linux/patch-$VERSIONPOINT \
        zen/ZEN_INTERACTIVE_Tune_CFS_for_interactivity.patch \
        zen/ZEN_INTERACTIVE_Add_help_text_for_the_MuQSS_tweaks.patch \
        zen/ZEN_Add_CONFIG_to_rename_the_mq-deadline_scheduler.patch \
-       zen/use_kyber.patch \
        zen/ZEN_INTERACTIVE_Increase_default_writeback_thresholds.patch \
        zen/ZEN_INTERACTIVE_Tune_ondemand_governor_for_interactivity.patch \
        zen/ZEN_INTERACTIVE_Enable_background_reclaim_of_hugepages.patch \
@@ -24,6 +23,7 @@ cat linux/patch-$VERSIONPOINT \
        zen/mm_Disable_watermark_boosting_by_default.patch \
        zen/vfs_keep_inodes_with_page_cache_off_the_inode_shrinker_LRU.patch \
        zen/ZEN_Add_an_option_to_make_threadirqs_the_default.patch \
+       other/use_i10.patch \
        ck1/0001-MultiQueue-Skiplist-Scheduler-v0.204.patch \
        ck1/muqss_Fix_build_error_on_config_leak.patch \
        ck1/0002-Make-preemptible-kernel-default.patch \
@@ -77,4 +77,5 @@ cat linux/patch-$VERSIONPOINT \
        ubuntu/base_packaging.patch \
        ubuntu/debian_changelog.patch \
        ubuntu/configs_based_on_Ubuntu-5.10-5.10.0-2.3_kai.patch \
+       other/iosched_Add_i10_IO_Scheduler.patch \
        > noir.patch
