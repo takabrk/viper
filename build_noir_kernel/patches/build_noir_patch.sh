@@ -1,7 +1,8 @@
 #!/bin/sh
 truncate noir.patch --size 0
 VERSIONPOINT="5.9.8"
-cat linux/patch-$VERSIONPOINT \
+cat intel/clearlinux-v2-kai.patch \
+       linux/patch-$VERSIONPOINT \
        custom_config.patch \
        UKSM/uksm-5.9kai.patch \
        other/add-acs-overrides.patch \
@@ -43,33 +44,6 @@ cat linux/patch-$VERSIONPOINT \
        VALVE/futex_Add_Proton_compatibility_code.patch \
        other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O-.patch \
        other/0005-block-bfq-Disable-low_latency-when-blk_iolatency-is-.patch \
-       intel/0001-i8042-decrease-debug-message-level-to-info.patch \
-       intel/0002-Increase-the-ext4-default-commit-age.patch \
-       intel/0003-silence-rapl.patch \
-       intel/0004-pci-pme-wakeups.patch \
-       intel/0005-ksm-wakeups.patch \
-       intel/0006-intel_idle-tweak-cpuidle-cstates.patch \
-       intel/0007-bootstats-add-printk-s-to-measure-boot-time-in-more-.patch \
-       intel/0008-smpboot-reuse-timer-calibration.patch \
-       intel/0009-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch \
-       intel/0010-Initialize-ata-before-graphics.patch \
-       intel/0011-give-rdrand-some-credit.patch \
-       intel/0012-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch \
-       intel/0013-kernel-time-reduce-ntp-wakeups.patch \
-       intel/0014-init-wait-for-partition-and-retry-scan.patch \
-       intel/0015-print-fsync-count-for-bootchart.patch \
-       intel/0017-Enable-stateless-firmware-loading.patch \
-       intel/0018-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch \
-       intel/0019-xattr-allow-setting-user.-attributes-on-symlinks-by-.patch \
-       intel/0020-use-lfence-instead-of-rep-and-nop.patch \
-       intel/0021-do-accept-in-LIFO-order-for-cache-efficiency.patch \
-       intel/0022-locking-rwsem-spin-faster.patch \
-       intel/0023-ata-libahci-ignore-staggered-spin-up.patch \
-       intel/0024-print-CPU-that-faults.patch \
-       intel/0026-nvme-workaround.patch \
-       intel/0027-Don-t-report-an-error-if-PowerClamp-run-on-other-CPU.patch \
-       intel/0028-Port-microcode-patches.patch \
-       intel/0029-clearlinux-Add-pageflip-patches.patch \
        add_noir_version.patch \
        other/0001-ntfs3-patches.patch \
        ubuntu/UBUNTU_SAUCE_tools_hv_lsvmbus_add_manual_page.patch \
