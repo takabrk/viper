@@ -1,6 +1,6 @@
 #!/bin/sh
 truncate noir.patch --size 0
-VERSIONPOINT="5.9.9"
+VERSIONPOINT="5.9.10"
 cat intel/clearlinux-v2-kai.patch \
        linux/patch-$VERSIONPOINT \
        custom_config.patch \
