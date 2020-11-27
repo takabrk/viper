@@ -5,7 +5,7 @@
 #website:https://vsrx.work
 #Updated 2020/11/27
 
-echo "$HOME/.steam/steamapps/compatdata/$0/pfx"
+echo "$HOME/.steam/steamapps/compatdata/$3/pfx"
 while getopts e: OPT
 do
   case $OPT in
