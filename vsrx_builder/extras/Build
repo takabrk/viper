@@ -102,6 +102,15 @@ fi
 VERSION=`cat $FSPATH/etc/lsb-release | grep DISTRIB_RELEASE= | sed 's/DISTRIB_RELEASE=//'`
 CDNAME=`cat $FSPATH/etc/lsb-release | grep DISTRIB_CODENAME= | sed 's/DISTRIB_CODENAME=//'`
 case $CDNAME in
+	groovy)
+		CODENAME="Groovy Gorilla"
+		;;
+	focal)
+		CODENAME="Focal Fossa"
+		;;
+	bionic)
+		CODENAME="Bionic Beaver"
+                ;;
 	precise)
 		CODENAME="Precise Pangolin"
 		;;
@@ -231,7 +240,10 @@ fi
 
 cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz 
 cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
-cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz.efi
+#cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz.efi
+#cp -f $FSPATH/boot/initrd.img* $ISOPATH/casper/initrd.lz 
+#cp -f $FSPATH/boot/vmlinuz* $ISOPATH/casper/vmlinuz
+#cp -f $FSPATH/boot/vmlinuz* $ISOPATH/casper/vmlinuz.efi
 rm -f $FSPATH/var/cache/apt/pkgcache.bin
 rm -f $FSPATH/var/cache/apt/srcpkgcache.bin) > /dev/null 2>&1
 echo "                    [DONE]"
