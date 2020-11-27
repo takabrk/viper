@@ -2,7 +2,8 @@
 #proton_set.sh
 #Use winetricks and winecfg on Valve's Proton
 #Created by takamitsu hamada
-#2020/11/27
+#website:https://vsrx.work
+#Updated 2020/11/27
 
 while getopts e: OPT
 do
