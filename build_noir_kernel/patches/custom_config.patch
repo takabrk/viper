@@ -1,8 +1,8 @@
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2020-11-08 10:36:59.265319469 +0900
-+++ .config	2020-11-08 15:05:06.740619653 +0900
+--- /dev/null	2020-11-29 23:01:09.826675463 +0900
++++ .config	2020-11-29 23:37:06.310692075 +0900
 @@ -0,0 +1,10113 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
@@ -156,7 +156,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_IKCONFIG is not set
 +CONFIG_IKHEADERS=m
 +CONFIG_LOG_BUF_SHIFT=17
-+CONFIG_LOG_CPU_MAX_BUF_SHIFT=12
++CONFIG_LOG_CPU_MAX_BUF_SHIFT=13
 +CONFIG_PRINTK_SAFE_LOG_BUF_SHIFT=13
 +CONFIG_HAVE_UNSTABLE_SCHED_CLOCK=y
 +
@@ -10117,3 +10117,4 @@ index 000000000000..dcbcaa389249
 +# CONFIG_HYPERV_TESTING is not set
 +# end of Kernel Testing and Coverage
 +# end of Kernel hacking
+\ ファイル末尾に改行がありません

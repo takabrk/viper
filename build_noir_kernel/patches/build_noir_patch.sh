@@ -52,4 +52,8 @@ cat intel/clearlinux-v2-kai.patch \
        ubuntu/debian_changelog.patch \
        ubuntu/configs_based_on_Ubuntu-5.10-5.10.0-2.3_kai.patch \
        other/iosched_Add_i10_IO_Scheduler.patch \
+       aufs5/aufs5-base.patch \
+       aufs5/aufs5-kbuild.patch\
+       aufs5/aufs5-mmap.patch \
+       aufs5/aufs5-standalone.patch \
        > noir.patch

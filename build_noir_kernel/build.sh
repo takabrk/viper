@@ -18,13 +18,9 @@ case $e_num in
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            cd linux-$VERSIONBASE
            cp -a ../other/REPORTING-BUGS ./
-           #cp -a ../patches/aufs5-standalone-aufs5.x-rcN/Documentation ./
-           #cp -a ../patches/aufs5-standalone-aufs5.x-rcN/fs ./
-           #cp -a ../patches/aufs5-standalone-aufs5.x-rcN/include ./
-           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-base.patch
-           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-kbuild.patch
-           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-mmap.patch
-           #patch -p1 < ../patches/aufs5-standalone-aufs5.x-rcN/aufs5-standalone.patch
+           cp -a ../patches/aufs5/Documentation ./
+           cp -a ../patches/aufs5/fs ./
+           cp -a ../patches/aufs5/include ./
            patch -p1 < ../patches/noir.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-noir
