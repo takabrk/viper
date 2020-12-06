@@ -28,7 +28,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">input file</property>
+            <property name="label" translatable="yes">input directry</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -37,10 +37,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFileChooserButton" id="filechooserbutton1">
+          <object class="GtkEntry" id="entry0">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <signal name="file-set" handler="on_filechooserbutton1_file_set" swapped="no"/>
+            <property name="can_focus">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -52,7 +51,7 @@
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">output file</property>
+            <property name="label" translatable="yes">output directry</property>
           </object>
           <packing>
             <property name="expand">False</property>

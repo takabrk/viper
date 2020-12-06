@@ -18,17 +18,16 @@ class movieui(object):
         dic = {
             "on_button1_clicked" : self.on_button1_clicked,
             "on_button2_clicked" : self.on_button2_clicked,
-            "on_install_driver_clicked" : self.on_install_driver_clicked, 
-            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set,
-            "on_filechooserbutton2_file_set" : self.on_filechooserbutton2_file_set
+            "on_install_driver_clicked" : self.on_install_driver_clicked
+#            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set
         }
         self.tree.connect_signals(dic)
         treeObj = self.tree.get_object
         self.window = treeObj("button1")
         self.window = treeObj("button2")
         self.window = treeObj("install_driver")
-        self.fcb1 = treeObj("filechooserbutton1")
-        self.fcb2 = treeObj("filechooserbutton2")
+#        self.fcb1 = treeObj("filechooserbutton1")
+        self.entry0 = treeObj("entry0")
         self.entry1 = treeObj("entry1")
         self.combo1 = treeObj("comboboxtext1")
         self.combo2 = treeObj("comboboxtext2")
@@ -41,7 +40,7 @@ class movieui(object):
         if(self.window):
             self.window.connect("destroy",Gtk.main_quit)
     def on_button1_clicked(self,widget):
-        msg1 = self.on_filechooserbutton1_file_set(widget)
+        msg1 = self.entry0.get_text()
         msg2 = self.entry1.get_text()
         if(self.combo1.get_active_text() == "640x480"):
             msg3 = 640
@@ -103,12 +102,9 @@ class movieui(object):
         sp.call(cmd.strip().split(" "))
     def on_button2_clicked(self,widget):
         Gtk.main_quit()
-    def on_filechooserbutton1_file_set(self,widget):
-        msg1 = self.fcb1.get_filename()
-        return msg1
-    def on_filechooserbutton2_file_set(self,widget):
-        msg2 = self.fcb2.get_filename()
-        return msg2
+#    def on_filechooserbutton1_file_set(self,widget):
+#        msg1 = self.fcb1.get_filename()
+#        return msg1
     def on_install_driver_clicked(self,widget):
         cmd = "./build_media_driver.sh"
         sp.call(cmd.strip().split(" "))

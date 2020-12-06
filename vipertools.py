@@ -4,7 +4,6 @@
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
-from urllib.request import urlopen
 import subprocess as sp
 from threading import Thread
 import codecs
@@ -14,7 +13,19 @@ try:
     gi.require_version("Gtk","3.0")
     from gi.repository import Gtk
 except:
-    sys.exit(1)
+    try:
+        import pgi
+        pgi.install_as_gi()
+        gi.require_version("Gtk","3.0")
+        from gi.repository import Gtk
+    except:
+        print("GTK not available")
+        sys.exit(1)
+try:
+    import pygtk
+    pygtk.require("2.0")
+except:
+    pass
 
 class valkyrie_setting(object):
     def __init__(self):
