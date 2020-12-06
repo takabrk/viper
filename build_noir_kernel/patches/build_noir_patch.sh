@@ -1,6 +1,6 @@
 #!/bin/sh
 truncate noir.patch --size 0
-VERSIONPOINT="5.9.11"
+VERSIONPOINT="5.9.12"
 cat intel/clearlinux-v2-kai.patch \
        linux/patch-$VERSIONPOINT \
        custom_config.patch \
@@ -21,10 +21,8 @@ cat intel/clearlinux-v2-kai.patch \
        zen/ZEN_Enable_additional_CPU_Optimizations_for_GCC_v10_1.patch \
        zen/ZEN_Unrestrict_CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3.patch \
        zen/ZEN_Add_OpenRGB_patches.patch \
-       zen/mm_Disable_watermark_boosting_by_default.patch \
-       zen/vfs_keep_inodes_with_page_cache_off_the_inode_shrinker_LRU.patch \
        zen/ZEN_Add_an_option_to_make_threadirqs_the_default.patch \
-       other/use_i10.patch \
+       other/use_kyber.patch \
        ck1/0001-MultiQueue-Skiplist-Scheduler-v0.204.patch \
        ck1/muqss_Fix_build_error_on_config_leak.patch \
        ck1/0002-Make-preemptible-kernel-default.patch \
@@ -39,7 +37,6 @@ cat intel/clearlinux-v2-kai.patch \
        ck1/0011-Make-hrtimer-granularity-and-minimum-hrtimeout-confi.patch \
        ck1/0014-Swap-sucks.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints_kai.patch \
-       xanmod/0001-sched-autogroup-Add-kernel-parameter-and-config-opti.patch \
        VALVE/futex_Implement_mechanism_to_wait_on_any_of_several_futexes.patch \
        VALVE/futex_Add_Proton_compatibility_code.patch \
        other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O-.patch \
@@ -50,7 +47,6 @@ cat intel/clearlinux-v2-kai.patch \
        ubuntu/UBUNTU_SAUCE_add_vmlinux.strip_to_BOOT_TARGETS1_on_powerpc.patch \
        ubuntu/base_packaging.patch \
        ubuntu/debian_changelog.patch \
-       ubuntu/configs_based_on_Ubuntu-5.10-5.10.0-2.3_kai.patch \
        other/iosched_Add_i10_IO_Scheduler.patch \
        aufs5/aufs5-base.patch \
        aufs5/aufs5-kbuild.patch\

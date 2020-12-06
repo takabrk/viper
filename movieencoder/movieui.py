@@ -19,7 +19,8 @@ class movieui(object):
             "on_button1_clicked" : self.on_button1_clicked,
             "on_button2_clicked" : self.on_button2_clicked,
             "on_install_driver_clicked" : self.on_install_driver_clicked, 
-            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set
+            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set,
+            "on_filechooserbutton2_file_set" : self.on_filechooserbutton2_file_set
         }
         self.tree.connect_signals(dic)
         treeObj = self.tree.get_object
@@ -27,19 +28,21 @@ class movieui(object):
         self.window = treeObj("button2")
         self.window = treeObj("install_driver")
         self.fcb1 = treeObj("filechooserbutton1")
+        self.fcb2 = treeObj("filechooserbutton2")
+        self.entry1 = treeObj("entry1")
         self.combo1 = treeObj("comboboxtext1")
         self.combo2 = treeObj("comboboxtext2")
         self.combo3 = treeObj("comboboxtext3")
-        self.entry2 = treeObj("entry2")
-        self.entry3 = treeObj("entry3")
-        self.entry4 = treeObj("entry4")
+        self.combo4 = treeObj("comboboxtext4")
+        self.combo5 = treeObj("comboboxtext5")
+        self.combo6 = treeObj("comboboxtext6")
         self.window = treeObj("window1")
         self.window.show_all()
         if(self.window):
             self.window.connect("destroy",Gtk.main_quit)
     def on_button1_clicked(self,widget):
         msg1 = self.on_filechooserbutton1_file_set(widget)
-        msg2 = self.entry2.get_text()
+        msg2 = self.entry1.get_text()
         if(self.combo1.get_active_text() == "640x480"):
             msg3 = 640
             msg4 = 480
@@ -67,7 +70,35 @@ class movieui(object):
             msg6 = "renderD128"
         if(self.combo3.get_active_text() == "renderD129"):
             msg6 = "renderD129"
-        cmd = "./qsv_enc.sh %s %s %s %s %s %s" % (msg1,msg2,msg3,msg4,msg5,msg6)
+        if(self.combo4.get_active_text() == "4M"):
+            msg7 = "4M"
+        if(self.combo4.get_active_text() == "8M"):
+            msg7 = "8M"
+        if(self.combo4.get_active_text() == "10M"):
+            msg7 = "10M"
+        if(self.combo4.get_active_text() == "12M"):
+            msg7 = "12M"
+        if(self.combo4.get_active_text() == "16M"):
+            msg7 = "16M"
+        if(self.combo4.get_active_text() == "18M"):
+            msg7 = "18M"
+        if(self.combo4.get_active_text() == "20M"):
+            msg7 = "20M"
+        if(self.combo5.get_active_text() == "128k"):
+            msg8 = "128k"
+        if(self.combo5.get_active_text() == "192k"):
+            msg8 = "192k"
+        if(self.combo5.get_active_text() == "256k"):
+            msg8 = "256k"
+        if(self.combo5.get_active_text() == "386k"):
+            msg8 = "386k"
+        if(self.combo5.get_active_text() == "512k"):
+            msg8 = "512k"
+        if(self.combo6.get_active_text() == "29.97"):
+            msg9 = "29.97"
+        if(self.combo6.get_active_text() == "60"):
+            msg9 = "60"
+        cmd = "./qsv_enc.sh %s %s %s %s %s %s %s %s %s" % (msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8,msg9)
         print(cmd)
         sp.call(cmd.strip().split(" "))
     def on_button2_clicked(self,widget):
@@ -75,6 +106,9 @@ class movieui(object):
     def on_filechooserbutton1_file_set(self,widget):
         msg1 = self.fcb1.get_filename()
         return msg1
+    def on_filechooserbutton2_file_set(self,widget):
+        msg2 = self.fcb2.get_filename()
+        return msg2
     def on_install_driver_clicked(self,widget):
         cmd = "./build_media_driver.sh"
         sp.call(cmd.strip().split(" "))
