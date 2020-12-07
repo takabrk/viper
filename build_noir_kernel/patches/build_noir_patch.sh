@@ -52,4 +52,6 @@ cat intel/clearlinux-v2-kai.patch \
        aufs5/aufs5-kbuild.patch\
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
+       other/0001-zstd-dev-patches.patch \
+       other/0001-btrfs-patches.patch \
        > noir.patch
