@@ -1,9 +1,17 @@
 #!/bin/sh
-truncate noir.patch --size 0
 VERSIONPOINT="5.9.14"
-cat intel/clearlinux-v2-kai.patch \
-       linux/patch-$VERSIONPOINT \
+NOIR_VERSION="noir"
+truncate noir.patch --size 0
+truncate custom_config.patch --size 0
+
+#build custom_config.patch
+diff -Naur /dev/null .config | sed 1i"diff --git a/.config b/.config\nnew file mode 100644\nindex 000000000000..dcbcaa389249" > custom_config.patch
+
+#build noir.patch
+cat add_noir_version.patch \
        custom_config.patch \
+       intel/clearlinux-v2-kai.patch \
+       linux/patch-$VERSIONPOINT \
        UKSM/uksm-5.9kai.patch \
        other/add-acs-overrides.patch \
        LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
@@ -41,7 +49,6 @@ cat intel/clearlinux-v2-kai.patch \
        VALVE/futex_Add_Proton_compatibility_code.patch \
        other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O-.patch \
        other/0005-block-bfq-Disable-low_latency-when-blk_iolatency-is-.patch \
-       add_noir_version.patch \
        other/0001-ntfs3-patches.patch \
        other/iosched_Add_i10_IO_Scheduler.patch \
        aufs5/aufs5-base.patch \
