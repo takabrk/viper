@@ -43,10 +43,6 @@ cat intel/clearlinux-v2-kai.patch \
        other/0005-block-bfq-Disable-low_latency-when-blk_iolatency-is-.patch \
        add_noir_version.patch \
        other/0001-ntfs3-patches.patch \
-       ubuntu/UBUNTU_SAUCE_tools_hv_lsvmbus_add_manual_page.patch \
-       ubuntu/UBUNTU_SAUCE_add_vmlinux.strip_to_BOOT_TARGETS1_on_powerpc.patch \
-       ubuntu/base_packaging.patch \
-       ubuntu/debian_changelog.patch \
        other/iosched_Add_i10_IO_Scheduler.patch \
        aufs5/aufs5-base.patch \
        aufs5/aufs5-kbuild.patch\
