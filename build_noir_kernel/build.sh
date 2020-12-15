@@ -17,7 +17,7 @@ case $e_num in
            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            cd linux-$VERSIONBASE
-           cp -a ../other/REPORTING-BUGS ./
+           cp -a ../patches/other/REPORTING-BUGS ./
            cp -a ../patches/aufs5/Documentation ./
            cp -a ../patches/aufs5/fs ./
            cp -a ../patches/aufs5/include ./

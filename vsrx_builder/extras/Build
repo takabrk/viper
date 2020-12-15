@@ -252,7 +252,7 @@ echo -n "# Creating File System"
 echo
 
 #mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp zstd -Xcompression-level 22 -b 1M -processors 3
-mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp zstd -Xcompression-level 15 -b 1M -processors 3
+mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp zstd -Xcompression-level 15 -b 1M
 #mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp lz4 -Xhc
 #mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery
 #mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp xz
