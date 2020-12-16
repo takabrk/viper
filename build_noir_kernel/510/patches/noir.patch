@@ -10,7 +10,7 @@ index 51540b291738..ab8c480660a6 100644
  PHONY := __all
  __all:
  
-+NRVERSION = -noir-v2
++NRVERSION = -noir-v3
 +NRNAME = MuQSS Powered
 +EXTRAVERSION := $(EXTRAVERSION)$(NRVERSION)
 +
@@ -23,18 +23,19 @@ index 51540b291738..ab8c480660a6 100644
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2020-12-16 04:57:53.089251451 +0900
-+++ .config	2020-12-12 11:41:46.726827000 +0900
-@@ -0,0 +1,10221 @@
+--- /dev/null	2020-12-16 13:43:18.583875318 +0900
++++ .config	2020-12-16 14:44:36.804389056 +0900
+@@ -0,0 +1,10253 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.9.14-noir Kernel Configuration
++# Linux/x86_64 5.10.1-noir-v3 Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 10.2.0-5ubuntu1~20.04) 10.2.0"
 +CONFIG_CC_IS_GCC=y
 +CONFIG_GCC_VERSION=100200
 +CONFIG_LD_VERSION=234000000
 +CONFIG_CLANG_VERSION=0
++CONFIG_LLD_VERSION=0
 +CONFIG_CC_CAN_LINK=y
 +CONFIG_CC_CAN_LINK_STATIC=y
 +CONFIG_CC_HAS_ASM_GOTO=y
@@ -47,7 +48,6 @@ index 000000000000..dcbcaa389249
 +# General setup
 +#
 +CONFIG_ZEN_INTERACTIVE=y
-+CONFIG_SCHED_MUQSS=y
 +CONFIG_INIT_ENV_ARG_LIMIT=32
 +# CONFIG_COMPILE_TEST is not set
 +CONFIG_LOCALVERSION=""
@@ -125,6 +125,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_NO_HZ_IDLE is not set
 +CONFIG_NO_HZ_FULL=y
 +CONFIG_CONTEXT_TRACKING=y
++# CONFIG_CONTEXT_TRACKING_FORCE is not set
 +CONFIG_NO_HZ=y
 +CONFIG_HIGH_RES_TIMERS=y
 +# end of Timers subsystem
@@ -187,8 +188,9 @@ index 000000000000..dcbcaa389249
 +#
 +# Scheduler features
 +#
-+CONFIG_UCLAMP_TASK=y
-+CONFIG_UCLAMP_BUCKETS_COUNT=5
++CONFIG_SCHED_ALT=y
++# CONFIG_SCHED_BMQ is not set
++CONFIG_SCHED_PDS=y
 +# end of Scheduler features
 +
 +CONFIG_ARCH_SUPPORTS_NUMA_BALANCING=y
@@ -203,7 +205,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_BLK_CGROUP=y
 +CONFIG_CGROUP_WRITEBACK=y
 +CONFIG_CGROUP_SCHED=y
-+# CONFIG_UCLAMP_TASK_GROUP is not set
 +CONFIG_CGROUP_PIDS=y
 +CONFIG_CGROUP_RDMA=y
 +CONFIG_CGROUP_FREEZER=y
@@ -211,6 +212,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_CPUSETS=y
 +CONFIG_PROC_PID_CPUSET=y
 +CONFIG_CGROUP_DEVICE=y
++# CONFIG_CGROUP_CPUACCT is not set
 +CONFIG_CGROUP_PERF=y
 +CONFIG_CGROUP_BPF=y
 +# CONFIG_CGROUP_DEBUG is not set
@@ -238,6 +240,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
 +CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3=y
 +# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_LD_ORPHAN_WARN=y
 +CONFIG_SYSCTL=y
 +CONFIG_HAVE_UID16=y
 +CONFIG_SYSCTL_EXCEPTION_TRACE=y
@@ -277,6 +280,8 @@ index 000000000000..dcbcaa389249
 +CONFIG_ARCH_WANT_DEFAULT_BPF_JIT=y
 +CONFIG_BPF_JIT_ALWAYS_ON=y
 +CONFIG_BPF_JIT_DEFAULT_ON=y
++CONFIG_USERMODE_DRIVER=y
++# CONFIG_BPF_PRELOAD is not set
 +CONFIG_USERFAULTFD=y
 +CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE=y
 +CONFIG_RSEQ=y
@@ -450,16 +455,8 @@ index 000000000000..dcbcaa389249
 +CONFIG_NR_CPUS_DEFAULT=8192
 +CONFIG_NR_CPUS=8192
 +CONFIG_SCHED_SMT=y
-+CONFIG_SMT_NICE=y
 +CONFIG_SCHED_MC=y
 +CONFIG_SCHED_MC_PRIO=y
-+# CONFIG_RQ_NONE is not set
-+CONFIG_RQ_SMT=y
-+# CONFIG_RQ_MC is not set
-+# CONFIG_RQ_MC_LLC is not set
-+# CONFIG_RQ_SMP is not set
-+# CONFIG_RQ_ALL is not set
-+CONFIG_SHARERQ=1
 +CONFIG_X86_LOCAL_APIC=y
 +CONFIG_X86_IO_APIC=y
 +CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
@@ -526,7 +523,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_EFI=y
 +CONFIG_EFI_STUB=y
 +CONFIG_EFI_MIXED=y
-+CONFIG_SECCOMP=y
 +# CONFIG_HZ_100 is not set
 +# CONFIG_HZ_250 is not set
 +# CONFIG_HZ_300 is not set
@@ -652,14 +648,14 @@ index 000000000000..dcbcaa389249
 +CONFIG_ACPI_APEI_MEMORY_FAILURE=y
 +CONFIG_ACPI_APEI_EINJ=m
 +# CONFIG_ACPI_APEI_ERST_DEBUG is not set
-+CONFIG_DPTF_POWER=m
++# CONFIG_ACPI_DPTF is not set
 +CONFIG_ACPI_WATCHDOG=y
 +CONFIG_ACPI_EXTLOG=m
 +CONFIG_ACPI_ADXL=y
++CONFIG_ACPI_CONFIGFS=m
 +CONFIG_PMIC_OPREGION=y
 +CONFIG_XPOWER_PMIC_OPREGION=y
 +CONFIG_CHT_DC_TI_PMIC_OPREGION=y
-+CONFIG_ACPI_CONFIGFS=m
 +CONFIG_X86_PM_TIMER=y
 +CONFIG_SFI=y
 +
@@ -825,6 +821,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_KPROBES=y
 +CONFIG_JUMP_LABEL=y
 +# CONFIG_STATIC_KEYS_SELFTEST is not set
++# CONFIG_STATIC_CALL_SELFTEST is not set
 +CONFIG_OPTPROBES=y
 +CONFIG_KPROBES_ON_FTRACE=y
 +CONFIG_UPROBES=y
@@ -868,7 +865,9 @@ index 000000000000..dcbcaa389249
 +CONFIG_HAVE_CMPXCHG_DOUBLE=y
 +CONFIG_ARCH_WANT_COMPAT_IPC_PARSE_VERSION=y
 +CONFIG_ARCH_WANT_OLD_COMPAT_IPC=y
++CONFIG_HAVE_ARCH_SECCOMP=y
 +CONFIG_HAVE_ARCH_SECCOMP_FILTER=y
++CONFIG_SECCOMP=y
 +CONFIG_SECCOMP_FILTER=y
 +CONFIG_HAVE_ARCH_STACKLEAK=y
 +CONFIG_HAVE_STACKPROTECTOR=y
@@ -908,6 +907,9 @@ index 000000000000..dcbcaa389249
 +CONFIG_ARCH_USE_MEMREMAP_PROT=y
 +# CONFIG_LOCK_EVENT_COUNTS is not set
 +CONFIG_ARCH_HAS_MEM_ENCRYPT=y
++CONFIG_HAVE_STATIC_CALL=y
++CONFIG_HAVE_STATIC_CALL_INLINE=y
++CONFIG_ARCH_WANT_LD_ORPHAN_WARN=y
 +
 +#
 +# GCOV-based kernel profiling
@@ -1082,12 +1084,13 @@ index 000000000000..dcbcaa389249
 +CONFIG_ZBUD=y
 +CONFIG_Z3FOLD=y
 +CONFIG_ZSMALLOC=y
-+# CONFIG_ZSMALLOC_PGTABLE_MAPPING is not set
 +# CONFIG_ZSMALLOC_STAT is not set
 +CONFIG_GENERIC_EARLY_IOREMAP=y
 +CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
 +CONFIG_IDLE_PAGE_TRACKING=y
 +CONFIG_ARCH_HAS_PTE_DEVMAP=y
++CONFIG_HMM_MIRROR=y
++CONFIG_VMAP_PFN=y
 +CONFIG_FRAME_VECTOR=y
 +CONFIG_ARCH_USES_HIGH_VMA_FLAGS=y
 +CONFIG_ARCH_HAS_PKEYS=y
@@ -1119,6 +1122,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_XFRM_OFFLOAD=y
 +CONFIG_XFRM_ALGO=m
 +CONFIG_XFRM_USER=m
++# CONFIG_XFRM_USER_COMPAT is not set
 +CONFIG_XFRM_INTERFACE=m
 +CONFIG_XFRM_SUB_POLICY=y
 +CONFIG_XFRM_MIGRATE=y
@@ -1882,6 +1886,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_CAN_BCM=m
 +CONFIG_CAN_GW=m
 +# CONFIG_CAN_J1939 is not set
++# CONFIG_CAN_ISOTP is not set
 +
 +#
 +# CAN Device Drivers
@@ -1923,6 +1928,7 @@ index 000000000000..dcbcaa389249
 +#
 +CONFIG_CAN_HI311X=m
 +CONFIG_CAN_MCP251X=m
++# CONFIG_CAN_MCP251XFD is not set
 +# end of CAN SPI interfaces
 +
 +#
@@ -2155,6 +2161,11 @@ index 000000000000..dcbcaa389249
 +CONFIG_PCI_PASID=y
 +CONFIG_PCI_LABEL=y
 +CONFIG_PCI_HYPERV=m
++# CONFIG_PCIE_BUS_TUNE_OFF is not set
++CONFIG_PCIE_BUS_DEFAULT=y
++# CONFIG_PCIE_BUS_SAFE is not set
++# CONFIG_PCIE_BUS_PERFORMANCE is not set
++# CONFIG_PCIE_BUS_PEER2PEER is not set
 +CONFIG_HOTPLUG_PCI=y
 +CONFIG_HOTPLUG_PCI_ACPI=y
 +CONFIG_HOTPLUG_PCI_ACPI_IBM=m
@@ -2411,6 +2422,11 @@ index 000000000000..dcbcaa389249
 +# CONFIG_MTD_NAND_ECC_SW_HAMMING_SMC is not set
 +# CONFIG_MTD_RAW_NAND is not set
 +CONFIG_MTD_SPI_NAND=m
++
++#
++# ECC engine support
++#
++# end of ECC engine support
 +# end of NAND
 +
 +#
@@ -2598,20 +2614,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_INTEL_MEI_TXE=m
 +# CONFIG_INTEL_MEI_HDCP is not set
 +CONFIG_VMWARE_VMCI=m
-+
-+#
-+# Intel MIC & related support
-+#
-+CONFIG_INTEL_MIC_BUS=m
-+CONFIG_SCIF_BUS=m
-+CONFIG_VOP_BUS=m
-+CONFIG_INTEL_MIC_HOST=m
-+CONFIG_INTEL_MIC_CARD=m
-+CONFIG_SCIF=m
-+CONFIG_MIC_COSM=m
-+CONFIG_VOP=m
-+# end of Intel MIC & related support
-+
 +CONFIG_GENWQE=m
 +CONFIG_GENWQE_PLATFORM_ERROR_RECOVERY=0
 +CONFIG_ECHO=m
@@ -3064,6 +3066,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_NET_DSA_MV88E6XXX=m
 +CONFIG_NET_DSA_MV88E6XXX_GLOBAL2=y
 +CONFIG_NET_DSA_MV88E6XXX_PTP=y
++# CONFIG_NET_DSA_MSCC_SEVILLE is not set
 +# CONFIG_NET_DSA_AR9331 is not set
 +# CONFIG_NET_DSA_SJA1105 is not set
 +CONFIG_NET_DSA_QCA8K=m
@@ -3149,6 +3152,9 @@ index 000000000000..dcbcaa389249
 +CONFIG_CHELSIO_T4=m
 +CONFIG_CHELSIO_T4VF=m
 +CONFIG_CHELSIO_LIB=m
++CONFIG_CHELSIO_INLINE_CRYPTO=y
++CONFIG_CHELSIO_IPSEC_INLINE=m
++CONFIG_CHELSIO_TLS_DEVICE=m
 +CONFIG_NET_VENDOR_CISCO=y
 +CONFIG_ENIC=m
 +CONFIG_NET_VENDOR_CORTINA=y
@@ -3212,6 +3218,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SKGE_GENESIS=y
 +CONFIG_SKY2=m
 +# CONFIG_SKY2_DEBUG is not set
++# CONFIG_PRESTERA is not set
 +CONFIG_NET_VENDOR_MELLANOX=y
 +CONFIG_MLX4_EN=m
 +CONFIG_MLX4_CORE=m
@@ -3381,50 +3388,33 @@ index 000000000000..dcbcaa389249
 +CONFIG_ROADRUNNER=m
 +# CONFIG_ROADRUNNER_LARGE_RINGS is not set
 +CONFIG_NET_SB1000=m
-+CONFIG_MDIO_DEVICE=y
-+CONFIG_MDIO_BUS=y
-+CONFIG_MDIO_DEVRES=y
-+CONFIG_MDIO_BCM_UNIMAC=m
-+CONFIG_MDIO_BITBANG=m
-+CONFIG_MDIO_CAVIUM=m
-+CONFIG_MDIO_GPIO=m
-+CONFIG_MDIO_I2C=m
-+CONFIG_MDIO_MSCC_MIIM=m
-+# CONFIG_MDIO_MVUSB is not set
-+CONFIG_MDIO_THUNDER=m
-+CONFIG_MDIO_XPCS=m
 +CONFIG_PHYLINK=m
 +CONFIG_PHYLIB=y
 +CONFIG_SWPHY=y
 +CONFIG_LED_TRIGGER_PHY=y
++CONFIG_FIXED_PHY=y
++CONFIG_SFP=m
 +
 +#
 +# MII PHY device drivers
 +#
-+CONFIG_SFP=m
-+# CONFIG_ADIN_PHY is not set
 +CONFIG_AMD_PHY=m
++# CONFIG_ADIN_PHY is not set
 +CONFIG_AQUANTIA_PHY=m
 +# CONFIG_AX88796B_PHY is not set
-+CONFIG_BCM7XXX_PHY=m
-+CONFIG_BCM87XX_PHY=m
-+CONFIG_BCM_NET_PHYLIB=m
 +CONFIG_BROADCOM_PHY=m
 +# CONFIG_BCM54140_PHY is not set
++CONFIG_BCM7XXX_PHY=m
 +# CONFIG_BCM84881_PHY is not set
++CONFIG_BCM87XX_PHY=m
++CONFIG_BCM_NET_PHYLIB=m
 +CONFIG_CICADA_PHY=m
 +CONFIG_CORTINA_PHY=m
 +CONFIG_DAVICOM_PHY=m
-+CONFIG_DP83822_PHY=m
-+CONFIG_DP83TC811_PHY=m
-+CONFIG_DP83848_PHY=m
-+CONFIG_DP83867_PHY=m
-+# CONFIG_DP83869_PHY is not set
-+CONFIG_FIXED_PHY=y
 +CONFIG_ICPLUS_PHY=m
++CONFIG_LXT_PHY=m
 +CONFIG_INTEL_XWAY_PHY=m
 +CONFIG_LSI_ET1011C_PHY=m
-+CONFIG_LXT_PHY=m
 +CONFIG_MARVELL_PHY=m
 +CONFIG_MARVELL_10G_PHY=m
 +CONFIG_MICREL_PHY=m
@@ -3441,9 +3431,36 @@ index 000000000000..dcbcaa389249
 +CONFIG_SMSC_PHY=m
 +CONFIG_STE10XP=m
 +CONFIG_TERANETICS_PHY=m
++CONFIG_DP83822_PHY=m
++CONFIG_DP83TC811_PHY=m
++CONFIG_DP83848_PHY=m
++CONFIG_DP83867_PHY=m
++# CONFIG_DP83869_PHY is not set
 +CONFIG_VITESSE_PHY=m
 +CONFIG_XILINX_GMII2RGMII=m
 +CONFIG_MICREL_KS8995MA=m
++CONFIG_MDIO_DEVICE=y
++CONFIG_MDIO_BUS=y
++CONFIG_MDIO_DEVRES=y
++CONFIG_MDIO_BITBANG=m
++CONFIG_MDIO_BCM_UNIMAC=m
++CONFIG_MDIO_CAVIUM=m
++CONFIG_MDIO_GPIO=m
++CONFIG_MDIO_I2C=m
++# CONFIG_MDIO_MVUSB is not set
++CONFIG_MDIO_MSCC_MIIM=m
++CONFIG_MDIO_THUNDER=m
++
++#
++# MDIO Multiplexers
++#
++
++#
++# PCS device drivers
++#
++CONFIG_PCS_XPCS=m
++# end of PCS device drivers
++
 +CONFIG_PLIP=m
 +CONFIG_PPP=m
 +CONFIG_PPP_BSDCOMP=m
@@ -3558,6 +3575,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_ATH10K_TRACING is not set
 +CONFIG_WCN36XX=m
 +# CONFIG_WCN36XX_DEBUGFS is not set
++# CONFIG_ATH11K is not set
 +CONFIG_WLAN_VENDOR_ATMEL=y
 +CONFIG_ATMEL=m
 +CONFIG_PCI_ATMEL=m
@@ -3944,6 +3962,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_INPUT_JOYSTICK=y
 +CONFIG_JOYSTICK_ANALOG=m
 +CONFIG_JOYSTICK_A3D=m
++# CONFIG_JOYSTICK_ADC is not set
 +CONFIG_JOYSTICK_ADI=m
 +CONFIG_JOYSTICK_COBRA=m
 +CONFIG_JOYSTICK_GF2K=m
@@ -4084,6 +4103,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_TOUCHSCREEN_ZFORCE=m
 +CONFIG_TOUCHSCREEN_ROHM_BU21023=m
 +# CONFIG_TOUCHSCREEN_IQS5XX is not set
++# CONFIG_TOUCHSCREEN_ZINITIX is not set
 +CONFIG_INPUT_MISC=y
 +CONFIG_INPUT_88PM80X_ONKEY=m
 +CONFIG_INPUT_AD714X=m
@@ -4145,6 +4165,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_RMI4_F12=y
 +CONFIG_RMI4_F30=y
 +CONFIG_RMI4_F34=y
++# CONFIG_RMI4_F3A is not set
 +CONFIG_RMI4_F54=y
 +CONFIG_RMI4_F55=y
 +
@@ -4293,6 +4314,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_HW_RANDOM_BA431 is not set
 +CONFIG_HW_RANDOM_VIA=m
 +CONFIG_HW_RANDOM_VIRTIO=m
++# CONFIG_HW_RANDOM_XIPHERA is not set
 +CONFIG_APPLICOM=m
 +
 +#
@@ -4440,6 +4462,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_I2C_STUB=m
 +CONFIG_I2C_SLAVE=y
 +CONFIG_I2C_SLAVE_EEPROM=m
++# CONFIG_I2C_SLAVE_TESTUNIT is not set
 +# CONFIG_I2C_DEBUG_CORE is not set
 +# CONFIG_I2C_DEBUG_ALGO is not set
 +# CONFIG_I2C_DEBUG_BUS is not set
@@ -4549,7 +4572,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_PINCTRL_BAYTRAIL=y
 +CONFIG_PINCTRL_CHERRYVIEW=m
 +# CONFIG_PINCTRL_LYNXPOINT is not set
-+CONFIG_PINCTRL_INTEL=m
++CONFIG_PINCTRL_INTEL=y
 +CONFIG_PINCTRL_BROXTON=m
 +CONFIG_PINCTRL_CANNONLAKE=m
 +CONFIG_PINCTRL_CEDARFORK=m
@@ -4561,6 +4584,12 @@ index 000000000000..dcbcaa389249
 +CONFIG_PINCTRL_LEWISBURG=m
 +CONFIG_PINCTRL_SUNRISEPOINT=m
 +# CONFIG_PINCTRL_TIGERLAKE is not set
++
++#
++# Renesas pinctrl drivers
++#
++# end of Renesas pinctrl drivers
++
 +CONFIG_PINCTRL_MADERA=m
 +CONFIG_PINCTRL_CS47L35=y
 +CONFIG_PINCTRL_CS47L85=y
@@ -4571,6 +4600,8 @@ index 000000000000..dcbcaa389249
 +CONFIG_GPIOLIB_IRQCHIP=y
 +# CONFIG_DEBUG_GPIO is not set
 +CONFIG_GPIO_SYSFS=y
++CONFIG_GPIO_CDEV=y
++CONFIG_GPIO_CDEV_V1=y
 +CONFIG_GPIO_GENERIC=m
 +CONFIG_GPIO_MAX730X=m
 +
@@ -4703,8 +4734,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_W1_SLAVE_DS28E17=m
 +# end of 1-wire Slaves
 +
-+CONFIG_POWER_AVS=y
-+# CONFIG_QCOM_CPR is not set
 +CONFIG_POWER_RESET=y
 +# CONFIG_POWER_RESET_MT6323 is not set
 +# CONFIG_POWER_RESET_RESTART is not set
@@ -4755,6 +4784,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_CHARGER_BQ24735=m
 +# CONFIG_CHARGER_BQ2515X is not set
 +CONFIG_CHARGER_BQ25890=m
++# CONFIG_CHARGER_BQ25980 is not set
 +CONFIG_CHARGER_SMB347=m
 +CONFIG_BATTERY_GAUGE_LTC2941=m
 +CONFIG_BATTERY_RT5033=m
@@ -4852,6 +4882,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SENSORS_MLXREG_FAN=m
 +CONFIG_SENSORS_TC654=m
 +CONFIG_SENSORS_MENF21BMC_HWMON=m
++# CONFIG_SENSORS_MR75203 is not set
 +CONFIG_SENSORS_ADCXX=m
 +CONFIG_SENSORS_LM63=m
 +CONFIG_SENSORS_LM70=m
@@ -4880,6 +4911,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SENSORS_PCF8591=m
 +CONFIG_PMBUS=m
 +CONFIG_SENSORS_PMBUS=m
++# CONFIG_SENSORS_ADM1266 is not set
 +CONFIG_SENSORS_ADM1275=m
 +# CONFIG_SENSORS_BEL_PFE is not set
 +CONFIG_SENSORS_IBM_CFFPS=m
@@ -4899,6 +4931,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SENSORS_MAX31785=m
 +CONFIG_SENSORS_MAX34440=m
 +CONFIG_SENSORS_MAX8688=m
++# CONFIG_SENSORS_MP2975 is not set
 +# CONFIG_SENSORS_PXE1610 is not set
 +CONFIG_SENSORS_TPS40422=m
 +CONFIG_SENSORS_TPS53679=m
@@ -5170,6 +5203,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_MFD_RDC321X=m
 +CONFIG_MFD_RT5033=m
 +CONFIG_MFD_SI476X_CORE=m
++# CONFIG_MFD_SL28CPLD is not set
 +CONFIG_MFD_SM501=m
 +CONFIG_MFD_SM501_GPIO=y
 +CONFIG_MFD_SKY81452=m
@@ -5203,6 +5237,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_MFD_WM8994=m
 +# CONFIG_MFD_WCD934X is not set
 +CONFIG_RAVE_SP_CORE=m
++# CONFIG_MFD_INTEL_M10_BMC is not set
 +# end of Multifunction device drivers
 +
 +CONFIG_REGULATOR=y
@@ -5260,7 +5295,10 @@ index 000000000000..dcbcaa389249
 +CONFIG_REGULATOR_PWM=m
 +CONFIG_REGULATOR_QCOM_SPMI=m
 +# CONFIG_REGULATOR_QCOM_USB_VBUS is not set
++# CONFIG_REGULATOR_RASPBERRYPI_TOUCHSCREEN_ATTINY is not set
++# CONFIG_REGULATOR_RT4801 is not set
 +CONFIG_REGULATOR_RT5033=m
++# CONFIG_REGULATOR_RTMV20 is not set
 +CONFIG_REGULATOR_SKY81452=m
 +# CONFIG_REGULATOR_SLG51000 is not set
 +CONFIG_REGULATOR_TPS51632=m
@@ -6151,6 +6189,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_DRM_AMD_DC_DCN=y
 +# CONFIG_DRM_AMD_DC_DCN3_0 is not set
 +CONFIG_DRM_AMD_DC_HDCP=y
++# CONFIG_DRM_AMD_DC_SI is not set
 +# CONFIG_DEBUG_KERNEL_DC is not set
 +# end of Display Engine Configuration
 +
@@ -6382,6 +6421,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_LCD_HX8357=m
 +CONFIG_LCD_OTM3225A=m
 +CONFIG_BACKLIGHT_CLASS_DEVICE=y
++# CONFIG_BACKLIGHT_KTD253 is not set
 +CONFIG_BACKLIGHT_LM3533=m
 +CONFIG_BACKLIGHT_CARILLO_RANCH=m
 +CONFIG_BACKLIGHT_PWM=m
@@ -6667,13 +6707,8 @@ index 000000000000..dcbcaa389249
 +CONFIG_SND_SOC_IMG_SPDIF_OUT=m
 +CONFIG_SND_SOC_IMG_PISTACHIO_INTERNAL_DAC=m
 +CONFIG_SND_SOC_INTEL_SST_TOPLEVEL=y
-+CONFIG_SND_SST_IPC=m
-+CONFIG_SND_SST_IPC_PCI=m
-+CONFIG_SND_SST_IPC_ACPI=m
-+CONFIG_SND_SOC_INTEL_SST_ACPI=m
 +CONFIG_SND_SOC_INTEL_SST=m
-+CONFIG_SND_SOC_INTEL_SST_FIRMWARE=m
-+CONFIG_SND_SOC_INTEL_HASWELL=m
++# CONFIG_SND_SOC_INTEL_CATPT is not set
 +CONFIG_SND_SST_ATOM_HIFI2_PLATFORM=m
 +CONFIG_SND_SST_ATOM_HIFI2_PLATFORM_PCI=m
 +CONFIG_SND_SST_ATOM_HIFI2_PLATFORM_ACPI=m
@@ -6693,10 +6728,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_SND_SOC_ACPI_INTEL_MATCH=m
 +CONFIG_SND_SOC_INTEL_MACH=y
 +# CONFIG_SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES is not set
-+CONFIG_SND_SOC_INTEL_HASWELL_MACH=m
-+# CONFIG_SND_SOC_INTEL_BDW_RT5650_MACH is not set
-+CONFIG_SND_SOC_INTEL_BDW_RT5677_MACH=m
-+CONFIG_SND_SOC_INTEL_BROADWELL_MACH=m
 +CONFIG_SND_SOC_INTEL_BYTCR_RT5640_MACH=m
 +CONFIG_SND_SOC_INTEL_BYTCR_RT5651_MACH=m
 +CONFIG_SND_SOC_INTEL_CHT_BSW_RT5672_MACH=m
@@ -6770,6 +6801,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SND_SOC_CS42L52=m
 +CONFIG_SND_SOC_CS42L56=m
 +CONFIG_SND_SOC_CS42L73=m
++# CONFIG_SND_SOC_CS4234 is not set
 +CONFIG_SND_SOC_CS4265=m
 +CONFIG_SND_SOC_CS4270=m
 +CONFIG_SND_SOC_CS4271=m
@@ -6839,8 +6871,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_SND_SOC_RT5651=m
 +CONFIG_SND_SOC_RT5663=m
 +CONFIG_SND_SOC_RT5670=m
-+CONFIG_SND_SOC_RT5677=m
-+CONFIG_SND_SOC_RT5677_SPI=m
 +# CONFIG_SND_SOC_RT5682_SDW is not set
 +# CONFIG_SND_SOC_RT700_SDW is not set
 +# CONFIG_SND_SOC_RT711_SDW is not set
@@ -6863,6 +6893,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SND_SOC_STI_SAS=m
 +CONFIG_SND_SOC_TAS2552=m
 +# CONFIG_SND_SOC_TAS2562 is not set
++# CONFIG_SND_SOC_TAS2764 is not set
 +# CONFIG_SND_SOC_TAS2770 is not set
 +CONFIG_SND_SOC_TAS5086=m
 +CONFIG_SND_SOC_TAS571X=m
@@ -6977,6 +7008,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_HID_HOLTEK=m
 +CONFIG_HOLTEK_FF=y
 +CONFIG_HID_GOOGLE_HAMMER=m
++# CONFIG_HID_VIVALDI is not set
 +CONFIG_HID_GT683R=m
 +CONFIG_HID_KEYTOUCH=m
 +CONFIG_HID_KYE=m
@@ -7100,6 +7132,7 @@ index 000000000000..dcbcaa389249
 +# Miscellaneous USB options
 +#
 +CONFIG_USB_DEFAULT_PERSIST=y
++# CONFIG_USB_FEW_INIT_RETRIES is not set
 +# CONFIG_USB_DYNAMIC_MINORS is not set
 +# CONFIG_USB_OTG is not set
 +# CONFIG_USB_OTG_PRODUCTLIST is not set
@@ -7337,12 +7370,14 @@ index 000000000000..dcbcaa389249
 +CONFIG_TYPEC_TCPM=m
 +CONFIG_TYPEC_TCPCI=m
 +CONFIG_TYPEC_RT1711H=m
++# CONFIG_TYPEC_TCPCI_MAXIM is not set
 +CONFIG_TYPEC_FUSB302=m
 +CONFIG_TYPEC_UCSI=m
 +# CONFIG_UCSI_CCG is not set
 +CONFIG_UCSI_ACPI=m
 +# CONFIG_TYPEC_HD3SS3220 is not set
 +CONFIG_TYPEC_TPS6598X=m
++# CONFIG_TYPEC_STUSB160X is not set
 +
 +#
 +# USB Type-C Multiplexer/DeMultiplexer Switch support
@@ -7357,7 +7392,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_TYPEC_NVIDIA_ALTMODE is not set
 +# end of USB Type-C Alternate Mode drivers
 +
-+CONFIG_USB_ROLE_SWITCH=m
++CONFIG_USB_ROLE_SWITCH=y
 +CONFIG_USB_ROLES_INTEL_XHCI=m
 +CONFIG_MMC=m
 +CONFIG_MMC_BLOCK=m
@@ -7432,6 +7467,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_LEDS_GPIO=m
 +CONFIG_LEDS_LP3944=m
 +CONFIG_LEDS_LP3952=m
++# CONFIG_LEDS_LP50XX is not set
 +CONFIG_LEDS_CLEVO_MAIL=m
 +CONFIG_LEDS_PCA955X=m
 +CONFIG_LEDS_PCA955X_GPIO=y
@@ -7599,6 +7635,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_RTC_DRV_RX8025=m
 +CONFIG_RTC_DRV_EM3027=m
 +# CONFIG_RTC_DRV_RV3028 is not set
++# CONFIG_RTC_DRV_RV3032 is not set
 +CONFIG_RTC_DRV_RV8803=m
 +# CONFIG_RTC_DRV_SD3078 is not set
 +
@@ -7685,7 +7722,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_INTEL_IDMA64=m
 +# CONFIG_INTEL_IDXD is not set
 +CONFIG_INTEL_IOATDMA=m
-+CONFIG_INTEL_MIC_X100_DMA=m
 +# CONFIG_PLX_DMA is not set
 +# CONFIG_XILINX_ZYNQMP_DPDMA is not set
 +CONFIG_QCOM_HIDMA_MGMT=m
@@ -7759,6 +7795,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_IRQ_BYPASS_MANAGER=m
 +CONFIG_VIRT_DRIVERS=y
 +CONFIG_VBOXGUEST=m
++# CONFIG_NITRO_ENCLAVES is not set
 +CONFIG_VIRTIO=m
 +CONFIG_VIRTIO_MENU=y
 +CONFIG_VIRTIO_PCI=m
@@ -7768,9 +7805,9 @@ index 000000000000..dcbcaa389249
 +CONFIG_VIRTIO_INPUT=m
 +CONFIG_VIRTIO_MMIO=m
 +CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
++CONFIG_VIRTIO_DMA_SHARED_BUFFER=m
 +# CONFIG_VDPA is not set
 +CONFIG_VHOST_IOTLB=m
-+CONFIG_VHOST_RING=m
 +CONFIG_VHOST=m
 +CONFIG_VHOST_MENU=y
 +CONFIG_VHOST_NET=m
@@ -8039,8 +8076,8 @@ index 000000000000..dcbcaa389249
 +CONFIG_FB_SM750=m
 +CONFIG_STAGING_MEDIA=y
 +# CONFIG_INTEL_ATOMISP is not set
++# CONFIG_VIDEO_ZORAN is not set
 +# CONFIG_VIDEO_IPU3_IMGU is not set
-+CONFIG_VIDEO_USBVISION=m
 +
 +#
 +# Android
@@ -8091,6 +8128,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_KPC2000 is not set
 +CONFIG_QLGE=m
 +# CONFIG_WFX is not set
++# CONFIG_SPMI_HISI3670 is not set
 +CONFIG_X86_PLATFORM_DEVICES=y
 +CONFIG_ACPI_WMI=m
 +CONFIG_WMI_BMOF=m
@@ -8189,7 +8227,6 @@ index 000000000000..dcbcaa389249
 +# CONFIG_INTEL_SCU_PCI is not set
 +# CONFIG_INTEL_SCU_PLATFORM is not set
 +CONFIG_PMC_ATOM=y
-+CONFIG_MFD_CROS_EC=m
 +CONFIG_CHROME_PLATFORMS=y
 +CONFIG_CHROMEOS_LAPTOP=m
 +CONFIG_CHROMEOS_PSTORE=m
@@ -8286,6 +8323,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SOUNDWIRE_CADENCE=m
 +CONFIG_SOUNDWIRE_INTEL=m
 +# CONFIG_SOUNDWIRE_QCOM is not set
++CONFIG_SOUNDWIRE_GENERIC_ALLOCATION=m
 +
 +#
 +# SOC (System On Chip) specific Drivers
@@ -8368,6 +8406,8 @@ index 000000000000..dcbcaa389249
 +CONFIG_IIO=m
 +CONFIG_IIO_BUFFER=y
 +CONFIG_IIO_BUFFER_CB=m
++# CONFIG_IIO_BUFFER_DMA is not set
++# CONFIG_IIO_BUFFER_DMAENGINE is not set
 +CONFIG_IIO_BUFFER_HW_CONSUMER=m
 +CONFIG_IIO_KFIFO_BUF=m
 +CONFIG_IIO_TRIGGERED_BUFFER=m
@@ -8614,6 +8654,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_ADIS16130=m
 +CONFIG_ADIS16136=m
 +CONFIG_ADIS16260=m
++# CONFIG_ADXRS290 is not set
 +CONFIG_ADXRS450=m
 +CONFIG_BMG160=m
 +CONFIG_BMG160_I2C=m
@@ -8648,6 +8689,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_AM2315=m
 +CONFIG_DHT11=m
 +CONFIG_HDC100X=m
++# CONFIG_HDC2010 is not set
 +CONFIG_HID_SENSOR_HUMIDITY=m
 +CONFIG_HTS221=m
 +CONFIG_HTS221_I2C=m
@@ -8693,6 +8735,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_AL3320A=m
 +CONFIG_APDS9300=m
 +CONFIG_APDS9960=m
++# CONFIG_AS73211 is not set
 +CONFIG_BH1750=m
 +CONFIG_BH1780=m
 +CONFIG_CM32181=m
@@ -8919,6 +8962,7 @@ index 000000000000..dcbcaa389249
 +# PHY Subsystem
 +#
 +CONFIG_GENERIC_PHY=y
++# CONFIG_USB_LGM_PHY is not set
 +CONFIG_BCM_KONA_USB2_PHY=m
 +CONFIG_PHY_PXA_28NM_HSIC=m
 +CONFIG_PHY_PXA_28NM_USB2=m
@@ -8927,7 +8971,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_PHY_QCOM_USB_HSIC=m
 +CONFIG_PHY_SAMSUNG_USB2=m
 +CONFIG_PHY_TUSB1210=m
-+# CONFIG_PHY_INTEL_EMMC is not set
++# CONFIG_PHY_INTEL_LGM_EMMC is not set
 +# end of PHY Subsystem
 +
 +CONFIG_POWERCAP=y
@@ -9016,6 +9060,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_COUNTER is not set
 +CONFIG_MOST=m
 +# CONFIG_MOST_USB_HDM is not set
++# CONFIG_MOST_CDEV is not set
 +# end of Device Drivers
 +
 +#
@@ -9050,6 +9095,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_JFS_DEBUG is not set
 +# CONFIG_JFS_STATISTICS is not set
 +CONFIG_XFS_FS=m
++CONFIG_XFS_SUPPORT_V4=y
 +CONFIG_XFS_QUOTA=y
 +CONFIG_XFS_POSIX_ACL=y
 +CONFIG_XFS_RT=y
@@ -9104,7 +9150,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_QFMT_V1=m
 +CONFIG_QFMT_V2=m
 +CONFIG_QUOTACTL=y
-+CONFIG_QUOTACTL_COMPAT=y
 +CONFIG_AUTOFS4_FS=m
 +CONFIG_AUTOFS_FS=m
 +CONFIG_FUSE_FS=m
@@ -9283,25 +9328,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_EROFS_FS_ZIP=y
 +CONFIG_EROFS_FS_CLUSTER_PAGE_LIMIT=1
 +# CONFIG_VBOXSF_FS is not set
-+CONFIG_AUFS_FS=m
-+CONFIG_AUFS_BRANCH_MAX_127=y
-+# CONFIG_AUFS_BRANCH_MAX_511 is not set
-+# CONFIG_AUFS_BRANCH_MAX_1023 is not set
-+# CONFIG_AUFS_BRANCH_MAX_32767 is not set
-+CONFIG_AUFS_SBILIST=y
-+# CONFIG_AUFS_HNOTIFY is not set
-+# CONFIG_AUFS_EXPORT is not set
-+# CONFIG_AUFS_XATTR is not set
-+# CONFIG_AUFS_FHSM is not set
-+# CONFIG_AUFS_RDU is not set
-+# CONFIG_AUFS_DIRREN is not set
-+# CONFIG_AUFS_SHWH is not set
-+CONFIG_AUFS_BR_RAMFS=y
-+CONFIG_AUFS_BR_FUSE=y
-+CONFIG_AUFS_POLL=y
-+CONFIG_AUFS_BR_HFSPLUS=y
-+CONFIG_AUFS_BDEV_LOOP=y
-+# CONFIG_AUFS_DEBUG is not set
 +CONFIG_NETWORK_FILESYSTEMS=y
 +CONFIG_NFS_FS=m
 +CONFIG_NFS_V2=m
@@ -9321,6 +9347,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_NFS_USE_LEGACY_DNS is not set
 +CONFIG_NFS_USE_KERNEL_DNS=y
 +CONFIG_NFS_DISABLE_UDP_SUPPORT=y
++# CONFIG_NFS_V4_2_READ_PLUS is not set
 +CONFIG_NFSD=m
 +CONFIG_NFSD_V2_ACL=y
 +CONFIG_NFSD_V3=y
@@ -9547,6 +9574,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_CRYPTO_ECC=m
 +CONFIG_CRYPTO_ECDH=m
 +# CONFIG_CRYPTO_ECRDSA is not set
++# CONFIG_CRYPTO_SM2 is not set
 +# CONFIG_CRYPTO_CURVE25519 is not set
 +# CONFIG_CRYPTO_CURVE25519_X86 is not set
 +
@@ -9687,7 +9715,9 @@ index 000000000000..dcbcaa389249
 +CONFIG_CRYPTO_USER_API_HASH=m
 +CONFIG_CRYPTO_USER_API_SKCIPHER=m
 +CONFIG_CRYPTO_USER_API_RNG=m
++# CONFIG_CRYPTO_USER_API_RNG_CAVP is not set
 +CONFIG_CRYPTO_USER_API_AEAD=m
++CONFIG_CRYPTO_USER_API_ENABLE_OBSOLETE=y
 +# CONFIG_CRYPTO_STATS is not set
 +CONFIG_CRYPTO_HASH_INFO=y
 +
@@ -9730,8 +9760,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_CRYPTO_DEV_NITROX=m
 +CONFIG_CRYPTO_DEV_NITROX_CNN55XX=m
 +CONFIG_CRYPTO_DEV_CHELSIO=m
-+CONFIG_CHELSIO_IPSEC_INLINE=y
-+CONFIG_CHELSIO_TLS_DEVICE=y
 +CONFIG_CRYPTO_DEV_VIRTIO=m
 +# CONFIG_CRYPTO_DEV_SAFEXCEL is not set
 +# CONFIG_CRYPTO_DEV_AMLOGIC_GXL is not set
@@ -9845,6 +9873,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_SWIOTLB=y
 +CONFIG_DMA_COHERENT_POOL=y
 +CONFIG_DMA_CMA=y
++# CONFIG_DMA_PERNUMA_CMA is not set
 +
 +#
 +# Default contiguous memory area size:
@@ -9942,6 +9971,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_DEBUG_FS_ALLOW_NONE is not set
 +CONFIG_HAVE_ARCH_KGDB=y
 +CONFIG_KGDB=y
++CONFIG_KGDB_HONOUR_BLOCKLIST=y
 +CONFIG_KGDB_SERIAL_CONSOLE=y
 +# CONFIG_KGDB_TESTS is not set
 +CONFIG_KGDB_LOW_LEVEL_TRAP=y
@@ -10036,6 +10066,8 @@ index 000000000000..dcbcaa389249
 +# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
 +CONFIG_LOCK_TORTURE_TEST=m
 +CONFIG_WW_MUTEX_SELFTEST=m
++# CONFIG_SCF_TORTURE_TEST is not set
++# CONFIG_CSD_LOCK_WAIT_DEBUG is not set
 +# end of Lock Debugging (spinlocks, mutexes, etc...)
 +
 +CONFIG_STACKTRACE=y
@@ -10058,12 +10090,13 @@ index 000000000000..dcbcaa389249
 +# RCU Debugging
 +#
 +CONFIG_TORTURE_TEST=m
-+CONFIG_RCU_PERF_TEST=m
++# CONFIG_RCU_SCALE_TEST is not set
 +# CONFIG_RCU_TORTURE_TEST is not set
 +# CONFIG_RCU_REF_SCALE_TEST is not set
 +CONFIG_RCU_CPU_STALL_TIMEOUT=5
 +# CONFIG_RCU_TRACE is not set
 +# CONFIG_RCU_EQS_DEBUG is not set
++# CONFIG_RCU_STRICT_GRACE_PERIOD is not set
 +# end of RCU Debugging
 +
 +# CONFIG_DEBUG_WQ_FORCE_RR_CPU is not set
@@ -10217,7 +10250,6 @@ index 000000000000..dcbcaa389249
 +# CONFIG_TEST_KSTRTOX is not set
 +# CONFIG_TEST_PRINTF is not set
 +# CONFIG_TEST_BITMAP is not set
-+# CONFIG_TEST_BITFIELD is not set
 +# CONFIG_TEST_UUID is not set
 +# CONFIG_TEST_XARRAY is not set
 +# CONFIG_TEST_OVERFLOW is not set
@@ -10247,6 +10279,7 @@ index 000000000000..dcbcaa389249
 +# CONFIG_HYPERV_TESTING is not set
 +# end of Kernel Testing and Coverage
 +# end of Kernel hacking
+\ ファイル末尾に改行がありません
 From da62e58ad86c61205d9dcfdb48b703de7988be78 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Tue, 23 Jun 2015 01:26:52 -0500
@@ -19171,6 +19204,601 @@ index d5570de..1dff17e 100644
 -- 
 2.29.2.456.g3a0b884cab
 
+From 7b5df0248ce255ef5b7204d65a7b3783ebb76a3d Mon Sep 17 00:00:00 2001
+From: Gabriel Krisman Bertazi <krisman@collabora.com>
+Date: Fri, 13 Dec 2019 11:08:02 -0300
+Subject: [PATCH] futex: Implement mechanism to wait on any of several futexes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This is a new futex operation, called FUTEX_WAIT_MULTIPLE, which allows
+a thread to wait on several futexes at the same time, and be awoken by
+any of them.  In a sense, it implements one of the features that was
+supported by pooling on the old FUTEX_FD interface.
+
+The use case lies in the Wine implementation of the Windows NT interface
+WaitMultipleObjects. This Windows API function allows a thread to sleep
+waiting on the first of a set of event sources (mutexes, timers, signal,
+console input, etc) to signal.  Considering this is a primitive
+synchronization operation for Windows applications, being able to quickly
+signal events on the producer side, and quickly go to sleep on the
+consumer side is essential for good performance of those running over Wine.
+
+Wine developers have an implementation that uses eventfd, but it suffers
+from FD exhaustion (there is applications that go to the order of
+multi-milion FDs), and higher CPU utilization than this new operation.
+
+The futex list is passed as an array of `struct futex_wait_block`
+(pointer, value, bitset) to the kernel, which will enqueue all of them
+and sleep if none was already triggered. It returns a hint of which
+futex caused the wake up event to userspace, but the hint doesn't
+guarantee that is the only futex triggered.  Before calling the syscall
+again, userspace should traverse the list, trying to re-acquire any of
+the other futexes, to prevent an immediate -EWOULDBLOCK return code from
+the kernel.
+
+This was tested using three mechanisms:
+
+1) By reimplementing FUTEX_WAIT in terms of FUTEX_WAIT_MULTIPLE and
+running the unmodified tools/testing/selftests/futex and a full linux
+distro on top of this kernel.
+
+2) By an example code that exercises the FUTEX_WAIT_MULTIPLE path on a
+multi-threaded, event-handling setup.
+
+3) By running the Wine fsync implementation and executing multi-threaded
+applications, in particular modern games, on top of this implementation.
+
+Changes were tested for the following ABIs: x86_64, i386 and x32.
+Support for x32 applications is not implemented since it would
+take a major rework adding a new entry point and splitting the current
+futex 64 entry point in two and we can't change the current x32 syscall
+number without breaking user space compatibility.
+
+CC: Steven Rostedt <rostedt@goodmis.org>
+Cc: Richard Yao <ryao@gentoo.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Co-developed-by: Zebediah Figura <z.figura12@gmail.com>
+Signed-off-by: Zebediah Figura <z.figura12@gmail.com>
+Co-developed-by: Steven Noonan <steven@valvesoftware.com>
+Signed-off-by: Steven Noonan <steven@valvesoftware.com>
+Co-developed-by: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
+Signed-off-by: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+[Added compatibility code]
+Co-developed-by: André Almeida <andrealmeid@collabora.com>
+Signed-off-by: André Almeida <andrealmeid@collabora.com>
+
+Adjusted for v5.9: Removed `put_futex_key` calls.
+---
+ include/uapi/linux/futex.h |  20 +++
+ kernel/futex.c             | 352 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 370 insertions(+), 2 deletions(-)
+
+diff --git a/include/uapi/linux/futex.h b/include/uapi/linux/futex.h
+index a89eb0accd5e2..580001e89c6ca 100644
+--- a/include/uapi/linux/futex.h
++++ b/include/uapi/linux/futex.h
+@@ -21,6 +21,7 @@
+ #define FUTEX_WAKE_BITSET	10
+ #define FUTEX_WAIT_REQUEUE_PI	11
+ #define FUTEX_CMP_REQUEUE_PI	12
++#define FUTEX_WAIT_MULTIPLE	13
+ 
+ #define FUTEX_PRIVATE_FLAG	128
+ #define FUTEX_CLOCK_REALTIME	256
+@@ -40,6 +41,8 @@
+ 					 FUTEX_PRIVATE_FLAG)
+ #define FUTEX_CMP_REQUEUE_PI_PRIVATE	(FUTEX_CMP_REQUEUE_PI | \
+ 					 FUTEX_PRIVATE_FLAG)
++#define FUTEX_WAIT_MULTIPLE_PRIVATE	(FUTEX_WAIT_MULTIPLE | \
++					 FUTEX_PRIVATE_FLAG)
+ 
+ /*
+  * Support for robust futexes: the kernel cleans up held futexes at
+@@ -150,4 +153,21 @@ struct robust_list_head {
+   (((op & 0xf) << 28) | ((cmp & 0xf) << 24)		\
+    | ((oparg & 0xfff) << 12) | (cmparg & 0xfff))
+ 
++/*
++ * Maximum number of multiple futexes to wait for
++ */
++#define FUTEX_MULTIPLE_MAX_COUNT	128
++
++/**
++ * struct futex_wait_block - Block of futexes to be waited for
++ * @uaddr:	User address of the futex
++ * @val:	Futex value expected by userspace
++ * @bitset:	Bitset for the optional bitmasked wakeup
++ */
++struct futex_wait_block {
++	__u32 __user *uaddr;
++	__u32 val;
++	__u32 bitset;
++};
++
+ #endif /* _UAPI_LINUX_FUTEX_H */
+diff --git a/kernel/futex.c b/kernel/futex.c
+index a5876694a60eb..6f4bea76df460 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -197,6 +197,8 @@ struct futex_pi_state {
+  * @rt_waiter:		rt_waiter storage for use with requeue_pi
+  * @requeue_pi_key:	the requeue_pi target futex key
+  * @bitset:		bitset for the optional bitmasked wakeup
++ * @uaddr:             userspace address of futex
++ * @uval:              expected futex's value
+  *
+  * We use this hashed waitqueue, instead of a normal wait_queue_entry_t, so
+  * we can wake only the relevant ones (hashed queues may be shared).
+@@ -219,6 +221,8 @@ struct futex_q {
+ 	struct rt_mutex_waiter *rt_waiter;
+ 	union futex_key *requeue_pi_key;
+ 	u32 bitset;
++	u32 __user *uaddr;
++	u32 uval;
+ } __randomize_layout;
+ 
+ static const struct futex_q futex_q_init = {
+@@ -2304,6 +2308,29 @@ static int unqueue_me(struct futex_q *q)
+ 	return ret;
+ }
+ 
++/**
++ * unqueue_multiple() - Remove several futexes from their futex_hash_bucket
++ * @q:	The list of futexes to unqueue
++ * @count: Number of futexes in the list
++ *
++ * Helper to unqueue a list of futexes. This can't fail.
++ *
++ * Return:
++ *  - >=0 - Index of the last futex that was awoken;
++ *  - -1  - If no futex was awoken
++ */
++static int unqueue_multiple(struct futex_q *q, int count)
++{
++	int ret = -1;
++	int i;
++
++	for (i = 0; i < count; i++) {
++		if (!unqueue_me(&q[i]))
++			ret = i;
++	}
++	return ret;
++}
++
+ /*
+  * PI futexes can not be requeued and must remove themself from the
+  * hash bucket. The hash bucket lock (i.e. lock_ptr) is held on entry
+@@ -2662,6 +2689,205 @@ static int futex_wait_setup(u32 __user *uaddr, u32 val, unsigned int flags,
+ 	return ret;
+ }
+ 
++/**
++ * futex_wait_multiple_setup() - Prepare to wait and enqueue multiple futexes
++ * @qs:		The corresponding futex list
++ * @count:	The size of the lists
++ * @flags:	Futex flags (FLAGS_SHARED, etc.)
++ * @awaken:	Index of the last awoken futex
++ *
++ * Prepare multiple futexes in a single step and enqueue them. This may fail if
++ * the futex list is invalid or if any futex was already awoken. On success the
++ * task is ready to interruptible sleep.
++ *
++ * Return:
++ *  -  1 - One of the futexes was awaken by another thread
++ *  -  0 - Success
++ *  - <0 - -EFAULT, -EWOULDBLOCK or -EINVAL
++ */
++static int futex_wait_multiple_setup(struct futex_q *qs, int count,
++				     unsigned int flags, int *awaken)
++{
++	struct futex_hash_bucket *hb;
++	int ret, i;
++	u32 uval;
++
++	/*
++	 * Enqueuing multiple futexes is tricky, because we need to
++	 * enqueue each futex in the list before dealing with the next
++	 * one to avoid deadlocking on the hash bucket.  But, before
++	 * enqueuing, we need to make sure that current->state is
++	 * TASK_INTERRUPTIBLE, so we don't absorb any awake events, which
++	 * cannot be done before the get_futex_key of the next key,
++	 * because it calls get_user_pages, which can sleep.  Thus, we
++	 * fetch the list of futexes keys in two steps, by first pinning
++	 * all the memory keys in the futex key, and only then we read
++	 * each key and queue the corresponding futex.
++	 */
++retry:
++	for (i = 0; i < count; i++) {
++		qs[i].key = FUTEX_KEY_INIT;
++		ret = get_futex_key(qs[i].uaddr, flags & FLAGS_SHARED,
++				    &qs[i].key, FUTEX_READ);
++		if (unlikely(ret)) {
++			return ret;
++		}
++	}
++
++	set_current_state(TASK_INTERRUPTIBLE);
++
++	for (i = 0; i < count; i++) {
++		struct futex_q *q = &qs[i];
++
++		hb = queue_lock(q);
++
++		ret = get_futex_value_locked(&uval, q->uaddr);
++		if (ret) {
++			/*
++			 * We need to try to handle the fault, which
++			 * cannot be done without sleep, so we need to
++			 * undo all the work already done, to make sure
++			 * we don't miss any wake ups.  Therefore, clean
++			 * up, handle the fault and retry from the
++			 * beginning.
++			 */
++			queue_unlock(hb);
++
++			/*
++			 * Keys 0..(i-1) are implicitly put
++			 * on unqueue_multiple.
++			 */
++			*awaken = unqueue_multiple(qs, i);
++
++			__set_current_state(TASK_RUNNING);
++
++			/*
++			 * On a real fault, prioritize the error even if
++			 * some other futex was awoken.  Userspace gave
++			 * us a bad address, -EFAULT them.
++			 */
++			ret = get_user(uval, q->uaddr);
++			if (ret)
++				return ret;
++
++			/*
++			 * Even if the page fault was handled, If
++			 * something was already awaken, we can safely
++			 * give up and succeed to give a hint for userspace to
++			 * acquire the right futex faster.
++			 */
++			if (*awaken >= 0)
++				return 1;
++
++			goto retry;
++		}
++
++		if (uval != q->uval) {
++			queue_unlock(hb);
++
++			/*
++			 * If something was already awaken, we can
++			 * safely ignore the error and succeed.
++			 */
++			*awaken = unqueue_multiple(qs, i);
++			__set_current_state(TASK_RUNNING);
++			if (*awaken >= 0)
++				return 1;
++
++			return -EWOULDBLOCK;
++		}
++
++		/*
++		 * The bucket lock can't be held while dealing with the
++		 * next futex. Queue each futex at this moment so hb can
++		 * be unlocked.
++		 */
++		queue_me(&qs[i], hb);
++	}
++	return 0;
++}
++
++/**
++ * futex_wait_multiple() - Prepare to wait on and enqueue several futexes
++ * @qs:		The list of futexes to wait on
++ * @op:		Operation code from futex's syscall
++ * @count:	The number of objects
++ * @abs_time:	Timeout before giving up and returning to userspace
++ *
++ * Entry point for the FUTEX_WAIT_MULTIPLE futex operation, this function
++ * sleeps on a group of futexes and returns on the first futex that
++ * triggered, or after the timeout has elapsed.
++ *
++ * Return:
++ *  - >=0 - Hint to the futex that was awoken
++ *  - <0  - On error
++ */
++static int futex_wait_multiple(struct futex_q *qs, int op,
++			       u32 count, ktime_t *abs_time)
++{
++	struct hrtimer_sleeper timeout, *to;
++	int ret, flags = 0, hint = 0;
++	unsigned int i;
++
++	if (!(op & FUTEX_PRIVATE_FLAG))
++		flags |= FLAGS_SHARED;
++
++	if (op & FUTEX_CLOCK_REALTIME)
++		flags |= FLAGS_CLOCKRT;
++
++	to = futex_setup_timer(abs_time, &timeout, flags, 0);
++	while (1) {
++		ret = futex_wait_multiple_setup(qs, count, flags, &hint);
++		if (ret) {
++			if (ret > 0) {
++				/* A futex was awaken during setup */
++				ret = hint;
++			}
++			break;
++		}
++
++		if (to)
++			hrtimer_start_expires(&to->timer, HRTIMER_MODE_ABS);
++
++		/*
++		 * Avoid sleeping if another thread already tried to
++		 * wake us.
++		 */
++		for (i = 0; i < count; i++) {
++			if (plist_node_empty(&qs[i].list))
++				break;
++		}
++
++		if (i == count && (!to || to->task))
++			freezable_schedule();
++
++		ret = unqueue_multiple(qs, count);
++
++		__set_current_state(TASK_RUNNING);
++
++		if (ret >= 0)
++			break;
++		if (to && !to->task) {
++			ret = -ETIMEDOUT;
++			break;
++		} else if (signal_pending(current)) {
++			ret = -ERESTARTSYS;
++			break;
++		}
++		/*
++		 * The final case is a spurious wakeup, for
++		 * which just retry.
++		 */
++	}
++
++	if (to) {
++		hrtimer_cancel(&to->timer);
++		destroy_hrtimer_on_stack(&to->timer);
++	}
++
++	return ret;
++}
++
+ static int futex_wait(u32 __user *uaddr, unsigned int flags, u32 val,
+ 		      ktime_t *abs_time, u32 bitset)
+ {
+@@ -3774,6 +4000,43 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
+ 	return -ENOSYS;
+ }
+ 
++/**
++ * futex_read_wait_block - Read an array of futex_wait_block from userspace
++ * @uaddr:	Userspace address of the block
++ * @count:	Number of blocks to be read
++ *
++ * This function creates and allocate an array of futex_q (we zero it to
++ * initialize the fields) and then, for each futex_wait_block element from
++ * userspace, fill a futex_q element with proper values.
++ */
++inline struct futex_q *futex_read_wait_block(u32 __user *uaddr, u32 count)
++{
++	unsigned int i;
++	struct futex_q *qs;
++	struct futex_wait_block fwb;
++	struct futex_wait_block __user *entry =
++		(struct futex_wait_block __user *)uaddr;
++
++	if (!count || count > FUTEX_MULTIPLE_MAX_COUNT)
++		return ERR_PTR(-EINVAL);
++
++	qs = kcalloc(count, sizeof(*qs), GFP_KERNEL);
++	if (!qs)
++		return ERR_PTR(-ENOMEM);
++
++	for (i = 0; i < count; i++) {
++		if (copy_from_user(&fwb, &entry[i], sizeof(fwb))) {
++			kfree(qs);
++			return ERR_PTR(-EFAULT);
++		}
++
++		qs[i].uaddr = fwb.uaddr;
++		qs[i].uval = fwb.val;
++		qs[i].bitset = fwb.bitset;
++	}
++
++	return qs;
++}
+ 
+ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+ 		struct __kernel_timespec __user *, utime, u32 __user *, uaddr2,
+@@ -3786,7 +4049,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+ 
+ 	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
+ 		      cmd == FUTEX_WAIT_BITSET ||
+-		      cmd == FUTEX_WAIT_REQUEUE_PI)) {
++		      cmd == FUTEX_WAIT_REQUEUE_PI ||
++		      cmd == FUTEX_WAIT_MULTIPLE)) {
+ 		if (unlikely(should_fail_futex(!(op & FUTEX_PRIVATE_FLAG))))
+ 			return -EFAULT;
+ 		if (get_timespec64(&ts, utime))
+@@ -3807,6 +4071,25 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+ 	    cmd == FUTEX_CMP_REQUEUE_PI || cmd == FUTEX_WAKE_OP)
+ 		val2 = (u32) (unsigned long) utime;
+ 
++	if (cmd == FUTEX_WAIT_MULTIPLE) {
++		int ret;
++		struct futex_q *qs;
++
++#ifdef CONFIG_X86_X32
++		if (unlikely(in_x32_syscall()))
++			return -ENOSYS;
++#endif
++		qs = futex_read_wait_block(uaddr, val);
++
++		if (IS_ERR(qs))
++			return PTR_ERR(qs);
++
++		ret = futex_wait_multiple(qs, op, val, tp);
++		kfree(qs);
++
++		return ret;
++	}
++
+ 	return do_futex(uaddr, op, val, tp, uaddr2, val2, val3);
+ }
+ 
+@@ -3969,6 +4252,57 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
+ #endif /* CONFIG_COMPAT */
+ 
+ #ifdef CONFIG_COMPAT_32BIT_TIME
++/**
++ * struct compat_futex_wait_block - Block of futexes to be waited for
++ * @uaddr:	User address of the futex (compatible pointer)
++ * @val:	Futex value expected by userspace
++ * @bitset:	Bitset for the optional bitmasked wakeup
++ */
++struct compat_futex_wait_block {
++	compat_uptr_t	uaddr;
++	__u32 val;
++	__u32 bitset;
++};
++
++/**
++ * compat_futex_read_wait_block - Read an array of futex_wait_block from
++ * userspace
++ * @uaddr:	Userspace address of the block
++ * @count:	Number of blocks to be read
++ *
++ * This function does the same as futex_read_wait_block(), except that it
++ * converts the pointer to the futex from the compat version to the regular one.
++ */
++inline struct futex_q *compat_futex_read_wait_block(u32 __user *uaddr,
++						    u32 count)
++{
++	unsigned int i;
++	struct futex_q *qs;
++	struct compat_futex_wait_block fwb;
++	struct compat_futex_wait_block __user *entry =
++		(struct compat_futex_wait_block __user *)uaddr;
++
++	if (!count || count > FUTEX_MULTIPLE_MAX_COUNT)
++		return ERR_PTR(-EINVAL);
++
++	qs = kcalloc(count, sizeof(*qs), GFP_KERNEL);
++	if (!qs)
++		return ERR_PTR(-ENOMEM);
++
++	for (i = 0; i < count; i++) {
++		if (copy_from_user(&fwb, &entry[i], sizeof(fwb))) {
++			kfree(qs);
++			return ERR_PTR(-EFAULT);
++		}
++
++		qs[i].uaddr = compat_ptr(fwb.uaddr);
++		qs[i].uval = fwb.val;
++		qs[i].bitset = fwb.bitset;
++	}
++
++	return qs;
++}
++
+ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
+ 		struct old_timespec32 __user *, utime, u32 __user *, uaddr2,
+ 		u32, val3)
+@@ -3980,7 +4314,8 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
+ 
+ 	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
+ 		      cmd == FUTEX_WAIT_BITSET ||
+-		      cmd == FUTEX_WAIT_REQUEUE_PI)) {
++		      cmd == FUTEX_WAIT_REQUEUE_PI ||
++		      cmd == FUTEX_WAIT_MULTIPLE)) {
+ 		if (get_old_timespec32(&ts, utime))
+ 			return -EFAULT;
+ 		if (!timespec64_valid(&ts))
+@@ -3995,6 +4330,19 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
+ 	    cmd == FUTEX_CMP_REQUEUE_PI || cmd == FUTEX_WAKE_OP)
+ 		val2 = (int) (unsigned long) utime;
+ 
++	if (cmd == FUTEX_WAIT_MULTIPLE) {
++		int ret;
++		struct futex_q *qs = compat_futex_read_wait_block(uaddr, val);
++
++		if (IS_ERR(qs))
++			return PTR_ERR(qs);
++
++		ret = futex_wait_multiple(qs, op, val, tp);
++		kfree(qs);
++
++		return ret;
++	}
++
+ 	return do_futex(uaddr, op, val, tp, uaddr2, val2, val3);
+ }
+ #endif /* CONFIG_COMPAT_32BIT_TIME */
+From ccdddb50d330d2ee1a4d2cbfdd27bdd7fb10eec3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>
+Date: Fri, 7 Feb 2020 23:28:02 -0300
+Subject: [PATCH] futex: Add Proton compatibility code
+
+---
+ include/uapi/linux/futex.h | 2 +-
+ kernel/futex.c             | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/include/uapi/linux/futex.h b/include/uapi/linux/futex.h
+index 580001e89c6ca..a3e760886b8e7 100644
+--- a/include/uapi/linux/futex.h
++++ b/include/uapi/linux/futex.h
+@@ -21,7 +21,7 @@
+ #define FUTEX_WAKE_BITSET	10
+ #define FUTEX_WAIT_REQUEUE_PI	11
+ #define FUTEX_CMP_REQUEUE_PI	12
+-#define FUTEX_WAIT_MULTIPLE	13
++#define FUTEX_WAIT_MULTIPLE	31
+ 
+ #define FUTEX_PRIVATE_FLAG	128
+ #define FUTEX_CLOCK_REALTIME	256
+diff --git a/kernel/futex.c b/kernel/futex.c
+index 6f4bea76df460..03d89fe7b8392 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -4059,7 +4059,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+ 			return -EINVAL;
+ 
+ 		t = timespec64_to_ktime(ts);
+-		if (cmd == FUTEX_WAIT)
++		if (cmd == FUTEX_WAIT || cmd == FUTEX_WAIT_MULTIPLE)
+ 			t = ktime_add_safe(ktime_get(), t);
+ 		tp = &t;
+ 	}
+@@ -4260,6 +4260,7 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
+  */
+ struct compat_futex_wait_block {
+ 	compat_uptr_t	uaddr;
++	__u32 pad;
+ 	__u32 val;
+ 	__u32 bitset;
+ };
+@@ -4322,7 +4323,7 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
+ 			return -EINVAL;
+ 
+ 		t = timespec64_to_ktime(ts);
+-		if (cmd == FUTEX_WAIT)
++		if (cmd == FUTEX_WAIT || cmd == FUTEX_WAIT_MULTIPLE)
+ 			t = ktime_add_safe(ktime_get(), t);
+ 		tp = &t;
+ 	}
 From 58a558e1376f001b16f8b9e21c507c9e6d07482a Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Mon, 15 Jun 2020 17:22:23 +0200
@@ -19805,763 +20433,6 @@ index a40d8af..9f6345d 100644
  	help
  	  Choosing this option will pass "-O3" to your compiler to optimize
  	  the kernel yet more for performance.
--- 
-2.29.2.456.g3a0b884cab
-
-From 7b5df0248ce255ef5b7204d65a7b3783ebb76a3d Mon Sep 17 00:00:00 2001
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
-Date: Fri, 13 Dec 2019 11:08:02 -0300
-Subject: [PATCH] futex: Implement mechanism to wait on any of several futexes
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-This is a new futex operation, called FUTEX_WAIT_MULTIPLE, which allows
-a thread to wait on several futexes at the same time, and be awoken by
-any of them.  In a sense, it implements one of the features that was
-supported by pooling on the old FUTEX_FD interface.
-
-The use case lies in the Wine implementation of the Windows NT interface
-WaitMultipleObjects. This Windows API function allows a thread to sleep
-waiting on the first of a set of event sources (mutexes, timers, signal,
-console input, etc) to signal.  Considering this is a primitive
-synchronization operation for Windows applications, being able to quickly
-signal events on the producer side, and quickly go to sleep on the
-consumer side is essential for good performance of those running over Wine.
-
-Wine developers have an implementation that uses eventfd, but it suffers
-from FD exhaustion (there is applications that go to the order of
-multi-milion FDs), and higher CPU utilization than this new operation.
-
-The futex list is passed as an array of `struct futex_wait_block`
-(pointer, value, bitset) to the kernel, which will enqueue all of them
-and sleep if none was already triggered. It returns a hint of which
-futex caused the wake up event to userspace, but the hint doesn't
-guarantee that is the only futex triggered.  Before calling the syscall
-again, userspace should traverse the list, trying to re-acquire any of
-the other futexes, to prevent an immediate -EWOULDBLOCK return code from
-the kernel.
-
-This was tested using three mechanisms:
-
-1) By reimplementing FUTEX_WAIT in terms of FUTEX_WAIT_MULTIPLE and
-running the unmodified tools/testing/selftests/futex and a full linux
-distro on top of this kernel.
-
-2) By an example code that exercises the FUTEX_WAIT_MULTIPLE path on a
-multi-threaded, event-handling setup.
-
-3) By running the Wine fsync implementation and executing multi-threaded
-applications, in particular modern games, on top of this implementation.
-
-Changes were tested for the following ABIs: x86_64, i386 and x32.
-Support for x32 applications is not implemented since it would
-take a major rework adding a new entry point and splitting the current
-futex 64 entry point in two and we can't change the current x32 syscall
-number without breaking user space compatibility.
-
-CC: Steven Rostedt <rostedt@goodmis.org>
-Cc: Richard Yao <ryao@gentoo.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Co-developed-by: Zebediah Figura <z.figura12@gmail.com>
-Signed-off-by: Zebediah Figura <z.figura12@gmail.com>
-Co-developed-by: Steven Noonan <steven@valvesoftware.com>
-Signed-off-by: Steven Noonan <steven@valvesoftware.com>
-Co-developed-by: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-Signed-off-by: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-[Added compatibility code]
-Co-developed-by: André Almeida <andrealmeid@collabora.com>
-Signed-off-by: André Almeida <andrealmeid@collabora.com>
-
-Adjusted for v5.9: Removed `put_futex_key` calls.
----
- include/uapi/linux/futex.h |  20 +++
- kernel/futex.c             | 352 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 370 insertions(+), 2 deletions(-)
-
-diff --git a/include/uapi/linux/futex.h b/include/uapi/linux/futex.h
-index a89eb0accd5e2..580001e89c6ca 100644
---- a/include/uapi/linux/futex.h
-+++ b/include/uapi/linux/futex.h
-@@ -21,6 +21,7 @@
- #define FUTEX_WAKE_BITSET	10
- #define FUTEX_WAIT_REQUEUE_PI	11
- #define FUTEX_CMP_REQUEUE_PI	12
-+#define FUTEX_WAIT_MULTIPLE	13
- 
- #define FUTEX_PRIVATE_FLAG	128
- #define FUTEX_CLOCK_REALTIME	256
-@@ -40,6 +41,8 @@
- 					 FUTEX_PRIVATE_FLAG)
- #define FUTEX_CMP_REQUEUE_PI_PRIVATE	(FUTEX_CMP_REQUEUE_PI | \
- 					 FUTEX_PRIVATE_FLAG)
-+#define FUTEX_WAIT_MULTIPLE_PRIVATE	(FUTEX_WAIT_MULTIPLE | \
-+					 FUTEX_PRIVATE_FLAG)
- 
- /*
-  * Support for robust futexes: the kernel cleans up held futexes at
-@@ -150,4 +153,21 @@ struct robust_list_head {
-   (((op & 0xf) << 28) | ((cmp & 0xf) << 24)		\
-    | ((oparg & 0xfff) << 12) | (cmparg & 0xfff))
- 
-+/*
-+ * Maximum number of multiple futexes to wait for
-+ */
-+#define FUTEX_MULTIPLE_MAX_COUNT	128
-+
-+/**
-+ * struct futex_wait_block - Block of futexes to be waited for
-+ * @uaddr:	User address of the futex
-+ * @val:	Futex value expected by userspace
-+ * @bitset:	Bitset for the optional bitmasked wakeup
-+ */
-+struct futex_wait_block {
-+	__u32 __user *uaddr;
-+	__u32 val;
-+	__u32 bitset;
-+};
-+
- #endif /* _UAPI_LINUX_FUTEX_H */
-diff --git a/kernel/futex.c b/kernel/futex.c
-index a5876694a60eb..6f4bea76df460 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -197,6 +197,8 @@ struct futex_pi_state {
-  * @rt_waiter:		rt_waiter storage for use with requeue_pi
-  * @requeue_pi_key:	the requeue_pi target futex key
-  * @bitset:		bitset for the optional bitmasked wakeup
-+ * @uaddr:             userspace address of futex
-+ * @uval:              expected futex's value
-  *
-  * We use this hashed waitqueue, instead of a normal wait_queue_entry_t, so
-  * we can wake only the relevant ones (hashed queues may be shared).
-@@ -219,6 +221,8 @@ struct futex_q {
- 	struct rt_mutex_waiter *rt_waiter;
- 	union futex_key *requeue_pi_key;
- 	u32 bitset;
-+	u32 __user *uaddr;
-+	u32 uval;
- } __randomize_layout;
- 
- static const struct futex_q futex_q_init = {
-@@ -2304,6 +2308,29 @@ static int unqueue_me(struct futex_q *q)
- 	return ret;
- }
- 
-+/**
-+ * unqueue_multiple() - Remove several futexes from their futex_hash_bucket
-+ * @q:	The list of futexes to unqueue
-+ * @count: Number of futexes in the list
-+ *
-+ * Helper to unqueue a list of futexes. This can't fail.
-+ *
-+ * Return:
-+ *  - >=0 - Index of the last futex that was awoken;
-+ *  - -1  - If no futex was awoken
-+ */
-+static int unqueue_multiple(struct futex_q *q, int count)
-+{
-+	int ret = -1;
-+	int i;
-+
-+	for (i = 0; i < count; i++) {
-+		if (!unqueue_me(&q[i]))
-+			ret = i;
-+	}
-+	return ret;
-+}
-+
- /*
-  * PI futexes can not be requeued and must remove themself from the
-  * hash bucket. The hash bucket lock (i.e. lock_ptr) is held on entry
-@@ -2662,6 +2689,205 @@ static int futex_wait_setup(u32 __user *uaddr, u32 val, unsigned int flags,
- 	return ret;
- }
- 
-+/**
-+ * futex_wait_multiple_setup() - Prepare to wait and enqueue multiple futexes
-+ * @qs:		The corresponding futex list
-+ * @count:	The size of the lists
-+ * @flags:	Futex flags (FLAGS_SHARED, etc.)
-+ * @awaken:	Index of the last awoken futex
-+ *
-+ * Prepare multiple futexes in a single step and enqueue them. This may fail if
-+ * the futex list is invalid or if any futex was already awoken. On success the
-+ * task is ready to interruptible sleep.
-+ *
-+ * Return:
-+ *  -  1 - One of the futexes was awaken by another thread
-+ *  -  0 - Success
-+ *  - <0 - -EFAULT, -EWOULDBLOCK or -EINVAL
-+ */
-+static int futex_wait_multiple_setup(struct futex_q *qs, int count,
-+				     unsigned int flags, int *awaken)
-+{
-+	struct futex_hash_bucket *hb;
-+	int ret, i;
-+	u32 uval;
-+
-+	/*
-+	 * Enqueuing multiple futexes is tricky, because we need to
-+	 * enqueue each futex in the list before dealing with the next
-+	 * one to avoid deadlocking on the hash bucket.  But, before
-+	 * enqueuing, we need to make sure that current->state is
-+	 * TASK_INTERRUPTIBLE, so we don't absorb any awake events, which
-+	 * cannot be done before the get_futex_key of the next key,
-+	 * because it calls get_user_pages, which can sleep.  Thus, we
-+	 * fetch the list of futexes keys in two steps, by first pinning
-+	 * all the memory keys in the futex key, and only then we read
-+	 * each key and queue the corresponding futex.
-+	 */
-+retry:
-+	for (i = 0; i < count; i++) {
-+		qs[i].key = FUTEX_KEY_INIT;
-+		ret = get_futex_key(qs[i].uaddr, flags & FLAGS_SHARED,
-+				    &qs[i].key, FUTEX_READ);
-+		if (unlikely(ret)) {
-+			return ret;
-+		}
-+	}
-+
-+	set_current_state(TASK_INTERRUPTIBLE);
-+
-+	for (i = 0; i < count; i++) {
-+		struct futex_q *q = &qs[i];
-+
-+		hb = queue_lock(q);
-+
-+		ret = get_futex_value_locked(&uval, q->uaddr);
-+		if (ret) {
-+			/*
-+			 * We need to try to handle the fault, which
-+			 * cannot be done without sleep, so we need to
-+			 * undo all the work already done, to make sure
-+			 * we don't miss any wake ups.  Therefore, clean
-+			 * up, handle the fault and retry from the
-+			 * beginning.
-+			 */
-+			queue_unlock(hb);
-+
-+			/*
-+			 * Keys 0..(i-1) are implicitly put
-+			 * on unqueue_multiple.
-+			 */
-+			*awaken = unqueue_multiple(qs, i);
-+
-+			__set_current_state(TASK_RUNNING);
-+
-+			/*
-+			 * On a real fault, prioritize the error even if
-+			 * some other futex was awoken.  Userspace gave
-+			 * us a bad address, -EFAULT them.
-+			 */
-+			ret = get_user(uval, q->uaddr);
-+			if (ret)
-+				return ret;
-+
-+			/*
-+			 * Even if the page fault was handled, If
-+			 * something was already awaken, we can safely
-+			 * give up and succeed to give a hint for userspace to
-+			 * acquire the right futex faster.
-+			 */
-+			if (*awaken >= 0)
-+				return 1;
-+
-+			goto retry;
-+		}
-+
-+		if (uval != q->uval) {
-+			queue_unlock(hb);
-+
-+			/*
-+			 * If something was already awaken, we can
-+			 * safely ignore the error and succeed.
-+			 */
-+			*awaken = unqueue_multiple(qs, i);
-+			__set_current_state(TASK_RUNNING);
-+			if (*awaken >= 0)
-+				return 1;
-+
-+			return -EWOULDBLOCK;
-+		}
-+
-+		/*
-+		 * The bucket lock can't be held while dealing with the
-+		 * next futex. Queue each futex at this moment so hb can
-+		 * be unlocked.
-+		 */
-+		queue_me(&qs[i], hb);
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * futex_wait_multiple() - Prepare to wait on and enqueue several futexes
-+ * @qs:		The list of futexes to wait on
-+ * @op:		Operation code from futex's syscall
-+ * @count:	The number of objects
-+ * @abs_time:	Timeout before giving up and returning to userspace
-+ *
-+ * Entry point for the FUTEX_WAIT_MULTIPLE futex operation, this function
-+ * sleeps on a group of futexes and returns on the first futex that
-+ * triggered, or after the timeout has elapsed.
-+ *
-+ * Return:
-+ *  - >=0 - Hint to the futex that was awoken
-+ *  - <0  - On error
-+ */
-+static int futex_wait_multiple(struct futex_q *qs, int op,
-+			       u32 count, ktime_t *abs_time)
-+{
-+	struct hrtimer_sleeper timeout, *to;
-+	int ret, flags = 0, hint = 0;
-+	unsigned int i;
-+
-+	if (!(op & FUTEX_PRIVATE_FLAG))
-+		flags |= FLAGS_SHARED;
-+
-+	if (op & FUTEX_CLOCK_REALTIME)
-+		flags |= FLAGS_CLOCKRT;
-+
-+	to = futex_setup_timer(abs_time, &timeout, flags, 0);
-+	while (1) {
-+		ret = futex_wait_multiple_setup(qs, count, flags, &hint);
-+		if (ret) {
-+			if (ret > 0) {
-+				/* A futex was awaken during setup */
-+				ret = hint;
-+			}
-+			break;
-+		}
-+
-+		if (to)
-+			hrtimer_start_expires(&to->timer, HRTIMER_MODE_ABS);
-+
-+		/*
-+		 * Avoid sleeping if another thread already tried to
-+		 * wake us.
-+		 */
-+		for (i = 0; i < count; i++) {
-+			if (plist_node_empty(&qs[i].list))
-+				break;
-+		}
-+
-+		if (i == count && (!to || to->task))
-+			freezable_schedule();
-+
-+		ret = unqueue_multiple(qs, count);
-+
-+		__set_current_state(TASK_RUNNING);
-+
-+		if (ret >= 0)
-+			break;
-+		if (to && !to->task) {
-+			ret = -ETIMEDOUT;
-+			break;
-+		} else if (signal_pending(current)) {
-+			ret = -ERESTARTSYS;
-+			break;
-+		}
-+		/*
-+		 * The final case is a spurious wakeup, for
-+		 * which just retry.
-+		 */
-+	}
-+
-+	if (to) {
-+		hrtimer_cancel(&to->timer);
-+		destroy_hrtimer_on_stack(&to->timer);
-+	}
-+
-+	return ret;
-+}
-+
- static int futex_wait(u32 __user *uaddr, unsigned int flags, u32 val,
- 		      ktime_t *abs_time, u32 bitset)
- {
-@@ -3774,6 +4000,43 @@ long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
- 	return -ENOSYS;
- }
- 
-+/**
-+ * futex_read_wait_block - Read an array of futex_wait_block from userspace
-+ * @uaddr:	Userspace address of the block
-+ * @count:	Number of blocks to be read
-+ *
-+ * This function creates and allocate an array of futex_q (we zero it to
-+ * initialize the fields) and then, for each futex_wait_block element from
-+ * userspace, fill a futex_q element with proper values.
-+ */
-+inline struct futex_q *futex_read_wait_block(u32 __user *uaddr, u32 count)
-+{
-+	unsigned int i;
-+	struct futex_q *qs;
-+	struct futex_wait_block fwb;
-+	struct futex_wait_block __user *entry =
-+		(struct futex_wait_block __user *)uaddr;
-+
-+	if (!count || count > FUTEX_MULTIPLE_MAX_COUNT)
-+		return ERR_PTR(-EINVAL);
-+
-+	qs = kcalloc(count, sizeof(*qs), GFP_KERNEL);
-+	if (!qs)
-+		return ERR_PTR(-ENOMEM);
-+
-+	for (i = 0; i < count; i++) {
-+		if (copy_from_user(&fwb, &entry[i], sizeof(fwb))) {
-+			kfree(qs);
-+			return ERR_PTR(-EFAULT);
-+		}
-+
-+		qs[i].uaddr = fwb.uaddr;
-+		qs[i].uval = fwb.val;
-+		qs[i].bitset = fwb.bitset;
-+	}
-+
-+	return qs;
-+}
- 
- SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
- 		struct __kernel_timespec __user *, utime, u32 __user *, uaddr2,
-@@ -3786,7 +4049,8 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
- 
- 	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
- 		      cmd == FUTEX_WAIT_BITSET ||
--		      cmd == FUTEX_WAIT_REQUEUE_PI)) {
-+		      cmd == FUTEX_WAIT_REQUEUE_PI ||
-+		      cmd == FUTEX_WAIT_MULTIPLE)) {
- 		if (unlikely(should_fail_futex(!(op & FUTEX_PRIVATE_FLAG))))
- 			return -EFAULT;
- 		if (get_timespec64(&ts, utime))
-@@ -3807,6 +4071,25 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
- 	    cmd == FUTEX_CMP_REQUEUE_PI || cmd == FUTEX_WAKE_OP)
- 		val2 = (u32) (unsigned long) utime;
- 
-+	if (cmd == FUTEX_WAIT_MULTIPLE) {
-+		int ret;
-+		struct futex_q *qs;
-+
-+#ifdef CONFIG_X86_X32
-+		if (unlikely(in_x32_syscall()))
-+			return -ENOSYS;
-+#endif
-+		qs = futex_read_wait_block(uaddr, val);
-+
-+		if (IS_ERR(qs))
-+			return PTR_ERR(qs);
-+
-+		ret = futex_wait_multiple(qs, op, val, tp);
-+		kfree(qs);
-+
-+		return ret;
-+	}
-+
- 	return do_futex(uaddr, op, val, tp, uaddr2, val2, val3);
- }
- 
-@@ -3969,6 +4252,57 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
- #endif /* CONFIG_COMPAT */
- 
- #ifdef CONFIG_COMPAT_32BIT_TIME
-+/**
-+ * struct compat_futex_wait_block - Block of futexes to be waited for
-+ * @uaddr:	User address of the futex (compatible pointer)
-+ * @val:	Futex value expected by userspace
-+ * @bitset:	Bitset for the optional bitmasked wakeup
-+ */
-+struct compat_futex_wait_block {
-+	compat_uptr_t	uaddr;
-+	__u32 val;
-+	__u32 bitset;
-+};
-+
-+/**
-+ * compat_futex_read_wait_block - Read an array of futex_wait_block from
-+ * userspace
-+ * @uaddr:	Userspace address of the block
-+ * @count:	Number of blocks to be read
-+ *
-+ * This function does the same as futex_read_wait_block(), except that it
-+ * converts the pointer to the futex from the compat version to the regular one.
-+ */
-+inline struct futex_q *compat_futex_read_wait_block(u32 __user *uaddr,
-+						    u32 count)
-+{
-+	unsigned int i;
-+	struct futex_q *qs;
-+	struct compat_futex_wait_block fwb;
-+	struct compat_futex_wait_block __user *entry =
-+		(struct compat_futex_wait_block __user *)uaddr;
-+
-+	if (!count || count > FUTEX_MULTIPLE_MAX_COUNT)
-+		return ERR_PTR(-EINVAL);
-+
-+	qs = kcalloc(count, sizeof(*qs), GFP_KERNEL);
-+	if (!qs)
-+		return ERR_PTR(-ENOMEM);
-+
-+	for (i = 0; i < count; i++) {
-+		if (copy_from_user(&fwb, &entry[i], sizeof(fwb))) {
-+			kfree(qs);
-+			return ERR_PTR(-EFAULT);
-+		}
-+
-+		qs[i].uaddr = compat_ptr(fwb.uaddr);
-+		qs[i].uval = fwb.val;
-+		qs[i].bitset = fwb.bitset;
-+	}
-+
-+	return qs;
-+}
-+
- SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
- 		struct old_timespec32 __user *, utime, u32 __user *, uaddr2,
- 		u32, val3)
-@@ -3980,7 +4314,8 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
- 
- 	if (utime && (cmd == FUTEX_WAIT || cmd == FUTEX_LOCK_PI ||
- 		      cmd == FUTEX_WAIT_BITSET ||
--		      cmd == FUTEX_WAIT_REQUEUE_PI)) {
-+		      cmd == FUTEX_WAIT_REQUEUE_PI ||
-+		      cmd == FUTEX_WAIT_MULTIPLE)) {
- 		if (get_old_timespec32(&ts, utime))
- 			return -EFAULT;
- 		if (!timespec64_valid(&ts))
-@@ -3995,6 +4330,19 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
- 	    cmd == FUTEX_CMP_REQUEUE_PI || cmd == FUTEX_WAKE_OP)
- 		val2 = (int) (unsigned long) utime;
- 
-+	if (cmd == FUTEX_WAIT_MULTIPLE) {
-+		int ret;
-+		struct futex_q *qs = compat_futex_read_wait_block(uaddr, val);
-+
-+		if (IS_ERR(qs))
-+			return PTR_ERR(qs);
-+
-+		ret = futex_wait_multiple(qs, op, val, tp);
-+		kfree(qs);
-+
-+		return ret;
-+	}
-+
- 	return do_futex(uaddr, op, val, tp, uaddr2, val2, val3);
- }
- #endif /* CONFIG_COMPAT_32BIT_TIME */
-From ccdddb50d330d2ee1a4d2cbfdd27bdd7fb10eec3 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>
-Date: Fri, 7 Feb 2020 23:28:02 -0300
-Subject: [PATCH] futex: Add Proton compatibility code
-
----
- include/uapi/linux/futex.h | 2 +-
- kernel/futex.c             | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/include/uapi/linux/futex.h b/include/uapi/linux/futex.h
-index 580001e89c6ca..a3e760886b8e7 100644
---- a/include/uapi/linux/futex.h
-+++ b/include/uapi/linux/futex.h
-@@ -21,7 +21,7 @@
- #define FUTEX_WAKE_BITSET	10
- #define FUTEX_WAIT_REQUEUE_PI	11
- #define FUTEX_CMP_REQUEUE_PI	12
--#define FUTEX_WAIT_MULTIPLE	13
-+#define FUTEX_WAIT_MULTIPLE	31
- 
- #define FUTEX_PRIVATE_FLAG	128
- #define FUTEX_CLOCK_REALTIME	256
-diff --git a/kernel/futex.c b/kernel/futex.c
-index 6f4bea76df460..03d89fe7b8392 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -4059,7 +4059,7 @@ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
- 			return -EINVAL;
- 
- 		t = timespec64_to_ktime(ts);
--		if (cmd == FUTEX_WAIT)
-+		if (cmd == FUTEX_WAIT || cmd == FUTEX_WAIT_MULTIPLE)
- 			t = ktime_add_safe(ktime_get(), t);
- 		tp = &t;
- 	}
-@@ -4260,6 +4260,7 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
-  */
- struct compat_futex_wait_block {
- 	compat_uptr_t	uaddr;
-+	__u32 pad;
- 	__u32 val;
- 	__u32 bitset;
- };
-@@ -4322,7 +4323,7 @@ SYSCALL_DEFINE6(futex_time32, u32 __user *, uaddr, int, op, u32, val,
- 			return -EINVAL;
- 
- 		t = timespec64_to_ktime(ts);
--		if (cmd == FUTEX_WAIT)
-+		if (cmd == FUTEX_WAIT || cmd == FUTEX_WAIT_MULTIPLE)
- 			t = ktime_add_safe(ktime_get(), t);
- 		tp = &t;
- 	}
-From 0114f075f8b535c7219d8d87851f97bb05df0817 Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Thu, 2 Jul 2020 19:16:43 +0200
-Subject: [PATCH 1/4] block, Kconfig.iosched: set default value of IOSCHED_BFQ
- to yes
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- block/Kconfig.iosched | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
-index 2f2158e..e58b295 100644
---- a/block/Kconfig.iosched
-+++ b/block/Kconfig.iosched
-@@ -5,13 +5,11 @@ menu "IO Schedulers"
- 
- config MQ_IOSCHED_DEADLINE
- 	tristate "MQ deadline I/O scheduler"
--	default y
- 	help
- 	  MQ version of the deadline IO scheduler.
- 
- config MQ_IOSCHED_KYBER
- 	tristate "Kyber I/O scheduler"
--	default y
- 	help
- 	  The Kyber I/O scheduler is a low-overhead scheduler suitable for
- 	  multiqueue and other fast devices. Given target latencies for reads and
-@@ -20,6 +18,7 @@ config MQ_IOSCHED_KYBER
- 
- config IOSCHED_BFQ
- 	tristate "BFQ I/O scheduler"
-+	default y
- 	help
- 	BFQ I/O scheduler for BLK-MQ. BFQ distributes the bandwidth of
- 	of the device among all processes according to their weights,
--- 
-2.29.2.456.g3a0b884cab
-
-
-From 6105139e9eea7bd6cbcf0c3a3dbba4104ba4bb0a Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Thu, 2 Jul 2020 19:26:24 +0200
-Subject: [PATCH 2/4] block: Fix depends for BLK_DEV_ZONED
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- block/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/Kconfig b/block/Kconfig
-index a2297ed..f688ea5 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -83,7 +83,7 @@ config BLK_DEV_INTEGRITY_T10
- 
- config BLK_DEV_ZONED
- 	bool "Zoned block device support"
--	select MQ_IOSCHED_DEADLINE
-+	select IOSCHED_BFQ
- 	help
- 	Block layer zoned block device support. This option enables
- 	support for ZAC/ZBC/ZNS host-managed and host-aware zoned block
--- 
-2.29.2.456.g3a0b884cab
-
-
-From fbf021fac926273bb2d58c940aeed96e87103eb4 Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Thu, 22 Oct 2020 23:54:33 +0200
-Subject: [PATCH 3/4] block: set rq_affinity = 2 for full multithreading I/O
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- include/linux/blkdev.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 033eb5f..47aaaa5 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -628,6 +628,7 @@ struct request_queue {
- 
- #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
- 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
-+				 (1 << QUEUE_FLAG_SAME_FORCE)	|	\
- 				 (1 << QUEUE_FLAG_NOWAIT))
- 
- void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
--- 
-2.29.2.456.g3a0b884cab
-
-
-From 0eb21181c94700313ce3195b82d7ec618f29e10b Mon Sep 17 00:00:00 2001
-From: Piotr Gorski <lucjan.lucjanov@gmail.com>
-Date: Fri, 3 Jul 2020 12:58:15 +0200
-Subject: [PATCH 4/4] block: Add CONFIG to rename the mq-deadline scheduler
-
-Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
----
- block/Kconfig.iosched | 9 +++++++++
- block/elevator.c      | 4 ++++
- block/mq-deadline.c   | 4 ++++
- 3 files changed, 17 insertions(+)
-
-diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
-index e58b295..9e5a3c5 100644
---- a/block/Kconfig.iosched
-+++ b/block/Kconfig.iosched
-@@ -8,6 +8,15 @@ config MQ_IOSCHED_DEADLINE
- 	help
- 	  MQ version of the deadline IO scheduler.
- 
-+config MQ_IOSCHED_DEADLINE_NODEFAULT
-+	bool "Rename mq-deadline scheduler to mq-deadline-nodefault"
-+	depends on MQ_IOSCHED_DEADLINE
-+	default n
-+	help
-+	  This renames the mq-deadline scheduler to "mq-deadline-nodefault" and
-+	  also drops its alias of "deadline". This can prevent existing
-+	  userspace from forcing this scheduler over the kernel's choice.
-+
- config MQ_IOSCHED_KYBER
- 	tristate "Kyber I/O scheduler"
- 	help
-diff --git a/block/elevator.c b/block/elevator.c
-index 0c1e9a1..632c81d 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -624,7 +624,11 @@ static struct elevator_type *elevator_get_default(struct request_queue *q)
- 	if (q->nr_hw_queues != 1)
- 		return NULL;
- 
-+#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
-+	return elevator_get(q, "mq-deadline-nodefault", false);
-+#else
- 	return elevator_get(q, "mq-deadline", false);
-+#endif
- }
- 
- /*
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index a815218..e0d89a4 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -798,8 +798,12 @@ static struct elevator_type mq_deadline = {
- 	.queue_debugfs_attrs = deadline_queue_debugfs_attrs,
- #endif
- 	.elevator_attrs = deadline_attrs,
-+#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
-+	.elevator_name = "mq-deadline-nodefault",
-+#else
- 	.elevator_name = "mq-deadline",
- 	.elevator_alias = "deadline",
-+#endif
- 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
- 	.elevator_owner = THIS_MODULE,
- };
 -- 
 2.29.2.456.g3a0b884cab
 
@@ -103322,3 +103193,3234 @@ index 4738ad48a667..1aa9e076c15f 100644
  	};
  	struct wakeup_test_data *x = data;
  
+From c9490205d79d15445e2a86523407e206084aa00d Mon Sep 17 00:00:00 2001
+From: Rachit Agarwal <ragarwal@cornell.edu>
+To: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>
+Cc: linux-block@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Keith Busch <kbusch@kernel.org>, Ming Lei <ming.lei@redhat.com>,
+	Jaehyun Hwang <jaehyun.hwang@cornell.edu>,
+	Qizhe Cai <qc228@cornell.edu>,
+	Midhul Vuppalapati <mvv25@cornell.edu>,
+	Rachit Agarwal <ragarwal@cornell.edu>,
+	Sagi Grimberg <sagi@lightbitslabs.com>
+Date: Thu, 12 Nov 2020 19:27:59 -0500
+Subject: [PATCH] iosched: Add i10 I/O Scheduler
+
+Hi All,
+
+I/O batching is beneficial for optimizing IOPS and throughput for various
+applications. For instance, several kernel block drivers would benefit from batching,
+including mmc [1] and tcp-based storage drivers like nvme-tcp [2,3]. While we have
+support for batching dispatch [4], we need an I/O scheduler to efficiently enable
+batching. Such a scheduler is particularly interesting for disaggregated storage,
+where the access latency of remote disaggregated storage may be higher than local
+storage access; thus, batching can significantly help in amortizing the remote access
+latency while increasing the throughput.
+
+This patch introduces the i10 I/O scheduler, which performs batching per hctx in terms
+of #requests, #bytes, and timeouts (at microseconds granularity). i10 starts
+dispatching only when #requests or #bytes is larger than a default threshold or when
+a timer expires. After that, batching dispatch [3] would happen, allowing batching
+at device drivers along with "bd->last" and ".commit_rqs".
+
+The i10 I/O scheduler builds upon recent work on [6]. We have tested the i10 I/O
+scheduler with nvme-tcp optimizations [2,3] and batching dispatch [4], varying number
+of cores, varying read/write ratios, and varying request sizes, and with NVMe SSD and
+RAM block device. For NVMe SSDs, the i10 I/O scheduler achieves ~60% improvements in
+terms of IOPS per core over "noop" I/O scheduler. These results are available at [5],
+and many additional results are presented in [6].
+
+While other schedulers may also batch I/O (e.g., mq-deadline), the optimization target
+in the i10 I/O scheduler is throughput maximization. Hence there is no latency target
+nor a need for a global tracking context, so a new scheduler is needed rather than
+to build this functionality to an existing scheduler.
+
+We currently use fixed default values as batching thresholds (e.g., 16 for #requests,
+64KB for #bytes, and 50us for timeout). These default values are based on sensitivity
+tests in [6]. For our future work, we plan to support adaptive batching according to
+system load and to extend the scheduler to support isolation in multi-tenant deployments
+(to simultaneously achieve low tail latency for latency-sensitive applications and high
+throughput for throughput-bound applications).
+
+References
+[1] https://lore.kernel.org/linux-block/cover.1587888520.git.baolin.wang7@gmail.com/T/#mc48a8fb6069843827458f5fea722e1179d32af2a
+[2] https://git.infradead.org/nvme.git/commit/122e5b9f3d370ae11e1502d14ff5c7ea9b144a76
+[3] https://git.infradead.org/nvme.git/commit/86f0348ace1510d7ac25124b096fb88a6ab45270
+[4] https://lore.kernel.org/linux-block/20200630102501.2238972-1-ming.lei@redhat.com/
+[5] https://github.com/i10-kernel/upstream-linux/blob/master/i10-evaluation.pdf
+[6] https://www.usenix.org/conference/nsdi20/presentation/hwang
+
+Signed-off-by: Jaehyun Hwang <jaehyun.hwang@cornell.edu>
+Signed-off-by: Qizhe Cai <qc228@cornell.edu>
+Signed-off-by: Midhul Vuppalapati <mvv25@cornell.edu>
+Signed-off-by: Rachit Agarwal <ragarwal@cornell.edu>
+Signed-off-by: Sagi Grimberg <sagi@lightbitslabs.com>
+---
+ Documentation/block/i10-iosched.rst |  69 ++++++
+ block/Kconfig.iosched               |   8 +
+ block/Makefile                      |   1 +
+ block/i10-iosched.c                 | 421 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 499 insertions(+)
+ create mode 100644 Documentation/block/i10-iosched.rst
+ create mode 100644 block/i10-iosched.c
+
+diff --git a/Documentation/block/i10-iosched.rst b/Documentation/block/i10-iosched.rst
+new file mode 100644
+index 0000000..86bbfe0
+--- /dev/null
++++ b/Documentation/block/i10-iosched.rst
+@@ -0,0 +1,69 @@
++==========================
++i10 I/O scheduler overview
++==========================
++
++I/O batching is beneficial for optimizing IOPS and throughput for various
++applications. For instance, several kernel block drivers would
++benefit from batching, including mmc [1] and tcp-based storage drivers like
++nvme-tcp [2,3]. While we have support for batching dispatch [4], we need an
++I/O scheduler to efficiently enable batching. Such a scheduler is particularly
++interesting for disaggregated storage, where the access latency of remote
++disaggregated storage may be higher than local storage access; thus, batching
++can significantly help in amortizing the remote access latency while increasing
++the throughput.
++
++This patch introduces the i10 I/O scheduler, which performs batching per hctx in terms
++of #requests, #bytes, and timeouts (at microseconds granularity). i10 starts
++dispatching only when #requests or #bytes is larger than a default threshold or when
++a timer expires. After that, batching dispatch [3] would happen, allowing batching
++at device drivers along with "bd->last" and ".commit_rqs".
++
++The i10 I/O scheduler builds upon recent work on [6]. We have tested the i10 I/O
++scheduler with nvme-tcp optimizations [2,3] and batching dispatch [4], varying number
++of cores, varying read/write ratios, and varying request sizes, and with NVMe SSD and
++RAM block device. For NVMe SSDs, the i10 I/O scheduler achieves ~60% improvements in
++terms of IOPS per core over "noop" I/O scheduler. These results are available at [5],
++and many additional results are presented in [6].
++
++While other schedulers may also batch I/O (e.g., mq-deadline), the optimization target
++in the i10 I/O scheduler is throughput maximization. Hence there is no latency target
++nor a need for a global tracking context, so a new scheduler is needed rather than
++to build this functionality to an existing scheduler.
++
++We currently use fixed default values as batching thresholds (e.g., 16 for #requests,
++64KB for #bytes, and 50us for timeout). These default values are based on sensitivity
++tests in [6]. For our future work, we plan to support adaptive batching according to
++system load and to extend the scheduler to support isolation in multi-tenant deployments
++(to simultaneously achieve low tail latency for latency-sensitive applications and high
++throughput for throughput-bound applications).
++
++References
++[1] https://lore.kernel.org/linux-block/cover.1587888520.git.baolin.wang7@gmail.com/T/#mc48a8fb6069843827458f5fea722e1179d32af2a
++[2] https://git.infradead.org/nvme.git/commit/122e5b9f3d370ae11e1502d14ff5c7ea9b144a76
++[3] https://git.infradead.org/nvme.git/commit/86f0348ace1510d7ac25124b096fb88a6ab45270
++[4] https://lore.kernel.org/linux-block/20200630102501.2238972-1-ming.lei@redhat.com/
++[5] https://github.com/i10-kernel/upstream-linux/blob/master/i10-evaluation.pdf
++[6] https://www.usenix.org/conference/nsdi20/presentation/hwang
++
++==========================
++i10 I/O scheduler tunables
++==========================
++
++The three tunables for the i10 scheduler are the number of requests for
++reads/writes, the number of bytes for writes, and a timeout value.
++i10 will use these values for batching requests.
++
++batch_nr
++--------
++Number of requests for batching read/write requests
++Default: 16
++
++batch_bytes
++-----------
++Number of bytes for batching write requests
++Default: 65536 (bytes)
++
++batch_timeout
++-------------
++Timeout value for batching (in microseconds)
++Default: 50 (us)
+diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
+index 2f2158e..5b3623b 100644
+--- a/block/Kconfig.iosched
++++ b/block/Kconfig.iosched
+@@ -44,6 +44,14 @@ config BFQ_CGROUP_DEBUG
+ 	Enable some debugging help. Currently it exports additional stat
+ 	files in a cgroup which can be useful for debugging.
+ 
++config MQ_IOSCHED_I10
++	tristate "i10 I/O scheduler"
++	default y
++	help
++	  The i10 I/O Scheduler supports batching at BLK-MQ.
++	  Any device driver that benefits from batching
++	  (e.g., NVMe-over-TCP) can use this scheduler.
++
+ endmenu
+ 
+ endif
+diff --git a/block/Makefile b/block/Makefile
+index 8d841f5..27e0789 100644
+--- a/block/Makefile
++++ b/block/Makefile
+@@ -21,6 +21,7 @@ obj-$(CONFIG_BLK_CGROUP_IOLATENCY)	+= blk-iolatency.o
+ obj-$(CONFIG_BLK_CGROUP_IOCOST)	+= blk-iocost.o
+ obj-$(CONFIG_MQ_IOSCHED_DEADLINE)	+= mq-deadline.o
+ obj-$(CONFIG_MQ_IOSCHED_KYBER)	+= kyber-iosched.o
++obj-$(CONFIG_MQ_IOSCHED_I10)    += i10-iosched.o
+ bfq-y				:= bfq-iosched.o bfq-wf2q.o bfq-cgroup.o
+ obj-$(CONFIG_IOSCHED_BFQ)	+= bfq.o
+ 
+diff --git a/block/i10-iosched.c b/block/i10-iosched.c
+new file mode 100644
+index 0000000..24278e7
+--- /dev/null
++++ b/block/i10-iosched.c
+@@ -0,0 +1,421 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * The i10 I/O Scheduler - supports batching at blk-mq.
++ *	The main use case is disaggregated storage access
++ *	using NVMe-over-Fabric (e.g., NVMe-over-TCP device driver).
++ *
++ * An early version of the idea is described and evaluated in
++ * "TCP ≈ RDMA: CPU-efficient Remote Storage Access with i10",
++ * USENIX NSDI 2020.
++ *
++ * Copyright (C) 2020 Cornell University
++ *	Jaehyun Hwang <jaehyun.hwang@cornell.edu>
++ *	Qizhe Cai <qc228@cornell.edu>
++ *	Midhul Vuppalapati <mvv25@cornell.edu%>
++ *	Rachit Agarwal <ragarwal@cornell.edu>
++ */
++
++#include <linux/kernel.h>
++#include <linux/blkdev.h>
++#include <linux/blk-mq.h>
++#include <linux/elevator.h>
++#include <linux/module.h>
++#include <linux/sbitmap.h>
++
++#include "blk.h"
++#include "blk-mq.h"
++#include "blk-mq-debugfs.h"
++#include "blk-mq-sched.h"
++#include "blk-mq-tag.h"
++
++/* Default batch size in number of requests */
++#define I10_DEF_BATCH_NR	16
++/* Default batch size in bytes (for write requests) */
++#define I10_DEF_BATCH_BYTES	65536
++/* Default timeout value for batching (us units) */
++#define I10_DEF_BATCH_TIMEOUT	50
++
++enum i10_state {
++	/* Batching state:
++	 * Do not run dispatching until we have
++	 * a certain amount of requests or a timer expires.
++	 */
++	I10_STATE_BATCH,
++
++	/* Dispatching state:
++	 * Run dispatching until all requests in the
++	 * scheduler's hctx ihq are dispatched.
++	 */
++	I10_STATE_DISPATCH,
++};
++
++struct i10_queue_data {
++	struct request_queue *q;
++
++	unsigned int	def_batch_nr;
++	unsigned int	def_batch_bytes;
++	unsigned int	def_batch_timeout;
++};
++
++struct i10_hctx_queue {
++	spinlock_t		lock;
++	struct list_head	rq_list;
++
++	struct blk_mq_hw_ctx	*hctx;
++
++	unsigned int	batch_nr;
++	unsigned int	batch_bytes;
++	unsigned int	batch_timeout;
++
++	unsigned int	qlen_nr;
++	unsigned int	qlen_bytes;
++
++	struct hrtimer	dispatch_timer;
++	enum i10_state	state;
++};
++
++static struct i10_queue_data *i10_queue_data_alloc(struct request_queue *q)
++{
++	struct i10_queue_data *iqd;
++
++	iqd = kzalloc_node(sizeof(*iqd), GFP_KERNEL, q->node);
++	if (!iqd)
++		return ERR_PTR(-ENOMEM);
++
++	iqd->q = q;
++	iqd->def_batch_nr = I10_DEF_BATCH_NR;
++	iqd->def_batch_bytes = I10_DEF_BATCH_BYTES;
++	iqd->def_batch_timeout = I10_DEF_BATCH_TIMEOUT;
++
++	return iqd;
++}
++
++static int i10_init_sched(struct request_queue *q, struct elevator_type *e)
++{
++	struct i10_queue_data *iqd;
++	struct elevator_queue *eq;
++
++	eq = elevator_alloc(q, e);
++	if (!eq)
++		return -ENOMEM;
++
++	iqd = i10_queue_data_alloc(q);
++	if (IS_ERR(iqd)) {
++		kobject_put(&eq->kobj);
++		return PTR_ERR(iqd);
++	}
++
++	blk_stat_enable_accounting(q);
++
++	eq->elevator_data = iqd;
++	q->elevator = eq;
++
++	return 0;
++}
++
++static void i10_exit_sched(struct elevator_queue *e)
++{
++	struct i10_queue_data *iqd = e->elevator_data;
++
++	kfree(iqd);
++}
++
++enum hrtimer_restart i10_hctx_timeout_handler(struct hrtimer *timer)
++{
++	struct i10_hctx_queue *ihq =
++		container_of(timer, struct i10_hctx_queue,
++			dispatch_timer);
++
++	ihq->state = I10_STATE_DISPATCH;
++	blk_mq_run_hw_queue(ihq->hctx, true);
++
++	return HRTIMER_NORESTART;
++}
++
++static void i10_hctx_queue_reset(struct i10_hctx_queue *ihq)
++{
++	ihq->qlen_nr = 0;
++	ihq->qlen_bytes = 0;
++	ihq->state = I10_STATE_BATCH;
++}
++
++static int i10_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
++{
++	struct i10_hctx_queue *ihq;
++
++	ihq = kzalloc_node(sizeof(*ihq), GFP_KERNEL, hctx->numa_node);
++	if (!ihq)
++		return -ENOMEM;
++
++	spin_lock_init(&ihq->lock);
++	INIT_LIST_HEAD(&ihq->rq_list);
++
++	ihq->hctx = hctx;
++	ihq->batch_nr = 0;
++	ihq->batch_bytes = 0;
++	ihq->batch_timeout = 0;
++
++	hrtimer_init(&ihq->dispatch_timer,
++		CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++	ihq->dispatch_timer.function = &i10_hctx_timeout_handler;
++
++	i10_hctx_queue_reset(ihq);
++
++	hctx->sched_data = ihq;
++
++	return 0;
++}
++
++static void i10_exit_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
++{
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	hrtimer_cancel(&ihq->dispatch_timer);
++	kfree(hctx->sched_data);
++}
++
++static bool i10_hctx_bio_merge(struct blk_mq_hw_ctx *hctx, struct bio *bio,
++		unsigned int nr_segs)
++{
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++	struct list_head *rq_list = &ihq->rq_list;
++	bool merged;
++
++	spin_lock(&ihq->lock);
++	merged = blk_bio_list_merge(hctx->queue, rq_list, bio, nr_segs);
++	spin_unlock(&ihq->lock);
++
++	if (merged && bio_data_dir(bio) == WRITE)
++		ihq->qlen_bytes += bio->bi_iter.bi_size;
++
++	return merged;
++}
++
++/*
++ * The batch size can be adjusted dynamically on a per-hctx basis.
++ * Use per-hctx variables in that case.
++ */
++static inline unsigned int i10_hctx_batch_nr(struct blk_mq_hw_ctx *hctx)
++{
++	struct i10_queue_data *iqd = hctx->queue->elevator->elevator_data;
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	return ihq->batch_nr ?
++		ihq->batch_nr : iqd->def_batch_nr;
++}
++
++static inline unsigned int i10_hctx_batch_bytes(struct blk_mq_hw_ctx *hctx)
++{
++	struct i10_queue_data *iqd = hctx->queue->elevator->elevator_data;
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	return ihq->batch_bytes ?
++		ihq->batch_bytes : iqd->def_batch_bytes;
++}
++
++static inline unsigned int i10_hctx_batch_timeout(struct blk_mq_hw_ctx *hctx)
++{
++	struct i10_queue_data *iqd = hctx->queue->elevator->elevator_data;
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	return ihq->batch_timeout ?
++		ihq->batch_timeout : iqd->def_batch_timeout;
++}
++
++static void i10_hctx_insert_update(struct i10_hctx_queue *ihq,
++				struct request *rq)
++{
++	if (rq_data_dir(rq) == WRITE)
++		ihq->qlen_bytes += blk_rq_bytes(rq);
++	ihq->qlen_nr++;
++}
++
++static void i10_hctx_insert_requests(struct blk_mq_hw_ctx *hctx,
++				struct list_head *rq_list, bool at_head)
++{
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++	struct request *rq, *next;
++
++	list_for_each_entry_safe(rq, next, rq_list, queuelist) {
++		struct list_head *head = &ihq->rq_list;
++
++		spin_lock(&ihq->lock);
++		if (at_head)
++			list_move(&rq->queuelist, head);
++		else
++			list_move_tail(&rq->queuelist, head);
++		i10_hctx_insert_update(ihq, rq);
++		blk_mq_sched_request_inserted(rq);
++		spin_unlock(&ihq->lock);
++	}
++
++	/* Start a new timer */
++	if (ihq->state == I10_STATE_BATCH &&
++	   !hrtimer_active(&ihq->dispatch_timer))
++		hrtimer_start(&ihq->dispatch_timer,
++			ns_to_ktime(i10_hctx_batch_timeout(hctx)
++				* NSEC_PER_USEC),
++			HRTIMER_MODE_REL);
++}
++
++static struct request *i10_hctx_dispatch_request(struct blk_mq_hw_ctx *hctx)
++{
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++	struct request *rq;
++
++	spin_lock(&ihq->lock);
++	rq = list_first_entry_or_null(&ihq->rq_list,
++				struct request, queuelist);
++	if (rq)
++		list_del_init(&rq->queuelist);
++	else
++		i10_hctx_queue_reset(ihq);
++	spin_unlock(&ihq->lock);
++
++	return rq;
++}
++
++static inline bool i10_hctx_dispatch_now(struct blk_mq_hw_ctx *hctx)
++{
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	return (ihq->qlen_nr >= i10_hctx_batch_nr(hctx)) ||
++		(ihq->qlen_bytes >= i10_hctx_batch_bytes(hctx));
++}
++
++/*
++ * Return true if we are in the dispatching state.
++ */
++static bool i10_hctx_has_work(struct blk_mq_hw_ctx *hctx)
++{
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	if (ihq->state == I10_STATE_BATCH) {
++		if (i10_hctx_dispatch_now(hctx)) {
++			ihq->state = I10_STATE_DISPATCH;
++			if (hrtimer_active(&ihq->dispatch_timer))
++				hrtimer_cancel(&ihq->dispatch_timer);
++		}
++	}
++
++	return (ihq->state == I10_STATE_DISPATCH);
++}
++
++#define I10_DEF_BATCH_SHOW_STORE(name)					\
++static ssize_t i10_def_batch_##name##_show(struct elevator_queue *e,	\
++				char *page)				\
++{									\
++	struct i10_queue_data *iqd = e->elevator_data;			\
++									\
++	return sprintf(page, "%u\n", iqd->def_batch_##name);		\
++}									\
++									\
++static ssize_t i10_def_batch_##name##_store(struct elevator_queue *e,	\
++			const char *page, size_t count)			\
++{									\
++	struct i10_queue_data *iqd = e->elevator_data;			\
++	unsigned long long value;					\
++	int ret;							\
++									\
++	ret = kstrtoull(page, 10, &value);				\
++	if (ret)							\
++		return ret;						\
++									\
++	iqd->def_batch_##name = value;					\
++									\
++	return count;							\
++}
++I10_DEF_BATCH_SHOW_STORE(nr);
++I10_DEF_BATCH_SHOW_STORE(bytes);
++I10_DEF_BATCH_SHOW_STORE(timeout);
++#undef I10_DEF_BATCH_SHOW_STORE
++
++#define I10_SCHED_ATTR(name)	\
++	__ATTR(batch_##name, 0644, i10_def_batch_##name##_show, i10_def_batch_##name##_store)
++static struct elv_fs_entry i10_sched_attrs[] = {
++	I10_SCHED_ATTR(nr),
++	I10_SCHED_ATTR(bytes),
++	I10_SCHED_ATTR(timeout),
++	__ATTR_NULL
++};
++#undef I10_SCHED_ATTR
++
++#ifdef CONFIG_BLK_DEBUG_FS
++#define I10_DEBUGFS_SHOW(name)	\
++static int i10_hctx_batch_##name##_show(void *data, struct seq_file *m)	\
++{									\
++	struct blk_mq_hw_ctx *hctx = data;				\
++	struct i10_hctx_queue *ihq = hctx->sched_data;			\
++									\
++	seq_printf(m, "%u\n", ihq->batch_##name);			\
++	return 0;							\
++}									\
++									\
++static int i10_hctx_qlen_##name##_show(void *data, struct seq_file *m)	\
++{									\
++	struct blk_mq_hw_ctx *hctx = data;				\
++	struct i10_hctx_queue *ihq = hctx->sched_data;			\
++									\
++	seq_printf(m, "%u\n", ihq->qlen_##name);			\
++	return 0;							\
++}
++I10_DEBUGFS_SHOW(nr);
++I10_DEBUGFS_SHOW(bytes);
++#undef I10_DEBUGFS_SHOW
++
++static int i10_hctx_state_show(void *data, struct seq_file *m)
++{
++	struct blk_mq_hw_ctx *hctx = data;
++	struct i10_hctx_queue *ihq = hctx->sched_data;
++
++	seq_printf(m, "%d\n", ihq->state);
++	return 0;
++}
++
++#define I10_HCTX_QUEUE_ATTR(name)					\
++	{"batch_" #name, 0400, i10_hctx_batch_##name##_show},		\
++	{"qlen_" #name, 0400, i10_hctx_qlen_##name##_show}
++static const struct blk_mq_debugfs_attr i10_hctx_debugfs_attrs[] = {
++	I10_HCTX_QUEUE_ATTR(nr),
++	I10_HCTX_QUEUE_ATTR(bytes),
++	{"state", 0400, i10_hctx_state_show},
++	{},
++};
++#undef I10_HCTX_QUEUE_ATTR
++#endif
++
++static struct elevator_type i10_sched = {
++	.ops = {
++		.init_sched = i10_init_sched,
++		.exit_sched = i10_exit_sched,
++		.init_hctx = i10_init_hctx,
++		.exit_hctx = i10_exit_hctx,
++		.bio_merge = i10_hctx_bio_merge,
++		.insert_requests = i10_hctx_insert_requests,
++		.dispatch_request = i10_hctx_dispatch_request,
++		.has_work = i10_hctx_has_work,
++	},
++#ifdef CONFIG_BLK_DEBUG_FS
++	.hctx_debugfs_attrs = i10_hctx_debugfs_attrs,
++#endif
++	.elevator_attrs = i10_sched_attrs,
++	.elevator_name = "i10",
++	.elevator_owner = THIS_MODULE,
++};
++
++static int __init i10_init(void)
++{
++	return elv_register(&i10_sched);
++}
++
++static void __exit i10_exit(void)
++{
++	elv_unregister(&i10_sched);
++}
++
++module_init(i10_init);
++module_exit(i10_exit);
++
++MODULE_AUTHOR("Jaehyun Hwang, Qizhe Cai, Midhul Vuppalapati, Rachit Agarwal");
++MODULE_LICENSE("GPLv2");
++MODULE_DESCRIPTION("i10 I/O scheduler");
+-- 
+2.7.4
+
+From 890ac858741436a40c274efb3514c5f6a96c7c80 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:10:06 +0100
+Subject: [PATCH] ZEN: INTERACTIVE: Base config item
+
+---
+ init/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 9f6345d48d220..477671290175d 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -96,6 +96,12 @@ config THREAD_INFO_IN_TASK
+ 
+ menu "General setup"
+ 
++config ZEN_INTERACTIVE
++	bool "Tune kernel for interactivity"
++	default y
++	help
++	  Tunes the kernel for responsiveness at the cost of throughput and power usage.
++
+ config BROKEN
+ 	bool
+ 
+From 7e5629d0fc7ed407babc036c1bc7910d9c73dbef Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:28:13 +0100
+Subject: [PATCH] ZEN: INTERACTIVE: Tune CFS for interactivity
+
+---
+ init/Kconfig        |  8 ++++++++
+ kernel/sched/fair.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index e9e7b6ca7470e..400946237490b 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -112,6 +112,14 @@ config ZEN_INTERACTIVE
+ 	    Mem dirty before sync writeback:  20 %  ->  50 %
+ 	    Background-reclaim hugepages...:    no  -> yes
+ 
++	  --- CFS CPU Scheduler ----------------------------------
++
++	    Scheduling latency.............:   6    ->   4    ms
++	    Minimal granularity............:   0.75 ->   0.4  ms
++	    Wakeup granularity.............:   1    ->   0.5  ms
++	    CPU migration cost.............:   0.5  ->   0.25 ms
++	    Bandwidth slice size...........:   5    ->   3    ms
++
+ config BROKEN
+ 	bool
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index ae7ceba8fd4f2..e5d44fd075fb6 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -35,8 +35,13 @@
+  *
+  * (default: 6ms * (1 + ilog(ncpus)), units: nanoseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_latency			= 4000000ULL;
++static unsigned int normalized_sysctl_sched_latency	= 4000000ULL;
++#else
+ unsigned int sysctl_sched_latency			= 6000000ULL;
+ static unsigned int normalized_sysctl_sched_latency	= 6000000ULL;
++#endif
+ 
+ /*
+  * The initial- and re-scaling of tunables is configurable
+@@ -56,13 +61,22 @@ enum sched_tunable_scaling sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_L
+  *
+  * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_min_granularity			= 400000ULL;
++static unsigned int normalized_sysctl_sched_min_granularity	= 400000ULL;
++#else
+ unsigned int sysctl_sched_min_granularity			= 750000ULL;
+ static unsigned int normalized_sysctl_sched_min_granularity	= 750000ULL;
++#endif
+ 
+ /*
+  * This value is kept at sysctl_sched_latency/sysctl_sched_min_granularity
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++static unsigned int sched_nr_latency = 10;
++#else
+ static unsigned int sched_nr_latency = 8;
++#endif
+ 
+ /*
+  * After fork, child runs first. If set to 0 (default) then
+@@ -79,10 +93,17 @@ unsigned int sysctl_sched_child_runs_first __read_mostly;
+  *
+  * (default: 1 msec * (1 + ilog(ncpus)), units: nanoseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_wakeup_granularity			= 500000UL;
++static unsigned int normalized_sysctl_sched_wakeup_granularity	= 500000UL;
++
++const_debug unsigned int sysctl_sched_migration_cost	= 250000UL;
++#else
+ unsigned int sysctl_sched_wakeup_granularity			= 1000000UL;
+ static unsigned int normalized_sysctl_sched_wakeup_granularity	= 1000000UL;
+ 
+ const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
++#endif
+ 
+ int sched_thermal_decay_shift;
+ static int __init setup_sched_thermal_decay_shift(char *str)
+@@ -126,8 +147,12 @@ int __weak arch_asym_cpu_priority(int cpu)
+  *
+  * (default: 5 msec, units: microseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_cfs_bandwidth_slice		= 3000UL;
++#else
+ unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
+ #endif
++#endif
+ 
+ static inline void update_load_add(struct load_weight *lw, unsigned long inc)
+ {
+From 0e9fea26940d7e6e784dcf57909428138b8109e8 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:28:46 +0100
+Subject: [PATCH] ZEN: INTERACTIVE: Add help text for the MuQSS tweaks
+
+The tweaks themselves get merged with the MuQSS scheduler.
+---
+ init/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 400946237490b..ca49a7e10bcf5 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -120,6 +120,12 @@ config ZEN_INTERACTIVE
+ 	    CPU migration cost.............:   0.5  ->   0.25 ms
+ 	    Bandwidth slice size...........:   5    ->   3    ms
+ 
++	  --- MuQSS CPU Scheduler --------------------------------
++
++	    Scheduling interval............:   6    ->   4    ms
++	    ISO task max realtime use......:  70 %  ->  25 %
++	    Yield type.....................:   1    ->   0
++
+ config BROKEN
+ 	bool
+ 
+From 513af58e2e4aa8267b1eebc1cd156e3e2a2a33e3 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 25 Nov 2019 22:53:25 +0100
+Subject: [PATCH] ZEN: Add CONFIG to rename the mq-deadline scheduler
+
+---
+ block/Kconfig.iosched | 9 +++++++++
+ block/elevator.c      | 4 ++++
+ block/mq-deadline.c   | 4 ++++
+ 3 files changed, 17 insertions(+)
+
+diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
+index 2f2158e05a91c..92a47e48fb3ed 100644
+--- a/block/Kconfig.iosched
++++ b/block/Kconfig.iosched
+@@ -9,6 +9,15 @@ config MQ_IOSCHED_DEADLINE
+ 	help
+ 	  MQ version of the deadline IO scheduler.
+ 
++config MQ_IOSCHED_DEADLINE_NODEFAULT
++	bool "Rename mq-deadline scheduler to mq-deadline-nodefault"
++	depends on MQ_IOSCHED_DEADLINE
++	default n
++	help
++	  This renames the mq-deadline scheduler to "mq-deadline-nodefault" and
++	  also drops its alias of "deadline". This can prevent existing
++	  userspace from forcing this scheduler over the kernel's choice.
++
+ config MQ_IOSCHED_KYBER
+ 	tristate "Kyber I/O scheduler"
+ 	default y
+diff --git a/block/elevator.c b/block/elevator.c
+index 293c5c81397a1..90181ad94ebf3 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -624,7 +624,11 @@ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
+ 
++#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++	return elevator_get(q, "mq-deadline-nodefault", false);
++#else
+ 	return elevator_get(q, "mq-deadline", false);
++#endif
+ }
+ 
+ /*
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 800ac902809b8..89b56d4526f55 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -798,8 +798,12 @@ static struct elevator_type mq_deadline = {
+ 	.queue_debugfs_attrs = deadline_queue_debugfs_attrs,
+ #endif
+ 	.elevator_attrs = deadline_attrs,
++#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
++	.elevator_name = "mq-deadline-nodefault",
++#else
+ 	.elevator_name = "mq-deadline",
+ 	.elevator_alias = "deadline",
++#endif
+ 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+ 	.elevator_owner = THIS_MODULE,
+ };
+From 9b6c7af596e209356850e0991969df68f396aea6 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:19:11 +0100
+Subject: [PATCH] ZEN: INTERACTIVE: Increase default writeback thresholds
+
+---
+ init/Kconfig        | 5 +++++
+ mm/page-writeback.c | 8 ++++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index e8e14239a1ff8..795a23ce38c45 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -106,6 +106,11 @@ config ZEN_INTERACTIVE
+ 
+ 	    Default scheduler.........: mq-deadline -> bfq
+ 
++	  --- Virtual Memory Subsystem ---------------------------
++
++	    Mem dirty before bg writeback..:  10 %  ->  20 %
++	    Mem dirty before sync writeback:  20 %  ->  50 %
++
+ config BROKEN
+ 	bool
+ 
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 586042472ac90..b0a26820f7904 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -71,7 +71,11 @@ static long ratelimit_pages = 32;
+ /*
+  * Start background writeback (via writeback threads) at this percentage
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++int dirty_background_ratio = 20;
++#else
+ int dirty_background_ratio = 10;
++#endif
+ 
+ /*
+  * dirty_background_bytes starts at 0 (disabled) so that it is a function of
+@@ -88,7 +92,11 @@ int vm_highmem_is_dirtyable;
+ /*
+  * The generator of dirty data starts writeback at this percentage
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++int vm_dirty_ratio = 50;
++#else
+ int vm_dirty_ratio = 20;
++#endif
+ 
+ /*
+  * vm_dirty_bytes starts at 0 (disabled) so that it is a function of
+From fade4cc2bf56ce6c563c04764224b6b84a45587f Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:27:16 +0100
+Subject: [PATCH] ZEN: INTERACTIVE: Tune ondemand governor for interactivity
+
+4.10:
+During some personal testing with the Dolphin emulator, MuQSS has
+serious problems scaling its frequencies causing poor performance where
+boosting the CPU frequencies would have fixed them.  Reducing the
+up_threshold to 45 with MuQSS appears to fix the issue, letting the
+introduction to "Star Wars: Rogue Leader" run at 100% speed versus about
+80% on my test system.
+
+Also, lets refactor the definitions and include some indentation to help
+the reader discern what the scope of all the macros are.
+
+5.4:
+On the last custom kernel benchmark from Phoronix with Xanmod, Michael
+configured all the kernels to run using ondemand instead of the kernel's
+default selection [1].  This reminded me that another option outside of
+the kernels control is the user's choice to change the cpufreq governor,
+for better or for worse.
+
+In Liquorix, performance is the default governor whether you're running
+acpi-cpufreq or intel-pstate.  I expect laptop users to install TLP or
+LMT to control the power balance on their system, especially when
+they're plugged in or on battery.  However, it's pretty clear to me a
+lot of people would choose ondemand over performance since it's not
+obvious it has huge performance ramifications with MuQSS, and ondemand
+otherwise is "good enough" for most people.
+
+Lets codify lower up thresholds for MuQSS to more closely synergize with
+its aggressive thread migration behavior.  This way when ondemand is
+configured, you get sort of a "performance-lite" type of result but with
+the power savings you expect when leaving the running system idle.
+
+[1] https://www.phoronix.com/scan.php?page=article&item=xanmod-2020-kernel
+---
+ drivers/cpufreq/cpufreq_ondemand.c | 14 +++++++++++++-
+ init/Kconfig                       |  4 ++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index ac361a8b1d3bb..ccd127945103b 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
+@@ -18,10 +18,22 @@
+ #include "cpufreq_ondemand.h"
+ 
+ /* On-demand governor macros */
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_SCHED_MUQSS)
++/* MuQSS is less likely to keep a single threaded task on the same core, so
++   have on-demand run at max speed from a much lower core utilization */
++#define DEF_FREQUENCY_UP_THRESHOLD		(40)
++#define MICRO_FREQUENCY_UP_THRESHOLD		(45)
++#define DEF_SAMPLING_DOWN_FACTOR		(5)
++#elif defined(CONFIG_ZEN_INTERACTIVE)
+ #define DEF_FREQUENCY_UP_THRESHOLD		(80)
++#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
++#define DEF_SAMPLING_DOWN_FACTOR		(5)
++#else
++#define DEF_FREQUENCY_UP_THRESHOLD		(80)
++#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
+ #define DEF_SAMPLING_DOWN_FACTOR		(1)
++#endif
+ #define MAX_SAMPLING_DOWN_FACTOR		(100000)
+-#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
+ #define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(10000)
+ #define MIN_FREQUENCY_UP_THRESHOLD		(1)
+ #define MAX_FREQUENCY_UP_THRESHOLD		(100)
+diff --git a/init/Kconfig b/init/Kconfig
+index ca49a7e10bcf5..24ae3647c6d5e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -119,12 +119,16 @@ config ZEN_INTERACTIVE
+ 	    Wakeup granularity.............:   1    ->   0.5  ms
+ 	    CPU migration cost.............:   0.5  ->   0.25 ms
+ 	    Bandwidth slice size...........:   5    ->   3    ms
++	    Ondemand sampling down factor..:   1    ->   5
+ 
+ 	  --- MuQSS CPU Scheduler --------------------------------
+ 
+ 	    Scheduling interval............:   6    ->   4    ms
+ 	    ISO task max realtime use......:  70 %  ->  25 %
+ 	    Yield type.....................:   1    ->   0
++	    Ondemand default freq up thresh:  80    ->  40
++	    Ondemand micro freq up thresh..:  95    ->  45
++	    Ondemand sampling down factor..:   1    ->   5
+ 
+ config BROKEN
+ 	bool
+From b5e9497d44347c16e732f6ea8838a79a64694b36 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:21:09 +0100
+Subject: [PATCH] ZEN: INTERACTIVE: Enable background reclaim of hugepages
+
+Use [defer+madvise] as default khugepaged defrag strategy:
+
+For some reason, the default strategy to respond to THP fault fallbacks
+is still just madvise, meaning stall if the program wants transparent
+hugepages, but don't trigger a background reclaim / compaction if THP
+begins to fail allocations.  This creates a snowball affect where we
+still use the THP code paths, but we almost always fail once a system
+has been active and busy for a while.
+
+The option "defer" was created for interactive systems where THP can
+still improve performance.  If we have to fallback to a regular page due
+to an allocation failure or anything else, we will trigger a background
+reclaim and compaction so future THP attempts succeed and previous
+attempts eventually have their smaller pages combined without stalling
+running applications.
+
+We still want madvise to stall applications that explicitely want THP,
+so defer+madvise _does_ make a ton of sense.  Make it the default for
+interactive systems, especially if the kernel maintainer left
+transparent hugepages on "always".
+
+Reasoning and details in the original patch: https://lwn.net/Articles/711248/
+---
+ init/Kconfig     | 1 +
+ mm/huge_memory.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 795a23ce38c45..e9e7b6ca7470e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -110,6 +110,7 @@ config ZEN_INTERACTIVE
+ 
+ 	    Mem dirty before bg writeback..:  10 %  ->  20 %
+ 	    Mem dirty before sync writeback:  20 %  ->  50 %
++	    Background-reclaim hugepages...:    no  -> yes
+ 
+ config BROKEN
+ 	bool
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ec2bb93f74314..28af028951a3a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -53,7 +53,11 @@ unsigned long transparent_hugepage_flags __read_mostly =
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
+ 	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
+ #endif
++#ifdef CONFIG_ZEN_INTERACTIVE
++	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG)|
++#else
+ 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
++#endif
+ 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
+ 	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
+ 
+From 9a2e0d950bfd77fb51a42a5fc7e81a9187606c38 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 17:59:54 +0100
+Subject: [PATCH] ZEN: Add VHBA driver
+
+remote git://git.code.sf.net/p/cdemu/code
+tag    vhba-module-20200106
+---
+ drivers/scsi/Kconfig       |    2 +
+ drivers/scsi/Makefile      |    1 +
+ drivers/scsi/vhba/Kconfig  |    9 +
+ drivers/scsi/vhba/Makefile |    4 +
+ drivers/scsi/vhba/vhba.c   | 1086 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 1102 insertions(+)
+ create mode 100644 drivers/scsi/vhba/Kconfig
+ create mode 100644 drivers/scsi/vhba/Makefile
+ create mode 100644 drivers/scsi/vhba/vhba.c
+
+diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
+index 701b61ec76eed..141cc881e2382 100644
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -1528,4 +1528,6 @@ endif # SCSI_LOWLEVEL
+ 
+ source "drivers/scsi/device_handler/Kconfig"
+ 
++source "drivers/scsi/vhba/Kconfig"
++
+ endmenu
+diff --git a/drivers/scsi/Makefile b/drivers/scsi/Makefile
+index c00e3dd57990c..97546650b6e51 100644
+--- a/drivers/scsi/Makefile
++++ b/drivers/scsi/Makefile
+@@ -153,6 +153,7 @@ obj-$(CONFIG_CHR_DEV_SCH)	+= ch.o
+ obj-$(CONFIG_SCSI_ENCLOSURE)	+= ses.o
+ 
+ obj-$(CONFIG_SCSI_HISI_SAS) += hisi_sas/
++obj-$(CONFIG_VHBA)		+= vhba/
+ 
+ # This goes last, so that "real" scsi devices probe earlier
+ obj-$(CONFIG_SCSI_DEBUG)	+= scsi_debug.o
+diff --git a/drivers/scsi/vhba/Kconfig b/drivers/scsi/vhba/Kconfig
+new file mode 100644
+index 0000000000000..e70a381fe3dff
+--- /dev/null
++++ b/drivers/scsi/vhba/Kconfig
+@@ -0,0 +1,9 @@
++config VHBA
++	tristate "Virtual (SCSI) Host Bus Adapter"
++	depends on SCSI
++	help
++	  This is the in-kernel part of CDEmu, a CD/DVD-ROM device
++	  emulator.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called vhba.
+diff --git a/drivers/scsi/vhba/Makefile b/drivers/scsi/vhba/Makefile
+new file mode 100644
+index 0000000000000..25219d1193b4a
+--- /dev/null
++++ b/drivers/scsi/vhba/Makefile
+@@ -0,0 +1,4 @@
++VHBA_VERSION := 20200106
++
++obj-$(CONFIG_VHBA)		+= vhba.o
++ccflags-y := -DVHBA_VERSION=\"$(VHBA_VERSION)\" -Werror
+diff --git a/drivers/scsi/vhba/vhba.c b/drivers/scsi/vhba/vhba.c
+new file mode 100644
+index 0000000000000..7655be66fbe60
+--- /dev/null
++++ b/drivers/scsi/vhba/vhba.c
+@@ -0,0 +1,1086 @@
++/*
++ * vhba.c
++ *
++ * Copyright (C) 2007-2012 Chia-I Wu <b90201047 AT ntu DOT edu DOT tw>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include <linux/version.h>
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/highmem.h>
++#include <linux/fs.h>
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0)
++#include <linux/sched/signal.h>
++#else
++#include <linux/sched.h>
++#endif
++#include <linux/platform_device.h>
++#include <linux/miscdevice.h>
++#include <linux/poll.h>
++#include <linux/slab.h>
++#include <linux/scatterlist.h>
++#ifdef CONFIG_COMPAT
++#include <linux/compat.h>
++#endif
++#include <asm/uaccess.h>
++#include <scsi/scsi.h>
++#include <scsi/scsi_host.h>
++#include <scsi/scsi_cmnd.h>
++#include <scsi/scsi_device.h>
++
++
++MODULE_AUTHOR("Chia-I Wu");
++MODULE_VERSION(VHBA_VERSION);
++MODULE_DESCRIPTION("Virtual SCSI HBA");
++MODULE_LICENSE("GPL");
++
++#ifdef DEBUG
++#define DPRINTK(fmt, args...) printk(KERN_DEBUG "%s: " fmt, __FUNCTION__, ## args)
++#else
++#define DPRINTK(fmt, args...)
++#endif
++
++/* scmd_dbg was introduced in 3.15 */
++#ifndef scmd_dbg
++#define scmd_dbg(scmd, fmt, a...)       \
++    dev_dbg(&(scmd)->device->sdev_gendev, fmt, ##a)
++#endif
++
++#define VHBA_MAX_SECTORS_PER_IO 256
++#define VHBA_MAX_BUS 16
++#define VHBA_MAX_ID 16 /* Usually 8 or 16 */
++#define VHBA_MAX_DEVICES (VHBA_MAX_BUS * (VHBA_MAX_ID-1))
++#define VHBA_CAN_QUEUE 32
++#define VHBA_INVALID_BUS -1
++#define VHBA_INVALID_ID -1
++#define VHBA_KBUF_SIZE PAGE_SIZE
++
++#define DATA_TO_DEVICE(dir) ((dir) == DMA_TO_DEVICE || (dir) == DMA_BIDIRECTIONAL)
++#define DATA_FROM_DEVICE(dir) ((dir) == DMA_FROM_DEVICE || (dir) == DMA_BIDIRECTIONAL)
++
++
++enum vhba_req_state {
++    VHBA_REQ_FREE,
++    VHBA_REQ_PENDING,
++    VHBA_REQ_READING,
++    VHBA_REQ_SENT,
++    VHBA_REQ_WRITING,
++};
++
++struct vhba_command {
++    struct scsi_cmnd *cmd;
++    unsigned long serial_number;
++    int status;
++    struct list_head entry;
++};
++
++struct vhba_device {
++    int bus; /* aka. channel */
++    int id;
++    int num;
++    spinlock_t cmd_lock;
++    struct list_head cmd_list;
++    wait_queue_head_t cmd_wq;
++    atomic_t refcnt;
++
++    unsigned char *kbuf;
++    size_t kbuf_size;
++
++    unsigned long cmd_count;
++};
++
++struct vhba_host {
++    struct Scsi_Host *shost;
++    spinlock_t cmd_lock;
++    int cmd_next;
++    struct vhba_command commands[VHBA_CAN_QUEUE];
++    spinlock_t dev_lock;
++    struct vhba_device *devices[VHBA_MAX_DEVICES];
++    int num_devices;
++    DECLARE_BITMAP(chgmap, VHBA_MAX_DEVICES);
++    int chgtype[VHBA_MAX_DEVICES];
++    struct work_struct scan_devices;
++};
++
++#define MAX_COMMAND_SIZE 16
++
++struct vhba_request {
++    __u32 tag;
++    __u32 lun;
++    __u8 cdb[MAX_COMMAND_SIZE];
++    __u8 cdb_len;
++    __u32 data_len;
++};
++
++struct vhba_response {
++    __u32 tag;
++    __u32 status;
++    __u32 data_len;
++};
++
++static struct vhba_command *vhba_alloc_command (void);
++static void vhba_free_command (struct vhba_command *vcmd);
++
++static struct platform_device vhba_platform_device;
++
++static struct vhba_device *vhba_device_alloc (void)
++{
++    struct vhba_device *vdev;
++
++    vdev = kzalloc(sizeof(struct vhba_device), GFP_KERNEL);
++    if (!vdev) {
++        return NULL;
++    }
++
++    vdev->bus = VHBA_INVALID_BUS;
++    vdev->id = VHBA_INVALID_ID;
++    spin_lock_init(&vdev->cmd_lock);
++    INIT_LIST_HEAD(&vdev->cmd_list);
++    init_waitqueue_head(&vdev->cmd_wq);
++    atomic_set(&vdev->refcnt, 1);
++
++    vdev->kbuf = NULL;
++    vdev->kbuf_size = 0;
++
++    vdev->cmd_count = 0;
++
++    return vdev;
++}
++
++static void devnum_to_bus_and_id(int devnum, int *bus, int *id)
++{
++    int a = devnum / (VHBA_MAX_ID-1);
++    int b = devnum % (VHBA_MAX_ID-1);
++
++    *bus = a;
++    *id  = b + 1;
++}
++
++static int bus_and_id_to_devnum(int bus, int id)
++{
++    return (bus * (VHBA_MAX_ID-1)) + id - 1;
++}
++
++static void vhba_device_put (struct vhba_device *vdev)
++{
++    if (atomic_dec_and_test(&vdev->refcnt)) {
++        kfree(vdev);
++    }
++}
++
++static struct vhba_device *vhba_device_get (struct vhba_device *vdev)
++{
++    atomic_inc(&vdev->refcnt);
++
++    return vdev;
++}
++
++static int vhba_device_queue (struct vhba_device *vdev, struct scsi_cmnd *cmd)
++{
++    struct vhba_command *vcmd;
++    unsigned long flags;
++
++    vcmd = vhba_alloc_command();
++    if (!vcmd) {
++        return SCSI_MLQUEUE_HOST_BUSY;
++    }
++
++    vcmd->cmd = cmd;
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    vcmd->serial_number = vdev->cmd_count++;
++    list_add_tail(&vcmd->entry, &vdev->cmd_list);
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    wake_up_interruptible(&vdev->cmd_wq);
++
++    return 0;
++}
++
++static int vhba_device_dequeue (struct vhba_device *vdev, struct scsi_cmnd *cmd)
++{
++    struct vhba_command *vcmd;
++    int retval;
++    unsigned long flags;
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        if (vcmd->cmd == cmd) {
++            list_del_init(&vcmd->entry);
++            break;
++        }
++    }
++
++    /* command not found */
++    if (&vcmd->entry == &vdev->cmd_list) {
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++        return SUCCESS;
++    }
++
++    while (vcmd->status == VHBA_REQ_READING || vcmd->status == VHBA_REQ_WRITING) {
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++        scmd_dbg(cmd, "wait for I/O before aborting\n");
++        schedule_timeout(1);
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++    }
++
++    retval = (vcmd->status == VHBA_REQ_SENT) ? FAILED : SUCCESS;
++
++    vhba_free_command(vcmd);
++
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return retval;
++}
++
++static inline void vhba_scan_devices_add (struct vhba_host *vhost, int bus, int id)
++{
++    struct scsi_device *sdev;
++
++    sdev = scsi_device_lookup(vhost->shost, bus, id, 0);
++    if (!sdev) {
++        scsi_add_device(vhost->shost, bus, id, 0);
++    } else {
++        dev_warn(&vhost->shost->shost_gendev, "tried to add an already-existing device %d:%d:0!\n", bus, id);
++        scsi_device_put(sdev);
++    }
++}
++
++static inline void vhba_scan_devices_remove (struct vhba_host *vhost, int bus, int id)
++{
++    struct scsi_device *sdev;
++
++    sdev = scsi_device_lookup(vhost->shost, bus, id, 0);
++    if (sdev) {
++        scsi_remove_device(sdev);
++        scsi_device_put(sdev);
++    } else {
++        dev_warn(&vhost->shost->shost_gendev, "tried to remove non-existing device %d:%d:0!\n", bus, id);
++    }
++}
++
++static void vhba_scan_devices (struct work_struct *work)
++{
++    struct vhba_host *vhost = container_of(work, struct vhba_host, scan_devices);
++    unsigned long flags;
++    int devnum, change, exists;
++    int bus, id;
++
++    while (1) {
++        spin_lock_irqsave(&vhost->dev_lock, flags);
++
++        devnum = find_first_bit(vhost->chgmap, VHBA_MAX_DEVICES);
++        if (devnum >= VHBA_MAX_DEVICES) {
++            spin_unlock_irqrestore(&vhost->dev_lock, flags);
++            break;
++        }
++        change = vhost->chgtype[devnum];
++        exists = vhost->devices[devnum] != NULL;
++
++        vhost->chgtype[devnum] = 0;
++        clear_bit(devnum, vhost->chgmap);
++
++        spin_unlock_irqrestore(&vhost->dev_lock, flags);
++
++        devnum_to_bus_and_id(devnum, &bus, &id);
++
++        if (change < 0) {
++            dev_dbg(&vhost->shost->shost_gendev, "trying to remove target %d:%d:0\n", bus, id);
++            vhba_scan_devices_remove(vhost, bus, id);
++        } else if (change > 0) {
++            dev_dbg(&vhost->shost->shost_gendev, "trying to add target %d:%d:0\n", bus, id);
++            vhba_scan_devices_add(vhost, bus, id);
++        } else {
++            /* quick sequence of add/remove or remove/add; we determine
++               which one it was by checking if device structure exists */
++            if (exists) {
++                /* remove followed by add: remove and (re)add */
++                dev_dbg(&vhost->shost->shost_gendev, "trying to (re)add target %d:%d:0\n", bus, id);
++                vhba_scan_devices_remove(vhost, bus, id);
++                vhba_scan_devices_add(vhost, bus, id);
++            } else {
++                /* add followed by remove: no-op */
++                dev_dbg(&vhost->shost->shost_gendev, "no-op for target %d:%d:0\n", bus, id);
++            }
++        }
++    }
++}
++
++static int vhba_add_device (struct vhba_device *vdev)
++{
++    struct vhba_host *vhost;
++    int i;
++    unsigned long flags;
++    int bus, id;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    vhba_device_get(vdev);
++
++    spin_lock_irqsave(&vhost->dev_lock, flags);
++    if (vhost->num_devices >= VHBA_MAX_DEVICES) {
++        spin_unlock_irqrestore(&vhost->dev_lock, flags);
++        vhba_device_put(vdev);
++        return -EBUSY;
++    }
++
++    for (i = 0; i < VHBA_MAX_DEVICES; i++) {
++        devnum_to_bus_and_id(i, &bus, &id);
++
++        if (vhost->devices[i] == NULL) {
++            vdev->bus = bus;
++            vdev->id  = id;
++            vdev->num = i;
++            vhost->devices[i] = vdev;
++            vhost->num_devices++;
++            set_bit(i, vhost->chgmap);
++            vhost->chgtype[i]++;
++            break;
++        }
++    }
++    spin_unlock_irqrestore(&vhost->dev_lock, flags);
++
++    schedule_work(&vhost->scan_devices);
++
++    return 0;
++}
++
++static int vhba_remove_device (struct vhba_device *vdev)
++{
++    struct vhba_host *vhost;
++    unsigned long flags;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    spin_lock_irqsave(&vhost->dev_lock, flags);
++    set_bit(vdev->num, vhost->chgmap);
++    vhost->chgtype[vdev->num]--;
++    vhost->devices[vdev->num] = NULL;
++    vhost->num_devices--;
++    vdev->bus = VHBA_INVALID_BUS;
++    vdev->id = VHBA_INVALID_ID;
++    spin_unlock_irqrestore(&vhost->dev_lock, flags);
++
++    vhba_device_put(vdev);
++
++    schedule_work(&vhost->scan_devices);
++
++    return 0;
++}
++
++static struct vhba_device *vhba_lookup_device (int devnum)
++{
++    struct vhba_host *vhost;
++    struct vhba_device *vdev = NULL;
++    unsigned long flags;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    if (likely(devnum < VHBA_MAX_DEVICES)) {
++        spin_lock_irqsave(&vhost->dev_lock, flags);
++        vdev = vhost->devices[devnum];
++        if (vdev) {
++            vdev = vhba_device_get(vdev);
++        }
++
++        spin_unlock_irqrestore(&vhost->dev_lock, flags);
++    }
++
++    return vdev;
++}
++
++static struct vhba_command *vhba_alloc_command (void)
++{
++    struct vhba_host *vhost;
++    struct vhba_command *vcmd;
++    unsigned long flags;
++    int i;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    spin_lock_irqsave(&vhost->cmd_lock, flags);
++
++    vcmd = vhost->commands + vhost->cmd_next++;
++    if (vcmd->status != VHBA_REQ_FREE) {
++        for (i = 0; i < vhost->shost->can_queue; i++) {
++            vcmd = vhost->commands + i;
++
++            if (vcmd->status == VHBA_REQ_FREE) {
++                vhost->cmd_next = i + 1;
++                break;
++            }
++        }
++
++        if (i == vhost->shost->can_queue) {
++            vcmd = NULL;
++        }
++    }
++
++    if (vcmd) {
++        vcmd->status = VHBA_REQ_PENDING;
++    }
++
++    vhost->cmd_next %= vhost->shost->can_queue;
++
++    spin_unlock_irqrestore(&vhost->cmd_lock, flags);
++
++    return vcmd;
++}
++
++static void vhba_free_command (struct vhba_command *vcmd)
++{
++    struct vhba_host *vhost;
++    unsigned long flags;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    spin_lock_irqsave(&vhost->cmd_lock, flags);
++    vcmd->status = VHBA_REQ_FREE;
++    spin_unlock_irqrestore(&vhost->cmd_lock, flags);
++}
++
++static int vhba_queuecommand_lck (struct scsi_cmnd *cmd, void (*done)(struct scsi_cmnd *))
++{
++    struct vhba_device *vdev;
++    int retval;
++
++    scmd_dbg(cmd, "queue %p\n", cmd);
++
++    vdev = vhba_lookup_device(bus_and_id_to_devnum(cmd->device->channel, cmd->device->id));
++    if (!vdev) {
++        scmd_dbg(cmd, "no such device\n");
++
++        cmd->result = DID_NO_CONNECT << 16;
++        done(cmd);
++
++        return 0;
++    }
++
++    cmd->scsi_done = done;
++    retval = vhba_device_queue(vdev, cmd);
++
++    vhba_device_put(vdev);
++
++    return retval;
++}
++
++#ifdef DEF_SCSI_QCMD
++DEF_SCSI_QCMD(vhba_queuecommand)
++#else
++#define vhba_queuecommand vhba_queuecommand_lck
++#endif
++
++static int vhba_abort (struct scsi_cmnd *cmd)
++{
++    struct vhba_device *vdev;
++    int retval = SUCCESS;
++
++    scmd_dbg(cmd, "abort %p\n", cmd);
++
++    vdev = vhba_lookup_device(bus_and_id_to_devnum(cmd->device->channel, cmd->device->id));
++    if (vdev) {
++        retval = vhba_device_dequeue(vdev, cmd);
++        vhba_device_put(vdev);
++    } else {
++        cmd->result = DID_NO_CONNECT << 16;
++    }
++
++    return retval;
++}
++
++static struct scsi_host_template vhba_template = {
++    .module = THIS_MODULE,
++    .name = "vhba",
++    .proc_name = "vhba",
++    .queuecommand = vhba_queuecommand,
++    .eh_abort_handler = vhba_abort,
++    .can_queue = VHBA_CAN_QUEUE,
++    .this_id = -1,
++    .cmd_per_lun = 1,
++    .max_sectors = VHBA_MAX_SECTORS_PER_IO,
++    .sg_tablesize = 256,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 0, 0)
++    .max_segment_size = VHBA_KBUF_SIZE,
++#endif
++};
++
++static ssize_t do_request (struct vhba_device *vdev, unsigned long cmd_serial_number, struct scsi_cmnd *cmd, char __user *buf, size_t buf_len)
++{
++    struct vhba_request vreq;
++    ssize_t ret;
++
++    scmd_dbg(cmd, "request %lu (%p), cdb 0x%x, bufflen %d, sg count %d\n",
++        cmd_serial_number, cmd, cmd->cmnd[0], scsi_bufflen(cmd), scsi_sg_count(cmd));
++
++    ret = sizeof(vreq);
++    if (DATA_TO_DEVICE(cmd->sc_data_direction)) {
++        ret += scsi_bufflen(cmd);
++    }
++
++    if (ret > buf_len) {
++        scmd_dbg(cmd, "buffer too small (%zd < %zd) for a request\n", buf_len, ret);
++        return -EIO;
++    }
++
++    vreq.tag = cmd_serial_number;
++    vreq.lun = cmd->device->lun;
++    memcpy(vreq.cdb, cmd->cmnd, MAX_COMMAND_SIZE);
++    vreq.cdb_len = cmd->cmd_len;
++    vreq.data_len = scsi_bufflen(cmd);
++
++    if (copy_to_user(buf, &vreq, sizeof(vreq))) {
++        return -EFAULT;
++    }
++
++    if (DATA_TO_DEVICE(cmd->sc_data_direction) && vreq.data_len) {
++        buf += sizeof(vreq);
++
++        if (scsi_sg_count(cmd)) {
++            unsigned char *kaddr, *uaddr;
++            struct scatterlist *sglist = scsi_sglist(cmd);
++            struct scatterlist *sg;
++            int i;
++
++            uaddr = (unsigned char *) buf;
++
++            for_each_sg(sglist, sg, scsi_sg_count(cmd), i) {
++                size_t len = sg->length;
++
++                if (len > vdev->kbuf_size) {
++                    scmd_dbg(cmd, "segment size (%zu) exceeds kbuf size (%zu)!", len, vdev->kbuf_size);
++                    len = vdev->kbuf_size;
++                }
++
++                kaddr = kmap_atomic(sg_page(sg));
++                memcpy(vdev->kbuf, kaddr + sg->offset, len);
++                kunmap_atomic(kaddr);
++
++                if (copy_to_user(uaddr, vdev->kbuf, len)) {
++                    return -EFAULT;
++                }
++                uaddr += len;
++            }
++        } else {
++            if (copy_to_user(buf, scsi_sglist(cmd), vreq.data_len)) {
++                return -EFAULT;
++            }
++        }
++    }
++
++    return ret;
++}
++
++static ssize_t do_response (struct vhba_device *vdev, unsigned long cmd_serial_number, struct scsi_cmnd *cmd, const char __user *buf, size_t buf_len, struct vhba_response *res)
++{
++    ssize_t ret = 0;
++
++    scmd_dbg(cmd, "response %lu (%p), status %x, data len %d, sg count %d\n",
++         cmd_serial_number, cmd, res->status, res->data_len, scsi_sg_count(cmd));
++
++    if (res->status) {
++        unsigned char sense_stack[SCSI_SENSE_BUFFERSIZE];
++
++        if (res->data_len > SCSI_SENSE_BUFFERSIZE) {
++            scmd_dbg(cmd, "truncate sense (%d < %d)", SCSI_SENSE_BUFFERSIZE, res->data_len);
++            res->data_len = SCSI_SENSE_BUFFERSIZE;
++        }
++
++        /* Copy via temporary buffer on stack in order to avoid problems
++           with PAX on grsecurity-enabled kernels */
++        if (copy_from_user(sense_stack, buf, res->data_len)) {
++            return -EFAULT;
++        }
++        memcpy(cmd->sense_buffer, sense_stack, res->data_len);
++
++        cmd->result = res->status;
++
++        ret += res->data_len;
++    } else if (DATA_FROM_DEVICE(cmd->sc_data_direction) && scsi_bufflen(cmd)) {
++        size_t to_read;
++
++        if (res->data_len > scsi_bufflen(cmd)) {
++            scmd_dbg(cmd, "truncate data (%d < %d)\n", scsi_bufflen(cmd), res->data_len);
++            res->data_len = scsi_bufflen(cmd);
++        }
++
++        to_read = res->data_len;
++
++        if (scsi_sg_count(cmd)) {
++            unsigned char *kaddr, *uaddr;
++            struct scatterlist *sglist = scsi_sglist(cmd);
++            struct scatterlist *sg;
++            int i;
++
++            uaddr = (unsigned char *)buf;
++
++            for_each_sg(sglist, sg, scsi_sg_count(cmd), i) {
++                size_t len = (sg->length < to_read) ? sg->length : to_read;
++
++                if (len > vdev->kbuf_size) {
++                    scmd_dbg(cmd, "segment size (%zu) exceeds kbuf size (%zu)!", len, vdev->kbuf_size);
++                    len = vdev->kbuf_size;
++                }
++
++                if (copy_from_user(vdev->kbuf, uaddr, len)) {
++                    return -EFAULT;
++                }
++                uaddr += len;
++
++                kaddr = kmap_atomic(sg_page(sg));
++                memcpy(kaddr + sg->offset, vdev->kbuf, len);
++                kunmap_atomic(kaddr);
++
++                to_read -= len;
++                if (to_read == 0) {
++                    break;
++                }
++            }
++        } else {
++            if (copy_from_user(scsi_sglist(cmd), buf, res->data_len)) {
++                return -EFAULT;
++            }
++
++            to_read -= res->data_len;
++        }
++
++        scsi_set_resid(cmd, to_read);
++
++        ret += res->data_len - to_read;
++    }
++
++    return ret;
++}
++
++static inline struct vhba_command *next_command (struct vhba_device *vdev)
++{
++    struct vhba_command *vcmd;
++
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        if (vcmd->status == VHBA_REQ_PENDING) {
++            break;
++        }
++    }
++
++    if (&vcmd->entry == &vdev->cmd_list) {
++        vcmd = NULL;
++    }
++
++    return vcmd;
++}
++
++static inline struct vhba_command *match_command (struct vhba_device *vdev, u32 tag)
++{
++    struct vhba_command *vcmd;
++
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        if (vcmd->serial_number == tag) {
++            break;
++        }
++    }
++
++    if (&vcmd->entry == &vdev->cmd_list) {
++        vcmd = NULL;
++    }
++
++    return vcmd;
++}
++
++static struct vhba_command *wait_command (struct vhba_device *vdev, unsigned long flags)
++{
++    struct vhba_command *vcmd;
++    DEFINE_WAIT(wait);
++
++    while (!(vcmd = next_command(vdev))) {
++        if (signal_pending(current)) {
++            break;
++        }
++
++        prepare_to_wait(&vdev->cmd_wq, &wait, TASK_INTERRUPTIBLE);
++
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++        schedule();
++
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++    }
++
++    finish_wait(&vdev->cmd_wq, &wait);
++    if (vcmd) {
++        vcmd->status = VHBA_REQ_READING;
++    }
++
++    return vcmd;
++}
++
++static ssize_t vhba_ctl_read (struct file *file, char __user *buf, size_t buf_len, loff_t *offset)
++{
++    struct vhba_device *vdev;
++    struct vhba_command *vcmd;
++    ssize_t ret;
++    unsigned long flags;
++
++    vdev = file->private_data;
++
++    /* Get next command */
++    if (file->f_flags & O_NONBLOCK) {
++        /* Non-blocking variant */
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++        vcmd = next_command(vdev);
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++        if (!vcmd) {
++            return -EWOULDBLOCK;
++        }
++    } else {
++        /* Blocking variant */
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++        vcmd = wait_command(vdev, flags);
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++        if (!vcmd) {
++            return -ERESTARTSYS;
++        }
++    }
++
++    ret = do_request(vdev, vcmd->serial_number, vcmd->cmd, buf, buf_len);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    if (ret >= 0) {
++        vcmd->status = VHBA_REQ_SENT;
++        *offset += ret;
++    } else {
++        vcmd->status = VHBA_REQ_PENDING;
++    }
++
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return ret;
++}
++
++static ssize_t vhba_ctl_write (struct file *file, const char __user *buf, size_t buf_len, loff_t *offset)
++{
++    struct vhba_device *vdev;
++    struct vhba_command *vcmd;
++    struct vhba_response res;
++    ssize_t ret;
++    unsigned long flags;
++
++    if (buf_len < sizeof(res)) {
++        return -EIO;
++    }
++
++    if (copy_from_user(&res, buf, sizeof(res))) {
++        return -EFAULT;
++    }
++
++    vdev = file->private_data;
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    vcmd = match_command(vdev, res.tag);
++    if (!vcmd || vcmd->status != VHBA_REQ_SENT) {
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++        DPRINTK("not expecting response\n");
++        return -EIO;
++    }
++    vcmd->status = VHBA_REQ_WRITING;
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    ret = do_response(vdev, vcmd->serial_number, vcmd->cmd, buf + sizeof(res), buf_len - sizeof(res), &res);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    if (ret >= 0) {
++        vcmd->cmd->scsi_done(vcmd->cmd);
++        ret += sizeof(res);
++
++        /* don't compete with vhba_device_dequeue */
++        if (!list_empty(&vcmd->entry)) {
++            list_del_init(&vcmd->entry);
++            vhba_free_command(vcmd);
++        }
++    } else {
++        vcmd->status = VHBA_REQ_SENT;
++    }
++
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return ret;
++}
++
++static long vhba_ctl_ioctl (struct file *file, unsigned int cmd, unsigned long arg)
++{
++    struct vhba_device *vdev = file->private_data;
++    struct vhba_host *vhost;
++    struct scsi_device *sdev;
++
++    switch (cmd) {
++        case 0xBEEF001: {
++            vhost = platform_get_drvdata(&vhba_platform_device);
++            sdev = scsi_device_lookup(vhost->shost, vdev->bus, vdev->id, 0);
++
++            if (sdev) {
++                int id[4] = {
++                    sdev->host->host_no,
++                    sdev->channel,
++                    sdev->id,
++                    sdev->lun
++                };
++
++                scsi_device_put(sdev);
++
++                if (copy_to_user((void *)arg, id, sizeof(id))) {
++                    return -EFAULT;
++                }
++
++                return 0;
++            } else {
++                return -ENODEV;
++            }
++        }
++        case 0xBEEF002: {
++            int device_number = vdev->num;
++            if (copy_to_user((void *)arg, &device_number, sizeof(device_number))) {
++                return -EFAULT;
++            }
++            return 0;
++        }
++    }
++
++    return -ENOTTY;
++}
++
++#ifdef CONFIG_COMPAT
++static long vhba_ctl_compat_ioctl (struct file *file, unsigned int cmd, unsigned long arg)
++{
++    unsigned long compat_arg = (unsigned long)compat_ptr(arg);
++    return vhba_ctl_ioctl(file, cmd, compat_arg);
++}
++#endif
++
++static unsigned int vhba_ctl_poll (struct file *file, poll_table *wait)
++{
++    struct vhba_device *vdev = file->private_data;
++    unsigned int mask = 0;
++    unsigned long flags;
++
++    poll_wait(file, &vdev->cmd_wq, wait);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    if (next_command(vdev)) {
++        mask |= POLLIN | POLLRDNORM;
++    }
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return mask;
++}
++
++static int vhba_ctl_open (struct inode *inode, struct file *file)
++{
++    struct vhba_device *vdev;
++    int retval;
++
++    DPRINTK("open\n");
++
++    /* check if vhba is probed */
++    if (!platform_get_drvdata(&vhba_platform_device)) {
++        return -ENODEV;
++    }
++
++    vdev = vhba_device_alloc();
++    if (!vdev) {
++        return -ENOMEM;
++    }
++
++    vdev->kbuf_size = VHBA_KBUF_SIZE;
++    vdev->kbuf = kmalloc(vdev->kbuf_size, GFP_KERNEL);
++    if (!vdev->kbuf) {
++        return -ENOMEM;
++    }
++
++    if (!(retval = vhba_add_device(vdev))) {
++        file->private_data = vdev;
++    }
++
++    vhba_device_put(vdev);
++
++    return retval;
++}
++
++static int vhba_ctl_release (struct inode *inode, struct file *file)
++{
++    struct vhba_device *vdev;
++    struct vhba_command *vcmd;
++    unsigned long flags;
++
++    DPRINTK("release\n");
++
++    vdev = file->private_data;
++
++    vhba_device_get(vdev);
++    vhba_remove_device(vdev);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        WARN_ON(vcmd->status == VHBA_REQ_READING || vcmd->status == VHBA_REQ_WRITING);
++
++        scmd_dbg(vcmd->cmd, "device released with command %lu (%p)\n", vcmd->serial_number, vcmd->cmd);
++        vcmd->cmd->result = DID_NO_CONNECT << 16;
++        vcmd->cmd->scsi_done(vcmd->cmd);
++
++        vhba_free_command(vcmd);
++    }
++    INIT_LIST_HEAD(&vdev->cmd_list);
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    kfree(vdev->kbuf);
++    vdev->kbuf = NULL;
++
++    vhba_device_put(vdev);
++
++    return 0;
++}
++
++static struct file_operations vhba_ctl_fops = {
++    .owner = THIS_MODULE,
++    .open = vhba_ctl_open,
++    .release = vhba_ctl_release,
++    .read = vhba_ctl_read,
++    .write = vhba_ctl_write,
++    .poll = vhba_ctl_poll,
++    .unlocked_ioctl = vhba_ctl_ioctl,
++#ifdef CONFIG_COMPAT
++    .compat_ioctl = vhba_ctl_compat_ioctl,
++#endif
++};
++
++static struct miscdevice vhba_miscdev = {
++    .minor = MISC_DYNAMIC_MINOR,
++    .name = "vhba_ctl",
++    .fops = &vhba_ctl_fops,
++};
++
++static int vhba_probe (struct platform_device *pdev)
++{
++    struct Scsi_Host *shost;
++    struct vhba_host *vhost;
++    int i;
++
++    shost = scsi_host_alloc(&vhba_template, sizeof(struct vhba_host));
++    if (!shost) {
++        return -ENOMEM;
++    }
++
++    shost->max_channel = VHBA_MAX_BUS-1;
++    shost->max_id = VHBA_MAX_ID;
++    /* we don't support lun > 0 */
++    shost->max_lun = 1;
++    shost->max_cmd_len = MAX_COMMAND_SIZE;
++
++    vhost = (struct vhba_host *)shost->hostdata;
++    memset(vhost, 0, sizeof(*vhost));
++
++    vhost->shost = shost;
++    vhost->num_devices = 0;
++    spin_lock_init(&vhost->dev_lock);
++    spin_lock_init(&vhost->cmd_lock);
++    INIT_WORK(&vhost->scan_devices, vhba_scan_devices);
++    vhost->cmd_next = 0;
++    for (i = 0; i < vhost->shost->can_queue; i++) {
++        vhost->commands[i].status = VHBA_REQ_FREE;
++    }
++
++    platform_set_drvdata(pdev, vhost);
++
++    if (scsi_add_host(shost, &pdev->dev)) {
++        scsi_host_put(shost);
++        return -ENOMEM;
++    }
++
++    return 0;
++}
++
++static int vhba_remove (struct platform_device *pdev)
++{
++    struct vhba_host *vhost;
++    struct Scsi_Host *shost;
++
++    vhost = platform_get_drvdata(pdev);
++    shost = vhost->shost;
++
++    scsi_remove_host(shost);
++    scsi_host_put(shost);
++
++    return 0;
++}
++
++static void vhba_release (struct device * dev)
++{
++    return;
++}
++
++static struct platform_device vhba_platform_device = {
++    .name = "vhba",
++    .id = -1,
++    .dev = {
++        .release = vhba_release,
++    },
++};
++
++static struct platform_driver vhba_platform_driver = {
++    .driver = {
++        .owner = THIS_MODULE,
++        .name = "vhba",
++    },
++    .probe = vhba_probe,
++    .remove = vhba_remove,
++};
++
++static int __init vhba_init (void)
++{
++    int ret;
++
++    ret = platform_device_register(&vhba_platform_device);
++    if (ret < 0) {
++        return ret;
++    }
++
++    ret = platform_driver_register(&vhba_platform_driver);
++    if (ret < 0) {
++        platform_device_unregister(&vhba_platform_device);
++        return ret;
++    }
++
++    ret = misc_register(&vhba_miscdev);
++    if (ret < 0) {
++        platform_driver_unregister(&vhba_platform_driver);
++        platform_device_unregister(&vhba_platform_device);
++        return ret;
++    }
++
++    return 0;
++}
++
++static void __exit vhba_exit(void)
++{
++    misc_deregister(&vhba_miscdev);
++    platform_driver_unregister(&vhba_platform_driver);
++    platform_device_unregister(&vhba_platform_device);
++}
++
++module_init(vhba_init);
++module_exit(vhba_exit);
++
+From 5b3d9f2372600c3b908b1bd0e8c9b8c6ed351fa2 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
+Date: Mon, 3 Aug 2020 21:18:53 +0200
+Subject: [PATCH] ZEN: Add OpenRGB patches
+
+Squashed commit of the following:
+
+commit 942ded8f8652a4b4e6b46d04938bb66f1eac4c78
+Author: Steven Barrett <steven@liquorix.net>
+Date:   Sat Jul 4 21:28:54 2020 -0500
+
+    openrgb: Deduplicate piix4 setup for HUDSON2/KERNCZ SMBUS
+
+    In the original OpenRGB patches, the initialization code for CZ
+    secondary SMBus controllers was copied.  Later, an upstream commit
+    landed in 5.7 stable that combined the initialization code for both
+    primary/secondary smbus channels.
+
+    Combine the initialization code ahead of time so upstream merges
+    correctly with OpenRGB.
+
+    Fixes: https://github.com/zen-kernel/zen-kernel/issues/176
+
+commit a65e3ecf90b24fd44689cc0713af602965ffaf4e
+Author: Steven Barrett <steven@liquorix.net>
+Date:   Wed Jun 17 14:24:20 2020 -0500
+
+    Add OpenRGB patch - 0c45e26c
+
+    Source:
+    https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/master/OpenRGB.patch
+
+    History:
+    https://gitlab.com/CalcProgrammer1/OpenRGB/-/commits/master/OpenRGB.patch
+---
+ drivers/i2c/busses/Kconfig       |   9 +
+ drivers/i2c/busses/Makefile      |   1 +
+ drivers/i2c/busses/i2c-nct6775.c | 647 +++++++++++++++++++++++++++++++
+ drivers/i2c/busses/i2c-piix4.c   |   4 +-
+ 4 files changed, 659 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-nct6775.c
+
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index a49e0ed4a599d..2083d50c15607 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -219,6 +219,15 @@ config I2C_CHT_WC
+ 	  combined with a FUSB302 Type-C port-controller as such it is advised
+ 	  to also select CONFIG_TYPEC_FUSB302=m.
+ 
++config I2C_NCT6775
++	tristate "Nuvoton NCT6775 and compatible SMBus controller"
++	help
++		If you say yes to this option, support will be included for the
++		Nuvoton NCT6775 and compatible SMBus controllers.
++
++		This driver can also be built as a module.  If so, the module
++		will be called i2c-nct6775.
++
+ config I2C_NFORCE2
+ 	tristate "Nvidia nForce2, nForce3 and nForce4"
+ 	depends on PCI
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index 683c49faca05c..5f05ef8e23a63 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -17,6 +17,7 @@ obj-$(CONFIG_I2C_CHT_WC)	+= i2c-cht-wc.o
+ obj-$(CONFIG_I2C_I801)		+= i2c-i801.o
+ obj-$(CONFIG_I2C_ISCH)		+= i2c-isch.o
+ obj-$(CONFIG_I2C_ISMT)		+= i2c-ismt.o
++obj-$(CONFIG_I2C_NCT6775)   += i2c-nct6775.o
+ obj-$(CONFIG_I2C_NFORCE2)	+= i2c-nforce2.o
+ obj-$(CONFIG_I2C_NFORCE2_S4985)	+= i2c-nforce2-s4985.o
+ obj-$(CONFIG_I2C_NVIDIA_GPU)	+= i2c-nvidia-gpu.o
+diff --git a/drivers/i2c/busses/i2c-nct6775.c b/drivers/i2c/busses/i2c-nct6775.c
+new file mode 100644
+index 0000000000000..0462f09520431
+--- /dev/null
++++ b/drivers/i2c/busses/i2c-nct6775.c
+@@ -0,0 +1,647 @@
++/*
++ * i2c-nct6775 - Driver for the SMBus master functionality of
++ *	       Nuvoton NCT677x Super-I/O chips
++ *
++ * Copyright (C) 2019  Adam Honse <calcprogrammer1@gmail.com>
++ *
++ * Derived from nct6775 hwmon driver
++ * Copyright (C) 2012  Guenter Roeck <linux@roeck-us.net>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/jiffies.h>
++#include <linux/platform_device.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
++#include <linux/hwmon-vid.h>
++#include <linux/err.h>
++#include <linux/mutex.h>
++#include <linux/delay.h>
++#include <linux/ioport.h>
++#include <linux/i2c.h>
++#include <linux/acpi.h>
++#include <linux/bitops.h>
++#include <linux/dmi.h>
++#include <linux/io.h>
++#include <linux/nospec.h>
++
++#define DRVNAME "i2c-nct6775"
++
++/* Nuvoton SMBus address offsets */
++#define SMBHSTDAT       (0 + nuvoton_nct6793d_smba)
++#define SMBBLKSZ        (1 + nuvoton_nct6793d_smba)
++#define SMBHSTCMD       (2 + nuvoton_nct6793d_smba)
++#define SMBHSTIDX       (3 + nuvoton_nct6793d_smba)  //Index field is the Command field on other controllers
++#define SMBHSTCTL       (4 + nuvoton_nct6793d_smba)
++#define SMBHSTADD       (5 + nuvoton_nct6793d_smba)
++#define SMBHSTERR       (9 + nuvoton_nct6793d_smba)
++#define SMBHSTSTS       (0xE + nuvoton_nct6793d_smba)
++
++/* Command register */
++#define NCT6793D_READ_BYTE      0
++#define NCT6793D_READ_WORD      1
++#define NCT6793D_READ_BLOCK     2
++#define NCT6793D_BLOCK_WRITE_READ_PROC_CALL 3
++#define NCT6793D_PROC_CALL      4
++#define NCT6793D_WRITE_BYTE     8
++#define NCT6793D_WRITE_WORD     9
++#define NCT6793D_WRITE_BLOCK    10
++
++/* Control register */
++#define NCT6793D_MANUAL_START   128
++#define NCT6793D_SOFT_RESET     64
++
++/* Error register */
++#define NCT6793D_NO_ACK         32
++
++/* Status register */
++#define NCT6793D_FIFO_EMPTY     1
++#define NCT6793D_FIFO_FULL      2
++#define NCT6793D_MANUAL_ACTIVE  4
++
++#define NCT6775_LD_SMBUS		0x0B
++
++/* Other settings */
++#define MAX_RETRIES		400
++
++enum kinds { nct6106, nct6775, nct6776, nct6779, nct6791, nct6792, nct6793,
++	     nct6795, nct6796, nct6798 };
++
++struct nct6775_sio_data {
++	int sioreg;
++	enum kinds kind;
++};
++
++/* used to set data->name = nct6775_device_names[data->sio_kind] */
++static const char * const nct6775_device_names[] = {
++	"nct6106",
++	"nct6775",
++	"nct6776",
++	"nct6779",
++	"nct6791",
++	"nct6792",
++	"nct6793",
++	"nct6795",
++	"nct6796",
++	"nct6798",
++};
++
++static const char * const nct6775_sio_names[] __initconst = {
++	"NCT6106D",
++	"NCT6775F",
++	"NCT6776D/F",
++	"NCT6779D",
++	"NCT6791D",
++	"NCT6792D",
++	"NCT6793D",
++	"NCT6795D",
++	"NCT6796D",
++	"NCT6798D",
++};
++
++#define SIO_REG_LDSEL		0x07	/* Logical device select */
++#define SIO_REG_DEVID		0x20	/* Device ID (2 bytes) */
++#define SIO_REG_SMBA		0x62	/* SMBus base address register */
++
++#define SIO_NCT6106_ID		0xc450
++#define SIO_NCT6775_ID		0xb470
++#define SIO_NCT6776_ID		0xc330
++#define SIO_NCT6779_ID		0xc560
++#define SIO_NCT6791_ID		0xc800
++#define SIO_NCT6792_ID		0xc910
++#define SIO_NCT6793_ID		0xd120
++#define SIO_NCT6795_ID		0xd350
++#define SIO_NCT6796_ID		0xd420
++#define SIO_NCT6798_ID		0xd428
++#define SIO_ID_MASK			0xFFF0
++
++static inline void
++superio_outb(int ioreg, int reg, int val)
++{
++	outb(reg, ioreg);
++	outb(val, ioreg + 1);
++}
++
++static inline int
++superio_inb(int ioreg, int reg)
++{
++	outb(reg, ioreg);
++	return inb(ioreg + 1);
++}
++
++static inline void
++superio_select(int ioreg, int ld)
++{
++	outb(SIO_REG_LDSEL, ioreg);
++	outb(ld, ioreg + 1);
++}
++
++static inline int
++superio_enter(int ioreg)
++{
++	/*
++	 * Try to reserve <ioreg> and <ioreg + 1> for exclusive access.
++	 */
++	if (!request_muxed_region(ioreg, 2, DRVNAME))
++		return -EBUSY;
++
++	outb(0x87, ioreg);
++	outb(0x87, ioreg);
++
++	return 0;
++}
++
++static inline void
++superio_exit(int ioreg)
++{
++	outb(0xaa, ioreg);
++	outb(0x02, ioreg);
++	outb(0x02, ioreg + 1);
++	release_region(ioreg, 2);
++}
++
++/*
++ * ISA constants
++ */
++
++#define IOREGION_ALIGNMENT	(~7)
++#define IOREGION_LENGTH		2
++#define ADDR_REG_OFFSET		0
++#define DATA_REG_OFFSET		1
++
++#define NCT6775_REG_BANK	0x4E
++#define NCT6775_REG_CONFIG	0x40
++
++static struct i2c_adapter *nct6775_adapter;
++
++struct i2c_nct6775_adapdata {
++	unsigned short smba;
++};
++
++/* Return negative errno on error. */
++static s32 nct6775_access(struct i2c_adapter * adap, u16 addr,
++		 unsigned short flags, char read_write,
++		 u8 command, int size, union i2c_smbus_data * data)
++{
++	struct i2c_nct6775_adapdata *adapdata = i2c_get_adapdata(adap);
++	unsigned short nuvoton_nct6793d_smba = adapdata->smba;
++	int i, len, cnt;
++	union i2c_smbus_data tmp_data;
++	int timeout = 0;
++
++	tmp_data.word = 0;
++	cnt = 0;
++	len = 0;
++
++	outb_p(NCT6793D_SOFT_RESET, SMBHSTCTL);
++
++	switch (size) {
++		case I2C_SMBUS_QUICK:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			break;
++		case I2C_SMBUS_BYTE_DATA:
++			tmp_data.byte = data->byte;
++		case I2C_SMBUS_BYTE:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			outb_p(command, SMBHSTIDX);
++			if (read_write == I2C_SMBUS_WRITE) {
++				outb_p(tmp_data.byte, SMBHSTDAT);
++				outb_p(NCT6793D_WRITE_BYTE, SMBHSTCMD);
++			}
++			else {
++				outb_p(NCT6793D_READ_BYTE, SMBHSTCMD);
++			}
++			break;
++		case I2C_SMBUS_WORD_DATA:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			outb_p(command, SMBHSTIDX);
++			if (read_write == I2C_SMBUS_WRITE) {
++				outb_p(data->word & 0xff, SMBHSTDAT);
++				outb_p((data->word & 0xff00) >> 8, SMBHSTDAT);
++				outb_p(NCT6793D_WRITE_WORD, SMBHSTCMD);
++			}
++			else {
++				outb_p(NCT6793D_READ_WORD, SMBHSTCMD);
++			}
++			break;
++		case I2C_SMBUS_BLOCK_DATA:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			outb_p(command, SMBHSTIDX);
++			if (read_write == I2C_SMBUS_WRITE) {
++				len = data->block[0];
++				if (len == 0 || len > I2C_SMBUS_BLOCK_MAX)
++					return -EINVAL;
++				outb_p(len, SMBBLKSZ);
++
++				cnt = 1;
++				if (len >= 4) {
++					for (i = cnt; i <= 4; i++) {
++						outb_p(data->block[i], SMBHSTDAT);
++					}
++
++					len -= 4;
++					cnt += 4;
++				}
++				else {
++					for (i = cnt; i <= len; i++ ) {
++						outb_p(data->block[i], SMBHSTDAT);
++					}
++
++					len = 0;
++				}
++
++				outb_p(NCT6793D_WRITE_BLOCK, SMBHSTCMD);
++			}
++			else {
++				return -ENOTSUPP;
++			}
++			break;
++		default:
++			dev_warn(&adap->dev, "Unsupported transaction %d\n", size);
++			return -EOPNOTSUPP;
++	}
++
++	outb_p(NCT6793D_MANUAL_START, SMBHSTCTL);
++
++	while ((size == I2C_SMBUS_BLOCK_DATA) && (len > 0)) {
++		if (read_write == I2C_SMBUS_WRITE) {
++			timeout = 0;
++			while ((inb_p(SMBHSTSTS) & NCT6793D_FIFO_EMPTY) == 0)
++			{
++				if(timeout > MAX_RETRIES)
++				{
++					return -ETIMEDOUT;
++				}
++				usleep_range(250, 500);
++				timeout++;
++			}
++
++			//Load more bytes into FIFO
++			if (len >= 4) {
++				for (i = cnt; i <= (cnt + 4); i++) {
++					outb_p(data->block[i], SMBHSTDAT);
++				}
++
++				len -= 4;
++				cnt += 4;
++			}
++			else {
++				for (i = cnt; i <= (cnt + len); i++) {
++					outb_p(data->block[i], SMBHSTDAT);
++				}
++
++				len = 0;
++			}
++		}
++		else {
++			return -ENOTSUPP;
++		}
++		
++	}
++
++	//wait for manual mode to complete
++	timeout = 0;
++	while ((inb_p(SMBHSTSTS) & NCT6793D_MANUAL_ACTIVE) != 0)
++	{
++		if(timeout > MAX_RETRIES)
++		{
++			return -ETIMEDOUT;
++		}
++		usleep_range(250, 500);
++		timeout++;
++	}
++
++	if ((inb_p(SMBHSTERR) & NCT6793D_NO_ACK) != 0) {    	
++		return -ENXIO;
++	}
++	else if ((read_write == I2C_SMBUS_WRITE) || (size == I2C_SMBUS_QUICK)) {
++		return 0;
++	}
++
++	switch (size) {
++		case I2C_SMBUS_QUICK:
++		case I2C_SMBUS_BYTE_DATA:
++			data->byte = inb_p(SMBHSTDAT);
++			break;
++		case I2C_SMBUS_WORD_DATA:
++			data->word = inb_p(SMBHSTDAT) + (inb_p(SMBHSTDAT) << 8);
++			break;
++	}
++	return 0;
++}
++
++static u32 nct6775_func(struct i2c_adapter *adapter)
++{
++	return I2C_FUNC_SMBUS_QUICK | I2C_FUNC_SMBUS_BYTE |
++	    I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA |
++	    I2C_FUNC_SMBUS_BLOCK_DATA;
++}
++
++static const struct i2c_algorithm smbus_algorithm = {
++	.smbus_xfer	= nct6775_access,
++	.functionality	= nct6775_func,
++};
++
++static int nct6775_add_adapter(unsigned short smba, const char *name, struct i2c_adapter **padap)
++{
++	struct i2c_adapter *adap;
++	struct i2c_nct6775_adapdata *adapdata;
++	int retval;
++
++	adap = kzalloc(sizeof(*adap), GFP_KERNEL);
++	if (adap == NULL) {
++		return -ENOMEM;
++	}
++
++	adap->owner = THIS_MODULE;
++	adap->class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
++	adap->algo = &smbus_algorithm;
++
++	adapdata = kzalloc(sizeof(*adapdata), GFP_KERNEL);
++	if (adapdata == NULL) {
++		kfree(adap);
++		return -ENOMEM;
++	}
++
++	adapdata->smba = smba;
++
++	snprintf(adap->name, sizeof(adap->name),
++		"SMBus NCT67xx adapter%s at %04x", name, smba);
++
++	i2c_set_adapdata(adap, adapdata);
++
++	retval = i2c_add_adapter(adap);
++	if (retval) {
++		kfree(adapdata);
++		kfree(adap);
++		return retval;
++	}
++
++	*padap = adap;
++	return 0;
++}
++
++static void nct6775_remove_adapter(struct i2c_adapter *adap)
++{
++	struct i2c_nct6775_adapdata *adapdata = i2c_get_adapdata(adap);
++
++	if (adapdata->smba) {
++		i2c_del_adapter(adap);
++		kfree(adapdata);
++		kfree(adap);
++	}
++}
++
++//static SIMPLE_DEV_PM_OPS(nct6775_dev_pm_ops, nct6775_suspend, nct6775_resume);
++
++/*
++ * when Super-I/O functions move to a separate file, the Super-I/O
++ * bus will manage the lifetime of the device and this module will only keep
++ * track of the nct6775 driver. But since we use platform_device_alloc(), we
++ * must keep track of the device
++ */
++static struct platform_device *pdev[2];
++
++static int nct6775_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct nct6775_sio_data *sio_data = dev_get_platdata(dev);
++	struct resource *res;
++
++	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
++	if (!devm_request_region(&pdev->dev, res->start, IOREGION_LENGTH,
++				 DRVNAME))
++		return -EBUSY;
++
++	switch (sio_data->kind) {
++	case nct6791:
++	case nct6792:
++	case nct6793:
++	case nct6795:
++	case nct6796:
++	case nct6798:
++		nct6775_add_adapter(res->start, "", &nct6775_adapter);
++		break;
++	default:
++		return -ENODEV;
++	}
++
++	return 0;
++}
++/*
++static void nct6791_enable_io_mapping(int sioaddr)
++{
++	int val;
++
++	val = superio_inb(sioaddr, NCT6791_REG_HM_IO_SPACE_LOCK_ENABLE);
++	if (val & 0x10) {
++		pr_info("Enabling hardware monitor logical device mappings.\n");
++		superio_outb(sioaddr, NCT6791_REG_HM_IO_SPACE_LOCK_ENABLE,
++			     val & ~0x10);
++	}
++}*/
++
++static struct platform_driver i2c_nct6775_driver = {
++	.driver = {
++		.name	= DRVNAME,
++//		.pm	= &nct6775_dev_pm_ops,
++	},
++	.probe		= nct6775_probe,
++};
++
++static void __exit i2c_nct6775_exit(void)
++{
++	int i;
++
++	if(nct6775_adapter)
++		nct6775_remove_adapter(nct6775_adapter);
++
++	for (i = 0; i < ARRAY_SIZE(pdev); i++) {
++		if (pdev[i])
++			platform_device_unregister(pdev[i]);
++	}
++	platform_driver_unregister(&i2c_nct6775_driver);
++}
++
++/* nct6775_find() looks for a '627 in the Super-I/O config space */
++static int __init nct6775_find(int sioaddr, struct nct6775_sio_data *sio_data)
++{
++	u16 val;
++	int err;
++	int addr;
++
++	err = superio_enter(sioaddr);
++	if (err)
++		return err;
++
++	val = (superio_inb(sioaddr, SIO_REG_DEVID) << 8) |
++		superio_inb(sioaddr, SIO_REG_DEVID + 1);
++
++	switch (val & SIO_ID_MASK) {
++	case SIO_NCT6106_ID:
++		sio_data->kind = nct6106;
++		break;
++	case SIO_NCT6775_ID:
++		sio_data->kind = nct6775;
++		break;
++	case SIO_NCT6776_ID:
++		sio_data->kind = nct6776;
++		break;
++	case SIO_NCT6779_ID:
++		sio_data->kind = nct6779;
++		break;
++	case SIO_NCT6791_ID:
++		sio_data->kind = nct6791;
++		break;
++	case SIO_NCT6792_ID:
++		sio_data->kind = nct6792;
++		break;
++	case SIO_NCT6793_ID:
++		sio_data->kind = nct6793;
++		break;
++	case SIO_NCT6795_ID:
++		sio_data->kind = nct6795;
++		break;
++	case SIO_NCT6796_ID:
++		sio_data->kind = nct6796;
++		break;
++	case SIO_NCT6798_ID:
++		sio_data->kind = nct6798;
++		break;
++	default:
++		if (val != 0xffff)
++			pr_debug("unsupported chip ID: 0x%04x\n", val);
++		superio_exit(sioaddr);
++		return -ENODEV;
++	}
++
++	/* We have a known chip, find the SMBus I/O address */
++	superio_select(sioaddr, NCT6775_LD_SMBUS);
++	val = (superio_inb(sioaddr, SIO_REG_SMBA) << 8)
++	    | superio_inb(sioaddr, SIO_REG_SMBA + 1);
++	addr = val & IOREGION_ALIGNMENT;
++	if (addr == 0) {
++		pr_err("Refusing to enable a Super-I/O device with a base I/O port 0\n");
++		superio_exit(sioaddr);
++		return -ENODEV;
++	}
++
++	//if (sio_data->kind == nct6791 || sio_data->kind == nct6792 ||
++	//    sio_data->kind == nct6793 || sio_data->kind == nct6795 ||
++	//    sio_data->kind == nct6796)
++	//	nct6791_enable_io_mapping(sioaddr);
++
++	superio_exit(sioaddr);
++	pr_info("Found %s or compatible chip at %#x:%#x\n",
++		nct6775_sio_names[sio_data->kind], sioaddr, addr);
++	sio_data->sioreg = sioaddr;
++
++	return addr;
++}
++
++static int __init i2c_nct6775_init(void)
++{
++	int i, err;
++	bool found = false;
++	int address;
++	struct resource res;
++	struct nct6775_sio_data sio_data;
++	int sioaddr[2] = { 0x2e, 0x4e };
++
++	err = platform_driver_register(&i2c_nct6775_driver);
++	if (err)
++		return err;
++
++	/*
++	 * initialize sio_data->kind and sio_data->sioreg.
++	 *
++	 * when Super-I/O functions move to a separate file, the Super-I/O
++	 * driver will probe 0x2e and 0x4e and auto-detect the presence of a
++	 * nct6775 hardware monitor, and call probe()
++	 */
++	for (i = 0; i < ARRAY_SIZE(pdev); i++) {
++		address = nct6775_find(sioaddr[i], &sio_data);
++		if (address <= 0)
++			continue;
++
++		found = true;
++
++		pdev[i] = platform_device_alloc(DRVNAME, address);
++		if (!pdev[i]) {
++			err = -ENOMEM;
++			goto exit_device_unregister;
++		}
++
++		err = platform_device_add_data(pdev[i], &sio_data,
++					       sizeof(struct nct6775_sio_data));
++		if (err)
++			goto exit_device_put;
++
++		memset(&res, 0, sizeof(res));
++		res.name = DRVNAME;
++		res.start = address;
++		res.end = address + IOREGION_LENGTH - 1;
++		res.flags = IORESOURCE_IO;
++
++		err = acpi_check_resource_conflict(&res);
++		if (err) {
++			platform_device_put(pdev[i]);
++			pdev[i] = NULL;
++			continue;
++		}
++
++		err = platform_device_add_resources(pdev[i], &res, 1);
++		if (err)
++			goto exit_device_put;
++
++		/* platform_device_add calls probe() */
++		err = platform_device_add(pdev[i]);
++		if (err)
++			goto exit_device_put;
++	}
++	if (!found) {
++		err = -ENODEV;
++		goto exit_unregister;
++	}
++
++	return 0;
++
++exit_device_put:
++	platform_device_put(pdev[i]);
++exit_device_unregister:
++	while (--i >= 0) {
++		if (pdev[i])
++			platform_device_unregister(pdev[i]);
++	}
++exit_unregister:
++	platform_driver_unregister(&i2c_nct6775_driver);
++	return err;
++}
++
++MODULE_AUTHOR("Adam Honse <calcprogrammer1@gmail.com>");
++MODULE_DESCRIPTION("SMBus driver for NCT6775F and compatible chips");
++MODULE_LICENSE("GPL");
++
++module_init(i2c_nct6775_init);
++module_exit(i2c_nct6775_exit);
+diff --git a/drivers/i2c/busses/i2c-piix4.c b/drivers/i2c/busses/i2c-piix4.c
+index 8c1b31ed0c429..0b1b36fa0b715 100644
+--- a/drivers/i2c/busses/i2c-piix4.c
++++ b/drivers/i2c/busses/i2c-piix4.c
+@@ -467,11 +467,11 @@ static int piix4_transaction(struct i2c_adapter *piix4_adapter)
+ 	if (srvrworks_csb5_delay) /* Extra delay for SERVERWORKS_CSB5 */
+ 		usleep_range(2000, 2100);
+ 	else
+-		usleep_range(250, 500);
++		usleep_range(25, 50);
+ 
+ 	while ((++timeout < MAX_TIMEOUT) &&
+ 	       ((temp = inb_p(SMBHSTSTS)) & 0x01))
+-		usleep_range(250, 500);
++		usleep_range(25, 50);
+ 
+ 	/* If the SMBus is still busy, we give up */
+ 	if (timeout == MAX_TIMEOUT) {
+From 973d42f99af15b2e610204fbe8252251ed7cc8c1 Mon Sep 17 00:00:00 2001
+From: Con Kolivas <kernel@kolivas.org>
+Date: Wed, 7 Dec 2016 21:13:16 +1100
+Subject: [PATCH] ZEN: Add an option to make threadirqs the default
+
+And a parameter 'nothreadirqs' to disable it again.
+---
+ kernel/irq/Kconfig  | 17 +++++++++++++++++
+ kernel/irq/manage.c | 11 +++++++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index 164a031cfdb66..016a445f589e6 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -113,6 +113,23 @@ config GENERIC_IRQ_RESERVATION_MODE
+ config IRQ_FORCED_THREADING
+        bool
+ 
++config FORCE_IRQ_THREADING
++	bool "Make IRQ threading compulsory"
++	depends on IRQ_FORCED_THREADING
++	default n
++	help
++
++	  Make IRQ threading mandatory for any IRQ handlers that support it
++	  instead of being optional and requiring the threadirqs kernel
++	  parameter. Instead they can be optionally disabled with the
++	  nothreadirqs kernel parameter.
++
++	  Enabling this may make some architectures not boot with runqueue
++	  sharing and MuQSS.
++
++	  Enable if you are building for a desktop or low latency system,
++	  otherwise say N.
++
+ config SPARSE_IRQ
+ 	bool "Support sparse irq numbering" if MAY_HAVE_SPARSE_IRQ
+ 	help
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index c460e0496006e..218fbcbb94e6b 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -25,9 +25,20 @@
+ #include "internals.h"
+ 
+ #if defined(CONFIG_IRQ_FORCED_THREADING) && !defined(CONFIG_PREEMPT_RT)
++#ifdef CONFIG_FORCE_IRQ_THREADING
++__read_mostly bool force_irqthreads = true;
++#else
+ __read_mostly bool force_irqthreads;
++#endif
+ EXPORT_SYMBOL_GPL(force_irqthreads);
+ 
++static int __init setup_noforced_irqthreads(char *arg)
++{
++	force_irqthreads = false;
++	return 0;
++}
++early_param("nothreadirqs", setup_noforced_irqthreads);
++
+ static int __init setup_forced_irqthreads(char *arg)
+ {
+ 	force_irqthreads = true;
+---
+ block/elevator.c | 6 +++++-
+ init/Kconfig     | 4 ++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/block/elevator.c b/block/elevator.c
+index 0a55c7aa9249f..214ca53eed6ca 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -628,10 +628,14 @@ static inline bool elv_support_iosched(struct request_queue *q)
+  */
+ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ {
++#ifndef CONFIG_ZEN_INTERACTIVE
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
++#endif
+ 
+-#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_MQ_IOSCHED_KYBER)
++	return elevator_get(q, "kyber", false);
++#elif defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
+ 	return elevator_get(q, "mq-deadline-nodefault", false);
+ #else
+ 	return elevator_get(q, "mq-deadline", false);
+diff --git a/init/Kconfig b/init/Kconfig
+index f8f25c21f2a8c..b79e2c2232573 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -98,6 +98,10 @@ config ZEN_INTERACTIVE
+ 	help
+ 	  Tunes the kernel for responsiveness at the cost of throughput and power usage.
+ 
++	  --- Block Layer ----------------------------------------
++
++	    Default scheduler.........: mq-deadline -> kyber
++
+ config BROKEN
+ 	bool
+ 
+From 169ce1a1bf376ba90cd0ab51ec19f9e32ead9dcb Mon Sep 17 00:00:00 2001
+From: Mark Weiman <mark.weiman@markzz.com>
+Date: Wed, 6 May 2020 15:40:50 -0400
+Subject: [PATCH] pci: Enable overrides for missing ACS capabilities (5.6.9+)
+
+This an updated version of Alex Williamson's patch from:
+https://lkml.org/lkml/2013/5/30/513
+
+Original commit message follows:
+---
+PCIe ACS (Access Control Services) is the PCIe 2.0+ feature that
+allows us to control whether transactions are allowed to be redirected
+in various subnodes of a PCIe topology.  For instance, if two
+endpoints are below a root port or downsteam switch port, the
+downstream port may optionally redirect transactions between the
+devices, bypassing upstream devices.  The same can happen internally
+on multifunction devices.  The transaction may never be visible to the
+upstream devices.
+
+One upstream device that we particularly care about is the IOMMU.  If
+a redirection occurs in the topology below the IOMMU, then the IOMMU
+cannot provide isolation between devices.  This is why the PCIe spec
+encourages topologies to include ACS support.  Without it, we have to
+assume peer-to-peer DMA within a hierarchy can bypass IOMMU isolation.
+
+Unfortunately, far too many topologies do not support ACS to make this
+a steadfast requirement.  Even the latest chipsets from Intel are only
+sporadically supporting ACS.  We have trouble getting interconnect
+vendors to include the PCIe spec required PCIe capability, let alone
+suggested features.
+
+Therefore, we need to add some flexibility.  The pcie_acs_override=
+boot option lets users opt-in specific devices or sets of devices to
+assume ACS support.  The "downstream" option assumes full ACS support
+on root ports and downstream switch ports.  The "multifunction"
+option assumes the subset of ACS features available on multifunction
+endpoints and upstream switch ports are supported.  The "id:nnnn:nnnn"
+option enables ACS support on devices matching the provided vendor
+and device IDs, allowing more strategic ACS overrides.  These options
+may be combined in any order.  A maximum of 16 id specific overrides
+are available.  It's suggested to use the most limited set of options
+necessary to avoid completely disabling ACS across the topology.
+Note to hardware vendors, we have facilities to permanently quirk
+specific devices which enforce isolation but not provide an ACS
+capability.  Please contact me to have your devices added and save
+your customers the hassle of this boot option.
+---
+ .../admin-guide/kernel-parameters.txt         |   8 ++
+ drivers/pci/quirks.c                          | 102 ++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 20aac805e197..e625ef816cf7 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3472,6 +3472,14 @@
+ 		nomsi		[MSI] If the PCI_MSI kernel config parameter is
+ 				enabled, this kernel boot option can be used to
+ 				disable the use of MSI interrupts system-wide.
++		pci_acs_override [PCIE] Override missing PCIe ACS support for:
++				downstream
++					All downstream ports - full ACS capabilities
++				multifunction
++					Add multifunction devices - multifunction ACS subset
++				id:nnnn:nnnn
++					Specific device - full ACS capabilities
++					Specified as vid:did (vendor/device ID) in hex
+ 		noioapicquirk	[APIC] Disable all boot interrupt quirks.
+ 				Safety option to keep boot IRQs enabled. This
+ 				should never be necessary.
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index ca9ed5774eb1..4567b0e8f2de 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -192,6 +192,106 @@ static int __init pci_apply_final_quirks(void)
+ }
+ fs_initcall_sync(pci_apply_final_quirks);
+ 
++static bool acs_on_downstream;
++static bool acs_on_multifunction;
++
++#define NUM_ACS_IDS 16
++struct acs_on_id {
++	unsigned short vendor;
++	unsigned short device;
++};
++static struct acs_on_id acs_on_ids[NUM_ACS_IDS];
++static u8 max_acs_id;
++
++static __init int pcie_acs_override_setup(char *p)
++{
++	if (!p)
++		return -EINVAL;
++
++	while (*p) {
++		if (!strncmp(p, "downstream", 10))
++			acs_on_downstream = true;
++		if (!strncmp(p, "multifunction", 13))
++			acs_on_multifunction = true;
++		if (!strncmp(p, "id:", 3)) {
++			char opt[5];
++			int ret;
++			long val;
++
++			if (max_acs_id >= NUM_ACS_IDS - 1) {
++				pr_warn("Out of PCIe ACS override slots (%d)\n",
++						NUM_ACS_IDS);
++				goto next;
++			}
++
++			p += 3;
++			snprintf(opt, 5, "%s", p);
++			ret = kstrtol(opt, 16, &val);
++			if (ret) {
++				pr_warn("PCIe ACS ID parse error %d\n", ret);
++				goto next;
++			}
++			acs_on_ids[max_acs_id].vendor = val;
++		p += strcspn(p, ":");
++		if (*p != ':') {
++			pr_warn("PCIe ACS invalid ID\n");
++			goto next;
++			}
++
++			p++;
++			snprintf(opt, 5, "%s", p);
++			ret = kstrtol(opt, 16, &val);
++			if (ret) {
++				pr_warn("PCIe ACS ID parse error %d\n", ret);
++				goto next;
++			}
++			acs_on_ids[max_acs_id].device = val;
++			max_acs_id++;
++		}
++next:
++		p += strcspn(p, ",");
++		if (*p == ',')
++			p++;
++	}
++
++	if (acs_on_downstream || acs_on_multifunction || max_acs_id)
++		pr_warn("Warning: PCIe ACS overrides enabled; This may allow non-IOMMU protected peer-to-peer DMA\n");
++
++	return 0;
++}
++early_param("pcie_acs_override", pcie_acs_override_setup);
++
++static int pcie_acs_overrides(struct pci_dev *dev, u16 acs_flags)
++{
++	int i;
++
++	/* Never override ACS for legacy devices or devices with ACS caps */
++	if (!pci_is_pcie(dev) ||
++		pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS))
++			return -ENOTTY;
++
++	for (i = 0; i < max_acs_id; i++)
++		if (acs_on_ids[i].vendor == dev->vendor &&
++			acs_on_ids[i].device == dev->device)
++				return 1;
++
++switch (pci_pcie_type(dev)) {
++	case PCI_EXP_TYPE_DOWNSTREAM:
++	case PCI_EXP_TYPE_ROOT_PORT:
++		if (acs_on_downstream)
++			return 1;
++		break;
++	case PCI_EXP_TYPE_ENDPOINT:
++	case PCI_EXP_TYPE_UPSTREAM:
++	case PCI_EXP_TYPE_LEG_END:
++	case PCI_EXP_TYPE_RC_END:
++		if (acs_on_multifunction && dev->multifunction)
++			return 1;
++	}
++
++	return -ENOTTY;
++}
++
+ /*
+  * Decoding should be disabled for a PCI device during BAR sizing to avoid
+  * conflict. But doing so may cause problems on host bridge and perhaps other
+@@ -4796,6 +4896,8 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_ZHAOXIN, 0x9083, pci_quirk_mf_endpoint_acs },
+ 	/* Zhaoxin Root/Downstream Ports */
+ 	{ PCI_VENDOR_ID_ZHAOXIN, PCI_ANY_ID, pci_quirk_zhaoxin_pcie_ports_acs },
++	/* allow acs for any */
++	{ PCI_ANY_ID, PCI_ANY_ID, pcie_acs_overrides },
+ 	{ 0 }
+ };
+ 
+-- 
+2.26.2
+
