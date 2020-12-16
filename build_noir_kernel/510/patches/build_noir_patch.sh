@@ -23,6 +23,7 @@ cat add_noir_version.patch \
        other/0001-ntfs3-patches.patch \
        other/0001-zstd-dev-patches.patch \
        other/0001-btrfs-patches.patch \
+       other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
        prjc/prjc_v5.10-r0.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        zen/ZEN-INTERACTIVE-Base-config-item.patch \
@@ -37,4 +38,7 @@ cat add_noir_version.patch \
        zen/ZEN-Add-an-option-to-make-threadirqs-the-default.patch \
        other/use_kyber.patch \
        other/add-acs-overrides.patch \
+       ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch \
+       ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch \
+       ck1/0014-Swap-sucks.patch \
        > noir.patch
