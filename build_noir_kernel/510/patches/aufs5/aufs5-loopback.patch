@@ -1,5 +1,5 @@
 SPDX-License-Identifier: GPL-2.0
-aufs5.7 loopback patch
+aufs5.x-rcN loopback patch
 
 diff --git a/drivers/block/loop.c b/drivers/block/loop.c
 index 0479902a0cd50..758c8ee4d4e6b 100644
@@ -97,14 +97,14 @@ index 0479902a0cd50..758c8ee4d4e6b 100644
  
  	/*
  	 * If we don't hold exclusive handle for the device, upgrade to it
-@@ -1037,6 +1065,7 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
+@@ -1079,6 +1079,7 @@ static int loop_configure(struct loop_de
+ 	lo->use_dio = lo->lo_flags & LO_FLAGS_DIRECT_IO;
  	lo->lo_device = bdev;
- 	lo->lo_flags = lo_flags;
  	lo->lo_backing_file = file;
 +	lo->lo_backing_virt_file = virt_file;
- 	lo->transfer = NULL;
- 	lo->ioctl = NULL;
- 	lo->lo_sizelimit = 0;
+ 	lo->old_gfp_mask = mapping_gfp_mask(mapping);
+ 	mapping_set_gfp_mask(mapping, lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
+ 
 @@ -1090,6 +1119,8 @@ static int loop_set_fd(struct loop_device *lo, fmode_t mode,
  		bd_abort_claiming(bdev, claimed_bdev, loop_set_fd);
  out_putf:

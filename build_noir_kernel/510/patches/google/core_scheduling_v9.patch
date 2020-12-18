@@ -13412,7 +13412,7 @@ index 21710f8609fe..361ccbbd9e54 100644
 @@ -16,3 +16,4 @@ are configurable at compile, boot or run time.
     multihit.rst
     special-register-buffer-data-sampling.rst
-    l1d_flush.rst
++   l1d_flush.rst
 +   core-scheduling.rst
 -- 
 2.29.2.299.gdc1121823c-goog
