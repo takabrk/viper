@@ -28,7 +28,11 @@ cat add_noir_version.patch \
        other/use_kyber.patch \
        other/add-acs-overrides.patch \
        ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch \
+       ck1/0005-Special-case-calls-of-schedule_timeout-1-to-use-the-.patch \
        ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch \
+       ck1/0008-Replace-all-calls-to-schedule_timeout_interruptible-.patch \
+       ck1/0009-Replace-all-calls-to-schedule_timeout_uninterruptibl.patch \
+       ck1/0010-Don-t-use-hrtimer-overlay-when-pm_freezing-since-som.patch \
        ck1/0014-Swap-sucks.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
@@ -37,4 +41,6 @@ cat add_noir_version.patch \
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
        aufs5/k510.patch \
+       other/0001-init-Kconfig-set-default-value-of-SCHED_PDS.patch \
+       other/0002-init-Kconfig-Restore-original-PDS-description.patch \
        > noir.patch
