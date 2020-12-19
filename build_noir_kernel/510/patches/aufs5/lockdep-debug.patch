@@ -1,5 +1,5 @@
 SPDX-License-Identifier: GPL-2.0
-aufs5.7 lockdep patch
+aufs5.x-rcN lockdep patch
 
 diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
 index e5eda5226fbc7..761f87256a9f1 100644

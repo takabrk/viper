@@ -10,7 +10,7 @@ index 51540b291738..ab8c480660a6 100644
  PHONY := __all
  __all:
  
-+NRVERSION = -noir-v6
++NRVERSION = -noir-v8
 +NRNAME = MuQSS Powered
 +EXTRAVERSION := $(EXTRAVERSION)$(NRVERSION)
 +
@@ -23,7 +23,7 @@ index 51540b291738..ab8c480660a6 100644
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2020-12-18 10:16:40.898523630 +0900
+--- /dev/null	2020-12-19 10:57:12.447829034 +0900
 +++ .config	2020-12-17 10:13:10.390002756 +0900
 @@ -0,0 +1,10253 @@
 +#
@@ -107667,3 +107667,2020 @@ index 2a0caf394dd4..a857e1baebd7 100644
 -- 
 2.17.2
 
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=qKPt=7M=vger.kernel.org=linux-kernel-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01EA0C433DF
+	for <linux-kernel@archiver.kernel.org>; Sat, 30 May 2020 06:00:16 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id B981120678
+	for <linux-kernel@archiver.kernel.org>; Sat, 30 May 2020 06:00:16 +0000 (UTC)
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1728762AbgE3GAQ (ORCPT
+        <rfc822;linux-kernel@archiver.kernel.org>);
+        Sat, 30 May 2020 02:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44334 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725813AbgE3GAP (ORCPT
+        <rfc822;linux-kernel@vger.kernel.org>);
+        Sat, 30 May 2020 02:00:15 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D0FC08C5C9
+        for <linux-kernel@vger.kernel.org>; Fri, 29 May 2020 23:00:15 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: krisman)
+        with ESMTPSA id F22ED2A0671
+From:   Gabriel Krisman Bertazi <krisman@collabora.com>
+To:     linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        kernel@collabora.com, Thomas Gleixner <tglx@linutronix.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>,
+        "H . Peter Anvin" <hpa@zytor.com>, Paul Gofman <gofmanp@gmail.com>
+Subject: [PATCH RFC] seccomp: Implement syscall isolation based on memory areas
+Date:   Sat, 30 May 2020 01:59:53 -0400
+Message-Id: <20200530055953.817666-1-krisman@collabora.com>
+X-Mailer: git-send-email 2.27.0.rc2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: linux-kernel-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-kernel.vger.kernel.org>
+X-Mailing-List: linux-kernel@vger.kernel.org
+Archived-At: <https://lore.kernel.org/lkml/20200530055953.817666-1-krisman@collabora.com/>
+List-Archive: <https://lore.kernel.org/lkml/>
+List-Post: <mailto:linux-kernel@vger.kernel.org>
+
+Modern Windows applications are executing system call instructions
+directly from the application's code without going through the WinAPI.
+This breaks Wine emulation, because it doesn't have a chance to
+intercept and emulate these syscalls before they are submitted to Linux.
+
+In addition, we cannot simply trap every system call of the application
+to userspace using PTRACE_SYSEMU, because performance would suffer,
+since our main use case is to run Windows games over Linux.  Therefore,
+we need some in-kernel filtering to decide whether the syscall was
+issued by the wine code or by the windows application.
+
+The filtering cannot really be done based solely on the syscall number,
+because those could collide with existing Linux syscalls.  Instead, our
+proposed solution is to trap syscalls based on the userspace memory
+region that triggered the syscall, as wine is responsible for the
+Windows code allocations and it can apply correct memory protections to
+those areas.
+
+Therefore, this patch reuses the seccomp infrastructure to trap
+system calls, but introduces a new mode to trap based on a vma attribute
+that describes whether the userspace memory region is allowed to execute
+syscalls or not.  The protection is defined at mmap/mprotect time with a
+new protection flag PROT_NOSYSCALL.  This setting only takes effect if
+the new SECCOMP_MODE_MEMMAP is enabled through seccomp().
+
+It goes without saying that this is in no way a security mechanism
+despite being built on top of seccomp, since an evil application can
+always jump to a whitelisted memory region and run the syscall.  This
+is not a concern for Wine games.  Nevertheless, we reuse seccomp as a
+way to avoid adding a new mechanism to essentially do the same job of
+filtering system calls.
+
+* Why not SECCOMP_MODE_FILTER?
+
+We experimented with dynamically generating BPF filters for whitelisted
+memory regions and using SECCOMP_MODE_FILTER, but there are a few
+reasons why it isn't enough nor a good idea for our use case:
+
+1. We cannot set the filters at program initialization time and forget
+about it, since there is no way of knowing which modules will be loaded,
+whether native and windows.  Filter would need a way to be updated
+frequently during game execution.
+
+2. We cannot predict which Linux libraries will issue syscalls directly.
+Most of the time, whitelisting libc and a few other libraries is enough,
+but there are no guarantees other Linux libraries won't issue syscalls
+directly and break the execution.  Adding every linux library that is
+loaded also has a large performance cost due to the large resulting
+filter.
+
+3. As I mentioned before, performance is critical.  In our testing with
+just a single memory segment blacklisted/whitelisted, the minimum size
+of a bpf filter would be 4 instructions.  In that scenario,
+SECCOMP_MODE_FILTER added an average overhead of 10% to the execution
+time of sysinfo(2) in comparison to seccomp disabled, while the impact
+of SECCOMP_MODE_MEMMAP was averaged around 1.5%.
+
+Indeed, points 1 and 2 could be worked around with some userspace work
+and improved SECCOMP_MODE_FILTER support, but at a high performance and
+some stability cost, to obtain the semantics we want.  Still, the
+performance would suffer, and SECCOMP_MODE_MEMMAP is non intrusive
+enough that I believe it should be considered as an upstream solution.
+
+Sending as an RFC for now to get the discussion started.  In particular:
+
+1) Would this design be acceptable?
+
+2) I'm not comfortable with using the high part of vm_flags, though I'm
+not sure where else it would fit.  Suggestions?
+
+CC: Thomas Gleixner <tglx@linutronix.de>
+CC: Kees Cook <keescook@chromium.org>
+CC: Andy Lutomirski <luto@amacapital.net>
+CC: Will Drewry <wad@chromium.org>
+CC: H. Peter Anvin <hpa@zytor.com>
+CC: Paul Gofman <gofmanp@gmail.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+---
+ arch/Kconfig                           | 21 +++++++++
+ arch/x86/Kconfig                       |  1 +
+ include/linux/mm.h                     |  8 ++++
+ include/linux/mman.h                   |  4 +-
+ include/uapi/asm-generic/mman-common.h |  2 +
+ include/uapi/linux/seccomp.h           |  2 +
+ kernel/seccomp.c                       | 59 ++++++++++++++++++++++++++
+ mm/mprotect.c                          |  2 +-
+ 8 files changed, 97 insertions(+), 2 deletions(-)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 786a85d4ad40..e5c10231c9c2 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -471,6 +471,27 @@ config SECCOMP_FILTER
+ 
+ 	  See Documentation/userspace-api/seccomp_filter.rst for details.
+ 
++config HAVE_ARCH_SECCOMP_MEMMAP
++	bool
++	help
++	  An arch should select this symbol if it provides all of these things:
++	  - syscall_get_arch()
++	  - syscall_get_arguments()
++	  - syscall_rollback()
++	  - syscall_set_return_value()
++	  - SIGSYS siginfo_t support
++	  - secure_computing is called from a ptrace_event()-safe context
++	  - secure_computing return value is checked and a return value of -1
++	    results in the system call being skipped immediately.
++	  - seccomp syscall wired up
++
++config SECCOMP_MEMMAP
++	def_bool y
++	depends on HAVE_ARCH_SECCOMP_MEMMAP && SECCOMP
++	help
++	  Enable tasks to trap syscalls based on the page that triggered
++	  the syscall.
++
+ config HAVE_ARCH_STACKLEAK
+ 	bool
+ 	help
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2d3f963fd6f1..70998b01c533 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -145,6 +145,7 @@ config X86
+ 	select HAVE_ARCH_COMPAT_MMAP_BASES	if MMU && COMPAT
+ 	select HAVE_ARCH_PREL32_RELOCATIONS
+ 	select HAVE_ARCH_SECCOMP_FILTER
++	select HAVE_ARCH_SECCOMP_MEMMAP
+ 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+ 	select HAVE_ARCH_STACKLEAK
+ 	select HAVE_ARCH_TRACEHOOK
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5a323422d783..6271fb7fd5bc 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -294,11 +294,13 @@ extern unsigned int kobjsize(const void *objp);
+ #define VM_HIGH_ARCH_BIT_2	34	/* bit only usable on 64-bit architectures */
+ #define VM_HIGH_ARCH_BIT_3	35	/* bit only usable on 64-bit architectures */
+ #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
++#define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
+ #define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
+ #define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
+ #define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
+ #define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
+ #define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
++#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
+ #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
+ 
+ #ifdef CONFIG_ARCH_HAS_PKEYS
+@@ -340,6 +342,12 @@ extern unsigned int kobjsize(const void *objp);
+ # define VM_GROWSUP	VM_NONE
+ #endif
+ 
++#if defined(CONFIG_X86)
++# define VM_NOSYSCALL	VM_HIGH_ARCH_5
++#else
++# define VM_NOSYSCALL	VM_NONE
++#endif
++
+ /* Bits set in the VMA until the stack is in its final location */
+ #define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
+ 
+diff --git a/include/linux/mman.h b/include/linux/mman.h
+index 4b08e9c9c538..a5ca42eb685a 100644
+--- a/include/linux/mman.h
++++ b/include/linux/mman.h
+@@ -94,7 +94,8 @@ static inline void vm_unacct_memory(long pages)
+  */
+ static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
+ {
+-	return (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM)) == 0;
++	return (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM
++			 | PROT_NOSYSCALL)) == 0;
+ }
+ #define arch_validate_prot arch_validate_prot
+ #endif
+@@ -119,6 +120,7 @@ calc_vm_prot_bits(unsigned long prot, unsigned long pkey)
+ 	return _calc_vm_trans(prot, PROT_READ,  VM_READ ) |
+ 	       _calc_vm_trans(prot, PROT_WRITE, VM_WRITE) |
+ 	       _calc_vm_trans(prot, PROT_EXEC,  VM_EXEC) |
++	       _calc_vm_trans(prot, PROT_NOSYSCALL, VM_NOSYSCALL) |
+ 	       arch_calc_vm_prot_bits(prot, pkey);
+ }
+ 
+diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
+index f94f65d429be..4eafbaa3f4bc 100644
+--- a/include/uapi/asm-generic/mman-common.h
++++ b/include/uapi/asm-generic/mman-common.h
+@@ -13,6 +13,8 @@
+ #define PROT_SEM	0x8		/* page may be used for atomic ops */
+ /*			0x10		   reserved for arch-specific use */
+ /*			0x20		   reserved for arch-specific use */
++#define PROT_NOSYSCALL	0x40		/* page cannot trigger syscalls */
++
+ #define PROT_NONE	0x0		/* page can not be accessed */
+ #define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
+ #define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
+diff --git a/include/uapi/linux/seccomp.h b/include/uapi/linux/seccomp.h
+index c1735455bc53..c7d042a409e7 100644
+--- a/include/uapi/linux/seccomp.h
++++ b/include/uapi/linux/seccomp.h
+@@ -10,12 +10,14 @@
+ #define SECCOMP_MODE_DISABLED	0 /* seccomp is not in use. */
+ #define SECCOMP_MODE_STRICT	1 /* uses hard-coded filter. */
+ #define SECCOMP_MODE_FILTER	2 /* uses user-supplied filter. */
++#define SECCOMP_MODE_MEMMAP	3 /* Lock syscalls per memory region. */
+ 
+ /* Valid operations for seccomp syscall. */
+ #define SECCOMP_SET_MODE_STRICT		0
+ #define SECCOMP_SET_MODE_FILTER		1
+ #define SECCOMP_GET_ACTION_AVAIL	2
+ #define SECCOMP_GET_NOTIF_SIZES		3
++#define SECCOMP_SET_MODE_MEMMAP		4
+ 
+ /* Valid flags for SECCOMP_SET_MODE_FILTER */
+ #define SECCOMP_FILTER_FLAG_TSYNC		(1UL << 0)
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 55a6184f5990..ebf09b02db8d 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -930,6 +930,55 @@ static int __seccomp_filter(int this_syscall, const struct seccomp_data *sd,
+ }
+ #endif
+ 
++#ifdef CONFIG_SECCOMP_MEMMAP
++static int __seccomp_memmap(int this_syscall, const struct seccomp_data *sd)
++{
++	struct vm_area_struct *vma = find_vma(current->mm,
++					      sd->instruction_pointer);
++	if (!vma)
++		BUG();
++
++	if (!(vma->vm_flags & VM_NOSYSCALL))
++		return 0;
++
++	syscall_rollback(current, task_pt_regs(current));
++	seccomp_send_sigsys(this_syscall, 0);
++
++	seccomp_log(this_syscall, SIGSYS, SECCOMP_RET_TRAP, true);
++
++	return -1;
++}
++
++static long seccomp_set_mode_memmap(unsigned int flags)
++{
++	const unsigned long seccomp_mode = SECCOMP_MODE_MEMMAP;
++	long ret = 0;
++
++	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
++		return -EINVAL;
++
++	spin_lock_irq(&current->sighand->siglock);
++
++	if (seccomp_may_assign_mode(seccomp_mode))
++		seccomp_assign_mode(current, seccomp_mode, flags);
++	else
++		ret = -EINVAL;
++
++	spin_unlock_irq(&current->sighand->siglock);
++
++	return ret;
++}
++#else
++static int __seccomp_memmap(int this_syscall, const struct seccomp_data *sd)
++{
++	BUG();
++}
++static long seccomp_set_mode_memmap(unsigned int flags)
++{
++	return -EINVAL;
++}
++#endif /* CONFIG_SECCOMP_MEMMAP */
++
+ int __secure_computing(const struct seccomp_data *sd)
+ {
+ 	int mode = current->seccomp.mode;
+@@ -948,6 +997,8 @@ int __secure_computing(const struct seccomp_data *sd)
+ 		return 0;
+ 	case SECCOMP_MODE_FILTER:
+ 		return __seccomp_filter(this_syscall, sd, false);
++	case SECCOMP_MODE_MEMMAP:
++		return __seccomp_memmap(this_syscall, sd);
+ 	default:
+ 		BUG();
+ 	}
+@@ -1425,6 +1476,10 @@ static long do_seccomp(unsigned int op, unsigned int flags,
+ 			return -EINVAL;
+ 
+ 		return seccomp_get_notif_sizes(uargs);
++	case SECCOMP_SET_MODE_MEMMAP:
++		if (uargs != NULL)
++			return -EINVAL;
++		return seccomp_set_mode_memmap(flags);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -1462,6 +1517,10 @@ long prctl_set_seccomp(unsigned long seccomp_mode, void __user *filter)
+ 		op = SECCOMP_SET_MODE_FILTER;
+ 		uargs = filter;
+ 		break;
++	case SECCOMP_MODE_MEMMAP:
++		op = SECCOMP_SET_MODE_MEMMAP;
++		uargs = NULL;
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 494192ca954b..6b5c00e8bbdc 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -591,7 +591,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+ 		 * cleared from the VMA.
+ 		 */
+ 		mask_off_old_flags = VM_READ | VM_WRITE | VM_EXEC |
+-					VM_FLAGS_CLEAR;
++			VM_NOSYSCALL | VM_FLAGS_CLEAR;
+ 
+ 		new_vma_pkey = arch_override_mprotect_pkey(vma, prot, pkey);
+ 		newflags = calc_vm_prot_bits(prot, new_vma_pkey);
+-- 
+2.27.0.rc2
+
+
+SPDX-License-Identifier: GPL-2.0
+aufs5.x-rcN base patch
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 50659d76976b7..80f67140e4f70 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2946,6 +2946,19 @@ F:	include/linux/audit.h
+ F:	include/uapi/linux/audit.h
+ F:	kernel/audit*
+ 
++AUFS (advanced multi layered unification filesystem) FILESYSTEM
++M:	"J. R. Okajima" <hooanon05g@gmail.com>
++L:	aufs-users@lists.sourceforge.net (members only)
++L:	linux-unionfs@vger.kernel.org
++W:	http://aufs.sourceforge.net
++T:	git://github.com/sfjro/aufs4-linux.git
++S:	Supported
++F:	Documentation/filesystems/aufs/
++F:	Documentation/ABI/testing/debugfs-aufs
++F:	Documentation/ABI/testing/sysfs-aufs
++F:	fs/aufs/
++F:	include/uapi/linux/aufs_type.h
++
+ AUXILIARY DISPLAY DRIVERS
+ M:	Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>
+ S:	Maintained
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index da693e6a834e5..0479902a0cd50 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -753,6 +753,24 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+ 	return error;
+ }
+ 
++/*
++ * for AUFS
++ * no get/put for file.
++ */
++struct file *loop_backing_file(struct super_block *sb)
++{
++	struct file *ret;
++	struct loop_device *l;
++
++	ret = NULL;
++	if (MAJOR(sb->s_dev) == LOOP_MAJOR) {
++		l = sb->s_bdev->bd_disk->private_data;
++		ret = l->lo_backing_file;
++	}
++	return ret;
++}
++EXPORT_SYMBOL_GPL(loop_backing_file);
++
+ /* loop sysfs attributes */
+ 
+ static ssize_t loop_attr_show(struct device *dev, char *page,
+diff --git a/fs/dcache.c b/fs/dcache.c
+index b280e07e162b1..046000653e4d8 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -1266,7 +1266,7 @@ enum d_walk_ret {
+  *
+  * The @enter() callbacks are called with d_lock held.
+  */
+-static void d_walk(struct dentry *parent, void *data,
++void d_walk(struct dentry *parent, void *data,
+ 		   enum d_walk_ret (*enter)(void *, struct dentry *))
+ {
+ 	struct dentry *this_parent;
+diff --git a/fs/fcntl.c b/fs/fcntl.c
+index 2e4c0fa2074b0..0b28a37f7e505 100644
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -32,7 +32,7 @@
+ 
+ #define SETFL_MASK (O_APPEND | O_NONBLOCK | O_NDELAY | O_DIRECT | O_NOATIME)
+ 
+-static int setfl(int fd, struct file * filp, unsigned long arg)
++int setfl(int fd, struct file *filp, unsigned long arg)
+ {
+ 	struct inode * inode = file_inode(filp);
+ 	int error = 0;
+@@ -63,6 +63,8 @@ static int setfl(int fd, struct file * filp, unsigned long arg)
+ 
+ 	if (filp->f_op->check_flags)
+ 		error = filp->f_op->check_flags(arg);
++	if (!error && filp->f_op->setfl)
++		error = filp->f_op->setfl(filp, arg);
+ 	if (error)
+ 		return error;
+ 
+diff --git a/fs/inode.c b/fs/inode.c
+index 93d9252a00ab4..7700c5e4783b9 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -1688,7 +1688,7 @@ EXPORT_SYMBOL(generic_update_time);
+  * This does the actual work of updating an inodes time or version.  Must have
+  * had called mnt_want_write() before calling this.
+  */
+-static int update_time(struct inode *inode, struct timespec64 *time, int flags)
++int update_time(struct inode *inode, struct timespec64 *time, int flags)
+ {
+ 	if (inode->i_op->update_time)
+ 		return inode->i_op->update_time(inode, time, flags);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index a28e4db075ede..12e725e34c6ca 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -776,6 +776,12 @@ static inline int check_mnt(struct mount *mnt)
+ 	return mnt->mnt_ns == current->nsproxy->mnt_ns;
+ }
+ 
++/* for aufs, CONFIG_AUFS_BR_FUSE */
++int is_current_mnt_ns(struct vfsmount *mnt)
++{
++	return check_mnt(real_mount(mnt));
++}
++
+ /*
+  * vfsmount lock must be held for write
+  */
+diff --git a/fs/splice.c b/fs/splice.c
+index 4e53efbd621db..9f230ee854e20 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -849,8 +849,8 @@ EXPORT_SYMBOL(generic_splice_sendpage);
+ /*
+  * Attempt to initiate a splice from pipe to file.
+  */
+-static long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
+-			   loff_t *ppos, size_t len, unsigned int flags)
++long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
++		    loff_t *ppos, size_t len, unsigned int flags)
+ {
+ 	ssize_t (*splice_write)(struct pipe_inode_info *, struct file *,
+ 				loff_t *, size_t, unsigned int);
+@@ -866,9 +866,9 @@ static long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
+ /*
+  * Attempt to initiate a splice from a file to a pipe.
+  */
+-static long do_splice_to(struct file *in, loff_t *ppos,
+-			 struct pipe_inode_info *pipe, size_t len,
+-			 unsigned int flags)
++long do_splice_to(struct file *in, loff_t *ppos,
++		  struct pipe_inode_info *pipe, size_t len,
++		  unsigned int flags)
+ {
+ 	ssize_t (*splice_read)(struct file *, loff_t *,
+ 			       struct pipe_inode_info *, size_t, unsigned int);
+diff --git a/fs/sync.c b/fs/sync.c
+index 4d1ff010bc5af..457f4e4a5cc1f 100644
+--- a/fs/sync.c
++++ b/fs/sync.c
+@@ -28,7 +28,7 @@
+  * wait == 1 case since in that case write_inode() functions do
+  * sync_dirty_buffer() and thus effectively write one block at a time.
+  */
+-static int __sync_filesystem(struct super_block *sb, int wait)
++int __sync_filesystem(struct super_block *sb, int wait)
+ {
+ 	if (wait)
+ 		sync_inodes_sb(sb);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 45cc10cdf6ddd..916efd7e612b3 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1370,6 +1370,7 @@
+ /* can be called from interrupts */
+ extern void kill_fasync(struct fasync_struct **, int, int);
+ 
++extern int setfl(int fd, struct file *filp, unsigned long arg);
+ extern void __f_setown(struct file *filp, struct pid *, enum pid_type, int force);
+ extern int f_setown(struct file *filp, unsigned long arg, int force);
+ extern void f_delown(struct file *filp);
+@@ -1858,6 +1859,7 @@
+ 	ssize_t (*sendpage) (struct file *, struct page *, int, size_t, loff_t *, int);
+ 	unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
+ 	int (*check_flags)(int);
++	int (*setfl)(struct file *, unsigned long);
+ 	int (*flock) (struct file *, int, struct file_lock *);
+ 	ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+ 	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);
+@@ -2362,6 +2370,7 @@
+ extern void ihold(struct inode * inode);
+ extern void iput(struct inode *);
+ extern int generic_update_time(struct inode *, struct timespec64 *, int);
++extern int update_time(struct inode *, struct timespec64 *, int);
+ 
+ /* /sys/fs */
+ extern struct kobject *fs_kobj;
+@@ -2549,6 +2558,7 @@
+ }
+ 
+ void emergency_thaw_all(void);
++extern int __sync_filesystem(struct super_block *, int);
+ extern int sync_filesystem(struct super_block *);
+ extern const struct file_operations def_blk_fops;
+ extern const struct file_operations def_chr_fops;
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 206774ac69460..e5eda5226fbc7 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -376,6 +376,8 @@ static inline int lockdep_match_key(struct lockdep_map *lock,
+ 	return lock->key == key;
+ }
+ 
++struct lock_class *lockdep_hlock_class(struct held_lock *hlock);
++
+ /*
+  * Acquire a lock.
+  *
+@@ -521,6 +523,7 @@ struct lockdep_map { };
+ 
+ #define lockdep_depth(tsk)	(0)
+ 
++#define lockdep_is_held(lock)			(1)
+ #define lockdep_is_held_type(l, r)		(1)
+ 
+ #define lockdep_assert_held(l)			do { (void)(l); } while (0)
+diff --git a/include/linux/mnt_namespace.h b/include/linux/mnt_namespace.h
+index 35942084cd40d..24f5fd1a789de 100644
+--- a/include/linux/mnt_namespace.h
++++ b/include/linux/mnt_namespace.h
+@@ -7,12 +7,15 @@
+ struct fs_struct;
+ struct user_namespace;
+ struct ns_common;
++struct vfsmount;
+ 
+ extern struct mnt_namespace *copy_mnt_ns(unsigned long, struct mnt_namespace *,
+ 		struct user_namespace *, struct fs_struct *);
+ extern void put_mnt_ns(struct mnt_namespace *ns);
+ extern struct ns_common *from_mnt_ns(struct mnt_namespace *);
+ 
++extern int is_current_mnt_ns(struct vfsmount *mnt);
++
+ extern const struct file_operations proc_mounts_operations;
+ extern const struct file_operations proc_mountinfo_operations;
+ extern const struct file_operations proc_mountstats_operations;
+diff --git a/include/linux/splice.h b/include/linux/splice.h
+index ebbbfea48aa0b..d68d574250283 100644
+--- a/include/linux/splice.h
++++ b/include/linux/splice.h
+@@ -90,4 +90,10 @@ extern void splice_shrink_spd(struct splice_pipe_desc *);
+ 
+ extern const struct pipe_buf_operations page_cache_pipe_buf_ops;
+ extern const struct pipe_buf_operations default_pipe_buf_ops;
++
++extern long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
++			   loff_t *ppos, size_t len, unsigned int flags);
++extern long do_splice_to(struct file *in, loff_t *ppos,
++			 struct pipe_inode_info *pipe, size_t len,
++			 unsigned int flags);
+ #endif
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index ac10db66cc63f..837a3358e77ca 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -169,7 +169,7 @@ static
+ struct lock_class lock_classes[MAX_LOCKDEP_KEYS];
+ static DECLARE_BITMAP(lock_classes_in_use, MAX_LOCKDEP_KEYS);
+ 
+-static inline struct lock_class *hlock_class(struct held_lock *hlock)
++inline struct lock_class *lockdep_hlock_class(struct held_lock *hlock)
+ {
+ 	unsigned int class_idx = hlock->class_idx;
+ 
+@@ -190,6 +190,7 @@ static inline struct lock_class *hlock_class(struct held_lock *hlock)
+ 	 */
+ 	return lock_classes + class_idx;
+ }
++#define hlock_class(hlock) lockdep_hlock_class(hlock)
+ 
+ #ifdef CONFIG_LOCK_STAT
+ static DEFINE_PER_CPU(struct lock_class_stats[MAX_LOCKDEP_KEYS], cpu_lock_stats);
+SPDX-License-Identifier: GPL-2.0
+aufs5.x-rcN kbuild patch
+
+diff --git a/fs/Kconfig b/fs/Kconfig
+index f08fbbfafd9a0..1c597cddc351c 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -267,6 +267,7 @@ source "fs/sysv/Kconfig"
+ source "fs/ufs/Kconfig"
+ source "fs/erofs/Kconfig"
+ source "fs/vboxsf/Kconfig"
++source "fs/aufs/Kconfig"
+ 
+ endif # MISC_FILESYSTEMS
+ 
+diff --git a/fs/Makefile b/fs/Makefile
+index 2ce5112b02c86..d9b4a51985538 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -136,3 +136,4 @@ obj-$(CONFIG_EFIVAR_FS)		+= efivarfs/
+ obj-$(CONFIG_EROFS_FS)		+= erofs/
+ obj-$(CONFIG_VBOXSF_FS)		+= vboxsf/
+ obj-$(CONFIG_ZONEFS_FS)		+= zonefs/
++obj-$(CONFIG_AUFS_FS)           += aufs/
+SPDX-License-Identifier: GPL-2.0
+aufs5.x-rcN mmap patch
+
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index eb2255e95f62b..92f6062423c0c 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -2162,7 +2162,7 @@ static int map_files_get_link(struct dentry *dentry, struct path *path)
+ 	rc = -ENOENT;
+ 	vma = find_exact_vma(mm, vm_start, vm_end);
+ 	if (vma && vma->vm_file) {
+-		*path = vma->vm_file->f_path;
++		*path = vma_pr_or_file(vma)->f_path;
+ 		path_get(path);
+ 		rc = 0;
+ 	}
+diff --git a/fs/proc/nommu.c b/fs/proc/nommu.c
+index 14c2badb8fd93..65afe5287e43e 100644
+--- a/fs/proc/nommu.c
++++ b/fs/proc/nommu.c
+@@ -41,7 +41,10 @@ static int nommu_region_show(struct seq_file *m, struct vm_region *region)
+ 	file = region->vm_file;
+ 
+ 	if (file) {
+-		struct inode *inode = file_inode(region->vm_file);
++		struct inode *inode;
++
++		file = vmr_pr_or_file(region);
++		inode = file_inode(file);
+ 		dev = inode->i_sb->s_dev;
+ 		ino = inode->i_ino;
+ 	}
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 8d382d4ec0672..93a768f754c91 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -280,7 +280,10 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
+ 	const char *name = NULL;
+ 
+ 	if (file) {
+-		struct inode *inode = file_inode(vma->vm_file);
++		struct inode *inode;
++
++		file = vma_pr_or_file(vma);
++		inode = file_inode(file);
+ 		dev = inode->i_sb->s_dev;
+ 		ino = inode->i_ino;
+ 		pgoff = ((loff_t)vma->vm_pgoff) << PAGE_SHIFT;
+@@ -1787,7 +1790,7 @@ static int show_numa_map(struct seq_file *m, void *v)
+ 	struct proc_maps_private *proc_priv = &numa_priv->proc_maps;
+ 	struct vm_area_struct *vma = v;
+ 	struct numa_maps *md = &numa_priv->md;
+-	struct file *file = vma->vm_file;
++	struct file *file = vma_pr_or_file(vma);
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct mempolicy *pol;
+ 	char buffer[64];
+diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
+index 7907e6419e572..d17209cf52bc3 100644
+--- a/fs/proc/task_nommu.c
++++ b/fs/proc/task_nommu.c
+@@ -155,7 +155,10 @@ static int nommu_vma_show(struct seq_file *m, struct vm_area_struct *vma)
+ 	file = vma->vm_file;
+ 
+ 	if (file) {
+-		struct inode *inode = file_inode(vma->vm_file);
++		struct inode *inode;
++
++		file = vma_pr_or_file(vma);
++		inode = file_inode(file);
+ 		dev = inode->i_sb->s_dev;
+ 		ino = inode->i_ino;
+ 		pgoff = (loff_t)vma->vm_pgoff << PAGE_SHIFT;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index f3fe7371855ce..a5b9751a5b331 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1688,6 +1688,28 @@ static inline void unmap_shared_mapping_range(struct address_space *mapping,
+ 	unmap_mapping_range(mapping, holebegin, holelen, 0);
+ }
+ 
++extern void vma_do_file_update_time(struct vm_area_struct *, const char[], int);
++extern struct file *vma_do_pr_or_file(struct vm_area_struct *, const char[],
++				      int);
++extern void vma_do_get_file(struct vm_area_struct *, const char[], int);
++extern void vma_do_fput(struct vm_area_struct *, const char[], int);
++
++#define vma_file_update_time(vma)	vma_do_file_update_time(vma, __func__, \
++								__LINE__)
++#define vma_pr_or_file(vma)		vma_do_pr_or_file(vma, __func__, \
++							  __LINE__)
++#define vma_get_file(vma)		vma_do_get_file(vma, __func__, __LINE__)
++#define vma_fput(vma)			vma_do_fput(vma, __func__, __LINE__)
++
++#ifndef CONFIG_MMU
++extern struct file *vmr_do_pr_or_file(struct vm_region *, const char[], int);
++extern void vmr_do_fput(struct vm_region *, const char[], int);
++
++#define vmr_pr_or_file(region)		vmr_do_pr_or_file(region, __func__, \
++							  __LINE__)
++#define vmr_fput(region)		vmr_do_fput(region, __func__, __LINE__)
++#endif /* !CONFIG_MMU */
++
+ extern int access_process_vm(struct task_struct *tsk, unsigned long addr,
+ 		void *buf, int len, unsigned int gup_flags);
+ extern int access_remote_vm(struct mm_struct *mm, unsigned long addr,
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 4aba6c0c2ba80..974802987f69d 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -272,6 +272,7 @@ struct vm_region {
+ 	unsigned long	vm_top;		/* region allocated to here */
+ 	unsigned long	vm_pgoff;	/* the offset in vm_file corresponding to vm_start */
+ 	struct file	*vm_file;	/* the backing file or NULL */
++	struct file	*vm_prfile;	/* the virtual backing file or NULL */
+ 
+ 	int		vm_usage;	/* region usage count (access under nommu_region_sem) */
+ 	bool		vm_icache_flushed : 1; /* true if the icache has been flushed for
+@@ -351,6 +352,7 @@ struct vm_area_struct {
+ 	unsigned long vm_pgoff;		/* Offset (within vm_file) in PAGE_SIZE
+ 					   units */
+ 	struct file * vm_file;		/* File we map to (can be NULL). */
++	struct file *vm_prfile;		/* shadow of vm_file */
+ 	void * vm_private_data;		/* was vm_pte (shared mem) */
+ 
+ #ifdef CONFIG_SWAP
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 48ed22774efaa..d7439388c1c52 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -568,7 +568,7 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 			struct inode *inode = file_inode(file);
+ 			struct address_space *mapping = file->f_mapping;
+ 
+-			get_file(file);
++			vma_get_file(tmp);
+ 			if (tmp->vm_flags & VM_DENYWRITE)
+ 				atomic_dec(&inode->i_writecount);
+ 			i_mmap_lock_write(mapping);
+diff --git a/mm/Makefile b/mm/Makefile
+index fccd3756b25f0..51485ceec650a 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -44,7 +44,7 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
+ 			   mm_init.o mmu_context.o percpu.o slab_common.o \
+ 			   compaction.o vmacache.o \
+ 			   interval_tree.o list_lru.o workingset.o \
+-			   debug.o gup.o $(mmu-y)
++			   prfile.o debug.o gup.o $(mmu-y)
+ 
+ # Give 'page_alloc' its own module-parameter namespace
+ page-alloc-y := page_alloc.o
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 23a051a7ef0fb..e2fe9132feb21 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2660,7 +2660,7 @@ vm_fault_t filemap_page_mkwrite(struct vm_fault *vmf)
+ 	vm_fault_t ret = VM_FAULT_LOCKED;
+ 
+ 	sb_start_pagefault(inode->i_sb);
+-	file_update_time(vmf->vma->vm_file);
++	vma_file_update_time(vmf->vma);
+ 	lock_page(page);
+ 	if (page->mapping != inode->i_mapping) {
+ 		unlock_page(page);
+diff --git a/mm/mmap.c b/mm/mmap.c
+index f609e9ec4a253..d554b349c653c 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -179,7 +179,7 @@ static struct vm_area_struct *remove_vma(struct vm_area_struct *vma)
+ 	if (vma->vm_ops && vma->vm_ops->close)
+ 		vma->vm_ops->close(vma);
+ 	if (vma->vm_file)
+-		fput(vma->vm_file);
++		vma_fput(vma);
+ 	mpol_put(vma_policy(vma));
+ 	vm_area_free(vma);
+ 	return next;
+@@ -910,7 +910,7 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
+ 	if (remove_next) {
+ 		if (file) {
+ 			uprobe_munmap(next, next->vm_start, next->vm_end);
+-			fput(file);
++			vma_fput(vma);
+ 		}
+ 		if (next->anon_vma)
+ 			anon_vma_merge(vma, next);
+@@ -1831,8 +1831,8 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ 	return addr;
+ 
+ unmap_and_free_vma:
++	vma_fput(vma);
+ 	vma->vm_file = NULL;
+-	fput(file);
+ 
+ 	/* Undo any partial mapping done by a device driver. */
+ 	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
+@@ -2683,7 +2683,7 @@ int __split_vma(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		goto out_free_mpol;
+ 
+ 	if (new->vm_file)
+-		get_file(new->vm_file);
++		vma_get_file(new);
+ 
+ 	if (new->vm_ops && new->vm_ops->open)
+ 		new->vm_ops->open(new);
+@@ -2702,7 +2702,7 @@ int __split_vma(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	if (new->vm_ops && new->vm_ops->close)
+ 		new->vm_ops->close(new);
+ 	if (new->vm_file)
+-		fput(new->vm_file);
++		vma_fput(new);
+ 	unlink_anon_vmas(new);
+  out_free_mpol:
+ 	mpol_put(vma_policy(new));
+@@ -2894,7 +2894,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	struct vm_area_struct *vma;
+ 	unsigned long populate = 0;
+ 	unsigned long ret = -EINVAL;
+-	struct file *file;
++	struct file *file, *prfile;
+ 
+ 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/vm/remap_file_pages.rst.\n",
+ 		     current->comm, current->pid);
+@@ -2969,10 +2969,27 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 		}
+ 	}
+ 
+-	file = get_file(vma->vm_file);
++	vma_get_file(vma);
++	file = vma->vm_file;
++	prfile = vma->vm_prfile;
+ 	ret = do_mmap(vma->vm_file, start, size,
+ 			prot, flags, pgoff, &populate, NULL);
++	if (!IS_ERR_VALUE(ret) && file && prfile) {
++		struct vm_area_struct *new_vma;
++
++		new_vma = find_vma(mm, ret);
++		if (!new_vma->vm_prfile)
++			new_vma->vm_prfile = prfile;
++		if (new_vma != vma)
++			get_file(prfile);
++	}
++	/*
++	 * two fput()s instead of vma_fput(vma),
++	 * coz vma may not be available anymore.
++	 */
+ 	fput(file);
++	if (prfile)
++		fput(prfile);
+ out:
+ 	up_write(&mm->mmap_sem);
+ 	if (populate)
+@@ -3263,7 +3280,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 		if (anon_vma_clone(new_vma, vma))
+ 			goto out_free_mempol;
+ 		if (new_vma->vm_file)
+-			get_file(new_vma->vm_file);
++			vma_get_file(new_vma);
+ 		if (new_vma->vm_ops && new_vma->vm_ops->open)
+ 			new_vma->vm_ops->open(new_vma);
+ 		vma_link(mm, new_vma, prev, rb_link, rb_parent);
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 318df4e236c99..7f051e86ea1dd 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -567,7 +567,7 @@ static void __put_nommu_region(struct vm_region *region)
+ 		up_write(&nommu_region_sem);
+ 
+ 		if (region->vm_file)
+-			fput(region->vm_file);
++			vmr_fput(region);
+ 
+ 		/* IO memory and memory shared directly out of the pagecache
+ 		 * from ramfs/tmpfs mustn't be released here */
+@@ -699,7 +699,7 @@ static void delete_vma(struct mm_struct *mm, struct vm_area_struct *vma)
+ 	if (vma->vm_ops && vma->vm_ops->close)
+ 		vma->vm_ops->close(vma);
+ 	if (vma->vm_file)
+-		fput(vma->vm_file);
++		vma_fput(vma);
+ 	put_nommu_region(vma->vm_region);
+ 	vm_area_free(vma);
+ }
+@@ -1222,7 +1222,7 @@ unsigned long do_mmap(struct file *file,
+ 					goto error_just_free;
+ 				}
+ 			}
+-			fput(region->vm_file);
++			vmr_fput(region);
+ 			kmem_cache_free(vm_region_jar, region);
+ 			region = pregion;
+ 			result = start;
+@@ -1299,10 +1299,10 @@ unsigned long do_mmap(struct file *file,
+ 	up_write(&nommu_region_sem);
+ error:
+ 	if (region->vm_file)
+-		fput(region->vm_file);
++		vmr_fput(region);
+ 	kmem_cache_free(vm_region_jar, region);
+ 	if (vma->vm_file)
+-		fput(vma->vm_file);
++		vma_fput(vma);
+ 	vm_area_free(vma);
+ 	return ret;
+ 
+diff --git a/mm/prfile.c b/mm/prfile.c
+new file mode 100644
+index 0000000000000..00d51187c3250
+--- /dev/null
++++ b/mm/prfile.c
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Mainly for aufs which mmap(2) different file and wants to print different
++ * path in /proc/PID/maps.
++ * Call these functions via macros defined in linux/mm.h.
++ *
++ * See Documentation/filesystems/aufs/design/06mmap.txt
++ *
++ * Copyright (c) 2014-2020 Junjro R. Okajima
++ * Copyright (c) 2014 Ian Campbell
++ */
++
++#include <linux/mm.h>
++#include <linux/file.h>
++#include <linux/fs.h>
++
++/* #define PRFILE_TRACE */
++static inline void prfile_trace(struct file *f, struct file *pr,
++			      const char func[], int line, const char func2[])
++{
++#ifdef PRFILE_TRACE
++	if (pr)
++		pr_info("%s:%d: %s, %pD2\n", func, line, func2, f);
++#endif
++}
++
++void vma_do_file_update_time(struct vm_area_struct *vma, const char func[],
++			     int line)
++{
++	struct file *f = vma->vm_file, *pr = vma->vm_prfile;
++
++	prfile_trace(f, pr, func, line, __func__);
++	file_update_time(f);
++	if (f && pr)
++		file_update_time(pr);
++}
++
++struct file *vma_do_pr_or_file(struct vm_area_struct *vma, const char func[],
++			       int line)
++{
++	struct file *f = vma->vm_file, *pr = vma->vm_prfile;
++
++	prfile_trace(f, pr, func, line, __func__);
++	return (f && pr) ? pr : f;
++}
++
++void vma_do_get_file(struct vm_area_struct *vma, const char func[], int line)
++{
++	struct file *f = vma->vm_file, *pr = vma->vm_prfile;
++
++	prfile_trace(f, pr, func, line, __func__);
++	get_file(f);
++	if (f && pr)
++		get_file(pr);
++}
++
++void vma_do_fput(struct vm_area_struct *vma, const char func[], int line)
++{
++	struct file *f = vma->vm_file, *pr = vma->vm_prfile;
++
++	prfile_trace(f, pr, func, line, __func__);
++	fput(f);
++	if (f && pr)
++		fput(pr);
++}
++
++#ifndef CONFIG_MMU
++struct file *vmr_do_pr_or_file(struct vm_region *region, const char func[],
++			       int line)
++{
++	struct file *f = region->vm_file, *pr = region->vm_prfile;
++
++	prfile_trace(f, pr, func, line, __func__);
++	return (f && pr) ? pr : f;
++}
++
++void vmr_do_fput(struct vm_region *region, const char func[], int line)
++{
++	struct file *f = region->vm_file, *pr = region->vm_prfile;
++
++	prfile_trace(f, pr, func, line, __func__);
++	fput(f);
++	if (f && pr)
++		fput(pr);
++}
++#endif /* !CONFIG_MMU */
+SPDX-License-Identifier: GPL-2.0
+aufs5.x-rcN standalone patch
+
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 046000653e4d8..15aa871d1b450 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -1371,6 +1371,7 @@ void d_walk(struct dentry *parent, void *data,
+ 	seq = 1;
+ 	goto again;
+ }
++EXPORT_SYMBOL_GPL(d_walk);
+ 
+ struct check_mount {
+ 	struct vfsmount *mnt;
+@@ -2916,6 +2917,7 @@ void d_exchange(struct dentry *dentry1, struct dentry *dentry2)
+ 
+ 	write_sequnlock(&rename_lock);
+ }
++EXPORT_SYMBOL_GPL(d_exchange);
+ 
+ /**
+  * d_ancestor - search for an ancestor
+diff --git a/fs/exec.c b/fs/exec.c
+index 2c465119affcc..239bcb8906e78 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -109,6 +109,7 @@ bool path_noexec(const struct path *path)
+ 	return (path->mnt->mnt_flags & MNT_NOEXEC) ||
+ 	       (path->mnt->mnt_sb->s_iflags & SB_I_NOEXEC);
+ }
++EXPORT_SYMBOL_GPL(path_noexec);
+ 
+ #ifdef CONFIG_USELIB
+ /*
+diff --git a/fs/fcntl.c b/fs/fcntl.c
+index 0b28a37f7e505..f2c90a416b751 100644
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -85,6 +85,7 @@ int setfl(int fd, struct file *filp, unsigned long arg)
+  out:
+ 	return error;
+ }
++EXPORT_SYMBOL_GPL(setfl);
+ 
+ static void f_modown(struct file *filp, struct pid *pid, enum pid_type type,
+                      int force)
+diff --git a/fs/file_table.c b/fs/file_table.c
+index 30d55c9a1744a..34b9bbf4c5566 100644
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -162,6 +162,7 @@ struct file *alloc_empty_file(int flags, const struct cred *cred)
+ 	}
+ 	return ERR_PTR(-ENFILE);
+ }
++EXPORT_SYMBOL_GPL(alloc_empty_file);
+ 
+ /*
+  * Variant of alloc_empty_file() that doesn't check and modify nr_files.
+@@ -375,6 +376,7 @@ void __fput_sync(struct file *file)
+ }
+ 
+ EXPORT_SYMBOL(fput);
++EXPORT_SYMBOL_GPL(__fput_sync);
+ 
+ void __init files_init(void)
+ {
+diff --git a/fs/inode.c b/fs/inode.c
+index 7700c5e4783b9..6284b41fcf3f0 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -1694,6 +1694,7 @@ int update_time(struct inode *inode, struct timespec64 *time, int flags)
+ 		return inode->i_op->update_time(inode, time, flags);
+ 	return generic_update_time(inode, time, flags);
+ }
++EXPORT_SYMBOL_GPL(update_time);
+ 
+ /**
+  *	touch_atime	-	update the access time
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 12e725e34c6ca..fa17b9d5926ba 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -431,6 +431,7 @@ void __mnt_drop_write(struct vfsmount *mnt)
+ 	mnt_dec_writers(real_mount(mnt));
+ 	preempt_enable();
+ }
++EXPORT_SYMBOL_GPL(__mnt_drop_write);
+ 
+ /**
+  * mnt_drop_write - give up write access to a mount
+@@ -781,6 +782,7 @@ int is_current_mnt_ns(struct vfsmount *mnt)
+ {
+ 	return check_mnt(real_mount(mnt));
+ }
++EXPORT_SYMBOL_GPL(is_current_mnt_ns);
+ 
+ /*
+  * vfsmount lock must be held for write
+@@ -1903,6 +1905,7 @@ int iterate_mounts(int (*f)(struct vfsmount *, void *), void *arg,
+ 	}
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(iterate_mounts);
+ 
+ static void lock_mnt_tree(struct mount *mnt)
+ {
+diff --git a/fs/notify/group.c b/fs/notify/group.c
+index 133f723aca070..0b9f7f6d8390f 100644
+--- a/fs/notify/group.c
++++ b/fs/notify/group.c
+@@ -99,6 +99,7 @@ void fsnotify_get_group(struct fsnotify_group *group)
+ {
+ 	refcount_inc(&group->refcnt);
+ }
++EXPORT_SYMBOL_GPL(fsnotify_get_group);
+ 
+ /*
+  * Drop a reference to a group.  Free it if it's through.
+diff --git a/fs/open.c b/fs/open.c
+index 719b320ede52b..f88ce55c1c998 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -65,6 +65,7 @@ int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
+ 	inode_unlock(dentry->d_inode);
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(do_truncate);
+ 
+ long vfs_truncate(const struct path *path, loff_t length)
+ {
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 5d684d7d29207..6f61c0b6aa664 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -469,6 +469,7 @@ ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(vfs_read);
+ 
+ static ssize_t new_sync_write(struct file *filp, const char __user *buf, size_t len, loff_t *ppos)
+ {
+@@ -589,6 +592,7 @@ ssize_t vfs_write(struct file *file, const char __user *buf, size_t count, loff_
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(vfs_write);
+ 
+ /* file_ppos returns &file->f_pos or NULL if file is stream */
+ static inline loff_t *file_ppos(struct file *file)
+diff --git a/fs/splice.c b/fs/splice.c
+index 9f230ee854e20..a6bd05004433c 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -862,6 +862,7 @@ long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
+ 
+ 	return splice_write(pipe, out, ppos, len, flags);
+ }
++EXPORT_SYMBOL_GPL(do_splice_from);
+ 
+ /*
+  * Attempt to initiate a splice from a file to a pipe.
+@@ -891,6 +892,7 @@ long do_splice_to(struct file *in, loff_t *ppos,
+ 
+ 	return splice_read(in, ppos, pipe, len, flags);
+ }
++EXPORT_SYMBOL_GPL(do_splice_to);
+ 
+ /**
+  * splice_direct_to_actor - splices data directly between two non-pipes
+diff --git a/fs/sync.c b/fs/sync.c
+index 457f4e4a5cc1f..67c66358f3fe4 100644
+--- a/fs/sync.c
++++ b/fs/sync.c
+@@ -39,6 +39,7 @@ int __sync_filesystem(struct super_block *sb, int wait)
+ 		sb->s_op->sync_fs(sb, wait);
+ 	return __sync_blockdev(sb->s_bdev, wait);
+ }
++EXPORT_SYMBOL_GPL(__sync_filesystem);
+ 
+ /*
+  * Write out and wait upon all dirty data associated with this
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 91608d9bfc6aa..02d19ab3ba540 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -296,6 +296,7 @@ vfs_getxattr_alloc(struct dentry *dentry, const char *name, char **xattr_value,
+ 	*xattr_value = value;
+ 	return error;
+ }
++EXPORT_SYMBOL_GPL(vfs_getxattr_alloc);
+ 
+ ssize_t
+ __vfs_getxattr(struct dentry *dentry, struct inode *inode, const char *name,
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 837a3358e77ca..715ba9c1b91ae 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -190,6 +190,7 @@ inline struct lock_class *lockdep_hlock_class(struct held_lock *hlock)
+ 	 */
+ 	return lock_classes + class_idx;
+ }
++EXPORT_SYMBOL_GPL(lockdep_hlock_class);
+ #define hlock_class(hlock) lockdep_hlock_class(hlock)
+ 
+ #ifdef CONFIG_LOCK_STAT
+diff --git a/kernel/task_work.c b/kernel/task_work.c
+index 825f28259a19a..b77593b29c1a5 100644
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -126,3 +126,4 @@ void task_work_run(void)
+ 		} while (work);
+ 	}
+ }
++EXPORT_SYMBOL_GPL(task_work_run);
+diff --git a/security/security.c b/security/security.c
+index 51de970fbb1ed..b21f1ffd90051 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -1087,6 +1087,7 @@ int security_path_rmdir(const struct path *dir, struct dentry *dentry)
+ 		return 0;
+ 	return call_int_hook(path_rmdir, 0, dir, dentry);
+ }
++EXPORT_SYMBOL_GPL(security_path_rmdir);
+ 
+ int security_path_unlink(const struct path *dir, struct dentry *dentry)
+ {
+@@ -1103,6 +1104,7 @@ int security_path_symlink(const struct path *dir, struct dentry *dentry,
+ 		return 0;
+ 	return call_int_hook(path_symlink, 0, dir, dentry, old_name);
+ }
++EXPORT_SYMBOL_GPL(security_path_symlink);
+ 
+ int security_path_link(struct dentry *old_dentry, const struct path *new_dir,
+ 		       struct dentry *new_dentry)
+@@ -1111,6 +1113,7 @@ int security_path_link(struct dentry *old_dentry, const struct path *new_dir,
+ 		return 0;
+ 	return call_int_hook(path_link, 0, old_dentry, new_dir, new_dentry);
+ }
++EXPORT_SYMBOL_GPL(security_path_link);
+ 
+ int security_path_rename(const struct path *old_dir, struct dentry *old_dentry,
+ 			 const struct path *new_dir, struct dentry *new_dentry,
+@@ -1138,6 +1141,7 @@ int security_path_truncate(const struct path *path)
+ 		return 0;
+ 	return call_int_hook(path_truncate, 0, path);
+ }
++EXPORT_SYMBOL_GPL(security_path_truncate);
+ 
+ int security_path_chmod(const struct path *path, umode_t mode)
+ {
+@@ -1145,6 +1149,7 @@ int security_path_chmod(const struct path *path, umode_t mode)
+ 		return 0;
+ 	return call_int_hook(path_chmod, 0, path, mode);
+ }
++EXPORT_SYMBOL_GPL(security_path_chmod);
+ 
+ int security_path_chown(const struct path *path, kuid_t uid, kgid_t gid)
+ {
+@@ -1152,6 +1157,7 @@ int security_path_chown(const struct path *path, kuid_t uid, kgid_t gid)
+ 		return 0;
+ 	return call_int_hook(path_chown, 0, path, uid, gid);
+ }
++EXPORT_SYMBOL_GPL(security_path_chown);
+ 
+ int security_path_chroot(const struct path *path)
+ {
+@@ -1252,6 +1258,7 @@ int security_inode_permission(struct inode *inode, int mask)
+ 		return 0;
+ 	return call_int_hook(inode_permission, 0, inode, mask);
+ }
++EXPORT_SYMBOL_GPL(security_inode_permission);
+ 
+ int security_inode_setattr(struct dentry *dentry, struct iattr *attr)
+ {
+@@ -1429,6 +1436,7 @@ int security_file_permission(struct file *file, int mask)
+ 
+ 	return fsnotify_perm(file, mask);
+ }
++EXPORT_SYMBOL_GPL(security_file_permission);
+ 
+ int security_file_alloc(struct file *file)
+ {
+diff --git a/fs/aufs/branch.h b/fs/aufs/branch.h
+index 0bac9a6c9557f..5632781b7bcc4 100644
+--- a/fs/aufs/branch.h
++++ b/fs/aufs/branch.h
+@@ -228,10 +228,8 @@ int au_xino_read(struct super_block *sb, aufs_bindex_t bindex, ino_t h_ino,
+ 		 ino_t *ino);
+ int au_xino_write(struct super_block *sb, aufs_bindex_t bindex, ino_t h_ino,
+ 		  ino_t ino);
+-ssize_t xino_fread(vfs_readf_t func, struct file *file, void *buf, size_t size,
+-		   loff_t *pos);
+-ssize_t xino_fwrite(vfs_writef_t func, struct file *file, void *buf,
+-		    size_t size, loff_t *pos);
++ssize_t xino_fread(struct file *file, void *buf, size_t size, loff_t *pos);
++ssize_t xino_fwrite(struct file *file, void *buf, size_t size, loff_t *pos);
+ 
+ int au_xib_trunc(struct super_block *sb);
+ int au_xino_trunc(struct super_block *sb, aufs_bindex_t bindex, int idx_begin);
+diff --git a/fs/aufs/cpup.c b/fs/aufs/cpup.c
+index 69a60ddc34746..9e3f5b89471f3 100644
+--- a/fs/aufs/cpup.c
++++ b/fs/aufs/cpup.c
+@@ -556,32 +556,19 @@ static int au_do_cpup_regular(struct au_cp_generic *cpg,
+ static int au_do_cpup_symlink(struct path *h_path, struct dentry *h_src,
+ 			      struct inode *h_dir)
+ {
+-	int err, symlen;
+-	mm_segment_t old_fs;
+-	union {
+-		char *k;
+-		char __user *u;
+-	} sym;
++	int err;
++	DEFINE_DELAYED_CALL(done);
++	const char *sym;
+ 
+-	err = -ENOMEM;
+-	sym.k = (void *)__get_free_page(GFP_NOFS);
+-	if (unlikely(!sym.k))
++	sym = vfs_get_link(h_src, &done);
++	err = PTR_ERR(sym);
++	if (IS_ERR(sym))
+ 		goto out;
+ 
+-	/* unnecessary to support mmap_sem since symlink is not mmap-able */
+-	old_fs = get_fs();
+-	set_fs(KERNEL_DS);
+-	symlen = vfs_readlink(h_src, sym.u, PATH_MAX);
+-	err = symlen;
+-	set_fs(old_fs);
+-
+-	if (symlen > 0) {
+-		sym.k[symlen] = 0;
+-		err = vfsub_symlink(h_dir, h_path, sym.k);
+-	}
+-	free_page((unsigned long)sym.k);
++	err = vfsub_symlink(h_dir, h_path, sym);
+ 
+ out:
++	do_delayed_call(&done);
+ 	return err;
+ }
+ 
+diff --git a/fs/aufs/dynop.c b/fs/aufs/dynop.c
+index 3c3e7812a0214..5dbb7193591b7 100644
+--- a/fs/aufs/dynop.c
++++ b/fs/aufs/dynop.c
+@@ -167,6 +167,7 @@ static void dy_aop(struct au_dykey *key, const void *h_op,
+ 	DySetAop(writepages);
+ 	DySetAop(set_page_dirty);
+ 	DySetAop(readpages);
++	DySetAop(readahead);
+ 	DySetAop(write_begin);
+ 	DySetAop(write_end);
+ 	DySetAop(bmap);
+diff --git a/fs/aufs/export.c b/fs/aufs/export.c
+index 33ae8ac42c5c6..94005688ac0be 100644
+--- a/fs/aufs/export.c
++++ b/fs/aufs/export.c
+@@ -108,8 +108,7 @@ void au_xigen_inc(struct inode *inode)
+ 	pos = inode->i_ino;
+ 	pos *= sizeof(igen);
+ 	igen = inode->i_generation + 1;
+-	sz = xino_fwrite(sbinfo->si_xwrite, sbinfo->si_xigen, &igen,
+-			 sizeof(igen), &pos);
++	sz = xino_fwrite(sbinfo->si_xigen, &igen, sizeof(igen), &pos);
+ 	if (sz == sizeof(igen))
+ 		return; /* success */
+ 
+@@ -151,10 +150,10 @@ int au_xigen_new(struct inode *inode)
+ 	if (vfsub_f_size_read(file)
+ 	    < pos + sizeof(inode->i_generation)) {
+ 		inode->i_generation = atomic_inc_return(&sbinfo->si_xigen_next);
+-		sz = xino_fwrite(sbinfo->si_xwrite, file, &inode->i_generation,
++		sz = xino_fwrite(file, &inode->i_generation,
+ 				 sizeof(inode->i_generation), &pos);
+ 	} else
+-		sz = xino_fread(sbinfo->si_xread, file, &inode->i_generation,
++		sz = xino_fread(file, &inode->i_generation,
+ 				sizeof(inode->i_generation), &pos);
+ 	if (sz == sizeof(inode->i_generation))
+ 		goto out; /* success */
+diff --git a/fs/aufs/f_op.c b/fs/aufs/f_op.c
+index 6fb4a4ed8cc7f..5ef279a59bb14 100644
+--- a/fs/aufs/f_op.c
++++ b/fs/aufs/f_op.c
+@@ -230,34 +230,6 @@ static void au_write_post(struct inode *inode, struct file *h_file,
+ 	fput(h_file);
+ }
+ 
+-static ssize_t aufs_read(struct file *file, char __user *buf, size_t count,
+-			 loff_t *ppos)
+-{
+-	ssize_t err;
+-	struct inode *inode;
+-	struct file *h_file;
+-	struct super_block *sb;
+-
+-	inode = file_inode(file);
+-	sb = inode->i_sb;
+-	si_read_lock(sb, AuLock_FLUSH | AuLock_NOPLMW);
+-
+-	h_file = au_read_pre(file, /*keep_fi*/0, /*lsc*/0);
+-	err = PTR_ERR(h_file);
+-	if (IS_ERR(h_file))
+-		goto out;
+-
+-	/* filedata may be obsoleted by concurrent copyup, but no problem */
+-	err = vfsub_read_u(h_file, buf, count, ppos);
+-	/* todo: necessary? */
+-	/* file->f_ra = h_file->f_ra; */
+-	au_read_post(inode, h_file);
+-
+-out:
+-	si_read_unlock(sb);
+-	return err;
+-}
+-
+ /*
+  * todo: very ugly
+  * it locks both of i_mutex and si_rwsem for read in safe.
+@@ -280,33 +252,6 @@ static void au_mtx_and_read_lock(struct inode *inode)
+ 	}
+ }
+ 
+-static ssize_t aufs_write(struct file *file, const char __user *ubuf,
+-			  size_t count, loff_t *ppos)
+-{
+-	ssize_t err;
+-	struct au_write_pre wpre;
+-	struct inode *inode;
+-	struct file *h_file;
+-	char __user *buf = (char __user *)ubuf;
+-
+-	inode = file_inode(file);
+-	au_mtx_and_read_lock(inode);
+-
+-	wpre.lsc = 0;
+-	h_file = au_write_pre(file, /*do_ready*/1, &wpre);
+-	err = PTR_ERR(h_file);
+-	if (IS_ERR(h_file))
+-		goto out;
+-
+-	err = vfsub_write_u(h_file, buf, count, ppos);
+-	au_write_post(inode, h_file, &wpre, err);
+-
+-out:
+-	si_read_unlock(inode->i_sb);
+-	inode_unlock(inode);
+-	return err;
+-}
+-
+ static ssize_t au_do_iter(struct file *h_file, int rw, struct kiocb *kio,
+ 			  struct iov_iter *iov_iter)
+ {
+@@ -778,8 +723,6 @@ const struct file_operations aufs_file_fop = {
+ 
+ 	.llseek		= default_llseek,
+ 
+-	.read		= aufs_read,
+-	.write		= aufs_write,
+ 	.read_iter	= aufs_read_iter,
+ 	.write_iter	= aufs_write_iter,
+ 
+diff --git a/fs/aufs/file.c b/fs/aufs/file.c
+index ae2c7905634a1..7f67255927c02 100644
+--- a/fs/aufs/file.c
++++ b/fs/aufs/file.c
+@@ -778,6 +778,10 @@ static ssize_t aufs_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
+ 
+ /* they will never be called. */
+ #ifdef CONFIG_AUFS_DEBUG
++/*
++void aufs_readahead(struct readahead_control *)
++{ AuUnsupport(); }
++*/
+ static int aufs_write_begin(struct file *file, struct address_space *mapping,
+ 			    loff_t pos, unsigned len, unsigned flags,
+ 			    struct page **pagep, void **fsdata)
+diff --git a/fs/aufs/hfsnotify.c b/fs/aufs/hfsnotify.c
+index 12243ce81bb9f..3e5e6b974e63a 100644
+--- a/fs/aufs/hfsnotify.c
++++ b/fs/aufs/hfsnotify.c
+@@ -147,8 +147,8 @@ static void au_hfsn_free_group(struct fsnotify_group *group)
+ }
+ 
+ static int au_hfsn_handle_event(struct fsnotify_group *group,
+-				struct inode *inode,
+ 				u32 mask, const void *data, int data_type,
++				struct inode *dir,
+ 				const struct qstr *file_name, u32 cookie,
+ 				struct fsnotify_iter_info *iter_info)
+ {
+@@ -165,7 +165,7 @@ static int au_hfsn_handle_event(struct fsnotify_group *group,
+ 	if (mask & (FS_IN_IGNORED | FS_UNMOUNT))
+ 		goto out;
+ 
+-	h_dir = inode;
++	h_dir = dir;
+ 	h_inode = NULL;
+ #ifdef AuDbgHnotify
+ 	au_debug_on();
+diff --git a/fs/aufs/super.h b/fs/aufs/super.h
+index 37205202c2720..f840eedbd5725 100644
+--- a/fs/aufs/super.h
++++ b/fs/aufs/super.h
+@@ -118,8 +118,6 @@ struct au_sbinfo {
+ 	unsigned int		si_mntflags;
+ 
+ 	/* external inode number (bitmap and translation table) */
+-	vfs_readf_t		si_xread;
+-	vfs_writef_t		si_xwrite;
+ 	loff_t			si_ximaxent;	/* max entries in a xino */
+ 
+ 	struct file		*si_xib;
+diff --git a/fs/aufs/vfsub.c b/fs/aufs/vfsub.c
+index d7b324238117b..e880c14a57157 100644
+--- a/fs/aufs/vfsub.c
++++ b/fs/aufs/vfsub.c
+@@ -505,22 +505,17 @@ ssize_t vfsub_read_u(struct file *file, char __user *ubuf, size_t count,
+ 	return err;
+ }
+ 
+-/* todo: kernel_read()? */
+ ssize_t vfsub_read_k(struct file *file, void *kbuf, size_t count,
+ 		     loff_t *ppos)
+ {
+ 	ssize_t err;
+-	mm_segment_t oldfs;
+-	union {
+-		void *k;
+-		char __user *u;
+-	} buf;
+-
+-	buf.k = kbuf;
+-	oldfs = get_fs();
+-	set_fs(KERNEL_DS);
+-	err = vfsub_read_u(file, buf.u, count, ppos);
+-	set_fs(oldfs);
++
++	lockdep_off();
++	err = kernel_read(file, kbuf, count, ppos);
++	lockdep_on();
++	AuTraceErr(err);
++	if (err >= 0)
++		vfsub_update_h_iattr(&file->f_path, /*did*/NULL); /*ignore*/
+ 	return err;
+ }
+ 
+@@ -540,17 +535,12 @@ ssize_t vfsub_write_u(struct file *file, const char __user *ubuf, size_t count,
+ ssize_t vfsub_write_k(struct file *file, void *kbuf, size_t count, loff_t *ppos)
+ {
+ 	ssize_t err;
+-	mm_segment_t oldfs;
+-	union {
+-		void *k;
+-		const char __user *u;
+-	} buf;
+-
+-	buf.k = kbuf;
+-	oldfs = get_fs();
+-	set_fs(KERNEL_DS);
+-	err = vfsub_write_u(file, buf.u, count, ppos);
+-	set_fs(oldfs);
++
++	lockdep_off();
++	err = kernel_write(file, kbuf, count, ppos);
++	lockdep_on();
++	if (err >= 0)
++		vfsub_update_h_iattr(&file->f_path, /*did*/NULL); /*ignore*/
+ 	return err;
+ }
+ 
+diff --git a/fs/aufs/xino.c b/fs/aufs/xino.c
+index e8f8d185c91e2..45e5d7e7b35cc 100644
+--- a/fs/aufs/xino.c
++++ b/fs/aufs/xino.c
+@@ -647,8 +647,8 @@ struct au_xi_writing {
+ 	ino_t h_ino, ino;
+ };
+ 
+-static int au_xino_do_write(vfs_writef_t write, struct file *file,
+-			    struct au_xi_calc *calc, ino_t ino);
++static int au_xino_do_write(struct file *file, struct au_xi_calc *calc,
++			    ino_t ino);
+ 
+ static void au_xino_call_do_new_async(void *args)
+ {
+@@ -677,7 +677,7 @@ static void au_xino_call_do_new_async(void *args)
+ 
+ 	file = au_xino_file(br->br_xino, a->calc.idx);
+ 	AuDebugOn(!file);
+-	err = au_xino_do_write(sbi->si_xwrite, file, &a->calc, a->ino);
++	err = au_xino_do_write(file, &a->calc, a->ino);
+ 	if (unlikely(err)) {
+ 		AuIOErr("err %d\n", err);
+ 		goto out;
+@@ -778,7 +778,7 @@ int au_xino_read(struct super_block *sb, aufs_bindex_t bindex, ino_t h_ino,
+ 		return 0; /* no xino */
+ 
+ 	sbinfo = au_sbi(sb);
+-	sz = xino_fread(sbinfo->si_xread, file, ino, sizeof(*ino), &calc.pos);
++	sz = xino_fread(file, ino, sizeof(*ino), &calc.pos);
+ 	if (sz == sizeof(*ino))
+ 		return 0; /* success */
+ 
+@@ -790,12 +790,12 @@ int au_xino_read(struct super_block *sb, aufs_bindex_t bindex, ino_t h_ino,
+ 	return err;
+ }
+ 
+-static int au_xino_do_write(vfs_writef_t write, struct file *file,
+-			    struct au_xi_calc *calc, ino_t ino)
++static int au_xino_do_write(struct file *file, struct au_xi_calc *calc,
++			    ino_t ino)
+ {
+ 	ssize_t sz;
+ 
+-	sz = xino_fwrite(write, file, &ino, sizeof(ino), &calc->pos);
++	sz = xino_fwrite(file, &ino, sizeof(ino), &calc->pos);
+ 	if (sz == sizeof(ino))
+ 		return 0; /* success */
+ 
+@@ -845,7 +845,7 @@ int au_xino_write(struct super_block *sb, aufs_bindex_t bindex, ino_t h_ino,
+ 		goto out;
+ 	}
+ 
+-	err = au_xino_do_write(au_sbi(sb)->si_xwrite, file, &calc, ino);
++	err = au_xino_do_write(file, &calc, ino);
+ 	if (!err) {
+ 		br = au_sbr(sb, bindex);
+ 		if (au_opt_test(mnt_flags, TRUNC_XINO)
+@@ -859,40 +859,27 @@ int au_xino_write(struct super_block *sb, aufs_bindex_t bindex, ino_t h_ino,
+ 	return -EIO;
+ }
+ 
+-static ssize_t xino_fread_wkq(vfs_readf_t func, struct file *file, void *buf,
+-			      size_t size, loff_t *pos);
++static ssize_t xino_fread_wkq(struct file *file, void *buf, size_t size,
++			      loff_t *pos);
+ 
+ /* todo: unnecessary to support mmap_sem since kernel-space? */
+-ssize_t xino_fread(vfs_readf_t func, struct file *file, void *kbuf, size_t size,
+-		   loff_t *pos)
++ssize_t xino_fread(struct file *file, void *kbuf, size_t size, loff_t *pos)
+ {
+ 	ssize_t err;
+-	mm_segment_t oldfs;
+-	union {
+-		void *k;
+-		char __user *u;
+-	} buf;
+ 	int i;
+ 	const int prevent_endless = 10;
+ 
+ 	i = 0;
+-	buf.k = kbuf;
+-	oldfs = get_fs();
+-	set_fs(KERNEL_DS);
+ 	do {
+-		err = func(file, buf.u, size, pos);
++		err = vfsub_read_k(file, kbuf, size, pos);
+ 		if (err == -EINTR
+ 		    && !au_wkq_test()
+ 		    && fatal_signal_pending(current)) {
+-			set_fs(oldfs);
+-			err = xino_fread_wkq(func, file, kbuf, size, pos);
++			err = xino_fread_wkq(file, kbuf, size, pos);
+ 			BUG_ON(err == -EINTR);
+-			oldfs = get_fs();
+-			set_fs(KERNEL_DS);
+ 		}
+ 	} while (i++ < prevent_endless
+ 		 && (err == -EAGAIN || err == -EINTR));
+-	set_fs(oldfs);
+ 
+ #if 0 /* reserved for future use */
+ 	if (err > 0)
+@@ -904,7 +891,6 @@ ssize_t xino_fread(vfs_readf_t func, struct file *file, void *kbuf, size_t size,
+ 
+ struct xino_fread_args {
+ 	ssize_t *errp;
+-	vfs_readf_t func;
+ 	struct file *file;
+ 	void *buf;
+ 	size_t size;
+@@ -914,17 +900,16 @@ struct xino_fread_args {
+ static void call_xino_fread(void *args)
+ {
+ 	struct xino_fread_args *a = args;
+-	*a->errp = xino_fread(a->func, a->file, a->buf, a->size, a->pos);
++	*a->errp = xino_fread(a->file, a->buf, a->size, a->pos);
+ }
+ 
+-static ssize_t xino_fread_wkq(vfs_readf_t func, struct file *file, void *buf,
+-			      size_t size, loff_t *pos)
++static ssize_t xino_fread_wkq(struct file *file, void *buf, size_t size,
++			      loff_t *pos)
+ {
+ 	ssize_t err;
+ 	int wkq_err;
+ 	struct xino_fread_args args = {
+ 		.errp	= &err,
+-		.func	= func,
+ 		.file	= file,
+ 		.buf	= buf,
+ 		.size	= size,
+@@ -938,39 +923,27 @@ static ssize_t xino_fread_wkq(vfs_readf_t func, struct file *file, void *buf,
+ 	return err;
+ }
+ 
+-static ssize_t xino_fwrite_wkq(vfs_writef_t func, struct file *file, void *buf,
+-			       size_t size, loff_t *pos);
++static ssize_t xino_fwrite_wkq(struct file *file, void *buf, size_t size,
++			       loff_t *pos);
+ 
+-static ssize_t do_xino_fwrite(vfs_writef_t func, struct file *file, void *kbuf,
+-			      size_t size, loff_t *pos)
++static ssize_t do_xino_fwrite(struct file *file, void *kbuf, size_t size,
++			      loff_t *pos)
+ {
+ 	ssize_t err;
+-	mm_segment_t oldfs;
+-	union {
+-		void *k;
+-		const char __user *u;
+-	} buf;
+ 	int i;
+ 	const int prevent_endless = 10;
+ 
+ 	i = 0;
+-	buf.k = kbuf;
+-	oldfs = get_fs();
+-	set_fs(KERNEL_DS);
+ 	do {
+-		err = func(file, buf.u, size, pos);
++		err = vfsub_write_k(file, kbuf, size, pos);
+ 		if (err == -EINTR
+ 		    && !au_wkq_test()
+ 		    && fatal_signal_pending(current)) {
+-			set_fs(oldfs);
+-			err = xino_fwrite_wkq(func, file, kbuf, size, pos);
++			err = xino_fwrite_wkq(file, kbuf, size, pos);
+ 			BUG_ON(err == -EINTR);
+-			oldfs = get_fs();
+-			set_fs(KERNEL_DS);
+ 		}
+ 	} while (i++ < prevent_endless
+ 		 && (err == -EAGAIN || err == -EINTR));
+-	set_fs(oldfs);
+ 
+ #if 0 /* reserved for future use */
+ 	if (err > 0)
+@@ -982,7 +955,6 @@ static ssize_t do_xino_fwrite(vfs_writef_t func, struct file *file, void *kbuf,
+ 
+ struct do_xino_fwrite_args {
+ 	ssize_t *errp;
+-	vfs_writef_t func;
+ 	struct file *file;
+ 	void *buf;
+ 	size_t size;
+@@ -992,17 +964,16 @@ struct do_xino_fwrite_args {
+ static void call_do_xino_fwrite(void *args)
+ {
+ 	struct do_xino_fwrite_args *a = args;
+-	*a->errp = do_xino_fwrite(a->func, a->file, a->buf, a->size, a->pos);
++	*a->errp = do_xino_fwrite(a->file, a->buf, a->size, a->pos);
+ }
+ 
+-static ssize_t xino_fwrite_wkq(vfs_writef_t func, struct file *file, void *buf,
+-			       size_t size, loff_t *pos)
++static ssize_t xino_fwrite_wkq(struct file *file, void *buf, size_t size,
++			       loff_t *pos)
+ {
+ 	ssize_t err;
+ 	int wkq_err;
+ 	struct do_xino_fwrite_args args = {
+ 		.errp	= &err,
+-		.func	= func,
+ 		.file	= file,
+ 		.buf	= buf,
+ 		.size	= size,
+@@ -1020,18 +991,17 @@ static ssize_t xino_fwrite_wkq(vfs_writef_t func, struct file *file, void *buf,
+ 	return err;
+ }
+ 
+-ssize_t xino_fwrite(vfs_writef_t func, struct file *file, void *buf,
+-		    size_t size, loff_t *pos)
++ssize_t xino_fwrite(struct file *file, void *buf, size_t size, loff_t *pos)
+ {
+ 	ssize_t err;
+ 
+ 	if (rlimit(RLIMIT_FSIZE) == RLIM_INFINITY) {
+ 		lockdep_off();
+-		err = do_xino_fwrite(func, file, buf, size, pos);
++		err = do_xino_fwrite(file, buf, size, pos);
+ 		lockdep_on();
+ 	} else {
+ 		lockdep_off();
+-		err = xino_fwrite_wkq(func, file, buf, size, pos);
++		err = xino_fwrite_wkq(file, buf, size, pos);
+ 		lockdep_on();
+ 	}
+ 
+@@ -1082,17 +1052,17 @@ static int xib_pindex(struct super_block *sb, unsigned long pindex)
+ 	p = sbinfo->si_xib_buf;
+ 	pos = sbinfo->si_xib_last_pindex;
+ 	pos *= PAGE_SIZE;
+-	sz = xino_fwrite(sbinfo->si_xwrite, xib, p, PAGE_SIZE, &pos);
++	sz = xino_fwrite(xib, p, PAGE_SIZE, &pos);
+ 	if (unlikely(sz != PAGE_SIZE))
+ 		goto out;
+ 
+ 	pos = pindex;
+ 	pos *= PAGE_SIZE;
+ 	if (vfsub_f_size_read(xib) >= pos + PAGE_SIZE)
+-		sz = xino_fread(sbinfo->si_xread, xib, p, PAGE_SIZE, &pos);
++		sz = xino_fread(xib, p, PAGE_SIZE, &pos);
+ 	else {
+ 		memset(p, 0, PAGE_SIZE);
+-		sz = xino_fwrite(sbinfo->si_xwrite, xib, p, PAGE_SIZE, &pos);
++		sz = xino_fwrite(xib, p, PAGE_SIZE, &pos);
+ 	}
+ 	if (sz == PAGE_SIZE) {
+ 		sbinfo->si_xib_last_pindex = pindex;
+@@ -1143,7 +1113,6 @@ static int do_xib_restore(struct super_block *sb, struct file *file, void *page)
+ 	unsigned long pindex;
+ 	loff_t pos, pend;
+ 	struct au_sbinfo *sbinfo;
+-	vfs_readf_t func;
+ 	ino_t *ino;
+ 	unsigned long *p;
+ 
+@@ -1151,11 +1120,10 @@ static int do_xib_restore(struct super_block *sb, struct file *file, void *page)
+ 	sbinfo = au_sbi(sb);
+ 	MtxMustLock(&sbinfo->si_xib_mtx);
+ 	p = sbinfo->si_xib_buf;
+-	func = sbinfo->si_xread;
+ 	pend = vfsub_f_size_read(file);
+ 	pos = 0;
+ 	while (pos < pend) {
+-		sz = xino_fread(func, file, page, PAGE_SIZE, &pos);
++		sz = xino_fread(file, page, PAGE_SIZE, &pos);
+ 		err = sz;
+ 		if (unlikely(sz <= 0))
+ 			goto out;
+@@ -1244,7 +1212,7 @@ int au_xib_trunc(struct super_block *sb)
+ 	p = sbinfo->si_xib_buf;
+ 	memset(p, 0, PAGE_SIZE);
+ 	pos = 0;
+-	sz = xino_fwrite(sbinfo->si_xwrite, sbinfo->si_xib, p, PAGE_SIZE, &pos);
++	sz = xino_fwrite(sbinfo->si_xib, p, PAGE_SIZE, &pos);
+ 	if (unlikely(sz != PAGE_SIZE)) {
+ 		err = sz;
+ 		AuIOErr("err %d\n", err);
+@@ -1383,7 +1351,6 @@ static void xino_clear_xib(struct super_block *sb)
+ 	SiMustWriteLock(sb);
+ 
+ 	sbinfo = au_sbi(sb);
+-	/* unnecessary to clear sbinfo->si_xread and ->si_xwrite */
+ 	if (sbinfo->si_xib)
+ 		fput(sbinfo->si_xib);
+ 	sbinfo->si_xib = NULL;
+@@ -1410,8 +1377,6 @@ static int au_xino_set_xib(struct super_block *sb, struct path *path)
+ 	if (sbinfo->si_xib)
+ 		fput(sbinfo->si_xib);
+ 	sbinfo->si_xib = file;
+-	sbinfo->si_xread = vfs_readf(file);
+-	sbinfo->si_xwrite = vfs_writef(file);
+ 	xi_sb = file_inode(file)->i_sb;
+ 	sbinfo->si_ximaxent = xi_sb->s_maxbytes;
+ 	if (unlikely(sbinfo->si_ximaxent < PAGE_SIZE)) {
+@@ -1435,8 +1400,7 @@ static int au_xino_set_xib(struct super_block *sb, struct path *path)
+ 	sbinfo->si_xib_next_bit = 0;
+ 	if (vfsub_f_size_read(file) < PAGE_SIZE) {
+ 		pos = 0;
+-		err = xino_fwrite(sbinfo->si_xwrite, file, sbinfo->si_xib_buf,
+-				  PAGE_SIZE, &pos);
++		err = xino_fwrite(file, sbinfo->si_xib_buf, PAGE_SIZE, &pos);
+ 		if (unlikely(err != PAGE_SIZE))
+ 			goto out_free;
+ 	}
+@@ -1487,7 +1451,6 @@ static void au_xino_set_br_shared(struct super_block *sb, struct au_branch *br,
+ }
+ 
+ struct au_xino_do_set_br {
+-	vfs_writef_t writef;
+ 	struct au_branch *br;
+ 	ino_t h_ino;
+ 	aufs_bindex_t bshared;
+@@ -1529,7 +1492,7 @@ static int au_xino_do_set_br(struct super_block *sb, struct path *path,
+ 		goto out;
+ 	AuDebugOn(!file);
+ 
+-	err = au_xino_do_write(args->writef, file, &calc, AUFS_ROOT_INO);
++	err = au_xino_do_write(file, &calc, AUFS_ROOT_INO);
+ 	if (unlikely(err))
+ 		au_xino_put(br);
+ 
+@@ -1549,7 +1512,6 @@ static int au_xino_set_br(struct super_block *sb, struct path *path)
+ 
+ 	bbot = au_sbbot(sb);
+ 	inode = d_inode(sb->s_root);
+-	args.writef = au_sbi(sb)->si_xwrite;
+ 	for (bindex = 0; bindex <= bbot; bindex++) {
+ 		args.h_ino = au_h_iptr(inode, bindex)->i_ino;
+ 		args.br = au_sbr(sb, bindex);
+@@ -1704,7 +1666,6 @@ int au_xino_init_br(struct super_block *sb, struct au_branch *br, ino_t h_ino,
+ 		.br	= br
+ 	};
+ 
+-	args.writef = au_sbi(sb)->si_xwrite;
+ 	args.bshared = sbr_find_shared(sb, /*btop*/0, au_sbbot(sb),
+ 				       au_br_sb(br));
+ 	err = au_xino_do_set_br(sb, base, &args);
+@@ -1788,7 +1749,6 @@ void au_xino_delete_inode(struct inode *inode, const int unlinked)
+ 	struct au_hinode *hi;
+ 	struct inode *h_inode;
+ 	struct au_branch *br;
+-	vfs_writef_t xwrite;
+ 	struct au_xi_calc calc;
+ 	struct file *file;
+ 
+@@ -1810,7 +1770,6 @@ void au_xino_delete_inode(struct inode *inode, const int unlinked)
+ 	if (bindex < 0)
+ 		return;
+ 
+-	xwrite = au_sbi(sb)->si_xwrite;
+ 	try_trunc = !!au_opt_test(mnt_flags, TRUNC_XINO);
+ 	hi = au_hinode(iinfo, bindex);
+ 	bbot = iinfo->ii_bbot;
+@@ -1831,7 +1790,7 @@ void au_xino_delete_inode(struct inode *inode, const int unlinked)
+ 		if (IS_ERR_OR_NULL(file))
+ 			continue;
+ 
+-		err = au_xino_do_write(xwrite, file, &calc, /*ino*/0);
++		err = au_xino_do_write(file, &calc, /*ino*/0);
+ 		if (!err && try_trunc
+ 		    && au_test_fs_trunc_xino(au_br_sb(br)))
+ 			xino_try_trunc(sb, br);

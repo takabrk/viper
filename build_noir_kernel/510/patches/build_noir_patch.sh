@@ -31,4 +31,10 @@ cat add_noir_version.patch \
        ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch \
        ck1/0014-Swap-sucks.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints.patch \
+       other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
+       aufs5/aufs5-base.patch \
+       aufs5/aufs5-kbuild.patch\
+       aufs5/aufs5-mmap.patch \
+       aufs5/aufs5-standalone.patch \
+       aufs5/k510.patch \
        > noir.patch
