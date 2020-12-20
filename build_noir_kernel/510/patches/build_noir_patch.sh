@@ -43,4 +43,5 @@ cat add_noir_version.patch \
        aufs5/k510.patch \
        other/0001-init-Kconfig-set-default-value-of-SCHED_PDS.patch \
        other/0002-init-Kconfig-Restore-original-PDS-description.patch \
+       other/0001-rapl-patches.patch \
        > noir.patch

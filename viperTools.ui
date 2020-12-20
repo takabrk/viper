@@ -129,7 +129,7 @@
                   <object class="GtkEntry" id="entry4">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Valkyrie Linux 20v14</property>
+                    <property name="text" translatable="yes">Valkyrie Linux 20v15</property>
                     <property name="placeholder_text" translatable="yes">vsrx-19.16</property>
                   </object>
                   <packing>
@@ -179,7 +179,7 @@
                   <object class="GtkEntry" id="entry6">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Valkyrie Linux 20v14</property>
+                    <property name="text" translatable="yes">Valkyrie Linux 20v15</property>
                     <property name="placeholder_text" translatable="yes">ubuntu 18.04 "" - Release amd64 (20190729)</property>
                   </object>
                   <packing>
@@ -556,7 +556,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20201219)
+Viper Tools(20201220)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>
