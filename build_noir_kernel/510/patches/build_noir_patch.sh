@@ -25,7 +25,7 @@ cat add_noir_version.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        zen/zen-sauce.patch \
        zen/fixes.patch \
-       other/use_kyber.patch \
+       other/use_i10.patch \
        other/add-acs-overrides.patch \
        ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch \
        ck1/0005-Special-case-calls-of-schedule_timeout-1-to-use-the-.patch \
@@ -44,4 +44,5 @@ cat add_noir_version.patch \
        other/0001-init-Kconfig-set-default-value-of-SCHED_PDS.patch \
        other/0002-init-Kconfig-Restore-original-PDS-description.patch \
        other/0001-rapl-patches.patch \
+       other/0001-v4l2loopback-5.10-initial-merge.patch \
        > noir.patch
