@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#2020/12/15
+#2020/12/22
 
 while getopts e: OPT
 do
@@ -11,7 +11,7 @@ do
   esac
 done
 VERSIONBASE="5.10"
-VERSIONPOINT="5.10.1"
+VERSIONPOINT="5.10.2"
 case $e_num in
     base)
            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
@@ -30,7 +30,7 @@ case $e_num in
            cd linux-$VERSIONPOINT-noir
            make xconfig
            sudo make-kpkg clean
-           time sudo make-kpkg -j3 --initrd linux_image linux_headers
+           time sudo make-kpkg -j4 --initrd linux_image linux_headers
            #cd linux-$VERSIONBASE-noir
            #sudo make modules_install -j4
            #cd ../

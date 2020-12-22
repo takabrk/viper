@@ -10,8 +10,8 @@ index 51540b291738..ab8c480660a6 100644
  PHONY := __all
  __all:
  
-+NRVERSION = -noir-v11
-+NRNAME = MuQSS Powered
++NRVERSION = -noir
++NRNAME = PSD Powered
 +EXTRAVERSION := $(EXTRAVERSION)$(NRVERSION)
 +
  # We are using a recursive build, so we need to do a little thinking
@@ -23,7 +23,7 @@ index 51540b291738..ab8c480660a6 100644
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2020-12-21 10:14:19.756031153 +0900
+--- /dev/null	2020-12-22 09:18:54.921390600 +0900
 +++ .config	2020-12-19 15:23:43.765512000 +0900
 @@ -0,0 +1,10275 @@
 +#
@@ -12080,8 +12080,20 @@ index 5cd83ea..c68be72 100644
 -- 
 2.29.2.456.g3a0b884cab
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 44fde25bb221e..f6a1513dfb76c 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5663,6 +5663,7 @@
+ 					device);
+ 				j = NO_REPORT_LUNS (don't use report luns
+ 					command, uas only);
++				k = NO_SAME (do not use WRITE_SAME, uas only)
+ 				l = NOT_LOCKABLE (don't try to lock and
+ 					unlock ejectable media, not on uas);
+ 				m = MAX_SECTORS_64 (don't transfer more
 diff --git a/Makefile b/Makefile
-index e30cf02da8b89..076d4e6b9ccc2 100644
+index e30cf02da8b89..44f4cd2e58a80 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,7 +1,7 @@
@@ -12089,7 +12101,7 @@ index e30cf02da8b89..076d4e6b9ccc2 100644
  VERSION = 5
  PATCHLEVEL = 10
 -SUBLEVEL = 0
-+SUBLEVEL = 1
++SUBLEVEL = 2
  EXTRAVERSION =
  NAME = Kleptomaniac Octopus
  
@@ -12139,6 +12151,330 @@ index bb645bc3ba6d6..2175a5ac4f7c6 100644
  	int				reshape_backwards;
  
  	struct md_thread		*thread;	/* management thread */
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index 562087df7d334..0cc6d35a08156 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -184,11 +184,6 @@ static void omap_8250_mdr1_errataset(struct uart_8250_port *up,
+ 				     struct omap8250_priv *priv)
+ {
+ 	u8 timeout = 255;
+-	u8 old_mdr1;
+-
+-	old_mdr1 = serial_in(up, UART_OMAP_MDR1);
+-	if (old_mdr1 == priv->mdr1)
+-		return;
+ 
+ 	serial_out(up, UART_OMAP_MDR1, priv->mdr1);
+ 	udelay(2);
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index fad31ccd1fa83..1b4eb7046b078 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -342,6 +342,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	{ USB_DEVICE(0x06a3, 0x0006), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
+ 
++	/* Agfa SNAPSCAN 1212U */
++	{ USB_DEVICE(0x06bd, 0x0001), .driver_info = USB_QUIRK_RESET_RESUME },
++
+ 	/* Guillemot Webcam Hercules Dualpix Exchange (2nd ID) */
+ 	{ USB_DEVICE(0x06f8, 0x0804), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
+diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
+index 53a227217f1cb..99c1ebe86f6a2 100644
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -2734,7 +2734,7 @@ static int __init init(void)
+ {
+ 	int	retval = -ENOMEM;
+ 	int	i;
+-	struct	dummy *dum[MAX_NUM_UDC];
++	struct	dummy *dum[MAX_NUM_UDC] = {};
+ 
+ 	if (usb_disabled())
+ 		return -ENODEV;
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index c799ca5361d4d..74c497fd34762 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1712,6 +1712,10 @@ retry:
+ 	hcd->state = HC_STATE_SUSPENDED;
+ 	bus_state->next_statechange = jiffies + msecs_to_jiffies(10);
+ 	spin_unlock_irqrestore(&xhci->lock, flags);
++
++	if (bus_state->bus_suspended)
++		usleep_range(5000, 10000);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index bf89172c43cac..84da8406d5b42 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -47,6 +47,7 @@
+ #define PCI_DEVICE_ID_INTEL_DNV_XHCI			0x19d0
+ #define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_2C_XHCI	0x15b5
+ #define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_4C_XHCI	0x15b6
++#define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_LP_XHCI	0x15c1
+ #define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_C_2C_XHCI	0x15db
+ #define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_C_4C_XHCI	0x15d4
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_2C_XHCI		0x15e9
+@@ -55,6 +56,7 @@
+ #define PCI_DEVICE_ID_INTEL_ICE_LAKE_XHCI		0x8a13
+ #define PCI_DEVICE_ID_INTEL_CML_XHCI			0xa3af
+ #define PCI_DEVICE_ID_INTEL_TIGER_LAKE_XHCI		0x9a13
++#define PCI_DEVICE_ID_INTEL_MAPLE_RIDGE_XHCI		0x1138
+ 
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
+@@ -232,13 +234,15 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	if (pdev->vendor == PCI_VENDOR_ID_INTEL &&
+ 	    (pdev->device == PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_2C_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_4C_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_LP_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_C_2C_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_C_4C_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_TITAN_RIDGE_2C_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI ||
+ 	     pdev->device == PCI_DEVICE_ID_INTEL_ICE_LAKE_XHCI ||
+-	     pdev->device == PCI_DEVICE_ID_INTEL_TIGER_LAKE_XHCI))
++	     pdev->device == PCI_DEVICE_ID_INTEL_TIGER_LAKE_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_INTEL_MAPLE_RIDGE_XHCI))
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index aa2d35f982002..4d34f6005381e 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -333,6 +333,9 @@ static int xhci_plat_probe(struct platform_device *pdev)
+ 	if (priv && (priv->quirks & XHCI_SKIP_PHY_INIT))
+ 		hcd->skip_phy_initialization = 1;
+ 
++	if (priv && (priv->quirks & XHCI_SG_TRB_CACHE_SIZE_QUIRK))
++		xhci->quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
++
+ 	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
+ 	if (ret)
+ 		goto disable_usb_phy;
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index ebb359ebb261c..d90c0d5df3b37 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1878,6 +1878,7 @@ struct xhci_hcd {
+ #define XHCI_RENESAS_FW_QUIRK	BIT_ULL(36)
+ #define XHCI_SKIP_PHY_INIT	BIT_ULL(37)
+ #define XHCI_DISABLE_SPARSE	BIT_ULL(38)
++#define XHCI_SG_TRB_CACHE_SIZE_QUIRK	BIT_ULL(39)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
+diff --git a/drivers/usb/misc/legousbtower.c b/drivers/usb/misc/legousbtower.c
+index ba655b4af4fc2..1c9e09138c109 100644
+--- a/drivers/usb/misc/legousbtower.c
++++ b/drivers/usb/misc/legousbtower.c
+@@ -797,7 +797,7 @@ static int tower_probe(struct usb_interface *interface, const struct usb_device_
+ 				      &get_version_reply,
+ 				      sizeof(get_version_reply),
+ 				      1000, GFP_KERNEL);
+-	if (!result) {
++	if (result) {
+ 		dev_err(idev, "get version request failed: %d\n", result);
+ 		retval = result;
+ 		goto error;
+diff --git a/drivers/usb/misc/sisusbvga/Kconfig b/drivers/usb/misc/sisusbvga/Kconfig
+index 655d9cb0651a7..c12cdd0154102 100644
+--- a/drivers/usb/misc/sisusbvga/Kconfig
++++ b/drivers/usb/misc/sisusbvga/Kconfig
+@@ -16,7 +16,7 @@ config USB_SISUSBVGA
+ 
+ config USB_SISUSBVGA_CON
+ 	bool "Text console and mode switching support" if USB_SISUSBVGA
+-	depends on VT
++	depends on VT && BROKEN
+ 	select FONT_8x16
+ 	help
+ 	  Say Y here if you want a VGA text console via the USB dongle or
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 652d6d6f1f365..ff6f41e7e0683 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -867,6 +867,9 @@ static int uas_slave_configure(struct scsi_device *sdev)
+ 	if (devinfo->flags & US_FL_NO_READ_CAPACITY_16)
+ 		sdev->no_read_capacity_16 = 1;
+ 
++	/* Some disks cannot handle WRITE_SAME */
++	if (devinfo->flags & US_FL_NO_SAME)
++		sdev->no_write_same = 1;
+ 	/*
+ 	 * Some disks return the total number of blocks in response
+ 	 * to READ CAPACITY rather than the highest block number.
+diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
+index 711ab240058c7..870e9cf3d5dc4 100644
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -35,12 +35,15 @@ UNUSUAL_DEV(0x054c, 0x087d, 0x0000, 0x9999,
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_OPCODES),
+ 
+-/* Reported-by: Julian Groß <julian.g@posteo.de> */
++/*
++ *  Initially Reported-by: Julian Groß <julian.g@posteo.de>
++ *  Further reports David C. Partridge <david.partridge@perdrix.co.uk>
++ */
+ UNUSUAL_DEV(0x059f, 0x105f, 0x0000, 0x9999,
+ 		"LaCie",
+ 		"2Big Quadra USB3",
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+-		US_FL_NO_REPORT_OPCODES),
++		US_FL_NO_REPORT_OPCODES | US_FL_NO_SAME),
+ 
+ /*
+  * Apricorn USB3 dongle sometimes returns "USBSUSBSUSBS" in response to SCSI
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 94a64729dc27d..90aa9c12ffac5 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -541,6 +541,9 @@ void usb_stor_adjust_quirks(struct usb_device *udev, unsigned long *fflags)
+ 		case 'j':
+ 			f |= US_FL_NO_REPORT_LUNS;
+ 			break;
++		case 'k':
++			f |= US_FL_NO_SAME;
++			break;
+ 		case 'l':
+ 			f |= US_FL_NOT_LOCKABLE;
+ 			break;
+diff --git a/include/linux/usb_usual.h b/include/linux/usb_usual.h
+index 4a19ac3f24d06..6b03fdd69d274 100644
+--- a/include/linux/usb_usual.h
++++ b/include/linux/usb_usual.h
+@@ -84,6 +84,8 @@
+ 		/* Cannot handle REPORT_LUNS */			\
+ 	US_FLAG(ALWAYS_SYNC, 0x20000000)			\
+ 		/* lies about caching, so always sync */	\
++	US_FLAG(NO_SAME, 0x40000000)				\
++		/* Cannot handle WRITE_SAME */			\
+ 
+ #define US_FLAG(name, value)	US_FL_##name = value ,
+ enum { US_DO_ALL_FLAGS };
+diff --git a/include/uapi/linux/ptrace.h b/include/uapi/linux/ptrace.h
+index a71b6e3b03ebc..83ee45fa634b9 100644
+--- a/include/uapi/linux/ptrace.h
++++ b/include/uapi/linux/ptrace.h
+@@ -81,7 +81,8 @@ struct seccomp_metadata {
+ 
+ struct ptrace_syscall_info {
+ 	__u8 op;	/* PTRACE_SYSCALL_INFO_* */
+-	__u32 arch __attribute__((__aligned__(sizeof(__u32))));
++	__u8 pad[3];
++	__u32 arch;
+ 	__u64 instruction_pointer;
+ 	__u64 stack_pointer;
+ 	union {
+diff --git a/sound/core/oss/pcm_oss.c b/sound/core/oss/pcm_oss.c
+index 327ec42a36b09..de1917484647e 100644
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -1935,11 +1935,15 @@ static int snd_pcm_oss_set_subdivide(struct snd_pcm_oss_file *pcm_oss_file, int
+ static int snd_pcm_oss_set_fragment1(struct snd_pcm_substream *substream, unsigned int val)
+ {
+ 	struct snd_pcm_runtime *runtime;
++	int fragshift;
+ 
+ 	runtime = substream->runtime;
+ 	if (runtime->oss.subdivision || runtime->oss.fragshift)
+ 		return -EINVAL;
+-	runtime->oss.fragshift = val & 0xffff;
++	fragshift = val & 0xffff;
++	if (fragshift >= 31)
++		return -EINVAL;
++	runtime->oss.fragshift = fragshift;
+ 	runtime->oss.maxfrags = (val >> 16) & 0xffff;
+ 	if (runtime->oss.fragshift < 4)		/* < 16 */
+ 		runtime->oss.fragshift = 4;
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 3bfead393aa34..91f0ed4a2e7eb 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -40,6 +40,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 	case UAC_VERSION_1:
+ 	default: {
+ 		struct uac_format_type_i_discrete_descriptor *fmt = _fmt;
++		if (format >= 64)
++			return 0; /* invalid format */
+ 		sample_width = fmt->bBitResolution;
+ 		sample_bytes = fmt->bSubframeSize;
+ 		format = 1ULL << format;
+diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+index ca76ba5b5c0b2..2f6d39c2ba7c8 100644
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -193,16 +193,16 @@ static int usb_chmap_ctl_get(struct snd_kcontrol *kcontrol,
+ 	struct snd_pcm_chmap *info = snd_kcontrol_chip(kcontrol);
+ 	struct snd_usb_substream *subs = info->private_data;
+ 	struct snd_pcm_chmap_elem *chmap = NULL;
+-	int i;
++	int i = 0;
+ 
+-	memset(ucontrol->value.integer.value, 0,
+-	       sizeof(ucontrol->value.integer.value));
+ 	if (subs->cur_audiofmt)
+ 		chmap = subs->cur_audiofmt->chmap;
+ 	if (chmap) {
+ 		for (i = 0; i < chmap->channels; i++)
+ 			ucontrol->value.integer.value[i] = chmap->map[i];
+ 	}
++	for (; i < subs->channels_max; i++)
++		ucontrol->value.integer.value[i] = 0;
+ 	return 0;
+ }
+ 
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 54188ee16c486..4e24509645173 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1499,17 +1499,16 @@ sub dodie {
+ 	my $log_file;
+ 
+ 	if (defined($opt{"LOG_FILE"})) {
+-	    my $whence = 0; # beginning of file
+-	    my $pos = $test_log_start;
++	    my $whence = 2; # End of file
++	    my $log_size = tell LOG;
++	    my $size = $log_size - $test_log_start;
+ 
+ 	    if (defined($mail_max_size)) {
+-		my $log_size = tell LOG;
+-		$log_size -= $test_log_start;
+-		if ($log_size > $mail_max_size) {
+-		    $whence = 2; # end of file
+-		    $pos = - $mail_max_size;
++		if ($size > $mail_max_size) {
++		    $size = $mail_max_size;
+ 		}
+ 	    }
++	    my $pos = - $size;
+ 	    $log_file = "$tmpdir/log";
+ 	    open (L, "$opt{LOG_FILE}") or die "Can't open $opt{LOG_FILE} to read)";
+ 	    open (O, "> $tmpdir/log") or die "Can't open $tmpdir/log\n";
+@@ -4253,7 +4252,12 @@ sub do_send_mail {
+     $mail_command =~ s/\$SUBJECT/$subject/g;
+     $mail_command =~ s/\$MESSAGE/$message/g;
+ 
+-    run_command $mail_command;
++    my $ret = run_command $mail_command;
++    if (!$ret && defined($file)) {
++	# try again without the file
++	$message .= "\n\n*** FAILED TO SEND LOG ***\n\n";
++	do_send_email($subject, $message);
++    }
+ }
+ 
+ sub send_email {
 From 7d21ce8f371b7bc46c2e23cbca1c85aed6450141 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Sun, 6 Dec 2020 23:49:33 +0100
@@ -92986,10 +93322,10 @@ index 55e1b4cba808..000000000000
 -- 
 2.29.2.435.g72ffeb997e
 
-From 52085de6862dabcafe2ddb42ab96387eaf886cbe Mon Sep 17 00:00:00 2001
+From ad24be1b2c0a71d351208c2a470f9895671fc7dd Mon Sep 17 00:00:00 2001
 From: Josef Bacik <josef@toxicpanda.com>
 Date: Mon, 5 Aug 2019 14:31:53 -0400
-Subject: [PATCH 1/7] btrfs: add a force_chunk_alloc to space_info's sysfs
+Subject: [PATCH 01/23] btrfs: add a force_chunk_alloc to space_info's sysfs
 
 In testing various things such as the btrfsck patch to detect over
 allocation of chunks, empty block group deletion, and balance I've had
@@ -93005,7 +93341,7 @@ Signed-off-by: Josef Bacik <josef@toxicpanda.com>
  1 file changed, 64 insertions(+)
 
 diff --git a/fs/btrfs/sysfs.c b/fs/btrfs/sysfs.c
-index 279d926..dacb4c3 100644
+index 279d9262b..dacb4c3f8 100644
 --- a/fs/btrfs/sysfs.c
 +++ b/fs/btrfs/sysfs.c
 @@ -72,6 +72,7 @@ static struct btrfs_feature_attr btrfs_attr_features_##_name = {	     \
@@ -93101,13 +93437,13 @@ index 279d926..dacb4c3 100644
  #define BTRFS_FEATURE_NAME_MAX 13
  static char btrfs_unknown_feature_names[FEAT_MAX][NUM_FEATURE_BITS][BTRFS_FEATURE_NAME_MAX];
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
 
 
-From 94dc77ab58f297ee3c3971c6c98a4408cf461f42 Mon Sep 17 00:00:00 2001
+From d5965b2c0a48fe7a0e86fa45cc4df0d982fa54fb Mon Sep 17 00:00:00 2001
 From: Josef Bacik <josef@toxicpanda.com>
 Date: Fri, 20 Mar 2020 14:34:36 -0400
-Subject: [PATCH 2/7] btrfs: restart snapshot delete if we have to end the
+Subject: [PATCH 02/23] btrfs: restart snapshot delete if we have to end the
  transaction
 
 This is to fully fix the deadlock described in
@@ -93129,7 +93465,7 @@ Signed-off-by: Josef Bacik <josef@toxicpanda.com>
  1 file changed, 16 insertions(+)
 
 diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 5fd60b1..93f9c6c 100644
+index 5fd60b13f..93f9c6c5a 100644
 --- a/fs/btrfs/extent-tree.c
 +++ b/fs/btrfs/extent-tree.c
 @@ -5483,6 +5483,7 @@ int btrfs_drop_snapshot(struct btrfs_root *root, int update_ref, int for_reloc)
@@ -93178,13 +93514,13 @@ index 5fd60b1..93f9c6c 100644
  	}
  	btrfs_release_path(path);
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
 
 
-From 92ca3ca9c76f865edfab9c328512cfd3a8f76b47 Mon Sep 17 00:00:00 2001
+From 5d0dca7760610451637154be8382cc76ff3bca58 Mon Sep 17 00:00:00 2001
 From: Josef Bacik <josef@toxicpanda.com>
 Date: Fri, 24 Jul 2020 12:41:47 -0400
-Subject: [PATCH 3/7] btrfs: do not evaluate the expression with
+Subject: [PATCH 03/23] btrfs: do not evaluate the expression with
  !CONFIG_BTRFS_ASSERT
 
 While investigating a performance issue I noticed that turning off
@@ -93208,7 +93544,7 @@ Reviewed-by: Darrick J. Wong <darrick.wong@oracle.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 0b29bdb..8fc54a4 100644
+index 0b29bdb25..8fc54a47c 100644
 --- a/fs/btrfs/ctree.h
 +++ b/fs/btrfs/ctree.h
 @@ -3288,7 +3288,7 @@ static inline void assertfail(const char *expr, const char *file, int line)
@@ -93221,13 +93557,13 @@ index 0b29bdb..8fc54a4 100644
  
  /*
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
 
 
-From 3a57994244b2297507991022489d1311529934e6 Mon Sep 17 00:00:00 2001
+From 91820ca3bbd3a658db23f7b718dc9001a666af8a Mon Sep 17 00:00:00 2001
 From: Filipe Manana <fdmanana@suse.com>
 Date: Fri, 13 Nov 2020 11:24:17 +0000
-Subject: [PATCH 4/7] btrfs: remove unnecessary attempt do drop extent maps
+Subject: [PATCH 04/23] btrfs: remove unnecessary attempt do drop extent maps
  after adding inline extent
 
 At inode.c:cow_file_range_inline(), after we insert the inline extent
@@ -93253,7 +93589,7 @@ Signed-off-by: Filipe Manana <fdmanana@suse.com>
  1 file changed, 1 deletion(-)
 
 diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 7e8d816..76e5d18 100644
+index 7e8d81697..76e5d182b 100644
 --- a/fs/btrfs/inode.c
 +++ b/fs/btrfs/inode.c
 @@ -340,7 +340,6 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 start,
@@ -93265,13 +93601,13 @@ index 7e8d816..76e5d18 100644
  	/*
  	 * Don't forget to free the reserved space, as for inlined extent
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
 
 
-From 6260b748b468e2de074e217b852783ca3ee05b30 Mon Sep 17 00:00:00 2001
+From 29e5aab5d0d0adc0991c64894ab871accae6e6e5 Mon Sep 17 00:00:00 2001
 From: Filipe Manana <fdmanana@suse.com>
 Date: Fri, 13 Nov 2020 11:23:30 +0000
-Subject: [PATCH 5/7] btrfs: stop incrementing log batch when joining log
+Subject: [PATCH 05/23] btrfs: stop incrementing log batch when joining log
  transaction
 
 When joining a log transaction we acquire the root's log mutex, then
@@ -93304,7 +93640,7 @@ Signed-off-by: Filipe Manana <fdmanana@suse.com>
  1 file changed, 1 deletion(-)
 
 diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 56cbc17..c8b0950 100644
+index 56cbc1706..c8b09507d 100644
 --- a/fs/btrfs/tree-log.c
 +++ b/fs/btrfs/tree-log.c
 @@ -172,7 +172,6 @@ static int start_log_trans(struct btrfs_trans_handle *trans,
@@ -93316,13 +93652,13 @@ index 56cbc17..c8b0950 100644
  	if (ctx && !ctx->logging_new_name) {
  		int index = root->log_transid % 2;
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
 
 
-From b7c8944abefdaa8015e7e8729c0dce82b2520c74 Mon Sep 17 00:00:00 2001
+From 75404aa0570922e99ca5195c2199c0d5e39961ec Mon Sep 17 00:00:00 2001
 From: Filipe Manana <fdmanana@suse.com>
 Date: Thu, 10 Dec 2020 12:09:02 +0000
-Subject: [PATCH 6/7] btrfs: send, fix wrong file path when there is an inode
+Subject: [PATCH 06/23] btrfs: send, fix wrong file path when there is an inode
  with a pending rmdir
 
 When doing an incremental send, if we have a new inode that happens to
@@ -93419,7 +93755,7 @@ Signed-off-by: Filipe Manana <fdmanana@suse.com>
  1 file changed, 29 insertions(+), 16 deletions(-)
 
 diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 340c76a..8b181e9 100644
+index 340c76a12..8b181e90a 100644
 --- a/fs/btrfs/send.c
 +++ b/fs/btrfs/send.c
 @@ -236,6 +236,7 @@ struct waiting_dir_move {
@@ -93601,14 +93937,14 @@ index 340c76a..8b181e9 100644
  			/* already deleted */
  			goto finish;
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
 
 
-From b26e43d250b666d19119687135193835c1941d39 Mon Sep 17 00:00:00 2001
+From c98a2b994fa487a706f244a18c5eb2b40947a768 Mon Sep 17 00:00:00 2001
 From: Filipe Manana <fdmanana@suse.com>
 Date: Fri, 13 Nov 2020 11:21:49 +0000
-Subject: [PATCH 7/7] btrfs: skip unnecessary searches for xattrs when logging
- an inode
+Subject: [PATCH 07/23] btrfs: skip unnecessary searches for xattrs when
+ logging an inode
 
 Every time we log an inode we lookup in the fs/subvol tree for xattrs and
 if we have any, log them into the log tree. However it is very common to
@@ -93702,7 +94038,7 @@ Signed-off-by: Filipe Manana <fdmanana@suse.com>
  3 files changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
-index 92dd86b..c974f7f 100644
+index 92dd86bce..c974f7fe6 100644
 --- a/fs/btrfs/btrfs_inode.h
 +++ b/fs/btrfs/btrfs_inode.h
 @@ -35,6 +35,13 @@ enum {
@@ -93720,7 +94056,7 @@ index 92dd86b..c974f7f 100644
  
  /* in memory btrfs inode */
 diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index c8b0950..0457b1c 100644
+index c8b09507d..0457b1c74 100644
 --- a/fs/btrfs/tree-log.c
 +++ b/fs/btrfs/tree-log.c
 @@ -4570,6 +4570,10 @@ static int btrfs_log_all_xattrs(struct btrfs_trans_handle *trans,
@@ -93753,7 +94089,7 @@ index c8b0950..0457b1c 100644
  }
  
 diff --git a/fs/btrfs/xattr.c b/fs/btrfs/xattr.c
-index 95d9aeb..e517742 100644
+index 95d9aebff..e51774201 100644
 --- a/fs/btrfs/xattr.c
 +++ b/fs/btrfs/xattr.c
 @@ -213,9 +213,11 @@ int btrfs_setxattr(struct btrfs_trans_handle *trans, struct inode *inode,
@@ -93770,7 +94106,1510 @@ index 95d9aeb..e517742 100644
  }
  
 -- 
-2.29.2.456.g3a0b884cab
+2.30.0.rc0
+
+
+From 5115ca7534ecf907e1684f7ab3d51bd23073228e Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 25 Nov 2020 12:19:23 +0000
+Subject: [PATCH 08/23] btrfs: fix race causing unnecessary inode logging
+ during link and rename
+
+When we are doing a rename or a link operation for an inode that was logged
+in the previous transaction and that transaction is still committing, we
+have a time window where we incorrectly consider that the inode was logged
+previously in the current transaction and therefore decide to log it to
+update it in the log. The following steps give an example on how this
+happens during a link operation:
+
+1) Inode X is logged in transaction 1000, so its logged_trans field is set
+   to 1000;
+
+2) Task A starts to commit transaction 1000;
+
+3) The state of transaction 1000 is changed to TRANS_STATE_UNBLOCKED;
+
+4) Task B starts a link operation for inode X, and as a consequence it
+   starts transaction 1001;
+
+5) Task A is still committing transaction 1000, therefore the value stored
+   at fs_info->last_trans_committed is still 999;
+
+6) Task B calls btrfs_log_new_name(), it reads a value of 999 from
+   fs_info->last_trans_committed and because the logged_trans field of
+   inode X has a value of 1000, the function does not return immediately,
+   instead it proceeds to logging the inode, which should not happen
+   because the inode was logged in the previous transaction (1000) and
+   not in the current one (1001).
+
+This is not a functional problem, just wasted time and space logging an
+inode that does not need to be logged, contributing to higher latency
+for link and rename operations.
+
+So fix this by comparing the inodes' logged_trans field with the
+generation of the current transaction instead of comparing with the value
+stored in fs_info->last_trans_committed.
+
+This case is often hit when running dbench for a long enough duration, as
+it does lots of rename operations.
+
+This patch belongs to a patch set that is comprised of the following
+patches:
+
+  btrfs: fix race causing unnecessary inode logging during link and rename
+  btrfs: fix race that results in logging old extents during a fast fsync
+  btrfs: fix race that causes unnecessary logging of ancestor inodes
+  btrfs: fix race that makes inode logging fallback to transaction commit
+  btrfs: fix race leading to unnecessary transaction commit when logging inode
+  btrfs: do not block inode logging for so long during transaction commit
+
+Performance results are mentioned in the change log of the last patch.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+---
+ fs/btrfs/tree-log.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 0457b1c74..6fc639081 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6441,7 +6441,6 @@ void btrfs_log_new_name(struct btrfs_trans_handle *trans,
+ 			struct btrfs_inode *inode, struct btrfs_inode *old_dir,
+ 			struct dentry *parent)
+ {
+-	struct btrfs_fs_info *fs_info = trans->fs_info;
+ 	struct btrfs_log_ctx ctx;
+ 
+ 	/*
+@@ -6455,8 +6454,8 @@ void btrfs_log_new_name(struct btrfs_trans_handle *trans,
+ 	 * if this inode hasn't been logged and directory we're renaming it
+ 	 * from hasn't been logged, we don't need to log it
+ 	 */
+-	if (inode->logged_trans <= fs_info->last_trans_committed &&
+-	    (!old_dir || old_dir->logged_trans <= fs_info->last_trans_committed))
++	if (inode->logged_trans < trans->transid &&
++	    (!old_dir || old_dir->logged_trans < trans->transid))
+ 		return;
+ 
+ 	btrfs_init_log_ctx(&ctx, &inode->vfs_inode);
+-- 
+2.30.0.rc0
+
+
+From dc0b3caa6b68217a01e4c5098c9a0d5de5203730 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 25 Nov 2020 12:19:24 +0000
+Subject: [PATCH 09/23] btrfs: fix race that results in logging old extents
+ during a fast fsync
+
+When logging the extents of an inode during a fast fsync, we have a time
+window where we can log extents that are from the previous transaction and
+already persisted. This only makes us waste time unnecessarily.
+
+The following sequence of steps shows how this can happen:
+
+1) We are at transaction 1000;
+
+2) An ordered extent E from inode I completes, that is it has gone through
+   btrfs_finish_ordered_io(), and it set the extent maps' generation to
+   1000 when we unpin the extent, which is the generation of the current
+   transaction;
+
+3) The commit for transaction 1000 starts by task A;
+
+4) The task committing transaction 1000 sets the transaction state to
+   unblocked, writes the dirty extent buffers and the super blocks, then
+   unlocks tree_log_mutex;
+
+5) Some change is made to inode I, resulting in creation of a new
+   transaction with a generation of 1001;
+
+6) The transaction 1000 commit starts unpinning extents. At this point
+   fs_info->last_trans_committed still has a value of 999;
+
+7) Task B starts an fsync on inode I, and when it gets to
+   btrfs_log_changed_extents() sees the extent map for extent E in the
+   list of modified extents. It sees the extent map has a generation of
+   1000 and fs_info->last_trans_committed has a value of 999, so it
+   proceeds to logging the respective file extent item and all the
+   checksums covering its range.
+
+   So we end up wasting time since the extent was already persisted and
+   is reachable through the trees pointed to by the super block committed
+   by transaction 1000.
+
+So just fix this by comparing the extent maps generation against the
+generation of the transaction handle - if it is smaller then the id in the
+handle, we know the extent was already persisted and we do not need to log
+it.
+
+This patch belongs to a patch set that is comprised of the following
+patches:
+
+  btrfs: fix race causing unnecessary inode logging during link and rename
+  btrfs: fix race that results in logging old extents during a fast fsync
+  btrfs: fix race that causes unnecessary logging of ancestor inodes
+  btrfs: fix race that makes inode logging fallback to transaction commit
+  btrfs: fix race leading to unnecessary transaction commit when logging inode
+  btrfs: do not block inode logging for so long during transaction commit
+
+Performance results are mentioned in the change log of the last patch.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+---
+ fs/btrfs/tree-log.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 6fc639081..a044bdc9b 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4414,14 +4414,12 @@ static int btrfs_log_changed_extents(struct btrfs_trans_handle *trans,
+ 	struct extent_map *em, *n;
+ 	struct list_head extents;
+ 	struct extent_map_tree *tree = &inode->extent_tree;
+-	u64 test_gen;
+ 	int ret = 0;
+ 	int num = 0;
+ 
+ 	INIT_LIST_HEAD(&extents);
+ 
+ 	write_lock(&tree->lock);
+-	test_gen = root->fs_info->last_trans_committed;
+ 
+ 	list_for_each_entry_safe(em, n, &tree->modified_extents, list) {
+ 		list_del_init(&em->list);
+@@ -4437,7 +4435,7 @@ static int btrfs_log_changed_extents(struct btrfs_trans_handle *trans,
+ 			goto process;
+ 		}
+ 
+-		if (em->generation <= test_gen)
++		if (em->generation < trans->transid)
+ 			continue;
+ 
+ 		/* We log prealloc extents beyond eof later. */
+-- 
+2.30.0.rc0
+
+
+From 006cd6e0521c37232f0c4c22812a7a11c78fdf64 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 25 Nov 2020 12:19:25 +0000
+Subject: [PATCH 10/23] btrfs: fix race that causes unnecessary logging of
+ ancestor inodes
+
+When logging an inode and we are checking if we need to log ancestors that
+are new, if the previous transaction is still committing we have a time
+window where we can unncessarily log ancestor inodes that were created in
+the previous transaction.
+
+The race is described by the following steps:
+
+1) We are at transaction 1000;
+
+2) Directory inode X is created, its generation is set to 1000;
+
+3) The commit for transaction 1000 is started by task A;
+
+4) The task committing transaction 1000 sets the transaction state to
+   unblocked, writes the dirty extent buffers and the super blocks, then
+   unlocks tree_log_mutex;
+
+5) Inode Y, a regular file, is created under directory inode X, this
+   results in starting a new transaction with a generation of 1001;
+
+6) The transaction 1000 commit is unpinning extents. At this point
+   fs_info->last_trans_committed still has a value of 999;
+
+7) Task B calls fsync on inode Y and gets a handle for transaction 1001;
+
+8) Task B ends up at log_all_new_ancestors() and then because inode Y has
+   only one hard link, ends up at log_new_ancestors_fast(). There it reads
+   a value of 999 from fs_info->last_trans_committed, and sees that the
+   parent inode X has a generation of 1000, so we end up logging inode X:
+
+     if (inode->generation > fs_info->last_trans_committed) {
+         ret = btrfs_log_inode(trans, root, inode,
+                               LOG_INODE_EXISTS, ctx);
+         (...)
+
+   which is not necessary since it was created in the past transaction,
+   with a generation of 1000, and that transaction has already committed
+   its super blocks - it's still unpinning extents so it has not yet
+   updated fs_info->last_trans_committed from 999 to 1000.
+
+   So this just causes us to spend more time logging and allocating and
+   writing more tree blocks for the log tree.
+
+So fix this by comparing an inode's generation with the generation of the
+transaction our transaction handle refers to - if the inode's generation
+matches the generation of the current transaction than we know it is a
+new inode we need to log, otherwise don't log it.
+
+This case is often hit when running dbench for a long enough duration.
+
+This patch belongs to a patch set that is comprised of the following
+patches:
+
+  btrfs: fix race causing unnecessary inode logging during link and rename
+  btrfs: fix race that results in logging old extents during a fast fsync
+  btrfs: fix race that causes unnecessary logging of ancestor inodes
+  btrfs: fix race that makes inode logging fallback to transaction commit
+  btrfs: fix race leading to unnecessary transaction commit when logging inode
+  btrfs: do not block inode logging for so long during transaction commit
+
+Performance results are mentioned in the change log of the last patch.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+---
+ fs/btrfs/tree-log.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index a044bdc9b..33834a207 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -5833,7 +5833,6 @@ static int log_new_ancestors(struct btrfs_trans_handle *trans,
+ 
+ 	while (true) {
+ 		struct btrfs_fs_info *fs_info = root->fs_info;
+-		const u64 last_committed = fs_info->last_trans_committed;
+ 		struct extent_buffer *leaf = path->nodes[0];
+ 		int slot = path->slots[0];
+ 		struct btrfs_key search_key;
+@@ -5852,7 +5851,7 @@ static int log_new_ancestors(struct btrfs_trans_handle *trans,
+ 		if (IS_ERR(inode))
+ 			return PTR_ERR(inode);
+ 
+-		if (BTRFS_I(inode)->generation > last_committed)
++		if (BTRFS_I(inode)->generation >= trans->transid)
+ 			ret = btrfs_log_inode(trans, root, BTRFS_I(inode),
+ 					      LOG_INODE_EXISTS, ctx);
+ 		btrfs_add_delayed_iput(inode);
+@@ -5893,7 +5892,6 @@ static int log_new_ancestors_fast(struct btrfs_trans_handle *trans,
+ 				  struct btrfs_log_ctx *ctx)
+ {
+ 	struct btrfs_root *root = inode->root;
+-	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct dentry *old_parent = NULL;
+ 	struct super_block *sb = inode->vfs_inode.i_sb;
+ 	int ret = 0;
+@@ -5907,7 +5905,7 @@ static int log_new_ancestors_fast(struct btrfs_trans_handle *trans,
+ 		if (root != inode->root)
+ 			break;
+ 
+-		if (inode->generation > fs_info->last_trans_committed) {
++		if (inode->generation >= trans->transid) {
+ 			ret = btrfs_log_inode(trans, root, inode,
+ 					      LOG_INODE_EXISTS, ctx);
+ 			if (ret)
+-- 
+2.30.0.rc0
+
+
+From f2fff5d0d6798fb1ab19434836258011552d62f6 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 25 Nov 2020 12:19:26 +0000
+Subject: [PATCH 11/23] btrfs: fix race that makes inode logging fallback to
+ transaction commit
+
+When logging an inode and the previous transaction is still committing, we
+have a time window where we can end up incorrectly think an inode has its
+last_unlink_trans field with a value greater than the last transaction
+committed, which results in the logging to fallback to a full transaction
+commit, which is usually much more expensive than doing a log commit.
+
+The race is described by the following steps:
+
+1) We are at transaction 1000;
+
+2) We modify an inode X (a directory) using transaction 1000 and set its
+   last_unlink_trans field to 1000, because for example we removed one
+   of its subdirectories;
+
+3) We create a new inode Y with a dentry in inode X using transaction 1000,
+   so its generation field is set to 1000;
+
+4) The commit for transaction 1000 is started by task A;
+
+5) The task committing transaction 1000 sets the transaction state to
+   unblocked, writes the dirty extent buffers and the super blocks, then
+   unlocks tree_log_mutex;
+
+6) Some task starts a new transaction with a generation of 1001;
+
+7) We do some modification to inode Y (using transaction 1001);
+
+8) The transaction 1000 commit starts unpinning extents. At this point
+   fs_info->last_trans_committed still has a value of 999;
+
+9) Task B starts an fsync on inode Y, and gets a handle for transaction
+   1001. When it gets to check_parent_dirs_for_sync() it does the checking
+   of the ancestor dentries because the following check does not evaluate
+   to true:
+
+       if (S_ISREG(inode->vfs_inode.i_mode) &&
+           inode->generation <= last_committed &&
+           inode->last_unlink_trans <= last_committed)
+               goto out;
+
+   The generation value for inode Y is 1000 and last_committed, which has
+   the value read from fs_info->last_trans_committed, has a value of 999,
+   so that check evaluates to false and we proceed to check the ancestor
+   inodes.
+
+   Once we get to the first ancestor, inode X, we call
+   btrfs_must_commit_transaction() on it, which evaluates to true:
+
+   static bool btrfs_must_commit_transaction(...)
+   {
+       struct btrfs_fs_info *fs_info = inode->root->fs_info;
+       bool ret = false;
+
+       mutex_lock(&inode->log_mutex);
+       if (inode->last_unlink_trans > fs_info->last_trans_committed) {
+           /*
+            * Make sure any commits to the log are forced to be full
+            * commits.
+            */
+            btrfs_set_log_full_commit(trans);
+            ret = true;
+       }
+    (...)
+
+    because inode's X last_unlink_trans has a value of 1000 and
+    fs_info->last_trans_committed still has a value of 999, it returns
+    true to check_parent_dirs_for_sync(), making it return 1 which is
+    propagated up to btrfs_sync_file(), causing it to fallback to a full
+    transaction commit of transaction 1001.
+
+    We should have not falled back to commit transaction 1001, since inode
+    X had last_unlink_trans set to 1000 and the super blocks for
+    transaction 1000 were already written. So while not resulting in a
+    functional problem, it leads to a lot more work and higher latencies
+    for a fsync since committing a transaction is usually more expensive
+    than committing a log (if other filesystem changes happened under that
+    transaction).
+
+Similar problem happens when logging directories, for the same reason as
+btrfs_must_commit_transaction() returns true on an inode with its
+last_unlink_trans having the generation of the previous transaction and
+that transaction is still committing, unpinning its freed extents.
+
+So fix this by comparing last_unlink_trans with the id of the current
+transaction instead of fs_info->last_trans_committed.
+
+This case is often hit when running dbench for a long enough duration, as
+it does lots of rename and rmdir operations (both update the field
+last_unkink_trans of an inode) and fsyncs of files and directories.
+
+This patch belongs to a patch set that is comprised of the following
+patches:
+
+  btrfs: fix race causing unnecessary inode logging during link and rename
+  btrfs: fix race that results in logging old extents during a fast fsync
+  btrfs: fix race that causes unnecessary logging of ancestor inodes
+  btrfs: fix race that makes inode logging fallback to transaction commit
+  btrfs: fix race leading to unnecessary transaction commit when logging inode
+  btrfs: do not block inode logging for so long during transaction commit
+
+Performance results are mentioned in the change log of the last patch.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+---
+ fs/btrfs/tree-log.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 33834a207..abffcaa5e 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -5447,11 +5447,10 @@ static int btrfs_log_inode(struct btrfs_trans_handle *trans,
+ static bool btrfs_must_commit_transaction(struct btrfs_trans_handle *trans,
+ 					  struct btrfs_inode *inode)
+ {
+-	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+ 	bool ret = false;
+ 
+ 	mutex_lock(&inode->log_mutex);
+-	if (inode->last_unlink_trans > fs_info->last_trans_committed) {
++	if (inode->last_unlink_trans >= trans->transid) {
+ 		/*
+ 		 * Make sure any commits to the log are forced to be full
+ 		 * commits.
+@@ -5473,8 +5472,7 @@ static bool btrfs_must_commit_transaction(struct btrfs_trans_handle *trans,
+ static noinline int check_parent_dirs_for_sync(struct btrfs_trans_handle *trans,
+ 					       struct btrfs_inode *inode,
+ 					       struct dentry *parent,
+-					       struct super_block *sb,
+-					       u64 last_committed)
++					       struct super_block *sb)
+ {
+ 	int ret = 0;
+ 	struct dentry *old_parent = NULL;
+@@ -5486,8 +5484,8 @@ static noinline int check_parent_dirs_for_sync(struct btrfs_trans_handle *trans,
+ 	 * and other fun in this file.
+ 	 */
+ 	if (S_ISREG(inode->vfs_inode.i_mode) &&
+-	    inode->generation <= last_committed &&
+-	    inode->last_unlink_trans <= last_committed)
++	    inode->generation < trans->transid &&
++	    inode->last_unlink_trans < trans->transid)
+ 		goto out;
+ 
+ 	if (!S_ISDIR(inode->vfs_inode.i_mode)) {
+@@ -6022,7 +6020,6 @@ static int btrfs_log_inode_parent(struct btrfs_trans_handle *trans,
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct super_block *sb;
+ 	int ret = 0;
+-	u64 last_committed = fs_info->last_trans_committed;
+ 	bool log_dentries = false;
+ 
+ 	sb = inode->vfs_inode.i_sb;
+@@ -6047,8 +6044,7 @@ static int btrfs_log_inode_parent(struct btrfs_trans_handle *trans,
+ 		goto end_no_trans;
+ 	}
+ 
+-	ret = check_parent_dirs_for_sync(trans, inode, parent, sb,
+-			last_committed);
++	ret = check_parent_dirs_for_sync(trans, inode, parent, sb);
+ 	if (ret)
+ 		goto end_no_trans;
+ 
+@@ -6078,8 +6074,8 @@ static int btrfs_log_inode_parent(struct btrfs_trans_handle *trans,
+ 	 * and other fun in this file.
+ 	 */
+ 	if (S_ISREG(inode->vfs_inode.i_mode) &&
+-	    inode->generation <= last_committed &&
+-	    inode->last_unlink_trans <= last_committed) {
++	    inode->generation < trans->transid &&
++	    inode->last_unlink_trans < trans->transid) {
+ 		ret = 0;
+ 		goto end_trans;
+ 	}
+@@ -6128,7 +6124,7 @@ static int btrfs_log_inode_parent(struct btrfs_trans_handle *trans,
+ 	 * but the file inode does not have a matching BTRFS_INODE_REF_KEY item
+ 	 * and has a link count of 2.
+ 	 */
+-	if (inode->last_unlink_trans > last_committed) {
++	if (inode->last_unlink_trans >= trans->transid) {
+ 		ret = btrfs_log_all_parents(trans, inode, ctx);
+ 		if (ret)
+ 			goto end_trans;
+-- 
+2.30.0.rc0
+
+
+From fc5fa68e0cb9b20eceecdf2e0406afa10089f290 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 25 Nov 2020 12:19:27 +0000
+Subject: [PATCH 12/23] btrfs: fix race leading to unnecessary transaction
+ commit when logging inode
+
+When logging an inode we may often have to fallback to a full transaction
+commit, either because a new block group was allocated, there is some case
+we can not deal with wihout a transaction commit or some error like an
+-ENOMEM happened. However after we fallback to a transaction commit, we
+have a time window where we can make the next attempt to log any inode
+commit the next transaction unnecessarily, adding additional overhead and
+increasing latency.
+
+A sequence of steps that leads to this issue is the following:
+
+1) The current open transaction has a generation of 1000;
+
+2) A new block group is allocated, and as a consequence we must make sure
+   any attempts to commit a log fallback to a transaction commit, so
+   btrfs_set_log_full_commit() is called from btrfs_make_block_group().
+   This sets fs_info->last_trans_log_full_commit to 1000;
+
+3) Task A is holding a handle on transaction 1000 and tries to log inode X.
+   Once it gets to start_log_trans(), it calls btrfs_need_log_full_commit()
+   which returns true, since fs_info->last_trans_log_full_commit has a
+   value of 1000. So we end up returning -EAGAIN and propagating it up to
+   btrfs_sync_file(), where we commit transaction 1000;
+
+4) The transaction commit task (task A) sets the tansaction state to
+   unblocked (TRANS_STATE_UNBLOCKED);
+
+5) Some other task, task B, starts a new transaction with a generation of
+   1001;
+
+6) Some stuff is done with transaction 1001, some btree blocks COWed, etc;
+
+7) Transaction 1000 has not fully committed yet, we are still writing all
+   the extent buffers it created;
+
+8) Some new task, task C, starts an fsync of inode Y, gets a handle for
+   transaction 1001, and it gets to btrfs_log_inode_parent() which does
+   the following check:
+
+     if (fs_info->last_trans_log_full_commit > last_committed) {
+         ret = 1;
+         goto end_no_trans;
+     }
+
+   At that point last_trans_log_full_commit has a value of 1000 and
+   last_committed (value of fs_info->last_trans_committed) has a value of
+   999, since transaction 1000 has not yet committed - it is either still
+   writing out dirty extent buffers, its super blocks or unpinning
+   extents.
+
+   As a consequence we return 1, which gets propagated up to
+   btrfs_sync_file(), which will then call btrfs_commit_transaction()
+   for transaction 1001.
+
+   As a consequence we have an unnecessary second transaction commit, we
+   previously committed transaction 1000 and now commit transaction 1001
+   as well, resulting in more overhead and increased latency.
+
+So fix this double transaction commit issue simply by removing that check,
+because all we need to do is wait for the previous transaction to finish
+its commit, which we already do later when starting the log transaction at
+start_log_trans(), because there we acquire the tree_log_mutex lock, which
+is held by a transaction commit and only released after the transaction
+commits its super blocks.
+
+Another issue that check has is that it reads last_trans_log_full_commit
+without using READ_ONCE(), which is incorrect since that member of
+struct btrfs_fs_info is always updated with WRITE_ONCE() through the
+helper btrfs_set_log_full_commit().
+
+This double transaction commit issue can actually be triggered quite often
+in long runs of dbench, since besides the creation of new block groups
+that force inode logging to fallback to a transaction commit, there are
+cases where dbench asks to fsync a directory which had files in it that
+were previously renamed or subdirectories that were removed, resulting in
+the inode logging to fallback to a full transaction commit.
+
+This patch belongs to a patch set that is comprised of the following
+patches:
+
+  btrfs: fix race causing unnecessary inode logging during link and rename
+  btrfs: fix race that results in logging old extents during a fast fsync
+  btrfs: fix race that causes unnecessary logging of ancestor inodes
+  btrfs: fix race that makes inode logging fallback to transaction commit
+  btrfs: fix race leading to unnecessary transaction commit when logging inode
+  btrfs: do not block inode logging for so long during transaction commit
+
+Performance results are mentioned in the change log of the last patch.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+---
+ fs/btrfs/tree-log.c | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index abffcaa5e..75561b193 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6029,16 +6029,6 @@ static int btrfs_log_inode_parent(struct btrfs_trans_handle *trans,
+ 		goto end_no_trans;
+ 	}
+ 
+-	/*
+-	 * The prev transaction commit doesn't complete, we need do
+-	 * full commit by ourselves.
+-	 */
+-	if (fs_info->last_trans_log_full_commit >
+-	    fs_info->last_trans_committed) {
+-		ret = 1;
+-		goto end_no_trans;
+-	}
+-
+ 	if (btrfs_root_refs(&root->root_item) == 0) {
+ 		ret = 1;
+ 		goto end_no_trans;
+-- 
+2.30.0.rc0
+
+
+From 16f4e1a1be80d5ab788dffd1af50e1de2fc3b2d4 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 25 Nov 2020 12:19:28 +0000
+Subject: [PATCH 13/23] btrfs: do not block inode logging for so long during
+ transaction commit
+
+Early on during a transaction commit we acquire the tree_log_mutex and
+hold it until after we write the super blocks. But before writing the
+extent buffers dirtied by the transaction and the super blocks we unblock
+the transaction by setting its state to TRANS_STATE_UNBLOCKED and setting
+fs_info->running_transaction to NULL.
+
+This means that after that and before writing the super blocks, new
+transactions can start. However if any transaction wants to log an inode,
+it will block waiting for the transaction commit to write its dirty
+extent buffers and the super blocks because the tree_log_mutex is only
+released after those operations are complete, and starting a new log
+transaction blocks on that mutex (at start_log_trans()).
+
+Writing the dirty extent buffers and the super blocks can take a very
+significant amount of time to complete, but we could allow the tasks
+wanting to log an inode to proceed with most of their steps:
+
+1) create the log trees
+2) log metadata in the trees
+3) write their dirty extent buffers
+
+They only need to wait for the previous transaction commit to complete
+(write its super blocks) before they attempt to write their super blocks,
+otherwise we could end up with a corrupt filesystem after a crash
+
+So change start_log_trans() to use the root tree's log_mutex to serialize
+for the creation of the log root tree instead of using the tree_log_mutex,
+and make btrfs_sync_log() acquire the tree_log_mutex before writing the
+super blocks. This allows for inode logging to wait much less time when
+there is a previous transaction that is still committing, often not having
+to wait at all, as by the time when we try to sync the log the previous
+transaction already wrote its super blocks.
+
+This patch belongs to a patch set that is comprised of the following
+patches:
+
+  btrfs: fix race causing unnecessary inode logging during link and rename
+  btrfs: fix race that results in logging old extents during a fast fsync
+  btrfs: fix race that causes unnecessary logging of ancestor inodes
+  btrfs: fix race that makes inode logging fallback to transaction commit
+  btrfs: fix race leading to unnecessary transaction commit when logging inode
+  btrfs: do not block inode logging for so long during transaction commit
+
+The following script that uses dbench was used to measure the impact of
+the whole patchset:
+
+  $ cat test-dbench.sh
+  #!/bin/bash
+
+  DEV=/dev/nvme0n1
+  MNT=/mnt/btrfs
+  MOUNT_OPTIONS="-o ssd"
+
+  echo "performance" | \
+      tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+
+  mkfs.btrfs -f -m single -d single $DEV
+  mount $MOUNT_OPTIONS $DEV $MNT
+
+  dbench -D $MNT -t 300 64
+
+  umount $MNT
+
+The test was run on a machine with 12 cores, 64G of ram, using a NVMe
+device and a non-debug kernel configuration (Debian's default).
+
+Before patch set:
+
+ Operation      Count    AvgLat    MaxLat
+ ----------------------------------------
+ NTCreateX    11277211    0.250    85.340
+ Close        8283172     0.002     6.479
+ Rename        477515     1.935    86.026
+ Unlink       2277936     0.770    87.071
+ Deltree          256    15.732    81.379
+ Mkdir            128     0.003     0.009
+ Qpathinfo    10221180    0.056    44.404
+ Qfileinfo    1789967     0.002     4.066
+ Qfsinfo      1874399     0.003     9.176
+ Sfileinfo     918589     0.061    10.247
+ Find         3951758     0.341    54.040
+ WriteX       5616547     0.047    85.079
+ ReadX        17676028    0.005     9.704
+ LockX          36704     0.003     1.800
+ UnlockX        36704     0.002     0.687
+ Flush         790541    14.115   676.236
+
+Throughput 1179.19 MB/sec  64 clients  64 procs  max_latency=676.240 ms
+
+After patch set:
+
+Operation      Count    AvgLat    MaxLat
+ ----------------------------------------
+ NTCreateX    12687926    0.171    86.526
+ Close        9320780     0.002     8.063
+ Rename        537253     1.444    78.576
+ Unlink       2561827     0.559    87.228
+ Deltree          374    11.499    73.549
+ Mkdir            187     0.003     0.005
+ Qpathinfo    11500300    0.061    36.801
+ Qfileinfo    2017118     0.002     7.189
+ Qfsinfo      2108641     0.003     4.825
+ Sfileinfo    1033574     0.008     8.065
+ Find         4446553     0.408    47.835
+ WriteX       6335667     0.045    84.388
+ ReadX        19887312    0.003     9.215
+ LockX          41312     0.003     1.394
+ UnlockX        41312     0.002     1.425
+ Flush         889233    13.014   623.259
+
+Throughput 1339.32 MB/sec  64 clients  64 procs  max_latency=623.265 ms
+
++12.7% throughput, -8.2% max latency
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+---
+ fs/btrfs/ctree.h    |  2 +-
+ fs/btrfs/tree-log.c | 56 +++++++++++++++++++++++++++++++--------------
+ 2 files changed, 40 insertions(+), 18 deletions(-)
+
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 8fc54a47c..aec435ab8 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -1021,7 +1021,7 @@ enum {
+ 	BTRFS_ROOT_DEAD_RELOC_TREE,
+ 	/* Mark dead root stored on device whose cleanup needs to be resumed */
+ 	BTRFS_ROOT_DEAD_TREE,
+-	/* The root has a log tree. Used only for subvolume roots. */
++	/* The root has a log tree. Used for subvolume roots and the tree root. */
+ 	BTRFS_ROOT_HAS_LOG_TREE,
+ 	/* Qgroup flushing is in progress */
+ 	BTRFS_ROOT_QGROUP_FLUSHING,
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 75561b193..b06aa3a92 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -139,8 +139,25 @@ static int start_log_trans(struct btrfs_trans_handle *trans,
+ 			   struct btrfs_log_ctx *ctx)
+ {
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
++	struct btrfs_root *tree_root = fs_info->tree_root;
+ 	int ret = 0;
+ 
++	/*
++	 * First check if the log root tree was already created. If not, create
++	 * it before locking the root's log_mutex, just to keep lockdep happy.
++	 */
++	if (!test_bit(BTRFS_ROOT_HAS_LOG_TREE, &tree_root->state)) {
++		mutex_lock(&tree_root->log_mutex);
++		if (!fs_info->log_root_tree) {
++			ret = btrfs_init_log_root_tree(trans, fs_info);
++			if (!ret)
++				set_bit(BTRFS_ROOT_HAS_LOG_TREE, &tree_root->state);
++		}
++		mutex_unlock(&tree_root->log_mutex);
++		if (ret)
++			return ret;
++	}
++
+ 	mutex_lock(&root->log_mutex);
+ 
+ 	if (root->log_root) {
+@@ -156,13 +173,6 @@ static int start_log_trans(struct btrfs_trans_handle *trans,
+ 			set_bit(BTRFS_ROOT_MULTI_LOG_TASKS, &root->state);
+ 		}
+ 	} else {
+-		mutex_lock(&fs_info->tree_log_mutex);
+-		if (!fs_info->log_root_tree)
+-			ret = btrfs_init_log_root_tree(trans, fs_info);
+-		mutex_unlock(&fs_info->tree_log_mutex);
+-		if (ret)
+-			goto out;
+-
+ 		ret = btrfs_add_log_tree(trans, root);
+ 		if (ret)
+ 			goto out;
+@@ -3022,6 +3032,8 @@ int btrfs_sync_log(struct btrfs_trans_handle *trans,
+ 	int log_transid = 0;
+ 	struct btrfs_log_ctx root_log_ctx;
+ 	struct blk_plug plug;
++	u64 log_root_start;
++	u64 log_root_level;
+ 
+ 	mutex_lock(&root->log_mutex);
+ 	log_transid = ctx->log_transid;
+@@ -3199,22 +3211,31 @@ int btrfs_sync_log(struct btrfs_trans_handle *trans,
+ 		goto out_wake_log_root;
+ 	}
+ 
+-	btrfs_set_super_log_root(fs_info->super_for_commit,
+-				 log_root_tree->node->start);
+-	btrfs_set_super_log_root_level(fs_info->super_for_commit,
+-				       btrfs_header_level(log_root_tree->node));
+-
++	log_root_start = log_root_tree->node->start;
++	log_root_level = btrfs_header_level(log_root_tree->node);
+ 	log_root_tree->log_transid++;
+ 	mutex_unlock(&log_root_tree->log_mutex);
+ 
+ 	/*
+-	 * Nobody else is going to jump in and write the ctree
+-	 * super here because the log_commit atomic below is protecting
+-	 * us.  We must be called with a transaction handle pinning
+-	 * the running transaction open, so a full commit can't hop
+-	 * in and cause problems either.
++	 * Here we are guaranteed that nobody is going to write the superblock
++	 * for the current transaction before us and that neither we do write
++	 * our superblock before the previous transaction finishes its commit
++	 * and writes its superblock, because:
++	 *
++	 * 1) We are holding a handle on the current transaction, so no body
++	 *    can commit it until we release the handle;
++	 *
++	 * 2) Before writing our superblock we acquire the tree_log_mutex, so
++	 *    if the previous transaction is still committing, and hasn't yet
++	 *    written its superblock, we wait for it to do it, because a
++	 *    transaction commit acquires the tree_log_mutex when the commit
++	 *    begins and releases it only after writing its superblock.
+ 	 */
++	mutex_lock(&fs_info->tree_log_mutex);
++	btrfs_set_super_log_root(fs_info->super_for_commit, log_root_start);
++	btrfs_set_super_log_root_level(fs_info->super_for_commit, log_root_level);
+ 	ret = write_all_supers(fs_info, 1);
++	mutex_unlock(&fs_info->tree_log_mutex);
+ 	if (ret) {
+ 		btrfs_set_log_full_commit(trans);
+ 		btrfs_abort_transaction(trans, ret);
+@@ -3299,6 +3320,7 @@ int btrfs_free_log_root_tree(struct btrfs_trans_handle *trans,
+ 	if (fs_info->log_root_tree) {
+ 		free_log_tree(trans, fs_info->log_root_tree);
+ 		fs_info->log_root_tree = NULL;
++		clear_bit(BTRFS_ROOT_HAS_LOG_TREE, &fs_info->tree_root->state);
+ 	}
+ 	return 0;
+ }
+-- 
+2.30.0.rc0
+
+
+From d02c8229c3ffca272bae3413313e80fbfef74380 Mon Sep 17 00:00:00 2001
+From: Nikolay Borisov <nborisov@suse.com>
+Date: Tue, 24 Nov 2020 16:49:08 +0200
+Subject: [PATCH 14/23] btrfs: return bool from should_end_transaction
+
+Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/transaction.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 52ada47af..d983e235b 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -856,12 +856,12 @@ void btrfs_throttle(struct btrfs_fs_info *fs_info)
+ 	wait_current_trans(fs_info);
+ }
+ 
+-static int should_end_transaction(struct btrfs_trans_handle *trans)
++static bool should_end_transaction(struct btrfs_trans_handle *trans)
+ {
+ 	struct btrfs_fs_info *fs_info = trans->fs_info;
+ 
+ 	if (btrfs_check_space_for_delayed_refs(fs_info))
+-		return 1;
++		return true;
+ 
+ 	return !!btrfs_block_rsv_check(&fs_info->global_block_rsv, 5);
+ }
+-- 
+2.30.0.rc0
+
+
+From 74a40afdc67d58c63726f9355430beceb65b0ac7 Mon Sep 17 00:00:00 2001
+From: Nikolay Borisov <nborisov@suse.com>
+Date: Tue, 24 Nov 2020 16:49:25 +0200
+Subject: [PATCH 15/23] btrfs: return bool from btrfs_should_end_transaction
+
+Results in slightly smaller code.
+
+add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-11 (-11)
+Function                                     old     new   delta
+btrfs_should_end_transaction                  96      85     -11
+Total: Before=20070, After=20059, chg -0.05%
+
+Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/transaction.c | 4 ++--
+ fs/btrfs/transaction.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index d983e235b..9cab1573a 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -866,14 +866,14 @@ static bool should_end_transaction(struct btrfs_trans_handle *trans)
+ 	return !!btrfs_block_rsv_check(&fs_info->global_block_rsv, 5);
+ }
+ 
+-int btrfs_should_end_transaction(struct btrfs_trans_handle *trans)
++bool btrfs_should_end_transaction(struct btrfs_trans_handle *trans)
+ {
+ 	struct btrfs_transaction *cur_trans = trans->transaction;
+ 
+ 	smp_mb();
+ 	if (cur_trans->state >= TRANS_STATE_COMMIT_START ||
+ 	    cur_trans->delayed_refs.flushing)
+-		return 1;
++		return true;
+ 
+ 	return should_end_transaction(trans);
+ }
+diff --git a/fs/btrfs/transaction.h b/fs/btrfs/transaction.h
+index 858d9153a..c8b663c61 100644
+--- a/fs/btrfs/transaction.h
++++ b/fs/btrfs/transaction.h
+@@ -219,7 +219,7 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans);
+ int btrfs_commit_transaction_async(struct btrfs_trans_handle *trans,
+ 				   int wait_for_unblock);
+ int btrfs_end_transaction_throttle(struct btrfs_trans_handle *trans);
+-int btrfs_should_end_transaction(struct btrfs_trans_handle *trans);
++bool btrfs_should_end_transaction(struct btrfs_trans_handle *trans);
+ void btrfs_throttle(struct btrfs_fs_info *fs_info);
+ int btrfs_record_root_in_trans(struct btrfs_trans_handle *trans,
+ 				struct btrfs_root *root);
+-- 
+2.30.0.rc0
+
+
+From f3a54ec1c45ae0089d68c22554d3563ba1a36b8f Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:19 -0500
+Subject: [PATCH 16/23] btrfs: do not block on deleted bgs mutex in the cleaner
+
+While running some stress tests I started getting hung task messages.
+This is because the delete unused bg's code has to take the
+delete_unused_bgs_mutex to do it's work, which is taken by balance to
+make sure we don't delete block groups while we're balancing.
+
+The problem is a balance can take a while, and so we were getting hung
+task warnings.  We don't need to block and run these things, and the
+cleaner is needed to do other work, so trylock on this mutex and just
+bail if we can't acquire it right away.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/block-group.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 3ba6f3839..2b5f91b35 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1333,6 +1333,13 @@ void btrfs_delete_unused_bgs(struct btrfs_fs_info *fs_info)
+ 	if (!test_bit(BTRFS_FS_OPEN, &fs_info->flags))
+ 		return;
+ 
++	/*
++	 * Long running balances can keep us blocked here for eternity, so
++	 * simply skip deletion if we're unable to get the mutex.
++	 */
++	if (!mutex_trylock(&fs_info->delete_unused_bgs_mutex))
++		return;
++
+ 	spin_lock(&fs_info->unused_bgs_lock);
+ 	while (!list_empty(&fs_info->unused_bgs)) {
+ 		int trimming;
+@@ -1352,8 +1359,6 @@ void btrfs_delete_unused_bgs(struct btrfs_fs_info *fs_info)
+ 
+ 		btrfs_discard_cancel_work(&fs_info->discard_ctl, block_group);
+ 
+-		mutex_lock(&fs_info->delete_unused_bgs_mutex);
+-
+ 		/* Don't want to race with allocators so take the groups_sem */
+ 		down_write(&space_info->groups_sem);
+ 
+@@ -1499,11 +1504,11 @@ void btrfs_delete_unused_bgs(struct btrfs_fs_info *fs_info)
+ end_trans:
+ 		btrfs_end_transaction(trans);
+ next:
+-		mutex_unlock(&fs_info->delete_unused_bgs_mutex);
+ 		btrfs_put_block_group(block_group);
+ 		spin_lock(&fs_info->unused_bgs_lock);
+ 	}
+ 	spin_unlock(&fs_info->unused_bgs_lock);
++	mutex_unlock(&fs_info->delete_unused_bgs_mutex);
+ 	return;
+ 
+ flip_async:
+-- 
+2.30.0.rc0
+
+
+From 1eec99db75cc7215ffc9ce3ead9bfc74fa2fc9fe Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:20 -0500
+Subject: [PATCH 17/23] btrfs: only let one thread pre-flush delayed refs in
+ commit
+
+I've been running a stress test that runs 20 workers in their own
+subvolume, which are running an fsstress instance with 4 threads per
+worker, which is 80 total fsstress threads.  In addition to this I'm
+running balance in the background as well as creating and deleting
+snapshots.  This test takes around 12 hours to run normally, going
+slower and slower as the test goes on.
+
+The reason for this is because fsstress is running fsync sometimes, and
+because we're messing with block groups we often fall through to
+btrfs_commit_transaction, so will often have 20-30 threads all calling
+btrfs_commit_transaction at the same time.
+
+These all get stuck contending on the extent tree while they try to run
+delayed refs during the initial part of the commit.
+
+This is suboptimal, really because the extent tree is a single point of
+failure we only want one thread acting on that tree at once to reduce
+lock contention.  Fix this by making the flushing mechanism a bit
+operation, to make it easy to use test_and_set_bit() in order to make
+sure only one task does this initial flush.
+
+Once we're into the transaction commit we only have one thread doing
+delayed ref running, it's just this initial pre-flush that is
+problematic.  With this patch my stress test takes around 90 minutes to
+run, instead of 12 hours.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/delayed-ref.h | 12 ++++++------
+ fs/btrfs/transaction.c | 33 ++++++++++++++++-----------------
+ 2 files changed, 22 insertions(+), 23 deletions(-)
+
+diff --git a/fs/btrfs/delayed-ref.h b/fs/btrfs/delayed-ref.h
+index 1c977e6d4..6e414785b 100644
+--- a/fs/btrfs/delayed-ref.h
++++ b/fs/btrfs/delayed-ref.h
+@@ -135,6 +135,11 @@ struct btrfs_delayed_data_ref {
+ 	u64 offset;
+ };
+ 
++enum btrfs_delayed_ref_flags {
++	/* Used to indicate that we are flushing delayed refs for the commit. */
++	BTRFS_DELAYED_REFS_FLUSHING,
++};
++
+ struct btrfs_delayed_ref_root {
+ 	/* head ref rbtree */
+ 	struct rb_root_cached href_root;
+@@ -158,12 +163,7 @@ struct btrfs_delayed_ref_root {
+ 
+ 	u64 pending_csums;
+ 
+-	/*
+-	 * set when the tree is flushing before a transaction commit,
+-	 * used by the throttling code to decide if new updates need
+-	 * to be run right away
+-	 */
+-	int flushing;
++	unsigned long flags;
+ 
+ 	u64 run_delayed_start;
+ 
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 9cab1573a..31d353cb3 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -870,9 +870,9 @@ bool btrfs_should_end_transaction(struct btrfs_trans_handle *trans)
+ {
+ 	struct btrfs_transaction *cur_trans = trans->transaction;
+ 
+-	smp_mb();
+ 	if (cur_trans->state >= TRANS_STATE_COMMIT_START ||
+-	    cur_trans->delayed_refs.flushing)
++	    test_bit(BTRFS_DELAYED_REFS_FLUSHING,
++		     &cur_trans->delayed_refs.flags))
+ 		return true;
+ 
+ 	return should_end_transaction(trans);
+@@ -2042,23 +2042,22 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
+ 	btrfs_trans_release_metadata(trans);
+ 	trans->block_rsv = NULL;
+ 
+-	/* make a pass through all the delayed refs we have so far
+-	 * any runnings procs may add more while we are here
+-	 */
+-	ret = btrfs_run_delayed_refs(trans, 0);
+-	if (ret) {
+-		btrfs_end_transaction(trans);
+-		return ret;
+-	}
+-
+-	cur_trans = trans->transaction;
+-
+ 	/*
+-	 * set the flushing flag so procs in this transaction have to
+-	 * start sending their work down.
++	 * We only want one transaction commit doing the flushing so we do not
++	 * waste a bunch of time on lock contention on the extent root node.
+ 	 */
+-	cur_trans->delayed_refs.flushing = 1;
+-	smp_wmb();
++	if (!test_and_set_bit(BTRFS_DELAYED_REFS_FLUSHING,
++			      &cur_trans->delayed_refs.flags)) {
++		/*
++		 * make a pass through all the delayed refs we have so far
++		 * any runnings procs may add more while we are here
++		 */
++		ret = btrfs_run_delayed_refs(trans, 0);
++		if (ret) {
++			btrfs_end_transaction(trans);
++			return ret;
++		}
++	}
+ 
+ 	btrfs_create_pending_block_groups(trans);
+ 
+-- 
+2.30.0.rc0
+
+
+From 63c23defff1f4c6185726bd2c24c2a3e8cb42081 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:21 -0500
+Subject: [PATCH 18/23] btrfs: delayed refs pre-flushing should only run the
+ heads we have
+
+Previously our delayed ref running used the total number of items as the
+items to run.  However we changed that to number of heads to run with
+the delayed_refs_rsv, as generally we want to run all of the operations
+for one bytenr.
+
+But with btrfs_run_delayed_refs(trans, 0) we set our count to 2x the
+number of items that we have.  This is generally fine, but if we have
+some operation generation loads of delayed refs while we're doing this
+pre-flushing in the transaction commit, we'll just spin forever doing
+delayed refs.
+
+Fix this to simply pick the number of delayed refs we currently have,
+that way we do not end up doing a lot of extra work that's being
+generated in other threads.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+---
+ fs/btrfs/extent-tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 93f9c6c5a..f3a1b7263 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -2180,7 +2180,7 @@ int btrfs_run_delayed_refs(struct btrfs_trans_handle *trans,
+ 
+ 	delayed_refs = &trans->transaction->delayed_refs;
+ 	if (count == 0)
+-		count = atomic_read(&delayed_refs->num_entries) * 2;
++		count = delayed_refs->num_heads_ready;
+ 
+ again:
+ #ifdef SCRAMBLE_DELAYED_REFS
+-- 
+2.30.0.rc0
+
+
+From 661b3d07f963a0006d3e6c21a9b7939f42ade019 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:22 -0500
+Subject: [PATCH 19/23] btrfs: only run delayed refs once before committing
+
+We try to pre-flush the delayed refs when committing, because we want to
+do as little work as possible in the critical section of the transaction
+commit.
+
+However doing this twice can lead to very long transaction commit delays
+as other threads are allowed to continue to generate more delayed refs,
+which potentially delays the commit by multiple minutes in very extreme
+cases.
+
+So simply stick to one pre-flush, and then continue the rest of the
+transaction commit.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+---
+ fs/btrfs/transaction.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 31d353cb3..2ad8c1d20 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -2061,12 +2061,6 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
+ 
+ 	btrfs_create_pending_block_groups(trans);
+ 
+-	ret = btrfs_run_delayed_refs(trans, 0);
+-	if (ret) {
+-		btrfs_end_transaction(trans);
+-		return ret;
+-	}
+-
+ 	if (!test_bit(BTRFS_TRANS_DIRTY_BG_RUN, &cur_trans->flags)) {
+ 		int run_it = 0;
+ 
+-- 
+2.30.0.rc0
+
+
+From 55b2ddc258fa9a1b423420580c8fdde7286e4196 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:23 -0500
+Subject: [PATCH 20/23] btrfs: move delayed ref flushing for qgroup into qgroup
+ helper
+
+The commit d67263354541 ("btrfs: qgroup: Make snapshot accounting work
+with new extent-oriented qgroup.") added a flush of the delayed refs
+during snapshot creation in order to get the qgroup accounting properly.
+However this code has changed and been moved to it's own helper that is
+skipped if qgroups are turned off.  Move the flushing to the helper, as
+we do not need it when qgroups are turned off.
+
+Also add a comment explaining why it exists, and why it doesn't actually
+save us.  This will be helpful later when we try to fix qgroup
+accounting properly.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/transaction.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 2ad8c1d20..3d4ba095a 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1395,6 +1395,23 @@ static int qgroup_account_snapshot(struct btrfs_trans_handle *trans,
+ 	 */
+ 	record_root_in_trans(trans, src, 1);
+ 
++	/*
++	 * btrfs_qgroup_inherit relies on a consistent view of the usage for the
++	 * src root, so we must run the delayed refs here.
++	 *
++	 * However this isn't particularly fool proof, because there's no
++	 * synchronization keeping us from changing the tree after this point
++	 * before we do the qgroup_inherit, or even from making changes while
++	 * we're doing the qgroup_inherit.  But that's a problem for the future,
++	 * for now flush the delayed refs to narrow the race window where the
++	 * qgroup counters could end up wrong.
++	 */
++	ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
++	if (ret) {
++		btrfs_abort_transaction(trans, ret);
++		goto out;
++	}
++
+ 	/*
+ 	 * We are going to commit transaction, see btrfs_commit_transaction()
+ 	 * comment for reason locking tree_log_mutex
+@@ -1650,12 +1667,6 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
+ 		goto fail;
+ 	}
+ 
+-	ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
+-	if (ret) {
+-		btrfs_abort_transaction(trans, ret);
+-		goto fail;
+-	}
+-
+ 	/*
+ 	 * Do special qgroup accounting for snapshot, as we do some qgroup
+ 	 * snapshot hack to do fast snapshot.
+-- 
+2.30.0.rc0
+
+
+From 513de6d774cc55ffab794d41ee7acb7e128779ce Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:24 -0500
+Subject: [PATCH 21/23] btrfs: remove bogus BUG_ON in alloc_reserved_tree_block
+
+The fix 361048f586f5 ("Btrfs: fix full backref problem when inserting
+shared block reference") added a delayed ref flushing at subvolume
+creation time in order to avoid hitting this particular BUG_ON().
+
+Before this fix, we were tripping the BUG_ON() by
+
+1. Modify snapshot A, which creates blocks with a normal reference for
+   snapshot A, as A is the owner of these blocks.  We now have delayed
+   refs for these blocks.
+2. Create a snapshot of A named B, which pushes references for the
+   children blocks of the root node for the new root B, thus creating
+   more delayed refs for newly allocated blocks.
+3. A is modified, and because the metadata blocks can now be shared, it
+   must push FULL_BACKREF references to the children of any block that A
+   cow's down it's path to its target key.
+4. Delayed refs are run.  Because these are newly allocated blocks, we
+   have ->must_insert_reserved reserved set on the delayed ref head, we
+   call into alloc_reserved_tree_block() to add the extent item, and
+   then add our ref.  At the time of this fix, we were ordering
+   FULL_BACKREF delayed ref operations first, so we'd go to add this
+   reference and then BUG_ON() because we didn't have the FULL_BACKREF
+   flag set.
+
+The patch fixed this problem by making sure we ran the delayed refs
+before we had the chance to modify A.  This meant that any *new* blocks
+would have had their extent items created _before_ we would ever
+actually cow down and generate FULL_BACKREF entries.  Thus the problem
+went away.
+
+However this BUG_ON() is actually completely bogus.  The existence of a
+full backref doesn't necessarily mean that FULL_BACKREF must be set on
+that block, it must only be set on the actual parent itself.  Consider
+the example provided above.  If we cow down one path from A, any nodes
+are going to have a FULL_BACKREF ref pushed down to _all_ of their
+children, but not all of the children are going to have FULL_BACKREF
+set.  It is completely valid to have an extent item with normal and full
+back refs without FULL_BACKREF actually set on the block itself.
+
+As a final note, I have been testing with the patch
+
+  btrfs: stop running all delayed refs during snapshot
+
+which removed this flushing.  My test was a torture test which did a lot
+of operations while snapshotting and deleting snapshots as well as
+relocation, and I never tripped this BUG_ON().  This is actually because
+at the time of 361048f586f5, we ordered SHARED keys _before_ normal
+references, and thus they would get run first.  However currently they
+are ordered _after_ normal references, so we'd do the initial creation
+without having a shared reference, and thus not hit this BUG_ON(), which
+explains why I didn't start hitting this problem during my testing with
+my other patch applied.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/extent-tree.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index f3a1b7263..19cbfddb8 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -4559,7 +4559,6 @@ static int alloc_reserved_tree_block(struct btrfs_trans_handle *trans,
+ 	}
+ 
+ 	if (node->type == BTRFS_SHARED_BLOCK_REF_KEY) {
+-		BUG_ON(!(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF));
+ 		btrfs_set_extent_inline_ref_type(leaf, iref,
+ 						 BTRFS_SHARED_BLOCK_REF_KEY);
+ 		btrfs_set_extent_inline_ref_offset(leaf, iref, ref->parent);
+-- 
+2.30.0.rc0
+
+
+From 2c7318a2df4d37f60f8c99785df962ff05fd4238 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:25 -0500
+Subject: [PATCH 22/23] btrfs: stop running all delayed refs during snapshot
+
+This was added in commit 361048f586f5 ("Btrfs: fix full backref problem
+when inserting shared block reference") to address a problem where we
+hit the following BUG_ON() in alloc_reserved_tree_block
+
+        if (node->type == BTRFS_SHARED_BLOCK_REF_KEY) {
+                BUG_ON(!(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF));
+
+However this BUG_ON() is bogus, and was removed by
+
+  btrfs: remove bogus BUG_ON in alloc_reserved_tree_block
+
+We no longer need to run delayed refs because of this, and can remove
+this flushing here.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/transaction.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 3d4ba095a..0e8d16940 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1714,12 +1714,6 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
+ 		}
+ 	}
+ 
+-	ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
+-	if (ret) {
+-		btrfs_abort_transaction(trans, ret);
+-		goto fail;
+-	}
+-
+ fail:
+ 	pending->error = ret;
+ dir_item_existed:
+-- 
+2.30.0.rc0
+
+
+From 00821fd09ffaf8334311a6e91e0c9f0d618b9691 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 18 Dec 2020 14:24:26 -0500
+Subject: [PATCH 23/23] btrfs: run delayed refs less often in
+ commit_cowonly_roots
+
+We love running delayed refs in commit_cowonly_roots, but it is a bit
+excessive.  I was seeing cases of running 3 or 4 refs a few times in a
+row during this time.  Instead simply update all of the roots first,
+then run delayed refs, then handle the empty block groups case, and then
+if we have any more dirty roots do the whole thing again.  This allows
+us to be much more efficient with our delayed ref running, as we can
+batch a few more operations at once.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/transaction.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 0e8d16940..7318c9ed7 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1188,10 +1188,6 @@ static noinline int commit_cowonly_roots(struct btrfs_trans_handle *trans)
+ 	btrfs_tree_unlock(eb);
+ 	free_extent_buffer(eb);
+ 
+-	if (ret)
+-		return ret;
+-
+-	ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1209,10 +1205,6 @@ static noinline int commit_cowonly_roots(struct btrfs_trans_handle *trans)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* run_qgroups might have added some more refs */
+-	ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
+-	if (ret)
+-		return ret;
+ again:
+ 	while (!list_empty(&fs_info->dirty_cowonly_roots)) {
+ 		struct btrfs_root *root;
+@@ -1227,15 +1219,24 @@ static noinline int commit_cowonly_roots(struct btrfs_trans_handle *trans)
+ 		ret = update_cowonly_root(trans, root);
+ 		if (ret)
+ 			return ret;
+-		ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
+-		if (ret)
+-			return ret;
+ 	}
+ 
++	/* Now flush any delayed refs generated by updating all of the roots. */
++	ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
++	if (ret)
++		return ret;
++
+ 	while (!list_empty(dirty_bgs) || !list_empty(io_bgs)) {
+ 		ret = btrfs_write_dirty_block_groups(trans);
+ 		if (ret)
+ 			return ret;
++
++		/*
++		 * We're writing the dirty block groups, which could generate
++		 * delayed refs, which could generate more dirty block groups,
++		 * so we want to keep this flushing in this loop to make sure
++		 * everything gets run.
++		 */
+ 		ret = btrfs_run_delayed_refs(trans, (unsigned long)-1);
+ 		if (ret)
+ 			return ret;
+-- 
+2.30.0.rc0
 
 From fbf021fac926273bb2d58c940aeed96e87103eb4 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
