@@ -45,4 +45,5 @@ cat add_noir_version.patch \
        other/0002-init-Kconfig-Restore-original-PDS-description.patch \
        other/0001-rapl-patches.patch \
        other/0001-v4l2loopback-5.10-initial-merge.patch \
+       intel/optimized-avx512.patch \
        > noir.patch
