@@ -17,13 +17,13 @@ cat add_noir_version.patch \
        LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
        LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
        VALVE/futex-multiple-wait-v3.patch \
-       other/0001-zstd-dev-patches.patch \
        other/0001-btrfs-patches.patch \
        other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
        prjc/prjc_v5.10-r1.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        zen/zen-sauce.patch \
        zen/fixes.patch \
+       other/enable_additional_cpu_optimizations_for_gcc_v11.0+_kernel_v5.10+.patch \
        other/use_i10.patch \
        other/add-acs-overrides.patch \
        ck1/ck1.patch \
@@ -42,4 +42,6 @@ cat add_noir_version.patch \
        other/reiser4-for-5.10.2.patch \
        other/Improve-preemptive-ENOSPC-flushing.patch \
        other/NTFS-read-write-driver-GPL-implementation-by-Paragon-Software.patch \
+       other/le9aa1-5.10.patch \
+       other/zstd.patch \
        > noir.patch
