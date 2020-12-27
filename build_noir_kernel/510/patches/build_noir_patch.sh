@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.10.2"
+VERSIONPOINT="5.10.3"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -17,23 +17,16 @@ cat add_noir_version.patch \
        LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
        LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
        VALVE/futex-multiple-wait-v3.patch \
-       other/0001-ntfs3-patches.patch \
        other/0001-zstd-dev-patches.patch \
        other/0001-btrfs-patches.patch \
        other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
-       prjc/prjc_v5.10-r0.patch \
+       prjc/prjc_v5.10-r1.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        zen/zen-sauce.patch \
        zen/fixes.patch \
        other/use_i10.patch \
        other/add-acs-overrides.patch \
-       ck1/0004-Create-highres-timeout-variants-of-schedule_timeout-.patch \
-       ck1/0005-Special-case-calls-of-schedule_timeout-1-to-use-the-.patch \
-       ck1/0006-Convert-msleep-to-use-hrtimers-when-active.patch \
-       ck1/0008-Replace-all-calls-to-schedule_timeout_interruptible-.patch \
-       ck1/0009-Replace-all-calls-to-schedule_timeout_uninterruptibl.patch \
-       ck1/0010-Don-t-use-hrtimer-overlay-when-pm_freezing-since-som.patch \
-       ck1/0014-Swap-sucks.patch \
+       ck1/ck1.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
        aufs5/aufs5-base.patch \
@@ -46,4 +39,7 @@ cat add_noir_version.patch \
        other/0001-rapl-patches.patch \
        other/0001-v4l2loopback-5.10-initial-merge.patch \
        intel/optimized-avx512.patch \
+       other/reiser4-for-5.10.2.patch \
+       other/Improve-preemptive-ENOSPC-flushing.patch \
+       other/NTFS-read-write-driver-GPL-implementation-by-Paragon-Software.patch \
        > noir.patch

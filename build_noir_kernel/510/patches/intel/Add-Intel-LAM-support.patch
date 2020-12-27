@@ -1,0 +1,60 @@
+From a2e5da2cf471b5ac849bcd7d9960466b9cd28a35 Mon Sep 17 00:00:00 2001
+From: "H.J. Lu" <hjl.tools@gmail.com>
+Date: Mon, 21 Dec 2020 19:56:10 -0800
+Subject: [PATCH] <sys/platform/x86.h>: Add Intel LAM support
+
+Add Intel Linear Address Masking (LAM) support to <sys/platform/x86.h>.
+HAS_CPU_FEATURE (LAM) can be used to detect if LAM is enabled in CPU.
+
+LAM modifies the checking that is applied to 64-bit linear addresses,
+allowing software to use of the untranslated address bits for metadata.
+---
+ manual/platform.texi               | 3 +++
+ sysdeps/x86/sys/platform/x86.h     | 3 +++
+ sysdeps/x86/tst-get-cpu-features.c | 1 +
+ 3 files changed, 7 insertions(+)
+
+ 
+diff --git a/sysdeps/x86/sys/platform/x86.h b/sysdeps/x86/sys/platform/x86.h
+index 3ef92b04e8..99d8c9b0ab 100644
+--- a/sysdeps/x86/sys/platform/x86.h
++++ b/sysdeps/x86/sys/platform/x86.h
+@@ -317,6 +317,7 @@ extern const struct cpu_features *__x86_get_cpu_features (unsigned int)
+ #define bit_cpu_FSRS		(1u << 11)
+ #define bit_cpu_FSRCS		(1u << 12)
+ #define bit_cpu_HRESET		(1u << 22)
++#define bit_cpu_LAM		(1u << 26)
+ 
+ /* COMMON_CPUID_INDEX_19.  */
+ 
+@@ -541,6 +542,7 @@ extern const struct cpu_features *__x86_get_cpu_features (unsigned int)
+ #define index_cpu_FSRS		COMMON_CPUID_INDEX_7_ECX_1
+ #define index_cpu_FSRCS		COMMON_CPUID_INDEX_7_ECX_1
+ #define index_cpu_HRESET	COMMON_CPUID_INDEX_7_ECX_1
++#define index_cpu_LAM		COMMON_CPUID_INDEX_7_ECX_1
+ 
+ /* COMMON_CPUID_INDEX_19.  */
+ 
+@@ -765,6 +767,7 @@ extern const struct cpu_features *__x86_get_cpu_features (unsigned int)
+ #define reg_FSRS		eax
+ #define reg_FSRCS		eax
+ #define reg_HRESET		eax
++#define reg_LAM			eax
+ 
+ /* COMMON_CPUID_INDEX_19.  */
+ 
+diff --git a/sysdeps/x86/tst-get-cpu-features.c b/sysdeps/x86/tst-get-cpu-features.c
+index 667aa27117..6f1e925a6a 100644
+--- a/sysdeps/x86/tst-get-cpu-features.c
++++ b/sysdeps/x86/tst-get-cpu-features.c
+@@ -227,6 +227,7 @@ do_test (void)
+   CHECK_CPU_FEATURE (FSRS);
+   CHECK_CPU_FEATURE (FSRCS);
+   CHECK_CPU_FEATURE (HRESET);
++  CHECK_CPU_FEATURE (LAM);
+   CHECK_CPU_FEATURE (AESKLE);
+   CHECK_CPU_FEATURE (WIDE_KL);
+ 
+-- 
+2.27.0
+
