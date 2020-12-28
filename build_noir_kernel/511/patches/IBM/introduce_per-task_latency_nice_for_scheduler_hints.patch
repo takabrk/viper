@@ -1,0 +1,276 @@
+---
+ init/init_task.c    | 1 +
+ kernel/sched/core.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/init/init_task.c b/init/init_task.c
+index 9e5cbe5eab7b..0d7d865519b8 100644
+--- a/init/init_task.c
++++ b/init/init_task.c
+@@ -85,6 +85,7 @@
+ 	.prio		= MAX_PRIO - 20,
+ 	.static_prio	= MAX_PRIO - 20,
+ 	.normal_prio	= MAX_PRIO - 20,
++	.latency_nice	= 0,
+ #endif
+ 	.policy		= SCHED_NORMAL,
+ 	.cpus_ptr	= &init_task.cpus_mask,
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 8e6f38073ab3..866ea3d2d284 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2847,6 +2847,9 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 	 */
+ 	p->prio = current->normal_prio;
+ 
++	/* Propagate the parent's latency requirements to the child as well */
++	p->latency_nice = current->latency_nice;
++
+ 	uclamp_fork(p);
+ 
+ 	/*
+@@ -2863,6 +2866,7 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 		p->prio = p->normal_prio = __normal_prio(p);
+ 		set_load_weight(p, false);
+ 
++		p->latency_nice = DEFAULT_LATENCY_NICE;
+ 		/*
+ 		 * We don't need the reset flag anymore after the fork. It has
+ 		 * fulfilled its duty:
+-- 
+2.17.2
+
+
+---
+ include/uapi/linux/sched.h       |  4 +++-
+ include/uapi/linux/sched/types.h | 19 +++++++++++++++++++
+ kernel/sched/core.c              | 18 ++++++++++++++++++
+ tools/include/uapi/linux/sched.h |  4 +++-
+ 4 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/include/uapi/linux/sched.h b/include/uapi/linux/sched.h
+index 2e3bc22c6f20..8778c51c7953 100644
+--- a/include/uapi/linux/sched.h
++++ b/include/uapi/linux/sched.h
+@@ -127,6 +127,7 @@ struct clone_args {
+ #define SCHED_FLAG_KEEP_PARAMS		0x10
+ #define SCHED_FLAG_UTIL_CLAMP_MIN	0x20
+ #define SCHED_FLAG_UTIL_CLAMP_MAX	0x40
++#define SCHED_FLAG_LATENCY_NICE		0x80
+ 
+ #define SCHED_FLAG_KEEP_ALL	(SCHED_FLAG_KEEP_POLICY | \
+ 				 SCHED_FLAG_KEEP_PARAMS)
+@@ -138,6 +139,7 @@ struct clone_args {
+ 			 SCHED_FLAG_RECLAIM		| \
+ 			 SCHED_FLAG_DL_OVERRUN		| \
+ 			 SCHED_FLAG_KEEP_ALL		| \
+-			 SCHED_FLAG_UTIL_CLAMP)
++			 SCHED_FLAG_UTIL_CLAMP		| \
++			 SCHED_FLAG_LATENCY_NICE)
+ 
+ #endif /* _UAPI_LINUX_SCHED_H */
+diff --git a/include/uapi/linux/sched/types.h b/include/uapi/linux/sched/types.h
+index c852153ddb0d..626ab61c1145 100644
+--- a/include/uapi/linux/sched/types.h
++++ b/include/uapi/linux/sched/types.h
+@@ -10,6 +10,7 @@ struct sched_param {
+ 
+ #define SCHED_ATTR_SIZE_VER0	48	/* sizeof first published struct */
+ #define SCHED_ATTR_SIZE_VER1	56	/* add: util_{min,max} */
++#define SCHED_ATTR_SIZE_VER2	60	/* add: latency_nice */
+ 
+ /*
+  * Extended scheduling parameters data structure.
+@@ -96,6 +97,22 @@ struct sched_param {
+  * on a CPU with a capacity big enough to fit the specified value.
+  * A task with a max utilization value smaller than 1024 is more likely
+  * scheduled on a CPU with no more capacity than the specified value.
++ *
++ * Latency Tolerance Attributes
++ * ===========================
++ *
++ * A subset of sched_attr attributes allows to specify the relative latency
++ * requirements of a task with respect to the other tasks running/queued in the
++ * system.
++ *
++ * @ sched_latency_nice	task's latency_nice value
++ *
++ * The latency_nice of a task can have any value in a range of
++ * [LATENCY_NICE_MIN..LATENCY_NICE_MAX].
++ *
++ * A task with latency_nice with the value of LATENCY_NICE_MIN can be
++ * taken for a task with lower latency requirements as opposed to the task with
++ * higher latency_nice.
+  */
+ struct sched_attr {
+ 	__u32 size;
+@@ -118,6 +135,8 @@ struct sched_attr {
+ 	__u32 sched_util_min;
+ 	__u32 sched_util_max;
+ 
++	/* latency requirement hints */
++	__s32 sched_latency_nice;
+ };
+ 
+ #endif /* _UAPI_LINUX_SCHED_TYPES_H */
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 866ea3d2d284..cd1fb9c8be26 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4710,6 +4710,9 @@ static void __setscheduler_params(struct task_struct *p,
+ 	p->rt_priority = attr->sched_priority;
+ 	p->normal_prio = normal_prio(p);
+ 	set_load_weight(p, true);
++
++	if (attr->sched_flags & SCHED_FLAG_LATENCY_NICE)
++		p->latency_nice = attr->sched_latency_nice;
+ }
+ 
+ /* Actually do priority change: must hold pi & rq lock. */
+@@ -4867,6 +4870,13 @@ static int __sched_setscheduler(struct task_struct *p,
+ 			return retval;
+ 	}
+ 
++	if (attr->sched_flags & SCHED_FLAG_LATENCY_NICE) {
++		if (attr->sched_latency_nice > MAX_LATENCY_NICE)
++			return -EINVAL;
++		if (attr->sched_latency_nice < MIN_LATENCY_NICE)
++			return -EINVAL;
++	}
++
+ 	if (pi)
+ 		cpuset_read_lock();
+ 
+@@ -4901,6 +4911,9 @@ static int __sched_setscheduler(struct task_struct *p,
+ 			goto change;
+ 		if (attr->sched_flags & SCHED_FLAG_UTIL_CLAMP)
+ 			goto change;
++		if (attr->sched_flags & SCHED_FLAG_LATENCY_NICE &&
++		    attr->sched_latency_nice != p->latency_nice)
++			goto change;
+ 
+ 		p->sched_reset_on_fork = reset_on_fork;
+ 		retval = 0;
+@@ -5149,6 +5162,9 @@ static int sched_copy_attr(struct sched_attr __user *uattr, struct sched_attr *a
+ 	    size < SCHED_ATTR_SIZE_VER1)
+ 		return -EINVAL;
+ 
++	if ((attr->sched_flags & SCHED_FLAG_LATENCY_NICE) &&
++	    size < SCHED_ATTR_SIZE_VER2)
++		return -EINVAL;
+ 	/*
+ 	 * XXX: Do we want to be lenient like existing syscalls; or do we want
+ 	 * to be strict and return an error on out-of-bounds values?
+@@ -5378,6 +5394,8 @@ SYSCALL_DEFINE4(sched_getattr, pid_t, pid, struct sched_attr __user *, uattr,
+ 	else
+ 		kattr.sched_nice = task_nice(p);
+ 
++	kattr.sched_latency_nice = p->latency_nice;
++
+ #ifdef CONFIG_UCLAMP_TASK
+ 	kattr.sched_util_min = p->uclamp_req[UCLAMP_MIN].value;
+ 	kattr.sched_util_max = p->uclamp_req[UCLAMP_MAX].value;
+diff --git a/tools/include/uapi/linux/sched.h b/tools/include/uapi/linux/sched.h
+index 2e3bc22c6f20..94adc87df0e6 100644
+--- a/tools/include/uapi/linux/sched.h
++++ b/tools/include/uapi/linux/sched.h
+@@ -127,6 +127,7 @@ struct clone_args {
+ #define SCHED_FLAG_KEEP_PARAMS		0x10
+ #define SCHED_FLAG_UTIL_CLAMP_MIN	0x20
+ #define SCHED_FLAG_UTIL_CLAMP_MAX	0x40
++#define SCHED_FLAG_LATENCY_NICE		0X80
+ 
+ #define SCHED_FLAG_KEEP_ALL	(SCHED_FLAG_KEEP_POLICY | \
+ 				 SCHED_FLAG_KEEP_PARAMS)
+@@ -138,6 +139,7 @@ struct clone_args {
+ 			 SCHED_FLAG_RECLAIM		| \
+ 			 SCHED_FLAG_DL_OVERRUN		| \
+ 			 SCHED_FLAG_KEEP_ALL		| \
+-			 SCHED_FLAG_UTIL_CLAMP)
++			 SCHED_FLAG_UTIL_CLAMP		| \
++			 SCHED_FLAG_LATENCY_NICE)
+ 
+ #endif /* _UAPI_LINUX_SCHED_H */
+-- 
+2.17.2
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index cd1fb9c8be26..564b3a2036d4 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4875,6 +4875,10 @@ static int __sched_setscheduler(struct task_struct *p,
+ 			return -EINVAL;
+ 		if (attr->sched_latency_nice < MIN_LATENCY_NICE)
+ 			return -EINVAL;
++		/* Use the same security checks as NICE */
++		if (attr->sched_latency_nice < p->latency_nice &&
++		    !capable(CAP_SYS_NICE))
++			return -EPERM;
+ 	}
+ 
+ 	if (pi)
+-- 
+2.17.2
+
+---
+ include/linux/sched.h |  1 +
+ kernel/sched/debug.c  |  1 +
+ kernel/sched/sched.h  | 18 ++++++++++++++++++
+ 3 files changed, 20 insertions(+)
+
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 2e9199bf947b..cf23c147dd36 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -722,6 +722,7 @@
+ 	int				static_prio;
+ 	int				normal_prio;
+ 	unsigned int			rt_priority;
++	int				latency_nice;
+ 
+ #ifdef CONFIG_SCHED_ALT
+ 	u64				last_ran;
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 8331bc04aea2..2a96dadc9752 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -958,6 +958,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ #endif
+ 	P(policy);
+ 	P(prio);
++	P(latency_nice);
+ 	if (task_has_dl_policy(p)) {
+ 		P(dl.runtime);
+ 		P(dl.deadline);
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2a0caf394dd4..a857e1baebd7 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -101,6 +101,24 @@ extern long calc_load_fold_active(struct rq *this_rq, long adjust);
+  */
+ #define NS_TO_JIFFIES(TIME)	((unsigned long)(TIME) / (NSEC_PER_SEC / HZ))
+ 
++/*
++ * Latency nice is meant to provide scheduler hints about the relative
++ * latency requirements of a task with respect to other tasks.
++ * Thus a task with latency_nice == 19 can be hinted as the task with no
++ * latency requirements, in contrast to the task with latency_nice == -20
++ * which should be given priority in terms of lower latency.
++ */
++#define MAX_LATENCY_NICE	19
++#define MIN_LATENCY_NICE	-20
++
++#define LATENCY_NICE_WIDTH	\
++	(MAX_LATENCY_NICE - MIN_LATENCY_NICE + 1)
++
++/*
++ * Default tasks should be treated as a task with latency_nice = 0.
++ */
++#define DEFAULT_LATENCY_NICE	0
++
+ /*
+  * Increase resolution of nice-level calculations for 64-bit architectures.
+  * The extra resolution improves shares distribution and load balancing of
+-- 
+2.17.2
+
