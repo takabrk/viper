@@ -10,8 +10,10 @@ diff -Naur /dev/null .config | sed 1i"diff --git a/.config b/.config\nnew file m
 #build noir.patch
 cat add_noir_version.patch \
        custom_config.patch \
-       intel/0001-clearlinux-patches.patch \
        linux/patch-$VERSIONPOINT \
+       other/add-acs-overrides.patch \
+       ck1/ck1.patch \
+       other/enable_additional_cpu_optimizations_for_gcc_v11.0+_kernel_v5.10+.patch \
        UKSM/0001-UKSM-for-5.10.patch \
        LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
        LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
@@ -23,10 +25,7 @@ cat add_noir_version.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        zen/zen-sauce.patch \
        zen/fixes.patch \
-       other/enable_additional_cpu_optimizations_for_gcc_v11.0+_kernel_v5.10+.patch \
        other/use_i10.patch \
-       other/add-acs-overrides.patch \
-       ck1/ck1.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
        aufs5/aufs5-base.patch \
@@ -42,6 +41,8 @@ cat add_noir_version.patch \
        other/reiser4-for-5.10.2.patch \
        other/Improve-preemptive-ENOSPC-flushing.patch \
        other/NTFS-read-write-driver-GPL-implementation-by-Paragon-Software.patch \
+       intel/0001-clearlinux-patches.patch \
        other/le9aa1-5.10.patch \
        other/zstd.patch \
+       other/Enable-fp16-display-support-for-DCE8.patch \
        > noir.patch
