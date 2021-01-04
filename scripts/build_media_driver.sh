@@ -5,7 +5,7 @@ sudo apt install -y autoconf automake cmake g++ libtool pkg-config libva-dev lib
 
 mkdir -p ~/vaapi
 cd ~/vaapi
-git clone https://github.com/01org/libva
+git clone https://github.com/intel/libva
 cd libva
 sudo ./autogen.sh --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu
 sudo make clean

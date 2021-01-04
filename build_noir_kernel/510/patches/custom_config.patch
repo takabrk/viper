@@ -1,12 +1,12 @@
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2020-12-30 10:45:02.946715939 +0900
-+++ .config	2020-12-27 16:11:40.184645000 +0900
-@@ -0,0 +1,10288 @@
+--- /dev/null	2020-12-31 16:50:29.550717846 +0900
++++ .config	2020-12-31 11:46:55.027072000 +0900
+@@ -0,0 +1,10287 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.10.3-noir-v1 Kernel Configuration
++# Linux/x86 5.10.4-noir Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 10.2.0-5ubuntu1~20.04) 10.2.0"
 +CONFIG_CC_IS_GCC=y
@@ -5191,7 +5191,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_MFD_RDC321X=m
 +CONFIG_MFD_RT5033=m
 +CONFIG_MFD_SI476X_CORE=m
-+# CONFIG_MFD_SL28CPLD is not set
 +CONFIG_MFD_SM501=m
 +CONFIG_MFD_SM501_GPIO=y
 +CONFIG_MFD_SKY81452=m
