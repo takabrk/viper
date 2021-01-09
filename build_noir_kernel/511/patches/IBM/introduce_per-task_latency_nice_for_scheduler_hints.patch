@@ -7,14 +7,23 @@ diff --git a/init/init_task.c b/init/init_task.c
 index 9e5cbe5eab7b..0d7d865519b8 100644
 --- a/init/init_task.c
 +++ b/init/init_task.c
-@@ -85,6 +85,7 @@
+@@ -70,7 +70,6 @@
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 	.thread_info	= INIT_THREAD_INFO(init_task),
+ 	.stack_refcount	= REFCOUNT_INIT(1),
+-#endif
+ 	.state		= 0,
+ 	.stack		= init_stack,
+ 	.usage		= REFCOUNT_INIT(2),
+@@ -78,6 +77,8 @@
  	.prio		= MAX_PRIO - 20,
  	.static_prio	= MAX_PRIO - 20,
  	.normal_prio	= MAX_PRIO - 20,
 +	.latency_nice	= 0,
- #endif
++#endif
  	.policy		= SCHED_NORMAL,
  	.cpus_ptr	= &init_task.cpus_mask,
+ 	.cpus_mask	= CPU_MASK_ALL,
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
 index 8e6f38073ab3..866ea3d2d284 100644
 --- a/kernel/sched/core.c
@@ -81,11 +90,11 @@ index c852153ddb0d..626ab61c1145 100644
  
  /*
   * Extended scheduling parameters data structure.
-@@ -96,6 +97,22 @@ struct sched_param {
-  * on a CPU with a capacity big enough to fit the specified value.
+@@ -97,7 +98,21 @@
   * A task with a max utilization value smaller than 1024 is more likely
   * scheduled on a CPU with no more capacity than the specified value.
-+ *
+  *
+- * A task utilization boundary can be reset by setting the attribute to -1.
 + * Latency Tolerance Attributes
 + * ===========================
 + *
