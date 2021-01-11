@@ -10,8 +10,8 @@ index 51540b291738..ab8c480660a6 100644
  PHONY := __all
  __all:
  
-+NRVERSION = -noir-v1
-+NRNAME = MuQSS Powered
++NRVERSION = -noir
++NRNAME = CFS Powered
 +EXTRAVERSION := $(EXTRAVERSION)$(NRVERSION)
 +
  # We are using a recursive build, so we need to do a little thinking
@@ -23,7 +23,7 @@ index 51540b291738..ab8c480660a6 100644
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2021-01-08 11:31:30.786775939 +0900
+--- /dev/null	2021-01-11 12:38:47.332075584 +0900
 +++ .config	2021-01-06 15:54:21.837564000 +0900
 @@ -0,0 +1,10315 @@
 +#
