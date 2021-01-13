@@ -18,11 +18,9 @@ cat add_noir_version.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        other/enable_additional_cpu_optimizations_for_gcc_v11.0+_kernel_v5.10+.patch \
        other/gcc-O3-optimize.patch \
-       other/0001-btrfs-patches.patch \
        VALVE/0001-futex-patches.patch \
        UKSM/0001-UKSM-for-5.11.patch \
        other/0001-v4l2loopback-patches.patch \
        intel/0001-clearlinux-patches.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
-       IBM/introduce_per-task_latency_nice_for_scheduler_hints.patch \
        > noir.patch
