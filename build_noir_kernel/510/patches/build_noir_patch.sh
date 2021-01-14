@@ -38,7 +38,6 @@ cat add_noir_version.patch \
        aufs5/aufs5-kbuild.patch\
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
-       aufs5/k510.patch \
        other/0001-rapl-patches.patch \
        other/0001-v4l2loopback-5.10-initial-merge.patch \
        intel/optimized-avx512.patch \
