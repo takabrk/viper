@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.10.7"
+VERSIONPOINT="5.10.8"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -42,7 +42,6 @@ cat add_noir_version.patch \
        other/0001-v4l2loopback-5.10-initial-merge.patch \
        intel/optimized-avx512.patch \
        other/reiser4-for-5.10.2.patch \
-       other/Improve-preemptive-ENOSPC-flushing.patch \
        other/NTFS-read-write-driver-GPL-implementation-by-Paragon-Software.patch \
        intel/0001-clearlinux-patches.patch \
        other/le9aa1-5.10.patch \
@@ -51,6 +50,7 @@ cat add_noir_version.patch \
        ck1/0001-MultiQueue-Skiplist-Scheduler-v0.205.patch \
        ck1/muqss_Fix_build_error_on_config_leak.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints-for-muqss.patch \
+       other/Improve-preemptive-ENOSPC-flushing.patch \
        > noir.patch
 ;;
 pds)
