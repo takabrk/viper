@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#January 11,2021
+#January 18,2021
 
 while getopts e: OPT
 do
@@ -10,8 +10,8 @@ do
          ;;
   esac
 done
-VERSIONBASE="5.11-rc3"
-VERSIONPOINT="5.11-rc3"
+VERSIONBASE="5.11-rc4"
+VERSIONPOINT="5.11-rc4"
 case $e_num in
     base)
            #wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz

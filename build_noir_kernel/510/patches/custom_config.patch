@@ -1,12 +1,12 @@
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2021-01-18 10:46:07.890700693 +0900
-+++ .config	2021-01-10 00:23:55.812755000 +0900
-@@ -0,0 +1,10293 @@
+--- /dev/null	2021-01-19 12:08:34.980122121 +0900
++++ .config	2021-01-19 17:32:32.997568000 +0900
+@@ -0,0 +1,10295 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.10.6-noir Kernel Configuration
++# Linux/x86 5.10.8-noir-v1 Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 10.2.0-5ubuntu1~20.04) 10.2.0"
 +CONFIG_CC_IS_GCC=y
@@ -1187,6 +1187,7 @@ index 000000000000..dcbcaa389249
 +CONFIG_TCP_CONG_DCTCP=y
 +CONFIG_TCP_CONG_CDG=m
 +CONFIG_TCP_CONG_BBR=y
++CONFIG_TCP_CONG_BBR2=y
 +# CONFIG_DEFAULT_BIC is not set
 +# CONFIG_DEFAULT_CUBIC is not set
 +# CONFIG_DEFAULT_HTCP is not set
@@ -1195,9 +1196,10 @@ index 000000000000..dcbcaa389249
 +# CONFIG_DEFAULT_VENO is not set
 +# CONFIG_DEFAULT_WESTWOOD is not set
 +# CONFIG_DEFAULT_DCTCP is not set
-+CONFIG_DEFAULT_BBR=y
++# CONFIG_DEFAULT_BBR is not set
++CONFIG_DEFAULT_BBR2=y
 +# CONFIG_DEFAULT_RENO is not set
-+CONFIG_DEFAULT_TCP_CONG="bbr"
++CONFIG_DEFAULT_TCP_CONG="bbr2"
 +CONFIG_TCP_MD5SIG=y
 +CONFIG_IPV6=m
 +CONFIG_IPV6_ROUTER_PREF=y
