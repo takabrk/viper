@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.10.9"
+VERSIONPOINT="5.10.10"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -76,7 +76,6 @@ cat add_noir_version.patch \
        aufs5/aufs5-kbuild.patch\
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
-       aufs5/k510.patch \
        other/0001-init-Kconfig-set-default-value-of-SCHED_PDS.patch \
        other/0002-init-Kconfig-Restore-original-PDS-description.patch \
        other/0001-rapl-patches.patch \
