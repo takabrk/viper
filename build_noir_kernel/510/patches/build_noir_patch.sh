@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.10.13"
+VERSIONPOINT="5.10.14"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -51,6 +51,7 @@ cat add_noir_version.patch \
        ck1/muqss_Fix_build_error_on_config_leak.patch \
        IBM/introduce_per-task_latency_nice_for_scheduler_hints-for-muqss.patch \
        other/bbr2.patch \
+       other/0001-init-add-support-for-zstd-compressed-modules.patch \
        > noir.patch
 ;;
 pds)
@@ -88,6 +89,7 @@ cat add_noir_version.patch \
        other/zstd.patch \
        other/Enable-fp16-display-support-for-DCE8.patch \
        other/bbr2.patch \
+       other/0001-init-add-support-for-zstd-compressed-modules.patch \
        > noir.patch
 ;;
 esac
