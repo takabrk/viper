@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#February 8,2021
+#February 16,2021
 
 while getopts e: OPT
 do
@@ -10,14 +10,14 @@ do
          ;;
   esac
 done
-VERSIONBASE="5.11-rc7"
-VERSIONPOINT="5.11-rc7"
+VERSIONBASE="5.11"
+VERSIONPOINT="5.11"
 case $e_num in
     base)
-           #wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
-           #tar -Jxvf linux-$VERSIONBASE.tar.xz
-           wget https://git.kernel.org/torvalds/t/linux-$VERSIONBASE.tar.gz
-           tar -zxvf linux-$VERSIONBASE.tar.gz
+           wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
+           tar -Jxvf linux-$VERSIONBASE.tar.xz
+           #wget https://git.kernel.org/torvalds/t/linux-$VERSIONBASE.tar.gz
+           #tar -zxvf linux-$VERSIONBASE.tar.gz
            cd linux-$VERSIONBASE
            #cp -a ../patches/other/REPORTING-BUGS ./
            #cp -a ../patches/aufs5/Documentation ./
@@ -26,7 +26,8 @@ case $e_num in
            patch -p1 < ../patches/noir.patch
            cd ../
            mv linux-$VERSIONBASE linux-$VERSIONPOINT-noir
-           rm -r linux-$VERSIONBASE.tar.gz
+           #rm -r linux-$VERSIONBASE.tar.gz
+           rm -r linux-$VERSIONBASE.tar.xz
            ;;
     core)
            cd linux-$VERSIONPOINT-noir

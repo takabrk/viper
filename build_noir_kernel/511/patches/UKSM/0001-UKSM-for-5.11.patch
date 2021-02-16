@@ -1,4 +1,4 @@
-From 99700003de9d4227771e6019cb3ed86d74e00751 Mon Sep 17 00:00:00 2001
+From 54c4e5ae42627a450d15d126302ecc5509ba1e26 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Wed, 16 Dec 2020 01:40:01 +0100
 Subject: [PATCH] UKSM for 5.11
@@ -504,7 +504,7 @@ index 000000000..bb8651f53
 +#endif /* !CONFIG_UKSM */
 +#endif /* __LINUX_UKSM_H */
 diff --git a/kernel/fork.c b/kernel/fork.c
-index 37720a6d0..169b1c598 100644
+index e39846a73..aaab0f873 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
 @@ -588,7 +588,7 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
@@ -1012,10 +1012,10 @@ index 000000000..ab21e6309
 +	return 0;
 +}
 diff --git a/mm/Kconfig b/mm/Kconfig
-index f730605b8..89d11e029 100644
+index 5f4846c7d..40bf1a135 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -317,6 +317,32 @@ config KSM
+@@ -352,6 +352,32 @@ config KSM
  	  See Documentation/vm/ksm.rst for more information: KSM is inactive
  	  until a program has madvised that an area is MADV_MERGEABLE, and
  	  root has set /sys/kernel/mm/ksm/run to 1 (if CONFIG_SYSFS is set).
@@ -1063,7 +1063,7 @@ index b6cd2fffa..abe1ab4d4 100644
  obj-$(CONFIG_SLAB) += slab.o
  obj-$(CONFIG_SLUB) += slub.o
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 9694ee2c7..63af6a528 100644
+index 50d1d6dd1..a10d21de2 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
 @@ -858,17 +858,6 @@ static int unmerge_ksm_pages(struct vm_area_struct *vma,
@@ -6953,7 +6953,7 @@ index 000000000..e4732c00b
 +#endif
 +
 diff --git a/mm/vmstat.c b/mm/vmstat.c
-index f8942160f..95d6d9267 100644
+index 6b9369fd9..24cb8a8ff 100644
 --- a/mm/vmstat.c
 +++ b/mm/vmstat.c
 @@ -1216,6 +1216,9 @@ const char * const vmstat_text[] = {
@@ -6967,5 +6967,5 @@ index f8942160f..95d6d9267 100644
  	"nr_dirty_threshold",
  	"nr_dirty_background_threshold",
 -- 
-2.30.0
+2.30.1.457.gf011795891
 
