@@ -1,7 +1,34 @@
+From dda238180bacda4c39f71dd16d754a48da38e676 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 21:32:57 +0100
+Subject: [PATCH 01/27] ZEN: Add ZEN branding
+
+Adds a tag to the kernel version string (uname -v) and a suffix to
+the kernel release (uname -r).
+---
+ scripts/mkcompile_h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
+index 4ae735039daf2..e7778a78022cf 100755
+--- a/scripts/mkcompile_h
++++ b/scripts/mkcompile_h
+@@ -41,8 +41,8 @@ else
+ fi
+ 
+ UTS_VERSION="#$VERSION"
+-CONFIG_FLAGS=""
+-if [ -n "$SMP" ] ; then CONFIG_FLAGS="SMP"; fi
++CONFIG_FLAGS="ZEN"
++if [ -n "$SMP" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS SMP"; fi
+ if [ -n "$PREEMPT" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS PREEMPT"; fi
+ if [ -n "$PREEMPT_RT" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS PREEMPT_RT"; fi
+ 
+
 From 9a2e0d950bfd77fb51a42a5fc7e81a9187606c38 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 17:59:54 +0100
-Subject: [PATCH 02/19] ZEN: Add VHBA driver
+Subject: [PATCH 02/27] ZEN: Add VHBA driver
 
 remote git://git.code.sf.net/p/cdemu/code
 tag    vhba-module-20200106
@@ -1160,7 +1187,7 @@ index 0000000000000..7655be66fbe60
 From 5b3d9f2372600c3b908b1bd0e8c9b8c6ed351fa2 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
 Date: Mon, 3 Aug 2020 21:18:53 +0200
-Subject: [PATCH 03/19] ZEN: Add OpenRGB patches
+Subject: [PATCH 03/27] ZEN: Add OpenRGB patches
 
 Squashed commit of the following:
 
@@ -1903,10 +1930,704 @@ index 8c1b31ed0c429..0b1b36fa0b715 100644
  	/* If the SMBus is still busy, we give up */
  	if (timeout == MAX_TIMEOUT) {
 
+From 986ea2483af3ba52c0e6c9e647c05c753a548fb8 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
+Date: Mon, 3 Aug 2020 20:58:52 +0200
+Subject: [PATCH 04/27] ZEN: Enable additional CPU Optimizations for GCC v10.1+
+ / Kernel v5.8+
+
+From https://github.com/graysky2/kernel_gcc_patch
+
+WARNING
+This patch works with gcc versions 10.1+ and with kernel version 5.8+ and should
+NOT be applied when compiling on older versions of gcc due to key name changes
+of the march flags introduced with the version 4.9 release of gcc.[1]
+
+Use the older version of this patch hosted on the same github for older
+versions of gcc.
+
+FEATURES
+This patch adds additional CPU options to the Linux kernel accessible under:
+ Processor type and features  --->
+  Processor family --->
+
+The expanded microarchitectures include:
+* AMD Improved K8-family
+* AMD K10-family
+* AMD Family 10h (Barcelona)
+* AMD Family 14h (Bobcat)
+* AMD Family 16h (Jaguar)
+* AMD Family 15h (Bulldozer)
+* AMD Family 15h (Piledriver)
+* AMD Family 15h (Steamroller)
+* AMD Family 15h (Excavator)
+* AMD Family 17h (Zen)
+* AMD Family 17h (Zen 2)
+* Intel Silvermont low-power processors
+* Intel Goldmont low-power processors (Apollo Lake and Denverton)
+* Intel Goldmont Plus low-power processors (Gemini Lake)
+* Intel 1st Gen Core i3/i5/i7 (Nehalem)
+* Intel 1.5 Gen Core i3/i5/i7 (Westmere)
+* Intel 2nd Gen Core i3/i5/i7 (Sandybridge)
+* Intel 3rd Gen Core i3/i5/i7 (Ivybridge)
+* Intel 4th Gen Core i3/i5/i7 (Haswell)
+* Intel 5th Gen Core i3/i5/i7 (Broadwell)
+* Intel 6th Gen Core i3/i5/i7 (Skylake)
+* Intel 6th Gen Core i7/i9 (Skylake X)
+* Intel 8th Gen Core i3/i5/i7 (Cannon Lake)
+* Intel 10th Gen Core i7/i9 (Ice Lake)
+* Intel Xeon (Cascade Lake)
+* Intel Xeon (Cooper Lake)
+* Intel 3rd Gen 10nm++  i3/i5/i7/i9-family (Tiger Lake)
+
+It also offers to compile passing the 'native' option which, "selects the CPU
+to generate code for at compilation time by determining the processor type of
+the compiling machine. Using -march=native enables all instruction subsets
+supported by the local machine and will produce code optimized for the local
+machine under the constraints of the selected instruction set."[2]
+
+Do NOT try using the 'native' option on AMD Piledriver, Steamroller, or
+Excavator CPUs (-march=bdver{2,3,4} flag). The build will error out due the
+kernel's objtool issue with these.[3a,b]
+
+MINOR NOTES
+This patch also changes 'atom' to 'bonnell' in accordance with the gcc v4.9
+changes. Note that upstream is using the deprecated 'match=atom' flags when I
+believe it should use the newer 'march=bonnell' flag for atom processors.[4]
+
+It is not recommended to compile on Atom-CPUs with the 'native' option.[5] The
+recommendation is to use the 'atom' option instead.
+
+BENEFITS
+Small but real speed increases are measurable using a make endpoint comparing
+a generic kernel to one built with one of the respective microarchs.
+
+See the following experimental evidence supporting this statement:
+https://github.com/graysky2/kernel_gcc_patch
+
+REQUIREMENTS
+linux version >=5.8
+gcc version >=10.1
+
+ACKNOWLEDGMENTS
+This patch builds on the seminal work by Jeroen.[6]
+
+REFERENCES
+1.  https://gcc.gnu.org/gcc-4.9/changes.html
+2.  https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+3a. https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95671#c11
+3b. https://github.com/graysky2/kernel_gcc_patch/issues/55
+4.  https://bugzilla.kernel.org/show_bug.cgi?id=77461
+5.  https://github.com/graysky2/kernel_gcc_patch/issues/15
+6.  http://www.linuxforge.net/docs/linux/linux-gcc.php
+---
+ arch/x86/Kconfig.cpu            | 301 ++++++++++++++++++++++++++++----
+ arch/x86/Makefile               |  53 +++++-
+ arch/x86/Makefile_32.cpu        |  32 +++-
+ arch/x86/include/asm/vermagic.h |  56 ++++++
+ 4 files changed, 407 insertions(+), 35 deletions(-)
+
+diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
+index 814fe0d349b01..7b08e87fe7978 100644
+--- a/arch/x86/Kconfig.cpu
++++ b/arch/x86/Kconfig.cpu
+@@ -123,6 +123,7 @@ config MPENTIUMM
+ config MPENTIUM4
+ 	bool "Pentium-4/Celeron(P4-based)/Pentium-4 M/older Xeon"
+ 	depends on X86_32
++	select X86_P6_NOP
+ 	help
+ 	  Select this for Intel Pentium 4 chips.  This includes the
+ 	  Pentium 4, Pentium D, P4-based Celeron and Xeon, and
+@@ -155,9 +156,8 @@ config MPENTIUM4
+ 		-Paxville
+ 		-Dempsey
+ 
+-
+ config MK6
+-	bool "K6/K6-II/K6-III"
++	bool "AMD K6/K6-II/K6-III"
+ 	depends on X86_32
+ 	help
+ 	  Select this for an AMD K6-family processor.  Enables use of
+@@ -165,7 +165,7 @@ config MK6
+ 	  flags to GCC.
+ 
+ config MK7
+-	bool "Athlon/Duron/K7"
++	bool "AMD Athlon/Duron/K7"
+ 	depends on X86_32
+ 	help
+ 	  Select this for an AMD Athlon K7-family processor.  Enables use of
+@@ -173,12 +173,90 @@ config MK7
+ 	  flags to GCC.
+ 
+ config MK8
+-	bool "Opteron/Athlon64/Hammer/K8"
++	bool "AMD Opteron/Athlon64/Hammer/K8"
+ 	help
+ 	  Select this for an AMD Opteron or Athlon64 Hammer-family processor.
+ 	  Enables use of some extended instructions, and passes appropriate
+ 	  optimization flags to GCC.
+ 
++config MK8SSE3
++	bool "AMD Opteron/Athlon64/Hammer/K8 with SSE3"
++	help
++	  Select this for improved AMD Opteron or Athlon64 Hammer-family processors.
++	  Enables use of some extended instructions, and passes appropriate
++	  optimization flags to GCC.
++
++config MK10
++	bool "AMD 61xx/7x50/PhenomX3/X4/II/K10"
++	help
++	  Select this for an AMD 61xx Eight-Core Magny-Cours, Athlon X2 7x50,
++		Phenom X3/X4/II, Athlon II X2/X3/X4, or Turion II-family processor.
++	  Enables use of some extended instructions, and passes appropriate
++	  optimization flags to GCC.
++
++config MBARCELONA
++	bool "AMD Barcelona"
++	help
++	  Select this for AMD Family 10h Barcelona processors.
++
++	  Enables -march=barcelona
++
++config MBOBCAT
++	bool "AMD Bobcat"
++	help
++	  Select this for AMD Family 14h Bobcat processors.
++
++	  Enables -march=btver1
++
++config MJAGUAR
++	bool "AMD Jaguar"
++	help
++	  Select this for AMD Family 16h Jaguar processors.
++
++	  Enables -march=btver2
++
++config MBULLDOZER
++	bool "AMD Bulldozer"
++	help
++	  Select this for AMD Family 15h Bulldozer processors.
++
++	  Enables -march=bdver1
++
++config MPILEDRIVER
++	bool "AMD Piledriver"
++	help
++	  Select this for AMD Family 15h Piledriver processors.
++
++	  Enables -march=bdver2
++
++config MSTEAMROLLER
++	bool "AMD Steamroller"
++	help
++	  Select this for AMD Family 15h Steamroller processors.
++
++	  Enables -march=bdver3
++
++config MEXCAVATOR
++	bool "AMD Excavator"
++	help
++	  Select this for AMD Family 15h Excavator processors.
++
++	  Enables -march=bdver4
++
++config MZEN
++	bool "AMD Zen"
++	help
++	  Select this for AMD Family 17h Zen processors.
++
++	  Enables -march=znver1
++
++config MZEN2
++	bool "AMD Zen 2"
++	help
++	  Select this for AMD Family 17h Zen 2 processors.
++
++	  Enables -march=znver2
++
+ config MCRUSOE
+ 	bool "Crusoe"
+ 	depends on X86_32
+@@ -260,6 +338,7 @@ config MVIAC7
+ 
+ config MPSC
+ 	bool "Intel P4 / older Netburst based Xeon"
++	select X86_P6_NOP
+ 	depends on X86_64
+ 	help
+ 	  Optimize for Intel Pentium 4, Pentium D and older Nocona/Dempsey
+@@ -269,8 +348,19 @@ config MPSC
+ 	  using the cpu family field
+ 	  in /proc/cpuinfo. Family 15 is an older Xeon, Family 6 a newer one.
+ 
++config MATOM
++	bool "Intel Atom"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Atom platform. Intel Atom CPUs have an
++	  in-order pipelining architecture and thus can benefit from
++	  accordingly optimized code. Use a recent GCC with specific Atom
++	  support in order to fully benefit from selecting this option.
++
+ config MCORE2
+-	bool "Core 2/newer Xeon"
++	bool "Intel Core 2"
++	select X86_P6_NOP
+ 	help
+ 
+ 	  Select this for Intel Core 2 and newer Core 2 Xeons (Xeon 51xx and
+@@ -278,14 +368,151 @@ config MCORE2
+ 	  family in /proc/cpuinfo. Newer ones have 6 and older ones 15
+ 	  (not a typo)
+ 
+-config MATOM
+-	bool "Intel Atom"
++	  Enables -march=core2
++
++config MNEHALEM
++	bool "Intel Nehalem"
++	select X86_P6_NOP
+ 	help
+ 
+-	  Select this for the Intel Atom platform. Intel Atom CPUs have an
+-	  in-order pipelining architecture and thus can benefit from
+-	  accordingly optimized code. Use a recent GCC with specific Atom
+-	  support in order to fully benefit from selecting this option.
++	  Select this for 1st Gen Core processors in the Nehalem family.
++
++	  Enables -march=nehalem
++
++config MWESTMERE
++	bool "Intel Westmere"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Westmere formerly Nehalem-C family.
++
++	  Enables -march=westmere
++
++config MSILVERMONT
++	bool "Intel Silvermont"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Silvermont platform.
++
++	  Enables -march=silvermont
++
++config MGOLDMONT
++	bool "Intel Goldmont"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Goldmont platform including Apollo Lake and Denverton.
++
++	  Enables -march=goldmont
++
++config MGOLDMONTPLUS
++	bool "Intel Goldmont Plus"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Goldmont Plus platform including Gemini Lake.
++
++	  Enables -march=goldmont-plus
++
++config MSANDYBRIDGE
++	bool "Intel Sandy Bridge"
++	select X86_P6_NOP
++	help
++
++	  Select this for 2nd Gen Core processors in the Sandy Bridge family.
++
++	  Enables -march=sandybridge
++
++config MIVYBRIDGE
++	bool "Intel Ivy Bridge"
++	select X86_P6_NOP
++	help
++
++	  Select this for 3rd Gen Core processors in the Ivy Bridge family.
++
++	  Enables -march=ivybridge
++
++config MHASWELL
++	bool "Intel Haswell"
++	select X86_P6_NOP
++	help
++
++	  Select this for 4th Gen Core processors in the Haswell family.
++
++	  Enables -march=haswell
++
++config MBROADWELL
++	bool "Intel Broadwell"
++	select X86_P6_NOP
++	help
++
++	  Select this for 5th Gen Core processors in the Broadwell family.
++
++	  Enables -march=broadwell
++
++config MSKYLAKE
++	bool "Intel Skylake"
++	select X86_P6_NOP
++	help
++
++	  Select this for 6th Gen Core processors in the Skylake family.
++
++	  Enables -march=skylake
++
++config MSKYLAKEX
++	bool "Intel Skylake X"
++	select X86_P6_NOP
++	help
++
++	  Select this for 6th Gen Core processors in the Skylake X family.
++
++	  Enables -march=skylake-avx512
++
++config MCANNONLAKE
++	bool "Intel Cannon Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for 8th Gen Core processors
++
++	  Enables -march=cannonlake
++
++config MICELAKE
++	bool "Intel Ice Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for 10th Gen Core processors in the Ice Lake family.
++
++	  Enables -march=icelake-client
++
++config MCASCADELAKE
++	bool "Intel Cascade Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for Xeon processors in the Cascade Lake family.
++
++	  Enables -march=cascadelake
++
++config MCOOPERLAKE
++	bool "Intel Cooper Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for Xeon processors in the Cooper Lake family.
++
++	  Enables -march=cooperlake
++
++config MTIGERLAKE
++	bool "Intel Tiger Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for third-generation 10 nm process processors in the Tiger Lake family.
++
++	  Enables -march=tigerlake
+ 
+ config GENERIC_CPU
+ 	bool "Generic-x86-64"
+@@ -294,6 +521,19 @@ config GENERIC_CPU
+ 	  Generic x86-64 CPU.
+ 	  Run equally well on all x86-64 CPUs.
+ 
++config MNATIVE
++ bool "Native optimizations autodetected by GCC"
++ help
++
++   GCC 4.2 and above support -march=native, which automatically detects
++   the optimum settings to use based on your processor. -march=native
++   also detects and applies additional settings beyond -march specific
++   to your CPU, (eg. -msse4). Unless you have a specific reason not to
++   (e.g. distcc cross-compiling), you should probably be using
++   -march=native rather than anything listed below.
++
++   Enables -march=native
++
+ endchoice
+ 
+ config X86_GENERIC
+@@ -318,7 +558,7 @@ config X86_INTERNODE_CACHE_SHIFT
+ config X86_L1_CACHE_SHIFT
+ 	int
+ 	default "7" if MPENTIUM4 || MPSC
+-	default "6" if MK7 || MK8 || MPENTIUMM || MCORE2 || MATOM || MVIAC7 || X86_GENERIC || GENERIC_CPU
++	default "6" if MK7 || MK8 || MK8SSE3 || MK10 || MBARCELONA || MBOBCAT || MBULLDOZER || MPILEDRIVER || MSTEAMROLLER || MEXCAVATOR || MZEN || MZEN2 || MJAGUAR || MPENTIUMM || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE || MATOM || MVIAC7 || X86_GENERIC || GENERIC_CPU
+ 	default "4" if MELAN || M486SX || M486 || MGEODEGX1
+ 	default "5" if MWINCHIP3D || MWINCHIPC6 || MCRUSOE || MEFFICEON || MCYRIXIII || MK6 || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || M586 || MVIAC3_2 || MGEODE_LX
+ 
+@@ -336,35 +576,36 @@ config X86_ALIGNMENT_16
+ 
+ config X86_INTEL_USERCOPY
+ 	def_bool y
+-	depends on MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M586MMX || X86_GENERIC || MK8 || MK7 || MEFFICEON || MCORE2
++	depends on MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M586MMX || X86_GENERIC || MK8 || MK8SSE3 || MK7 || MEFFICEON || MCORE2 || MK10 || MBARCELONA || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE
+ 
+ config X86_USE_PPRO_CHECKSUM
+ 	def_bool y
+-	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MATOM
++	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MK10 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MK8SSE3 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MATOM || MNATIVE
+ 
+ config X86_USE_3DNOW
+ 	def_bool y
+ 	depends on (MCYRIXIII || MK7 || MGEODE_LX) && !UML
+ 
+-#
+-# P6_NOPs are a relatively minor optimization that require a family >=
+-# 6 processor, except that it is broken on certain VIA chips.
+-# Furthermore, AMD chips prefer a totally different sequence of NOPs
+-# (which work on all CPUs).  In addition, it looks like Virtual PC
+-# does not understand them.
+-#
+-# As a result, disallow these if we're not compiling for X86_64 (these
+-# NOPs do work on all x86-64 capable chips); the list of processors in
+-# the right-hand clause are the cores that benefit from this optimization.
+-#
+ config X86_P6_NOP
+-	def_bool y
+-	depends on X86_64
+-	depends on (MCORE2 || MPENTIUM4 || MPSC)
++	default n
++	bool "Support for P6_NOPs on Intel chips"
++	depends on (MCORE2 || MPENTIUM4 || MPSC || MATOM || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS  || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE)
++	help
++	P6_NOPs are a relatively minor optimization that require a family >=
++	6 processor, except that it is broken on certain VIA chips.
++	Furthermore, AMD chips prefer a totally different sequence of NOPs
++	(which work on all CPUs).  In addition, it looks like Virtual PC
++	does not understand them.
++
++	As a result, disallow these if we're not compiling for X86_64 (these
++	NOPs do work on all x86-64 capable chips); the list of processors in
++	the right-hand clause are the cores that benefit from this optimization.
++
++	Say Y if you have Intel CPU newer than Pentium Pro, N otherwise.
+ 
+ config X86_TSC
+ 	def_bool y
+-	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MATOM) || X86_64
++	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MK8SSE3 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE || MATOM) || X86_64
+ 
+ config X86_CMPXCHG64
+ 	def_bool y
+@@ -374,7 +615,7 @@ config X86_CMPXCHG64
+ # generates cmov.
+ config X86_CMOV
+ 	def_bool y
+-	depends on (MK8 || MK7 || MCORE2 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MCRUSOE || MEFFICEON || X86_64 || MATOM || MGEODE_LX)
++	depends on (MK8 || MK8SSE3 || MK10 || MBARCELONA || MBOBCAT || MBULLDOZER || MPILEDRIVER || MSTEAMROLLER || MEXCAVATOR || MZEN || MZEN2 || MJAGUAR || MK7 || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MCRUSOE || MEFFICEON || X86_64 || MNATIVE || MATOM || MGEODE_LX)
+ 
+ config X86_MINIMUM_CPU_FAMILY
+ 	int
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 1bf21746f4cea..d475323be684b 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -115,13 +115,60 @@ else
+ 	KBUILD_CFLAGS += $(call cc-option,-mskip-rax-setup)
+ 
+         # FIXME - should be integrated in Makefile.cpu (Makefile_32.cpu)
++        cflags-$(CONFIG_MNATIVE) += $(call cc-option,-march=native)
+         cflags-$(CONFIG_MK8) += $(call cc-option,-march=k8)
++        cflags-$(CONFIG_MK8SSE3) += $(call cc-option,-march=k8-sse3,-mtune=k8)
++        cflags-$(CONFIG_MK10) += $(call cc-option,-march=amdfam10)
++        cflags-$(CONFIG_MBARCELONA) += $(call cc-option,-march=barcelona)
++        cflags-$(CONFIG_MBOBCAT) += $(call cc-option,-march=btver1)
++        cflags-$(CONFIG_MJAGUAR) += $(call cc-option,-march=btver2)
++        cflags-$(CONFIG_MBULLDOZER) += $(call cc-option,-march=bdver1)
++        cflags-$(CONFIG_MPILEDRIVER) += $(call cc-option,-march=bdver2)
++        cflags-$(CONFIG_MPILEDRIVER) += $(call cc-option,-mno-tbm)
++        cflags-$(CONFIG_MSTEAMROLLER) += $(call cc-option,-march=bdver3)
++        cflags-$(CONFIG_MSTEAMROLLER) += $(call cc-option,-mno-tbm)
++        cflags-$(CONFIG_MEXCAVATOR) += $(call cc-option,-march=bdver4)
++        cflags-$(CONFIG_MEXCAVATOR) += $(call cc-option,-mno-tbm)
++        cflags-$(CONFIG_MZEN) += $(call cc-option,-march=znver1)
++        cflags-$(CONFIG_MZEN2) += $(call cc-option,-march=znver2)
+         cflags-$(CONFIG_MPSC) += $(call cc-option,-march=nocona)
+ 
+         cflags-$(CONFIG_MCORE2) += \
+-                $(call cc-option,-march=core2,$(call cc-option,-mtune=generic))
+-	cflags-$(CONFIG_MATOM) += $(call cc-option,-march=atom) \
+-		$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
++                $(call cc-option,-march=core2,$(call cc-option,-mtune=core2))
++        cflags-$(CONFIG_MNEHALEM) += \
++                $(call cc-option,-march=nehalem,$(call cc-option,-mtune=nehalem))
++        cflags-$(CONFIG_MWESTMERE) += \
++                $(call cc-option,-march=westmere,$(call cc-option,-mtune=westmere))
++        cflags-$(CONFIG_MSILVERMONT) += \
++                $(call cc-option,-march=silvermont,$(call cc-option,-mtune=silvermont))
++        cflags-$(CONFIG_MGOLDMONT) += \
++                $(call cc-option,-march=goldmont,$(call cc-option,-mtune=goldmont))
++        cflags-$(CONFIG_MGOLDMONTPLUS) += \
++                $(call cc-option,-march=goldmont-plus,$(call cc-option,-mtune=goldmont-plus))
++        cflags-$(CONFIG_MSANDYBRIDGE) += \
++                $(call cc-option,-march=sandybridge,$(call cc-option,-mtune=sandybridge))
++        cflags-$(CONFIG_MIVYBRIDGE) += \
++                $(call cc-option,-march=ivybridge,$(call cc-option,-mtune=ivybridge))
++        cflags-$(CONFIG_MHASWELL) += \
++                $(call cc-option,-march=haswell,$(call cc-option,-mtune=haswell))
++        cflags-$(CONFIG_MBROADWELL) += \
++                $(call cc-option,-march=broadwell,$(call cc-option,-mtune=broadwell))
++        cflags-$(CONFIG_MSKYLAKE) += \
++                $(call cc-option,-march=skylake,$(call cc-option,-mtune=skylake))
++        cflags-$(CONFIG_MSKYLAKEX) += \
++                $(call cc-option,-march=skylake-avx512,$(call cc-option,-mtune=skylake-avx512))
++        cflags-$(CONFIG_MCANNONLAKE) += \
++                $(call cc-option,-march=cannonlake,$(call cc-option,-mtune=cannonlake))
++        cflags-$(CONFIG_MICELAKE) += \
++                $(call cc-option,-march=icelake-client,$(call cc-option,-mtune=icelake-client))
++        cflags-$(CONFIG_MCASCADELAKE) += \
++                $(call cc-option,-march=cascadelake,$(call cc-option,-mtune=cascadelake))
++        cflags-$(CONFIG_MCOOPERLAKE) += \
++                $(call cc-option,-march=cooperlake,$(call cc-option,-mtune=cooperlake))
++        cflags-$(CONFIG_MTIGERLAKE) += \
++                $(call cc-option,-march=tigerlake,$(call cc-option,-mtune=tigerlake))
++        cflags-$(CONFIG_MATOM) += $(call cc-option,-march=bonnell) \
++                $(call cc-option,-mtune=bonnell,$(call cc-option,-mtune=generic))
+         cflags-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=generic)
+         KBUILD_CFLAGS += $(cflags-y)
+ 
+diff --git a/arch/x86/Makefile_32.cpu b/arch/x86/Makefile_32.cpu
+index cd30567598803..cb0a4c6bd9877 100644
+--- a/arch/x86/Makefile_32.cpu
++++ b/arch/x86/Makefile_32.cpu
+@@ -24,7 +24,19 @@ cflags-$(CONFIG_MK6)		+= -march=k6
+ # Please note, that patches that add -march=athlon-xp and friends are pointless.
+ # They make zero difference whatsosever to performance at this time.
+ cflags-$(CONFIG_MK7)		+= -march=athlon
++cflags-$(CONFIG_MNATIVE) += $(call cc-option,-march=native)
+ cflags-$(CONFIG_MK8)		+= $(call cc-option,-march=k8,-march=athlon)
++cflags-$(CONFIG_MK8SSE3)		+= $(call cc-option,-march=k8-sse3,-march=athlon)
++cflags-$(CONFIG_MK10)	+= $(call cc-option,-march=amdfam10,-march=athlon)
++cflags-$(CONFIG_MBARCELONA)	+= $(call cc-option,-march=barcelona,-march=athlon)
++cflags-$(CONFIG_MBOBCAT)	+= $(call cc-option,-march=btver1,-march=athlon)
++cflags-$(CONFIG_MJAGUAR)	+= $(call cc-option,-march=btver2,-march=athlon)
++cflags-$(CONFIG_MBULLDOZER)	+= $(call cc-option,-march=bdver1,-march=athlon)
++cflags-$(CONFIG_MPILEDRIVER)	+= $(call cc-option,-march=bdver2,-march=athlon)
++cflags-$(CONFIG_MSTEAMROLLER)	+= $(call cc-option,-march=bdver3,-march=athlon)
++cflags-$(CONFIG_MEXCAVATOR)	+= $(call cc-option,-march=bdver4,-march=athlon)
++cflags-$(CONFIG_MZEN)	+= $(call cc-option,-march=znver1,-march=athlon)
++cflags-$(CONFIG_MZEN2)	+= $(call cc-option,-march=znver2,-march=athlon)
+ cflags-$(CONFIG_MCRUSOE)	+= -march=i686 -falign-functions=0 -falign-jumps=0 -falign-loops=0
+ cflags-$(CONFIG_MEFFICEON)	+= -march=i686 $(call tune,pentium3) -falign-functions=0 -falign-jumps=0 -falign-loops=0
+ cflags-$(CONFIG_MWINCHIPC6)	+= $(call cc-option,-march=winchip-c6,-march=i586)
+@@ -33,8 +45,24 @@ cflags-$(CONFIG_MCYRIXIII)	+= $(call cc-option,-march=c3,-march=i486) -falign-fu
+ cflags-$(CONFIG_MVIAC3_2)	+= $(call cc-option,-march=c3-2,-march=i686)
+ cflags-$(CONFIG_MVIAC7)		+= -march=i686
+ cflags-$(CONFIG_MCORE2)		+= -march=i686 $(call tune,core2)
+-cflags-$(CONFIG_MATOM)		+= $(call cc-option,-march=atom,$(call cc-option,-march=core2,-march=i686)) \
+-	$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
++cflags-$(CONFIG_MNEHALEM)	+= -march=i686 $(call tune,nehalem)
++cflags-$(CONFIG_MWESTMERE)	+= -march=i686 $(call tune,westmere)
++cflags-$(CONFIG_MSILVERMONT)	+= -march=i686 $(call tune,silvermont)
++cflags-$(CONFIG_MGOLDMONT)	+= -march=i686 $(call tune,goldmont)
++cflags-$(CONFIG_MGOLDMONTPLUS)	+= -march=i686 $(call tune,goldmont-plus)
++cflags-$(CONFIG_MSANDYBRIDGE)	+= -march=i686 $(call tune,sandybridge)
++cflags-$(CONFIG_MIVYBRIDGE)	+= -march=i686 $(call tune,ivybridge)
++cflags-$(CONFIG_MHASWELL)	+= -march=i686 $(call tune,haswell)
++cflags-$(CONFIG_MBROADWELL)	+= -march=i686 $(call tune,broadwell)
++cflags-$(CONFIG_MSKYLAKE)	+= -march=i686 $(call tune,skylake)
++cflags-$(CONFIG_MSKYLAKEX)	+= -march=i686 $(call tune,skylake-avx512)
++cflags-$(CONFIG_MCANNONLAKE)	+= -march=i686 $(call tune,cannonlake)
++cflags-$(CONFIG_MICELAKE)	+= -march=i686 $(call tune,icelake-client)
++cflags-$(CONFIG_MCASCADELAKE)	+= -march=i686 $(call tune,cascadelake)
++cflags-$(CONFIG_MCOOPERLAKE)	+= -march=i686 $(call tune,cooperlake)
++cflags-$(CONFIG_MTIGERLAKE)	+= -march=i686 $(call tune,tigerlake)
++cflags-$(CONFIG_MATOM)		+= $(call cc-option,-march=bonnell,$(call cc-option,-march=core2,-march=i686)) \
++	$(call cc-option,-mtune=bonnell,$(call cc-option,-mtune=generic))
+ 
+ # AMD Elan support
+ cflags-$(CONFIG_MELAN)		+= -march=i486
+diff --git a/arch/x86/include/asm/vermagic.h b/arch/x86/include/asm/vermagic.h
+index 75884d2cdec37..14c222e78213f 100644
+--- a/arch/x86/include/asm/vermagic.h
++++ b/arch/x86/include/asm/vermagic.h
+@@ -17,6 +17,40 @@
+ #define MODULE_PROC_FAMILY "586MMX "
+ #elif defined CONFIG_MCORE2
+ #define MODULE_PROC_FAMILY "CORE2 "
++#elif defined CONFIG_MNATIVE
++#define MODULE_PROC_FAMILY "NATIVE "
++#elif defined CONFIG_MNEHALEM
++#define MODULE_PROC_FAMILY "NEHALEM "
++#elif defined CONFIG_MWESTMERE
++#define MODULE_PROC_FAMILY "WESTMERE "
++#elif defined CONFIG_MSILVERMONT
++#define MODULE_PROC_FAMILY "SILVERMONT "
++#elif defined CONFIG_MGOLDMONT
++#define MODULE_PROC_FAMILY "GOLDMONT "
++#elif defined CONFIG_MGOLDMONTPLUS
++#define MODULE_PROC_FAMILY "GOLDMONTPLUS "
++#elif defined CONFIG_MSANDYBRIDGE
++#define MODULE_PROC_FAMILY "SANDYBRIDGE "
++#elif defined CONFIG_MIVYBRIDGE
++#define MODULE_PROC_FAMILY "IVYBRIDGE "
++#elif defined CONFIG_MHASWELL
++#define MODULE_PROC_FAMILY "HASWELL "
++#elif defined CONFIG_MBROADWELL
++#define MODULE_PROC_FAMILY "BROADWELL "
++#elif defined CONFIG_MSKYLAKE
++#define MODULE_PROC_FAMILY "SKYLAKE "
++#elif defined CONFIG_MSKYLAKEX
++#define MODULE_PROC_FAMILY "SKYLAKEX "
++#elif defined CONFIG_MCANNONLAKE
++#define MODULE_PROC_FAMILY "CANNONLAKE "
++#elif defined CONFIG_MICELAKE
++#define MODULE_PROC_FAMILY "ICELAKE "
++#elif defined CONFIG_MCASCADELAKE
++#define MODULE_PROC_FAMILY "CASCADELAKE "
++#elif defined CONFIG_MCOOPERLAKE
++#define MODULE_PROC_FAMILY "COOPERLAKE "
++#elif defined CONFIG_MTIGERLAKE
++#define MODULE_PROC_FAMILY "TIGERLAKE "
+ #elif defined CONFIG_MATOM
+ #define MODULE_PROC_FAMILY "ATOM "
+ #elif defined CONFIG_M686
+@@ -35,6 +69,28 @@
+ #define MODULE_PROC_FAMILY "K7 "
+ #elif defined CONFIG_MK8
+ #define MODULE_PROC_FAMILY "K8 "
++#elif defined CONFIG_MK8SSE3
++#define MODULE_PROC_FAMILY "K8SSE3 "
++#elif defined CONFIG_MK10
++#define MODULE_PROC_FAMILY "K10 "
++#elif defined CONFIG_MBARCELONA
++#define MODULE_PROC_FAMILY "BARCELONA "
++#elif defined CONFIG_MBOBCAT
++#define MODULE_PROC_FAMILY "BOBCAT "
++#elif defined CONFIG_MBULLDOZER
++#define MODULE_PROC_FAMILY "BULLDOZER "
++#elif defined CONFIG_MPILEDRIVER
++#define MODULE_PROC_FAMILY "PILEDRIVER "
++#elif defined CONFIG_MSTEAMROLLER
++#define MODULE_PROC_FAMILY "STEAMROLLER "
++#elif defined CONFIG_MJAGUAR
++#define MODULE_PROC_FAMILY "JAGUAR "
++#elif defined CONFIG_MEXCAVATOR
++#define MODULE_PROC_FAMILY "EXCAVATOR "
++#elif defined CONFIG_MZEN
++#define MODULE_PROC_FAMILY "ZEN "
++#elif defined CONFIG_MZEN2
++#define MODULE_PROC_FAMILY "ZEN2 "
+ #elif defined CONFIG_MELAN
+ #define MODULE_PROC_FAMILY "ELAN "
+ #elif defined CONFIG_MCRUSOE
+
 From 228e792a116fd4cce8856ea73f2958ec8a241c0c Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 25 Nov 2019 22:24:42 +0100
-Subject: [PATCH 05/19] ZEN: Unrestrict CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3
+Subject: [PATCH 05/27] ZEN: Unrestrict CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3
 
 ---
  init/Kconfig | 1 -
@@ -1928,7 +2649,7 @@ index 0872a5a2e7590..03eaebc7c92ea 100644
 From b81ab9b618d694217a54b5d2de70c7f37d3f3e07 Mon Sep 17 00:00:00 2001
 From: Sultan Alsawaf <sultan@kerneltoast.com>
 Date: Sun, 8 Mar 2020 00:31:35 -0800
-Subject: [PATCH 06/19] ZEN: Disable stack conservation for GCC
+Subject: [PATCH 06/27] ZEN: Disable stack conservation for GCC
 
 There's plenty of room on the stack for a few more inlined bytes here
 and there. The measured stack usage at runtime is still safe without
@@ -1953,12 +2674,60 @@ index 27a494785bc94..64a4bfec526ac 100644
 -
  # Prohibit date/time macros, which would make the build non-deterministic
  KBUILD_CFLAGS   += -Werror=date-time
+ 
 
+From 4ace3c6c50dbd58ee5f200a5461289d0491873a6 Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Thu, 2 Jun 2016 23:36:32 -0500
+Subject: [PATCH 07/27] ZEN: Initialize ata before graphics
+
+ATA init is the long pole in the boot process, and its asynchronous.
+move the graphics init after it so that ata and graphics initialize
+in parallel
+---
+ drivers/Makefile | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 5762280377186..cf79337dd279a 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -59,15 +59,8 @@ obj-y				+= char/
+ # iommu/ comes before gpu as gpu are using iommu controllers
+ obj-y				+= iommu/
+ 
+-# gpu/ comes after char for AGP vs DRM startup and after iommu
+-obj-y				+= gpu/
+-
+ obj-$(CONFIG_CONNECTOR)		+= connector/
+ 
+-# i810fb and intelfb depend on char/agp/
+-obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
+-obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
+-
+ obj-$(CONFIG_PARPORT)		+= parport/
+ obj-$(CONFIG_NVM)		+= lightnvm/
+ obj-y				+= base/ block/ misc/ mfd/ nfc/
+@@ -80,6 +73,14 @@ obj-$(CONFIG_IDE)		+= ide/
+ obj-y				+= scsi/
+ obj-y				+= nvme/
+ obj-$(CONFIG_ATA)		+= ata/
++
++# gpu/ comes after char for AGP vs DRM startup and after iommu
++obj-y				+= gpu/
++
++# i810fb and intelfb depend on char/agp/
++obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
++obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
++
+ obj-$(CONFIG_TARGET_CORE)	+= target/
+ obj-$(CONFIG_MTD)		+= mtd/
+ obj-$(CONFIG_SPI)		+= spi/
 
 From 0bf1b8c445de4481942ca8ace8dc209ece865bd3 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 16 Sep 2019 04:53:20 +0200
-Subject: [PATCH 08/19] ZEN: Add sysctl and CONFIG to disallow unprivileged
+Subject: [PATCH 08/27] ZEN: Add sysctl and CONFIG to disallow unprivileged
  CLONE_NEWUSER
 
 Our default behavior continues to match the vanilla kernel.
@@ -2110,7 +2879,7 @@ index e703d5d9cbe8e..5758274feaeea 100644
 From 513af58e2e4aa8267b1eebc1cd156e3e2a2a33e3 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 25 Nov 2019 22:53:25 +0100
-Subject: [PATCH 09/19] ZEN: Add CONFIG to rename the mq-deadline scheduler
+Subject: [PATCH 09/27] ZEN: Add CONFIG to rename the mq-deadline scheduler
 
 ---
  block/Kconfig.iosched | 9 +++++++++
@@ -2175,7 +2944,7 @@ index 800ac902809b8..89b56d4526f55 100644
 From 28eaff69b01d9248cac394cce37361d0d6a52714 Mon Sep 17 00:00:00 2001
 From: Steven Barrett <steven@liquorix.net>
 Date: Wed, 15 Jan 2020 20:43:56 -0600
-Subject: [PATCH 10/19] ZEN: intel-pstate: Implement "enable" parameter
+Subject: [PATCH 10/27] ZEN: intel-pstate: Implement "enable" parameter
 
 If intel-pstate is compiled into the kernel, it will preempt the loading
 of acpi-cpufreq so you can take advantage of hardware p-states without
@@ -2233,7 +3002,7 @@ index 36a3ccfe6d3d1..b0ec67997e40a 100644
 From 973d42f99af15b2e610204fbe8252251ed7cc8c1 Mon Sep 17 00:00:00 2001
 From: Con Kolivas <kernel@kolivas.org>
 Date: Wed, 7 Dec 2016 21:13:16 +1100
-Subject: [PATCH 11/19] ZEN: Add an option to make threadirqs the default
+Subject: [PATCH 11/27] ZEN: Add an option to make threadirqs the default
 
 And a parameter 'nothreadirqs' to disable it again.
 ---
@@ -2298,7 +3067,7 @@ index c460e0496006e..218fbcbb94e6b 100644
 From 890ac858741436a40c274efb3514c5f6a96c7c80 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 18:10:06 +0100
-Subject: [PATCH 12/19] ZEN: INTERACTIVE: Base config item
+Subject: [PATCH 12/27] ZEN: INTERACTIVE: Base config item
 
 ---
  init/Kconfig | 6 ++++++
@@ -2322,11 +3091,58 @@ index 9f6345d48d220..477671290175d 100644
  	bool
  
 
+From 0cbcc41992693254e5e4c7952853c6aa7404f28e Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:11:05 +0100
+Subject: [PATCH 13/27] ZEN: INTERACTIVE: Use BFQ as our elevator
+
+Add a scheduler even to multi-queue block devices: We prefer
+interactivity to throughput and want BFQ if possible.
+---
+ block/elevator.c | 6 +++++-
+ init/Kconfig     | 4 ++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/block/elevator.c b/block/elevator.c
+index 90181ad94ebf3..a056f4229ccd0 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -621,10 +621,14 @@ static inline bool elv_support_iosched(struct request_queue *q)
+  */
+ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ {
++#ifndef CONFIG_ZEN_INTERACTIVE
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
++#endif
+ 
+-#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_MQ_IOSCHED_KYBER)
++	return elevator_get(q, "kyber", false);
++#elif defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
+ 	return elevator_get(q, "mq-deadline-nodefault", false);
+ #else
+ 	return elevator_get(q, "mq-deadline", false);
+diff --git a/init/Kconfig b/init/Kconfig
+index 477671290175d..e8e14239a1ff8 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -102,6 +102,10 @@ config ZEN_INTERACTIVE
+ 	help
+ 	  Tunes the kernel for responsiveness at the cost of throughput and power usage.
+ 
++	  --- Block Layer ----------------------------------------
++
++	    Default scheduler.........: mq-deadline -> kyber
++
+ config BROKEN
+ 	bool
+ 
 
 From 9b6c7af596e209356850e0991969df68f396aea6 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 18:19:11 +0100
-Subject: [PATCH 14/19] ZEN: INTERACTIVE: Increase default writeback thresholds
+Subject: [PATCH 14/27] ZEN: INTERACTIVE: Increase default writeback thresholds
 
 ---
  init/Kconfig        | 5 +++++
@@ -2381,7 +3197,7 @@ index 586042472ac90..b0a26820f7904 100644
 From b5e9497d44347c16e732f6ea8838a79a64694b36 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 18:21:09 +0100
-Subject: [PATCH 15/19] ZEN: INTERACTIVE: Enable background reclaim of
+Subject: [PATCH 15/27] ZEN: INTERACTIVE: Enable background reclaim of
  hugepages
 
 Use [defer+madvise] as default khugepaged defrag strategy:
@@ -2443,7 +3259,7 @@ index ec2bb93f74314..28af028951a3a 100644
 From 7e5629d0fc7ed407babc036c1bc7910d9c73dbef Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 18:28:13 +0100
-Subject: [PATCH 16/19] ZEN: INTERACTIVE: Tune CFS for interactivity
+Subject: [PATCH 16/27] ZEN: INTERACTIVE: Tune CFS for interactivity
 
 ---
  init/Kconfig        |  8 ++++++++
@@ -2545,7 +3361,7 @@ index ae7ceba8fd4f2..e5d44fd075fb6 100644
 From 0e9fea26940d7e6e784dcf57909428138b8109e8 Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 18:28:46 +0100
-Subject: [PATCH 17/19] ZEN: INTERACTIVE: Add help text for the MuQSS tweaks
+Subject: [PATCH 17/27] ZEN: INTERACTIVE: Add help text for the MuQSS tweaks
 
 The tweaks themselves get merged with the MuQSS scheduler.
 ---
@@ -2573,7 +3389,7 @@ index 400946237490b..ca49a7e10bcf5 100644
 From fade4cc2bf56ce6c563c04764224b6b84a45587f Mon Sep 17 00:00:00 2001
 From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
 Date: Mon, 27 Jan 2020 18:27:16 +0100
-Subject: [PATCH 18/19] ZEN: INTERACTIVE: Tune ondemand governor for
+Subject: [PATCH 18/27] ZEN: INTERACTIVE: Tune ondemand governor for
  interactivity
 
 4.10:
@@ -2662,3 +3478,461 @@ index ca49a7e10bcf5..24ae3647c6d5e 100644
  
  config BROKEN
  	bool
+
+From b7b24b494b62e02c21a9a349da2d036849f9dd8b Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Sat, 13 Jun 2020 15:55:18 -0500
+Subject: [PATCH 19/27] ZEN: INTERACTIVE: Increase max number of tasks
+ rebalanced at once
+
+Take "sysctl_sched_nr_migrate" tune from early XanMod builds of 128. As
+of 5.7, XanMod uses 256 but that may affect applications that require
+timely response to IRQs.
+---
+ init/Kconfig        | 1 +
+ kernel/sched/core.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 24ae3647c6d5e..9dd367af94434 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -119,6 +119,7 @@ config ZEN_INTERACTIVE
+ 	    Wakeup granularity.............:   1    ->   0.5  ms
+ 	    CPU migration cost.............:   0.5  ->   0.25 ms
+ 	    Bandwidth slice size...........:   5    ->   3    ms
++	    Task rebalancing threshold.....:   32   ->   256
+ 	    Ondemand sampling down factor..:   1    ->   5
+ 
+ 	  --- MuQSS CPU Scheduler --------------------------------
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index ff74fca39ed21..3c0bae61ec293 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -64,7 +64,11 @@ const_debug unsigned int sysctl_sched_features =
+  * Number of tasks to iterate in a single balance run.
+  * Limited because this is done with IRQs disabled.
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++const_debug unsigned int sysctl_sched_nr_migrate = 256;
++#else
+ const_debug unsigned int sysctl_sched_nr_migrate = 32;
++#endif
+ 
+  /*
+  * period over which we measure -rt task CPU usage in us.
+@@ -76,9 +76,9 @@ __read_mostly int scheduler_running;
+ 
+ /*
+  * part of the period that we allow rt tasks to run in us.
+- * default: 0.95s
++ * LL default: 0.98s
+  */
+-int sysctl_sched_rt_runtime = 950000;
++int sysctl_sched_rt_runtime = 980000;
+ 
+ 
+ /*
+-- 
+2.29.2.456.g3a0b884cab
+
+From b7b984993f303b89dd738c26f8742cfcf0ac98ea Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 30 Dec 2020 15:23:55 -0600
+Subject: [PATCH 20/27] zen: Allow MSR writes by default
+
+Allow MSR writes by default, which enables support for popular tools
+like throttled (lenovo_fix), and anything else that uses MSR writes to
+adjust power limits of their CPU.
+---
+ arch/x86/kernel/msr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index c0d4098106589..b8e0d993d328c 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -48,7 +48,7 @@ enum allow_write_msrs {
+ 	MSR_WRITES_DEFAULT,
+ };
+ 
+-static enum allow_write_msrs allow_writes = MSR_WRITES_DEFAULT;
++static enum allow_write_msrs allow_writes = MSR_WRITES_ON;
+ 
+ static ssize_t msr_read(struct file *file, char __user *buf,
+ 			size_t count, loff_t *ppos)
+
+From 8cd3f16931b2a05a693bbfc093d44fd504c67700 Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <kernel@xanmod.org>
+Date: Mon, 14 Dec 2020 16:24:26 +0000
+Subject: [PATCH 21/27] block: set rq_affinity to force full multithreading I/O
+ requests
+
+Signed-off-by: Alexandre Frade <kernel@xanmod.org>
+---
+ include/linux/blkdev.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 033eb5f73b654..dfecd59c901a2 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -628,6 +628,7 @@ struct request_queue {
+ 
+ #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
+ 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
++				 (1 << QUEUE_FLAG_SAME_FORCE) |		\
+ 				 (1 << QUEUE_FLAG_NOWAIT))
+ 
+ void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
+
+From 843f85a8fb80f3b8e4de4ca3c0cab34730cc1b33 Mon Sep 17 00:00:00 2001
+From: Piotr Gorski <lucjan.lucjanov@gmail.com>
+Date: Fri, 8 Jan 2021 18:48:23 -0800
+Subject: [PATCH 22/27] init: add support for zstd compressed modules
+
+kmod 28 supports modules compressed in zstd format so let's add this possibility to kernel.
+
+Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
+---
+ Makefile     | 7 +++++--
+ init/Kconfig | 9 ++++++---
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 64a4bfec526ac..c6ad320484f23 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1046,8 +1046,8 @@ endif # INSTALL_MOD_STRIP
+ export mod_strip_cmd
+ 
+ # CONFIG_MODULE_COMPRESS, if defined, will cause module to be compressed
+-# after they are installed in agreement with CONFIG_MODULE_COMPRESS_GZIP
+-# or CONFIG_MODULE_COMPRESS_XZ.
++# after they are installed in agreement with CONFIG_MODULE_COMPRESS_GZIP,
++# CONFIG_MODULE_COMPRESS_XZ, or CONFIG_MODULE_COMPRESS_ZSTD.
+ 
+ mod_compress_cmd = true
+ ifdef CONFIG_MODULE_COMPRESS
+@@ -1057,6 +1057,9 @@ ifdef CONFIG_MODULE_COMPRESS
+   ifdef CONFIG_MODULE_COMPRESS_XZ
+     mod_compress_cmd = $(XZ) -f
+   endif # CONFIG_MODULE_COMPRESS_XZ
++  ifdef CONFIG_MODULE_COMPRESS_ZSTD
++    mod_compress_cmd = $(ZSTD) -T0 -20 --ultra --rm -f
++  endif # CONFIG_MODULE_COMPRESS_ZSTD
+ endif # CONFIG_MODULE_COMPRESS
+ export mod_compress_cmd
+ 
+diff --git a/init/Kconfig b/init/Kconfig
+index 9dd367af94434..8e4d0b19dc851 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2266,8 +2266,8 @@ config MODULE_COMPRESS
+ 	bool "Compress modules on installation"
+ 	help
+ 
+-	  Compresses kernel modules when 'make modules_install' is run; gzip or
+-	  xz depending on "Compression algorithm" below.
++	  Compresses kernel modules when 'make modules_install' is run; gzip,
++	  xz, or zstd depending on "Compression algorithm" below.
+ 
+ 	  module-init-tools MAY support gzip, and kmod MAY support gzip and xz.
+ 
+@@ -2289,7 +2289,7 @@ choice
+ 	  This determines which sort of compression will be used during
+ 	  'make modules_install'.
+ 
+-	  GZIP (default) and XZ are supported.
++	  GZIP (default), XZ, and ZSTD are supported.
+ 
+ config MODULE_COMPRESS_GZIP
+ 	bool "GZIP"
+@@ -2297,6 +2297,9 @@ config MODULE_COMPRESS_GZIP
+ config MODULE_COMPRESS_XZ
+ 	bool "XZ"
+ 
++config MODULE_COMPRESS_ZSTD
++	bool "ZSTD"
++
+ endchoice
+ 
+ config MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS
+
+From 5dc3c67b4c2497187c2e4331a4822cb52db9aa65 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Tue, 12 Jan 2021 21:37:20 -0600
+Subject: [PATCH 23/27] ZEN: Reduce module compression level for ZSTD
+
+Using the original values of "-T0 -20 --ultra" leads to compression runtime
+of over a minute and a half on a 374m module directory, reducing folder
+size to 108m.  This is using a Haswell CPU running at 4.2ghz on a single
+core.
+
+Dropping compress levels down to "-T0 -9" increases the final compressed
+folder size by 4m but reduces the total runtime of compression to 6
+seconds.  When penny pinching with ondemand cloud CI, this tradeoff is
+completely worthwhile.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index c6ad320484f23..2bcd6ef779ead 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1058,7 +1058,7 @@ ifdef CONFIG_MODULE_COMPRESS
+     mod_compress_cmd = $(XZ) -f
+   endif # CONFIG_MODULE_COMPRESS_XZ
+   ifdef CONFIG_MODULE_COMPRESS_ZSTD
+-    mod_compress_cmd = $(ZSTD) -T0 -20 --ultra --rm -f
++    mod_compress_cmd = $(ZSTD) -T0 -9 --rm -f
+   endif # CONFIG_MODULE_COMPRESS_ZSTD
+ endif # CONFIG_MODULE_COMPRESS
+ export mod_compress_cmd
+
+From 3f2c3d43bb1330953e090c01f8dfb6a4701bbac4 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 27 Jan 2021 14:16:04 -0600
+Subject: [PATCH 24/27] Revert "block: set rq_affinity to force full
+ multithreading I/O requests"
+
+Forcing full multithreading I/O may not be doing what we want it do,
+especially if we have an IO scheduler on top of the storage device.
+
+This reverts commit 8cd3f16931b2a05a693bbfc093d44fd504c67700.
+---
+ include/linux/blkdev.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index dfecd59c901a2..033eb5f73b654 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -628,7 +628,6 @@ struct request_queue {
+ 
+ #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
+ 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
+-				 (1 << QUEUE_FLAG_SAME_FORCE) |		\
+ 				 (1 << QUEUE_FLAG_NOWAIT))
+ 
+ void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
+
+From 223b7e095efa96045c164f3bf3576e1d1f599946 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 27 Jan 2021 14:27:35 -0600
+Subject: [PATCH 25/27] ZEN: Fix mq-deadline scheduler renaming
+
+In recent ZEN commit ("ZEN: Add CONFIG to rename the mq-deadline
+scheduler"), we only handled the elevator name if mq-deadline, but not
+its elevator or module alias.  Fix these two so that we can pick
+mq-deadline-nodefault without errors.
+---
+ block/mq-deadline.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 89b56d4526f55..2206e1734c3f2 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -800,6 +800,7 @@ static struct elevator_type mq_deadline = {
+ 	.elevator_attrs = deadline_attrs,
+ #ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
+ 	.elevator_name = "mq-deadline-nodefault",
++	.elevator_alias = "deadline-nodefault",
+ #else
+ 	.elevator_name = "mq-deadline",
+ 	.elevator_alias = "deadline",
+@@ -807,7 +808,11 @@ static struct elevator_type mq_deadline = {
+ 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+ 	.elevator_owner = THIS_MODULE,
+ };
++#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
++MODULE_ALIAS("mq-deadline-nodefault-iosched");
++#else
+ MODULE_ALIAS("mq-deadline-iosched");
++#endif
+ 
+ static int __init deadline_init(void)
+ {
+
+From 2b52b792670d6c1a93d086a10c6872575e849c17 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 27 Jan 2021 17:39:54 -0600
+Subject: [PATCH 26/27] ZEN: Increase max elevator name size
+
+After renaming mq-deadline to mq-deadline-nodefault, setting the new
+scheduler name would always fail.  Part of that reason was the module
+alias that was fixed in "ZEN: Fix mq-deadline scheduler renaming", but
+also the scheduler name was longer than ELV_NAME_MAX (by default, 15
+usable characters).
+
+Increase to 24 so we can support our longer IO scheduler names.
+---
+ include/linux/elevator.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/elevator.h b/include/linux/elevator.h
+index bacc40a0bdf39..6d499e2b79f38 100644
+--- a/include/linux/elevator.h
++++ b/include/linux/elevator.h
+@@ -52,7 +52,7 @@ struct elevator_mq_ops {
+ 	void (*exit_icq)(struct io_cq *);
+ };
+ 
+-#define ELV_NAME_MAX	(16)
++#define ELV_NAME_MAX	(24)
+ 
+ struct elv_fs_entry {
+ 	struct attribute attr;
+
+From e1b127aa22601f9cb2afa3daad4c69e6a42a89f5 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Sat, 30 Jan 2021 11:34:18 -0600
+Subject: [PATCH 27/27] ZEN: Add ACS override support
+
+Source: https://gitlab.com/Queuecumber/linux-acs-override/-/raw/master/workspaces/5.10.4/acso.patch
+---
+ .../admin-guide/kernel-parameters.txt         |   9 ++
+ drivers/pci/quirks.c                          | 101 ++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index ce99d978153c1..bcfd4f0433527 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3632,6 +3632,15 @@
+ 		nomsi		[MSI] If the PCI_MSI kernel config parameter is
+ 				enabled, this kernel boot option can be used to
+ 				disable the use of MSI interrupts system-wide.
++		pcie_acs_override =
++					[PCIE] Override missing PCIe ACS support for:
++				downstream
++					All downstream ports - full ACS capabilities
++				multfunction
++					All multifunction devices - multifunction ACS subset
++				id:nnnn:nnnn
++					Specfic device - full ACS capabilities
++					Specified as vid:did (vendor/device ID) in hex
+ 		noioapicquirk	[APIC] Disable all boot interrupt quirks.
+ 				Safety option to keep boot IRQs enabled. This
+ 				should never be necessary.
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index f70692ac79c56..00e6a7cf5ebd6 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3557,6 +3557,106 @@ static void quirk_no_bus_reset(struct pci_dev *dev)
+ 	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET;
+ }
+ 
++static bool acs_on_downstream;
++static bool acs_on_multifunction;
++
++#define NUM_ACS_IDS 16
++struct acs_on_id {
++	unsigned short vendor;
++	unsigned short device;
++};
++static struct acs_on_id acs_on_ids[NUM_ACS_IDS];
++static u8 max_acs_id;
++
++static __init int pcie_acs_override_setup(char *p)
++{
++	if (!p)
++		return -EINVAL;
++
++	while (*p) {
++		if (!strncmp(p, "downstream", 10))
++			acs_on_downstream = true;
++		if (!strncmp(p, "multifunction", 13))
++			acs_on_multifunction = true;
++		if (!strncmp(p, "id:", 3)) {
++			char opt[5];
++			int ret;
++			long val;
++
++			if (max_acs_id >= NUM_ACS_IDS - 1) {
++				pr_warn("Out of PCIe ACS override slots (%d)\n",
++						NUM_ACS_IDS);
++				goto next;
++			}
++
++			p += 3;
++			snprintf(opt, 5, "%s", p);
++			ret = kstrtol(opt, 16, &val);
++			if (ret) {
++				pr_warn("PCIe ACS ID parse error %d\n", ret);
++				goto next;
++			}
++			acs_on_ids[max_acs_id].vendor = val;
++
++			p += strcspn(p, ":");
++			if (*p != ':') {
++				pr_warn("PCIe ACS invalid ID\n");
++				goto next;
++			}
++
++			p++;
++			snprintf(opt, 5, "%s", p);
++			ret = kstrtol(opt, 16, &val);
++			if (ret) {
++				pr_warn("PCIe ACS ID parse error %d\n", ret);
++				goto next;
++			}
++			acs_on_ids[max_acs_id].device = val;
++			max_acs_id++;
++		}
++next:
++		p += strcspn(p, ",");
++		if (*p == ',')
++			p++;
++	}
++
++	if (acs_on_downstream || acs_on_multifunction || max_acs_id)
++		pr_warn("Warning: PCIe ACS overrides enabled; This may allow non-IOMMU protected peer-to-peer DMA\n");
++
++	return 0;
++}
++early_param("pcie_acs_override", pcie_acs_override_setup);
++
++static int pcie_acs_overrides(struct pci_dev *dev, u16 acs_flags)
++{
++	int i;
++
++	/* Never override ACS for legacy devices or devices with ACS caps */
++	if (!pci_is_pcie(dev) ||
++		pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS))
++			return -ENOTTY;
++
++	for (i = 0; i < max_acs_id; i++)
++		if (acs_on_ids[i].vendor == dev->vendor &&
++			acs_on_ids[i].device == dev->device)
++				return 1;
++
++	switch (pci_pcie_type(dev)) {
++	case PCI_EXP_TYPE_DOWNSTREAM:
++	case PCI_EXP_TYPE_ROOT_PORT:
++		if (acs_on_downstream)
++			return 1;
++		break;
++	case PCI_EXP_TYPE_ENDPOINT:
++	case PCI_EXP_TYPE_UPSTREAM:
++	case PCI_EXP_TYPE_LEG_END:
++	case PCI_EXP_TYPE_RC_END:
++		if (acs_on_multifunction && dev->multifunction)
++			return 1;
++	}
++
++	return -ENOTTY;
++}
+ /*
+  * Some Atheros AR9xxx and QCA988x chips do not behave after a bus reset.
+  * The device will throw a Link Down error on AER-capable systems and
+@@ -4769,6 +4869,7 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_ZHAOXIN, 0x9083, pci_quirk_mf_endpoint_acs },
+ 	/* Zhaoxin Root/Downstream Ports */
+ 	{ PCI_VENDOR_ID_ZHAOXIN, PCI_ANY_ID, pci_quirk_zhaoxin_pcie_ports_acs },
++	{ PCI_ANY_ID, PCI_ANY_ID, pcie_acs_overrides },
+ 	{ 0 }
+ };
+ 

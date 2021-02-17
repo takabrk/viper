@@ -21,4 +21,6 @@ cat add_noir_version.patch \
        other/0001-v4l2loopback-patches.patch \
        intel/0001-clearlinux-patches.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
+       other/bbr2.patch \
+       other/0001-zswap-patches.patch \
        > noir.patch

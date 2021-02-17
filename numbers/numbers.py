@@ -727,8 +727,8 @@ class allnumbers(object):
         with open("numbers.txt","w") as f:
 #ミニ予想数字
             #f.write("◇ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
-            f.write("◇ミニ予想数字\n"+ sssmini + "\n"+str(len([i[0] for i in n3a]))+"個\n")
-            #f.write("◇ミニ予想数字 "+ str(n3a) + "\n")
+            #f.write("◇ミニ予想数字\n"+ sssmini + "\n"+str(len([i[0] for i in n3a]))+"個\n")
+            f.write("◇ミニ予想数字 "+ str(n3a) + "\n")
 #Numbers3予想数字
             f.write("◇ナンバーズ3予想数字\n"+sss3+"\n"+str(len([i[0] for i in n3b]))+"個\n")
             #f.write("◇ナンバーズ3予想数字"+str(n3b)+"\n")
