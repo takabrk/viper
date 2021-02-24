@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20200701
+version :  20210222
 License      :  BSD License
 """
 from numbers_list import *
@@ -816,12 +816,12 @@ class loto(object):
         #print(lss2)
         loto_e = []
         while len(loto_e) < 6:
-            la2 = random.choice(lss)
-            lb2 = random.choice(lss2)
-            lc2 = continuation[0]
-            ld2 = continuation[1]
-            le2 = continuation[2]
-            lf2 = continuation[3]
+            la2 = random.randrange(1,44)
+            lb2 = random.randrange(1,44)
+            lc2 = random.randrange(1,44)
+            ld2 = random.randrange(1,44)
+            le2 = random.randrange(1,44)
+            lf2 = random.randrange(1,44)
             if(la2 == la[0] and la2 == la[1]):
                 la2 = random.choice(la)
             if(lb2 == lb[0] and lb2 == lb[1]):
