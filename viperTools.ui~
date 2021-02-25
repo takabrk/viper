@@ -556,7 +556,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20210218)
+Viper Tools(20210224)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>

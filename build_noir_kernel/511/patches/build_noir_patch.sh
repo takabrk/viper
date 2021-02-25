@@ -34,6 +34,7 @@ cat add_noir_version.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
        other/bbr2.patch \
        other/0001-zswap-patches.patch \
+       other/futex2.patch \
        > noir.patch
 ;;
 pds)
@@ -53,6 +54,7 @@ cat add_noir_version.patch \
        other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
        other/bbr2.patch \
        other/0001-zswap-patches.patch \
+       other/futex2.patch \
        > noir.patch
 ;;
 esac

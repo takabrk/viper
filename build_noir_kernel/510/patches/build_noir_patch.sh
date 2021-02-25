@@ -46,6 +46,7 @@ cat add_noir_version.patch \
        other/zstd.patch \
        other/Enable-fp16-display-support-for-DCE8.patch \
        other/bbr2.patch \
+       other/futex2.patch \
        > noir.patch
 ;;
 pds)
@@ -76,6 +77,7 @@ cat add_noir_version.patch \
        other/zstd.patch \
        other/Enable-fp16-display-support-for-DCE8.patch \
        other/bbr2.patch \
+       other/futex2.patch \
        > noir.patch
 ;;
 esac

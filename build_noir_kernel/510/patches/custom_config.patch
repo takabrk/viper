@@ -2,11 +2,11 @@ diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
 --- /dev/null	2021-02-24 10:14:40.867593948 +0900
-+++ .config	2021-02-17 02:39:02.714505000 +0900
++++ .config	2021-02-24 11:12:56.873454000 +0900
 @@ -0,0 +1,10288 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.10.16-noir-v2 Kernel Configuration
++# Linux/x86 5.10.18-noir Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 10.2.0-5ubuntu1~20.04) 10.2.0"
 +CONFIG_CC_IS_GCC=y
@@ -38,13 +38,13 @@ index 000000000000..dcbcaa389249
 +CONFIG_HAVE_KERNEL_LZO=y
 +CONFIG_HAVE_KERNEL_LZ4=y
 +CONFIG_HAVE_KERNEL_ZSTD=y
-+CONFIG_KERNEL_GZIP=y
++# CONFIG_KERNEL_GZIP is not set
 +# CONFIG_KERNEL_BZIP2 is not set
 +# CONFIG_KERNEL_LZMA is not set
 +# CONFIG_KERNEL_XZ is not set
 +# CONFIG_KERNEL_LZO is not set
 +# CONFIG_KERNEL_LZ4 is not set
-+# CONFIG_KERNEL_ZSTD is not set
++CONFIG_KERNEL_ZSTD=y
 +CONFIG_DEFAULT_INIT=""
 +CONFIG_DEFAULT_HOSTNAME="(none)"
 +CONFIG_SWAP=y
