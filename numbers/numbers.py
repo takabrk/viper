@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20210222
+version :  20210226
 License      :  BSD License
 """
 from numbers_list import *
@@ -115,13 +115,15 @@ class numbers3(object):
 [799,889,898,979,988,997],
 [899,989,998],
 [999]]
+#当選回数が多い、31までのミニ数字
+        self.group3c = [9,14,2,18,0,22,26,17,21,8,4,7,31,19,28,1]
 #Group 4　ゴロ合わせ
         self.group4 = [7,9,10,14,17,23,24,28,29,41,43,44,45,50,64,70,72,76,81,83,84,90,93,
 109,110,119,141,139,148,168,175,178,181,184,193,
-235,251,252,253,291,296,
+235,251,252,253,291,296,298,
 318,324,326,333,343,348,354,369,374,375,382,387,383,389,392,396,398,
 410,420,461,463,489,490,491,493,
-510,534,538,539,546,549,551,553,556,564,567,573,584,585,588,589,590,593,594,596,
+510,534,538,539,546,549,551,553,556,564,567,573,579,584,585,588,589,590,593,594,596,
 610,631,634,640,648,653,674,681,693,696,
 710,718,725,735,753,756,765,773,775,790,
 804,810,813,814,815,818,819,820,824,827,828,831,833,838,840,845,848,851,867,870,871,873,874,875,881,883,890,891,893,
@@ -195,10 +197,10 @@ class numbers3(object):
         return e
 #Group1から３において当選数字が含まれるグループを削除
     def makeMiniNumber3(self,e):
-        xx =[n3.full_mini[i] for i in range(20)]
+        xx =[self.full_mini[i] for i in range(20)]
         xy = []
         for i in xx:
-            for j in n3.group1:
+            for j in self.group1:
                 try:
                     if not(j.index(i)):
                         xy.append(j)
@@ -207,7 +209,7 @@ class numbers3(object):
         print(xy1)
         xz=[]
         for i in xx:
-            for j in n3.group2:
+            for j in self.group2:
                 try:
                     if not(j.index(i)):
                         xz.append(j)
@@ -216,7 +218,7 @@ class numbers3(object):
         print(xz1)
         xzza=[]
         for i in xx:
-            for j in n3.group3:
+            for j in self.group3:
                 try:
                     if not(j.index(i)):
                         xzza.append(j)
@@ -439,14 +441,6 @@ class numbers3(object):
                 rs3.remove(i)
             except:rs3
         return rs3
-#新しいナンバーズ予想
-    def numbers3_new(self):
-        n3_full_a = [i for i in range(100)]
-        rs3 = []
-        for i in continuation3:
-            for j in n3_full_a:
-                rs3.append(i*100+j)
-        return rs3
 
 #Numbers 4
 #Numbers4クラス
@@ -477,6 +471,12 @@ class numbers4(object):
     def make_straight(self):
         rs = [i for i in range(10000)]
         return rs
+
+#3000未満の数字を除外したベース数字
+    def make_straight_under3000(self):
+        rs = [i for i in range(3000,10000)]
+        return rs
+
 #全ボックス番号
     def make_box(self,rs):
         rsa = [i/1000 for i in rs]
@@ -497,7 +497,7 @@ class numbers4(object):
         rs = [nfc100aa[i][0] for i in range(num)]
         return rs
 
-#過去特定回数のストレート数字を削除
+#過去のストレート数字を削除
     def delst(self,rs):
         for i in self.full_num34:
             try:
@@ -632,36 +632,29 @@ class numbers4(object):
             except:rs
         return rs
 
-#過去に出た下3桁の数字の番号を削除
-    def dellow3(self,num,rs):
-        num43_a = [i%1000 for i in self.full_num34]
-        num43 = set(sorted(num43_a[:num]))
-        for i in rs:
-            for j in num43:
-                if j == i%1000:
-                    rs.remove(i)
-        return rs
-
-#過去に出た下2桁の数字の番号を削除
+#過去に出た当選番号の下2桁のを削除
     def dellow2(self,num,rs):
         num43_a = [i%100 for i in self.full_num34]
-        num43 = set(sorted(num43_a[:num]))
+        num43 = sorted(num43_a[0:num])
         for i in rs:
             for j in num43:
-                if j == i%100:
-                    rs.remove(i)
+                try:
+                    if j == i%100:
+                        rs.remove(i)
+                except:pass
         return rs
 
-
-#新型ナンバーズ予想
-    def numbers4_new(self):
-        n4_full_a = [i for i in range(1000)]
-        rs4 = []
-        for i in continuation4:
-            for j in n4_full_a:
-                rs4.append(i*1000+j)
-        return rs4
-
+#過去に出た当選番号の下3桁のを削除
+    def dellow3(self,num,rs):
+        num43_a = [i%1000 for i in self.full_num34]
+        num43 = sorted(num43_a[0:num])
+        for i in rs:
+            for j in num43:
+                try:
+                    if j == i%1000:
+                        rs.remove(i)
+                except:pass
+        return rs
 
 #ナンバーズ予想スクリプト
 class allnumbers(object):
@@ -670,49 +663,35 @@ class allnumbers(object):
         n3=numbers3()
 #mini
         ee = n3.makeMiniNumber1()
-        n3.delstmini(20,ee)
-        #n3.deldaymini(ee)
-        n3.delbeforemini(240,ee)
-        #n3.delsummini(20,ee)
-        #n3.delupmini(3,ee)
-        #n3.useGmini(ee)
-        #n3.del031(ee)
-        #e = n3.makeMiniNumber2(20,ee)
+        n3.del031(ee)
+        ee = ee+n3.group3c
+        n3.delstmini(40,ee)
+        n3.delbeforemini(120,ee)
+        n3.makeMiniNumber3(ee)
         e = ee
         #e = sorted(set([random.choice(ee) for i in range(20)]))
         n3a = sorted(set(zip(e,[n3.full_mini.count(i) for i in e])))
 #straight
-        #rs3 = n3.make_straight()
-        #rs3 = n3.makeNumber2(e)
-        #rs3 = n3.group4
-        rs3 = n3.numbers3_new()
+        rs3 = n3.makeNumber2(e)
         n3.delst(240,rs3)
-        n3.delzoro3(rs3)
-        n3.delzero(rs3)
-        #n3.today_numbers3(rs3)
-        n3.delst4mini(20,rs3)
         #n3.del100plus10(rs3)
-        #n3.useG(rs3)
         rs3 = sorted(set(n3.make_box(rs3)))
-        n3.delbox(20,rs3)
-        #rs3 = n3.makeNumber3(40,rs3)
-        #rs3 = set(sorted([random.choice(rs3) for i in range(100)]))
+        n3.delbox(70,rs3)
+        n3.delzoro3(rs3)
+        #rs3 = set(sorted([random.choice(rs3) for i in range(10)]))
         n3b = sorted(set(zip(rs3,[n3.make_box(n3.full_num3).count(i) for i in rs3])))
-        #rs3 = n3.numbers3_new()
 #Numbers4予想
         n4 = numbers4()
-        rs = n4.numbers4_new()
-        #rs = n4.make_straight()
-        n4.dellow3(40,rs)
+        rs = n4.make_straight_under3000()
         n4.delst(rs)
+        n4.dellow2(50,rs)
+        n4.dellow3(500,rs)
         rs = sorted(set(n4.make_box(rs)))
-        n4.delbox(40,rs)
+        n4.delbox(240,rs)
         n4.delzoro4(rs)
         n4.deltriple(rs)
         n4.deldouble(rs)
-        #rs = n4.makeNumber(60,rs)
-        #n4.delsum4(10,rs)
-        #rs = set(sorted([random.choice(rs) for i in range(100)]))
+        #rs = set(sorted([random.choice(rs) for i in range(200)]))
         n4a = sorted(set(zip(rs,[n4.make_box(n4.full_num34).count(i) for i in rs])))
 
 #File writing
@@ -726,9 +705,9 @@ class allnumbers(object):
         #print(str(rs)+"\n")
         with open("numbers.txt","w") as f:
 #ミニ予想数字
-            #f.write("◇ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
+            f.write("◇ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
             #f.write("◇ミニ予想数字\n"+ sssmini + "\n"+str(len([i[0] for i in n3a]))+"個\n")
-            f.write("◇ミニ予想数字 "+ str(n3a) + "\n")
+            #f.write("◇ミニ予想数字 "+ str(n3a) + "\n")
 #Numbers3予想数字
             f.write("◇ナンバーズ3予想数字\n"+sss3+"\n"+str(len([i[0] for i in n3b]))+"個\n")
             #f.write("◇ナンバーズ3予想数字"+str(n3b)+"\n")
