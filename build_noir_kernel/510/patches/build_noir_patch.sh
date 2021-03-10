@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.10.19"
+VERSIONPOINT="5.10.22"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -47,6 +47,7 @@ cat add_noir_version.patch \
        other/Enable-fp16-display-support-for-DCE8.patch \
        other/bbr2.patch \
        other/futex2.patch \
+       other/logitech.patch \
        > noir.patch
 ;;
 pds)
@@ -78,6 +79,7 @@ cat add_noir_version.patch \
        other/Enable-fp16-display-support-for-DCE8.patch \
        other/bbr2.patch \
        other/futex2.patch \
+       other/logitech.patch \
        > noir.patch
 ;;
 esac

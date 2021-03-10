@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.11.2"
+VERSIONPOINT="5.11.5"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -43,7 +43,7 @@ cat add_noir_version.patch \
        linux/patch-$VERSIONPOINT \
        LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
        LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
-       prjc/prjc_v5.11-r0.patch \
+       prjc/prjc_v5.11-r1.patch \
        ck1/ck1.patch \
        zen/zen-sauce.patch \
        other/0001-iosched-Add-i10-I-O-Scheduler.patch \

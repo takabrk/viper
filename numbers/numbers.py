@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20210226
+version :  20210304
 License      :  BSD License
 """
 from numbers_list import *
@@ -11,7 +11,6 @@ from loto_list import *
 import random,sys,os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 #sys.path.append(os.pardir)
-
 #Numbers3
 #numbers3クラス
 class numbers3(object):
@@ -163,6 +162,7 @@ class numbers3(object):
 [789],
 [778,779,788,799],
 [889,899]]
+
 #全ストレート番号
     def make_straight(self):
         rs3 = [i for i in xrange(1000)]
@@ -183,6 +183,12 @@ class numbers3(object):
     def make_numbersmini(self,num):
         self.e = [self.full_num3[i]%100 for i in range(num)]
         return self
+
+#当選回数が多いボックス数字
+    def make_n3box_many(self):
+        rs3 = sorted(set([89,24,349,157,59,278,169,138,127,459,368,247,234,189,18,279,129,679,589,568,458,14,369,23,389,139,126,237,358,49,379,28,468,178,268,19,137,147,469,179,36,168,135,79,45,57,167,346,245,68,47,16,478,378,37,269,259,579,678,58,26,457,367,124,128,136,236,257,489,479,29,15,159,345,789,289,246,123,69,17,146,347,249,145,66,78,567,35,359,148,248,238,258,67,569,578,267,158,06,34]))
+        return rs3
+
 #ナンバーズ3ミニ
 #makeMiniNumber
 #100までの数列を作成
@@ -290,8 +296,8 @@ class numbers3(object):
             except:e
         return e
 #0〜31までの数字を削除
-    def del031(self,e):
-        for i in range(32):
+    def del029(self,e):
+        for i in range(30):
             try:
                 e.remove(i)
             except:e
@@ -663,9 +669,9 @@ class allnumbers(object):
         n3=numbers3()
 #mini
         ee = n3.makeMiniNumber1()
-        n3.del031(ee)
+        n3.del029(ee)
         ee = ee+n3.group3c
-        n3.delstmini(40,ee)
+        n3.delstmini(20,ee)
         n3.delbeforemini(120,ee)
         n3.makeMiniNumber3(ee)
         e = ee
@@ -673,16 +679,18 @@ class allnumbers(object):
         n3a = sorted(set(zip(e,[n3.full_mini.count(i) for i in e])))
 #straight
         rs3 = n3.makeNumber2(e)
+        #rs3 = n3.make_n3box_many()
         n3.delst(240,rs3)
         #n3.del100plus10(rs3)
         rs3 = sorted(set(n3.make_box(rs3)))
-        n3.delbox(70,rs3)
+        n3.delbox(20,rs3)
         n3.delzoro3(rs3)
         #rs3 = set(sorted([random.choice(rs3) for i in range(10)]))
         n3b = sorted(set(zip(rs3,[n3.make_box(n3.full_num3).count(i) for i in rs3])))
 #Numbers4予想
         n4 = numbers4()
         rs = n4.make_straight_under3000()
+        rs = n4.make_straight()
         n4.delst(rs)
         n4.dellow2(50,rs)
         n4.dellow3(500,rs)
@@ -743,7 +751,7 @@ class loto(object):
               try:
                   la1.remove(k)
               except:
-                  pass  
+                  pass
         for k in lb:
               try:
                   lb1.remove(k)
@@ -829,7 +837,7 @@ class loto(object):
               try:
                   la1.remove(k)
               except:
-                  pass  
+                  pass
         for k in lb:
               try:
                   lb1.remove(k)
