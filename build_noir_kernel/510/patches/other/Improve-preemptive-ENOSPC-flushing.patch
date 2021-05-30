@@ -1,0 +1,2369 @@
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99971C433DF
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:34 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 3DE90222BA
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:34 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="HoHeKH4/"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388472AbgJIN2d (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43912 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728317AbgJIN2d (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:33 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC055C0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:32 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id d1so7886389qtr.6
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OmmUJmZ43vDu0bZ5OVGmC9yaiq+Qsbq43RHjdwm0sBs=;
+        b=HoHeKH4/g2R4ZP0bgx6uboB+f6cozhN0xiPR1tmpPxjlIxbWc/BiG2YLBorwLGAHk3
+         o/0eGw4FYc4RXRyRkgflPXAq/DccLke26xneAQq7a501CAj1FyGsPmwiYsT4s6ppKf4p
+         4IBfIGaXdo0EdlAIYIGRlsYFCJqp960fdtm/lJHlk7y7z4NuJ+l0LNrkhI04u+5SDTb9
+         ZKiZbNu9t7MIsmQ8gey0vlXrImf6ucGyElnwu3SAn4i2+RCpLHLFe+e8DPorKwkhzYQu
+         y/qP3toHdNL+zy25pfIT2GQMjB7141LRCE/p/Fi15qDnguiGjl6LxcqIoDxcUKtzGy6L
+         rMSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OmmUJmZ43vDu0bZ5OVGmC9yaiq+Qsbq43RHjdwm0sBs=;
+        b=iE68IzRC0tUX/9+kTjnjgeCmVy9I/bald6kSQUnvY2gHLfngerQn/017PHF9Gg1p9P
+         KQc5dVo8ej95kmGKwcW1a0Uxb/lQSpo/k1a6sjhOHUmOcCvXUdFEwVPGxqI2/kAwIDPf
+         UimZYvhRkrNe1ynXMCCByIcdk5qP1ZBb6xqvNUXrXaCIX/ulKs3Jjk3JBe0NSDjGlgmD
+         2GejCPnIZWN68szH5NQPDNs5SHU032JSNw4OXnnz6j78dA0C1sB+kuOZf8TGtK0GPcNA
+         RDR7Wn4x+7LIehNku4WxpYewO9OMSMr4gAg4mLIs72aLAhi7Whf2xuL6q7l+YbrY7j7C
+         EiWA==
+X-Gm-Message-State: AOAM531y9ASjfsTLx7pvNPuh41+dbyi7XG0CbZ2iMGE0eHX1sID4vCcP
+        yivYJDQpx/Es6YusE1dwQ05k5FhWTSbNj3Xq
+X-Google-Smtp-Source: ABdhPJydFB2nj7Y3g0zxY2NXRuco2qI5nNRQdNxgydX8VYHVTL4Kf8W1d/4vkgbV45jCVx/aTpdf6g==
+X-Received: by 2002:ac8:3165:: with SMTP id h34mr13496040qtb.87.1602250111624;
+        Fri, 09 Oct 2020 06:28:31 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id o4sm5967507qkj.22.2020.10.09.06.28.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:30 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Subject: [PATCH v3 00/12] Improve preemptive ENOSPC flushing
+Date:   Fri,  9 Oct 2020 09:28:17 -0400
+Message-Id: <cover.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/cover.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+v2->v3:
+- Added a cleanup to make sure we pass the right enum around for flush_space().
+- Fixed a problem reported by a clang build where I used the wrong enum in the
+  preemptive flushing for flush_space().
+- Fixed up some nits pointed out by Nikolay.
+
+v1->v2:
+- Added a FORCE_COMMIT_TRANS flush operation so we can keep the flush_space
+  stuff consistent and get all the normal tracepoints.
+- Renamed fs_info->dio_bytes to ->ordered_bytes and changed it to count all
+  ordered extents that were pending, not just DIO ordered extents that were
+  pending.
+- Reworked the clamping to not apply if we're not doing a lot of delalloc
+  reservations.
+- Reworked the preempt flushing loop to be more straightforward.
+- Fixed the need_preemptive_flushing() helper to take into account DIO heavy
+  workloads.
+
+--- Original email ---
+
+A while ago Nikolay started digging into a problem where they were seeing an
+around 20% regression on random writes, and he bisected it down to
+
+  btrfs: don't end the transaction for delayed refs in throttle
+
+However this wasn't actually the cause of the problem.
+
+This patch removed the code that would preemptively end the transactions if we
+were low on space.  Because we had just introduced the ticketing code, this was
+no longer necessary and was causing a lot of transaction commits.
+
+And in Nikolay's testing he validated this, we would see like 100x more
+transaction commits without that patch than with it, but the write regression
+clearly appeared when this patch was applied.
+
+The root cause of this is that the transaction commits were essentially
+happening so quickly that we didn't end up needing to wait on space in the
+ENOSPC ticketing code as much, and thus were able to write pretty quickly.  With
+this gone, we now were getting a sawtoothy sort of behavior where we'd run up,
+stop while we flushed metadata space, run some more, stop again etc.
+
+When I implemented the ticketing infrastructure, I was trying to get us out of
+excessively flushing space because we would sometimes over create block groups,
+and thus short circuited flushing if we no longer had tickets.  This had the
+side effect of breaking the preemptive flushing code, where we attempted to
+flush space in the background before we were forced to wait for space.
+
+Enter this patchset.  We still have some of this preemption logic sprinkled
+everywhere, so I've separated it out of the normal ticketed flushing code, and
+made preemptive flushing it's own thing.
+
+The preemptive flushing logic is more specialized than the standard flushing
+logic.  It attempts to flush in whichever pool has the highest usage.  This
+means that if most of our space is tied up in pinned extents, we'll commit the
+transaction.  If most of the space is tied up in delalloc, we'll flush delalloc,
+etc.
+
+To test this out I used the fio job that Nikolay used, this needs to be adjusted
+so the overall IO size is at least 2x the RAM size for the box you are testing
+
+fio --direct=0 --ioengine=sync --thread --directory=/mnt/test --invalidate=1 \
+        --group_reporting=1 --runtime=300 --fallocate=none --ramp_time=10 \
+        --name=RandomWrites-async-64512-4k-4 --new_group --rw=randwrite \
+        --size=2g --numjobs=4 --bs=4k --fsync_on_close=0 --end_fsync=0 \
+        --filename_format=FioWorkloads.\$jobnum
+
+I got the following results
+
+misc-next:Josefbw=13.4MiB/s (14.0MB/s), 13.4MiB/s-13.4MiB/s (14.0MB/s-14.0MB/s), io=4015MiB (4210MB), run=300323-300323msec
+pre-throttling:Josefbw=16.9MiB/s (17.7MB/s), 16.9MiB/s-16.9MiB/s (17.7MB/s-17.7MB/s), io=5068MiB (5314MB), run=300069-300069msec
+my patches:Josefbw=18.0MiB/s (18.9MB/s), 18.0MiB/s-18.0MiB/s (18.9MB/s-18.9MB/s), io=5403MiB (5666MB), run=300001-300001msec
+
+Thanks,
+
+Josef
+
+Josef Bacik (12):
+  btrfs: make flush_space take a enum btrfs_flush_state instead of int
+  btrfs: add a trace point for reserve tickets
+  btrfs: track ordered bytes instead of just dio ordered bytes
+  btrfs: introduce a FORCE_COMMIT_TRANS flush operation
+  btrfs: improve preemptive background space flushing
+  btrfs: rename need_do_async_reclaim
+  btrfs: check reclaim_size in need_preemptive_reclaim
+  btrfs: rework btrfs_calc_reclaim_metadata_size
+  btrfs: simplify the logic in need_preemptive_flushing
+  btrfs: implement space clamping for preemptive flushing
+  btrfs: adjust the flush trace point to include the source
+  btrfs: add a trace class for dumping the current ENOSPC state
+
+ fs/btrfs/ctree.h             |   4 +-
+ fs/btrfs/disk-io.c           |   9 +-
+ fs/btrfs/ordered-data.c      |  13 +-
+ fs/btrfs/space-info.c        | 274 ++++++++++++++++++++++++++++-------
+ fs/btrfs/space-info.h        |   3 +
+ include/trace/events/btrfs.h | 104 ++++++++++++-
+ 6 files changed, 340 insertions(+), 67 deletions(-)
+
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CB3AC43457
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:36 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id B050E222C3
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:35 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="0jYN9AV3"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388492AbgJIN2f (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43920 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728317AbgJIN2f (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:35 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A66C0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:34 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id b69so10504973qkg.8
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=y1tgzWpKlN+xmsSRXuylHGmouzEntA5WwkpLspxtsRA=;
+        b=0jYN9AV3TQyyUrPxgCgbR4rKNSsDsXL7+0si0+5WBSUctTz3Vx/HeH154s/MGDTH87
+         /xuIigcaj1HOkuPKKpF0l42ILCKWtT9oPV80GSR6idPnHoOj/vMu/U2C5SNRrSopQi0l
+         neX4q9HQGXlQx4IkU4I72bi9zFf7RptSklmfPzk63dT8G9RsgJLYzYSuntQJVXdkPweC
+         Oey4ryrRnBFg0Ma35obxZs2XzRPalj9Nr6ro3BjFPokeu8SOvaqxNF6hB1qdwWzD1REt
+         87EypZzZgtpYnQ0tAoHC+pIK5R8p0mbZNAPwqRzxyBMebBniGD9e398XMUnmvQ0cyLqU
+         Fy/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=y1tgzWpKlN+xmsSRXuylHGmouzEntA5WwkpLspxtsRA=;
+        b=G/y2vLGWvaofmGBirB+w6HJ8dOHzoU0Wdws5rLUXTHpoHeq2qnLNqmEZkKpXM/VkkM
+         tamFaubuglHUIjIr2yH9NqwilwIYu934jm+7K05GQvK8/uM/c79Rc7rP9EzbDiI/mFhy
+         3wlrE/w2KgIe5E7SzJE1MPrl8VMNHxYOqTYhTVZRFsHB0Ztw0d4WwlKQ2RgHE/Soo5Yj
+         gs+i6W4k/rbqSCRQg5FcxJG3y/hsPWsA9hRIdLrUItufFiFXDFdD1AUiYKeQBQ2gH38g
+         X+zW3pF/ox/qPBp20sh5wpPy/+N57QtSN2GHnLL2e6eU8AmRAgEQ6vVkIkDDBBqWLBBR
+         aY3g==
+X-Gm-Message-State: AOAM532IE/L7ic6nVSQ+bulOgC8OdPl/4y24G7jnqclFEhK0fCUB3Uc4
+        Is2n4IEkSUHah2eehWiucUdqzvdQ5TMPX0+W
+X-Google-Smtp-Source: ABdhPJwadgE3JJfnVkVi2o6qwFkbh+br4QrdwT7jTPc8JaRgd/f6doURPkGUh72oZaJ2KfeIa76FqA==
+X-Received: by 2002:a05:620a:1322:: with SMTP id p2mr4487859qkj.211.1602250113595;
+        Fri, 09 Oct 2020 06:28:33 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id i62sm6301698qkf.36.2020.10.09.06.28.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:32 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Subject: [PATCH v3 01/12] btrfs: make flush_space take a enum btrfs_flush_state instead of int
+Date:   Fri,  9 Oct 2020 09:28:18 -0400
+Message-Id: <397b21a29dfe5d3c8d5fec261c3246b07b93e42c.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/397b21a29dfe5d3c8d5fec261c3246b07b93e42c.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+I got a automated message from somebody who runs clang against our
+kernels and it's because I used the wrong enum type for what I passed
+into flush_space.  Change the argument to be explicitly the enum we're
+expecting to make everything consistent.  Maybe eventually gcc will
+catch errors like this.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 64099565ab8f..ba2b72409d46 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -667,7 +667,7 @@ static int may_commit_transaction(struct btrfs_fs_info *fs_info,
+  */
+ static void flush_space(struct btrfs_fs_info *fs_info,
+ 		       struct btrfs_space_info *space_info, u64 num_bytes,
+-		       int state)
++		       enum btrfs_flush_state state)
+ {
+ 	struct btrfs_root *root = fs_info->extent_root;
+ 	struct btrfs_trans_handle *trans;
+@@ -920,7 +920,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 	struct btrfs_fs_info *fs_info;
+ 	struct btrfs_space_info *space_info;
+ 	u64 to_reclaim;
+-	int flush_state;
++	enum btrfs_flush_state flush_state;
+ 	int commit_cycles = 0;
+ 	u64 last_tickets_id;
+ 
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7656FC43467
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:38 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 1A170222BA
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:38 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="WcYrZmip"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388497AbgJIN2h (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388473AbgJIN2h (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:37 -0400
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE021C0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:36 -0700 (PDT)
+Received: by mail-qv1-xf43.google.com with SMTP id 13so4721856qvc.9
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=/x3pvpis+2ALXcFAR7IF+wTWcLA0xu88xOUJr8tb810=;
+        b=WcYrZmipXhK3Q195G7CL3/nHfJ3bOyNPd+8+runNJ+BBcTWucdKCIMYYPlGeyzZA28
+         e3Z+yp2cJVvM03rxB8Q2SJYsccNPUJvhzXxwzzSnaylDa1T0FxEdFg9YFTIhL5IbYXDi
+         k0U72gJTa6H/k+qo6ANORgYyMqkJJhq0eTf8z088Hq3IfJf2P9syPwKUIpt9yCiie53I
+         54mPc4b130d3W+6+LSA1NyYO5xzjmIdPvhcg6Ywq5Iw9upsFlp/4cX6d0MW4HE0uspcG
+         olHQYeZn65hxIflxrhE4Jn5EzA9hXxIdwkya1c5r73Gm+MJNNmOtN0edLuT4dKwQzHne
+         u1MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=/x3pvpis+2ALXcFAR7IF+wTWcLA0xu88xOUJr8tb810=;
+        b=PcxEWPiDwRJxo4a2Kf7qDb2CtyXkUvNeeiro5gBUAnckhRAegEDjcKrBM/ZWZ+lDtJ
+         RxiA/yyDSvQTs9CjqUT4FMS3dhiw32qHt29oehz+Z4QpTJplefUwAUMzc/BwRDyNdoay
+         R70MTysAIRzPSemKy9IriSReuTLc2zSyJjUEnN6s5JM/AAQpdGylOcMSuaoaMcPfPs0X
+         RwgwbslCti+lGy5vq/IZNlU6PsBNB3fbUCsD11lgKOllsDi/Tx2k2MELLuSn6CTwwpN+
+         QXhyPocLuPn7yIfQyPf1mT0RxprwGBZNIzLFy6hWMdGK+0UZ7Yc1lP2jYOm1dCyCXbZs
+         BXqw==
+X-Gm-Message-State: AOAM531fQffllgSlQDXxrxIE4xEZ1d85HZ8IwaS4aU4RW9ykgWxEMgxK
+        nLl4TVetfmkTcmAj3bkquaJyBUS4+TLKjceq
+X-Google-Smtp-Source: ABdhPJzyS7jrQITJAYj7tiENwM3a63pMKupwWQ4iBtucknPKt86CUJCv/Z3ylRjxgcmmMWNJf7yRgw==
+X-Received: by 2002:a0c:a945:: with SMTP id z5mr12547087qva.55.1602250115451;
+        Fri, 09 Oct 2020 06:28:35 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id t3sm6160286qtq.24.2020.10.09.06.28.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:34 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 02/12] btrfs: add a trace point for reserve tickets
+Date:   Fri,  9 Oct 2020 09:28:19 -0400
+Message-Id: <a950d7af5cd8b905b951c83db0c144177235abbc.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/a950d7af5cd8b905b951c83db0c144177235abbc.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+While debugging a ENOSPC related performance problem I needed to see the
+time difference between start and end of a reserve ticket, so add a
+trace point to report when we handle a reserve ticket.
+
+I opted to spit out start_ns itself without calculating the difference
+because there could be a gap between enabling the tracpoint and setting
+start_ns.  Doing it this way allows us to filter on 0 start_ns so we
+don't get bogus entries, and we can easily calculate the time difference
+with bpftrace or something else.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c        | 10 +++++++++-
+ include/trace/events/btrfs.h | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index ba2b72409d46..ac7269cf1904 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -1224,6 +1224,7 @@ static void wait_reserve_ticket(struct btrfs_fs_info *fs_info,
+ static int handle_reserve_ticket(struct btrfs_fs_info *fs_info,
+ 				 struct btrfs_space_info *space_info,
+ 				 struct reserve_ticket *ticket,
++				 u64 start_ns, u64 orig_bytes,
+ 				 enum btrfs_reserve_flush_enum flush)
+ {
+ 	int ret;
+@@ -1279,6 +1280,8 @@ static int handle_reserve_ticket(struct btrfs_fs_info *fs_info,
+ 	 * space wasn't reserved at all).
+ 	 */
+ 	ASSERT(!(ticket->bytes == 0 && ticket->error));
++	trace_btrfs_reserve_ticket(fs_info, space_info->flags, orig_bytes,
++				   start_ns, flush, ticket->error);
+ 	return ret;
+ }
+ 
+@@ -1312,6 +1315,7 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ {
+ 	struct work_struct *async_work;
+ 	struct reserve_ticket ticket;
++	u64 start_ns = 0;
+ 	u64 used;
+ 	int ret = 0;
+ 	bool pending_tickets;
+@@ -1364,6 +1368,9 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 		space_info->reclaim_size += ticket.bytes;
+ 		init_waitqueue_head(&ticket.wait);
+ 		ticket.steal = (flush == BTRFS_RESERVE_FLUSH_ALL_STEAL);
++		if (trace_btrfs_reserve_ticket_enabled())
++			start_ns = ktime_get_ns();
++
+ 		if (flush == BTRFS_RESERVE_FLUSH_ALL ||
+ 		    flush == BTRFS_RESERVE_FLUSH_ALL_STEAL ||
+ 		    flush == BTRFS_RESERVE_FLUSH_DATA) {
+@@ -1400,7 +1407,8 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 	if (!ret || flush == BTRFS_RESERVE_NO_FLUSH)
+ 		return ret;
+ 
+-	return handle_reserve_ticket(fs_info, space_info, &ticket, flush);
++	return handle_reserve_ticket(fs_info, space_info, &ticket, start_ns,
++				     orig_bytes, flush);
+ }
+ 
+ /**
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index ecd24c719de4..eb348656839f 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -2025,6 +2025,35 @@ TRACE_EVENT(btrfs_convert_extent_bit,
+ 		  __print_flags(__entry->clear_bits, "|", EXTENT_FLAGS))
+ );
+ 
++TRACE_EVENT(btrfs_reserve_ticket,
++	TP_PROTO(const struct btrfs_fs_info *fs_info, u64 flags, u64 bytes,
++		 u64 start_ns, int flush, int error),
++
++	TP_ARGS(fs_info, flags, bytes, start_ns, flush, error),
++
++	TP_STRUCT__entry_btrfs(
++		__field(	u64,	flags		)
++		__field(	u64,	bytes		)
++		__field(	u64,	start_ns	)
++		__field(	int,	flush		)
++		__field(	int,	error		)
++	),
++
++	TP_fast_assign_btrfs(fs_info,
++		__entry->flags		= flags;
++		__entry->bytes		= bytes;
++		__entry->start_ns	= start_ns;
++		__entry->flush		= flush;
++		__entry->error		= error;
++	),
++
++	TP_printk_btrfs("flags=%s bytes=%llu start_ns=%llu flush=%s error=%d",
++			__print_flags(__entry->flags, "|", BTRFS_GROUP_FLAGS),
++			__entry->bytes, __entry->start_ns,
++			__print_symbolic(__entry->flush, FLUSH_ACTIONS),
++			__entry->error)
++);
++
+ DECLARE_EVENT_CLASS(btrfs_sleep_tree_lock,
+ 	TP_PROTO(const struct extent_buffer *eb, u64 start_ns),
+ 
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86F45C433DF
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:40 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 3C0D0222C4
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:40 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="tXJ0VJc3"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388502AbgJIN2j (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388473AbgJIN2j (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:39 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE8AC0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:38 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id c5so7897052qtw.3
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=TNchmHo9Lcyrgb7+5XCiMKeNczgC1I7OF5JL5wmyvvM=;
+        b=tXJ0VJc3Li8VEe8/dYd9XLtWDvdXWb+Wud/EnqHBLmIhekLDhsUxxJPNxvKhP6l/60
+         xRlIMYF1Gj6NtYaQAfHlxARM0t41RVevMMP88sIbrnod1Wp3yI+n3KyAsV9ZX6JfhlY7
+         vgtgeivhuad/WEgoAJBDw8t7lKQq0c8hYEpNmjhEbn62xtyjEXUCKF5gKG6poeiR39OK
+         komn0i4z0NKXZntAL1ixHPiyXBKIxN2FK9nNaONDdQXV1vVH2d0fWJ7MrafYPYtZmvN+
+         MzJfp7KD9F0Lg6GyZstAKK9tRdr07/aV3v+VUt32vpass4/kgq36wyUXQhPu3yi5bbs6
+         Rttg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=TNchmHo9Lcyrgb7+5XCiMKeNczgC1I7OF5JL5wmyvvM=;
+        b=pvX+xQXA4IPJzCLPERxg/LOwumRjzSLbE8CfM/fSdWM0WJjyxfxK5qJ0U8fB/4cEr3
+         V+drfj+sPCFOI/ByYbOKHiWX3oE6vjaAZvXHmVigQwkdRgiCSMzeJcZLM1+2kN+khD3a
+         0w2+4LmtqcDglZMUXFxg1dRrX6KJD1ZnyhXP/N/e3QIDV4bO2AzB0DpeF8+868GBJ+pL
+         7TKH1jlzvaMW1I3sUE0WJGZxwjtZJABeU8sD/YggSLNKhglb5AqVQt6BJZFcyWHy76kE
+         oqTWMqXON8UjX2jx2ZzoT6+WpX0wJrLqHe4yEWzMKnh8CDi/rAAHZl6FbQv/kxJETeRk
+         Lvrw==
+X-Gm-Message-State: AOAM531y237DUIrVBOuLg+RA2VdwxQYMH9FdL/hNwGtgAt4dy5Du9zjH
+        rV1MGk8xID3U5Ez4rnkbFjCEltZenfygAIRY
+X-Google-Smtp-Source: ABdhPJzfazSe4x/lHjkKvJ8fuPpkEGW8XLbDjVTl1Gpw73DXFslg0BCgbPlyvPOFry/4VKIRQGBbqQ==
+X-Received: by 2002:aed:362a:: with SMTP id e39mr13372648qtb.121.1602250117529;
+        Fri, 09 Oct 2020 06:28:37 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id r187sm5864933qkc.63.2020.10.09.06.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:36 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Subject: [PATCH v3 03/12] btrfs: track ordered bytes instead of just dio ordered bytes
+Date:   Fri,  9 Oct 2020 09:28:20 -0400
+Message-Id: <578ef22806511ccbe29ebe9e70bb6524793ba813.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/578ef22806511ccbe29ebe9e70bb6524793ba813.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+We track dio_bytes because the shrink delalloc code needs to know if we
+have more DIO in flight than we have normal buffered IO.  The reason for
+this is because we can't "flush" DIO, we have to just wait on the
+ordered extents to finish.
+
+However this is true of all ordered extents.  If we have more ordered
+space outstanding than dirty pages we should be waiting on ordered
+extents.  We already are ok on this front technically, because we always
+do a FLUSH_DELALLOC_WAIT loop, but I want to use the ordered counter in
+the preemptive flushing code as well, so change this to count all
+ordered bytes instead of just DIO ordered bytes.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/ctree.h        |  2 +-
+ fs/btrfs/disk-io.c      |  8 ++++----
+ fs/btrfs/ordered-data.c | 13 ++++++-------
+ fs/btrfs/space-info.c   | 18 +++++++-----------
+ 4 files changed, 18 insertions(+), 23 deletions(-)
+
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index aac3d6f4e35b..e817b3b3483d 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -790,7 +790,7 @@ struct btrfs_fs_info {
+ 	/* used to keep from writing metadata until there is a nice batch */
+ 	struct percpu_counter dirty_metadata_bytes;
+ 	struct percpu_counter delalloc_bytes;
+-	struct percpu_counter dio_bytes;
++	struct percpu_counter ordered_bytes;
+ 	s32 dirty_metadata_batch;
+ 	s32 delalloc_batch;
+ 
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 764001609a15..61bb3321efaa 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1466,7 +1466,7 @@ void btrfs_free_fs_info(struct btrfs_fs_info *fs_info)
+ {
+ 	percpu_counter_destroy(&fs_info->dirty_metadata_bytes);
+ 	percpu_counter_destroy(&fs_info->delalloc_bytes);
+-	percpu_counter_destroy(&fs_info->dio_bytes);
++	percpu_counter_destroy(&fs_info->ordered_bytes);
+ 	percpu_counter_destroy(&fs_info->dev_replace.bio_counter);
+ 	btrfs_free_csum_hash(fs_info);
+ 	btrfs_free_stripe_hash_table(fs_info);
+@@ -2748,7 +2748,7 @@ static int init_mount_fs_info(struct btrfs_fs_info *fs_info, struct super_block
+ 	sb->s_blocksize = BTRFS_BDEV_BLOCKSIZE;
+ 	sb->s_blocksize_bits = blksize_bits(BTRFS_BDEV_BLOCKSIZE);
+ 
+-	ret = percpu_counter_init(&fs_info->dio_bytes, 0, GFP_KERNEL);
++	ret = percpu_counter_init(&fs_info->ordered_bytes, 0, GFP_KERNEL);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -4055,9 +4055,9 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
+ 		       percpu_counter_sum(&fs_info->delalloc_bytes));
+ 	}
+ 
+-	if (percpu_counter_sum(&fs_info->dio_bytes))
++	if (percpu_counter_sum(&fs_info->ordered_bytes))
+ 		btrfs_info(fs_info, "at unmount dio bytes count %lld",
+-			   percpu_counter_sum(&fs_info->dio_bytes));
++			   percpu_counter_sum(&fs_info->ordered_bytes));
+ 
+ 	btrfs_sysfs_remove_mounted(fs_info);
+ 	btrfs_sysfs_remove_fsid(fs_info->fs_devices);
+diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
+index 87bac9ecdf4c..9a277a475a1c 100644
+--- a/fs/btrfs/ordered-data.c
++++ b/fs/btrfs/ordered-data.c
+@@ -202,11 +202,11 @@ static int __btrfs_add_ordered_extent(struct btrfs_inode *inode, u64 file_offset
+ 	if (type != BTRFS_ORDERED_IO_DONE && type != BTRFS_ORDERED_COMPLETE)
+ 		set_bit(type, &entry->flags);
+ 
+-	if (dio) {
+-		percpu_counter_add_batch(&fs_info->dio_bytes, num_bytes,
+-					 fs_info->delalloc_batch);
++	percpu_counter_add_batch(&fs_info->ordered_bytes, num_bytes,
++				 fs_info->delalloc_batch);
++
++	if (dio)
+ 		set_bit(BTRFS_ORDERED_DIRECT, &entry->flags);
+-	}
+ 
+ 	/* one ref for the tree */
+ 	refcount_set(&entry->refs, 1);
+@@ -480,9 +480,8 @@ void btrfs_remove_ordered_extent(struct btrfs_inode *btrfs_inode,
+ 		btrfs_delalloc_release_metadata(btrfs_inode, entry->num_bytes,
+ 						false);
+ 
+-	if (test_bit(BTRFS_ORDERED_DIRECT, &entry->flags))
+-		percpu_counter_add_batch(&fs_info->dio_bytes, -entry->num_bytes,
+-					 fs_info->delalloc_batch);
++	percpu_counter_add_batch(&fs_info->ordered_bytes, -entry->num_bytes,
++				 fs_info->delalloc_batch);
+ 
+ 	tree = &btrfs_inode->ordered_tree;
+ 	spin_lock_irq(&tree->lock);
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index ac7269cf1904..540960365787 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -489,7 +489,7 @@ static void shrink_delalloc(struct btrfs_fs_info *fs_info,
+ {
+ 	struct btrfs_trans_handle *trans;
+ 	u64 delalloc_bytes;
+-	u64 dio_bytes;
++	u64 ordered_bytes;
+ 	u64 items;
+ 	long time_left;
+ 	int loops;
+@@ -514,25 +514,20 @@
+ 
+ 	delalloc_bytes = percpu_counter_sum_positive(
+ 						&fs_info->delalloc_bytes);
+-	dio_bytes = percpu_counter_sum_positive(&fs_info->dio_bytes);
+-	if (delalloc_bytes == 0 && dio_bytes == 0) {
+-		if (trans)
+-			return;
+-		if (wait_ordered)
+-			btrfs_wait_ordered_roots(fs_info, items, 0, (u64)-1);
++	ordered_bytes = percpu_counter_sum_positive(&fs_info->ordered_bytes);
++	if (delalloc_bytes == 0 && ordered_bytes == 0)
+ 		return;
+-	}
+ 
+ 	/*
+ 	 * If we are doing more ordered than delalloc we need to just wait on
+ 	 * ordered extents, otherwise we'll waste time trying to flush delalloc
+ 	 * that likely won't give us the space back we need.
+ 	 */
+-	if (dio_bytes > delalloc_bytes)
++	if (ordered_bytes > delalloc_bytes)
+ 		wait_ordered = true;
+ 
+ 	loops = 0;
+-	while ((delalloc_bytes || dio_bytes) && loops < 3) {
++	while ((delalloc_bytes || ordered_bytes) && loops < 3) {
+ 		u64 nr_pages = min(delalloc_bytes, to_reclaim) >> PAGE_SHIFT;
+ 
+ 		btrfs_start_delalloc_roots(fs_info, nr_pages, true);
+@@ -553,7 +548,8 @@ static void shrink_delalloc(struct btrfs_fs_info *fs_info,
+ 
+ 		delalloc_bytes = percpu_counter_sum_positive(
+ 						&fs_info->delalloc_bytes);
+-		dio_bytes = percpu_counter_sum_positive(&fs_info->dio_bytes);
++		ordered_bytes = percpu_counter_sum_positive(
++						&fs_info->ordered_bytes);
+ 	}
+ }
+ 
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42BEDC433E7
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:42 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 0331A22277
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:41 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="UVd3dkXY"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388509AbgJIN2l (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388473AbgJIN2k (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:40 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB70C0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:40 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id z33so4021247qth.8
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=jQQ/2SDMO4Lz13whsQdPCLz25nXGdR3DugpTlmNMHOU=;
+        b=UVd3dkXYeezDPU2Kue/HYI18dCyJYqscp2SwtcDXd8byFa043zAkIz8qAAM+dOzkoH
+         ogkQgMtpnXYAp7lIg1EJ93nxd9vNYj7bPmaQOVKEtrUnh8IK55AMuwAHlrcxATlgw/XG
+         KFqqe2IVXONhzWk7OmgEy4ZuOJtHMZJrvk2lfwQHHZjBpUdfnsEBrClpZEz9mdhM08ks
+         8tLZubu6tXGXIZQqJY5V0UGDolJv1ozKwd5u2kxcPCAu6/7wY6iMrUSSmhJyac6R53Nj
+         CTnlkiuSvm3+RQLoY2vpmxQ1rs3Wu7/awe8ia2tZDZaHSc5KM5V6szGsHGxAcvYY/aUL
+         s64w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=jQQ/2SDMO4Lz13whsQdPCLz25nXGdR3DugpTlmNMHOU=;
+        b=EMVy+OQGlbDy7sSp7kN+fGfOehWmJMByHD/sPbcS3IDHJAwJm1oznsqqvppI4JJi9v
+         zx1ieqfUfFPh/MzAxtxtxZA1uIPdBd614Q0IJRhhiaZY1ZxTCsFHa8UCRxAep22ohLio
+         ccsZPAYILg6zZnp9myCLJOKa1qKAxsQ+mB1YaJC0pWenmKZ0j+g1971JS5+ocIizq7VY
+         gMBHZ0d/jLR0bzBLONkVLI3eoJ3YpwNbukGSFL0OztiZW9ybDTpD3iM+gJ/0gy7Qop4j
+         fwTRC+fJLWldLD3H7QjXMgltS6sjM9cwREGqLvqJdOkIWD210q752cB8/2lH2YQHLHfK
+         KgOg==
+X-Gm-Message-State: AOAM532jniZ1zpImtsnWJ7dQmVLopo5FQWxbrtFlICPSJ53znqyjDIHL
+        6RXDa0pxXtbcVDpLVDefC8hfLIwJfVCplcHx
+X-Google-Smtp-Source: ABdhPJzvSm4m0+59QxJxd8esasRK7jYYsuu/a5zVFnZzhEjwt+pqR2ls5eoxL4dZmTEZQSnmqzBm4w==
+X-Received: by 2002:ac8:5c55:: with SMTP id j21mr13077889qtj.210.1602250119269;
+        Fri, 09 Oct 2020 06:28:39 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id w4sm6463077qtb.0.2020.10.09.06.28.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:38 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Subject: [PATCH v3 04/12] btrfs: introduce a FORCE_COMMIT_TRANS flush operation
+Date:   Fri,  9 Oct 2020 09:28:21 -0400
+Message-Id: <58ae7655908a28c446139452ea8f5210d590acb4.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/58ae7655908a28c446139452ea8f5210d590acb4.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+Sole-y for preemptive flushing, we want to be able to force the
+transaction commit without any of the ambiguity of
+may_commit_transaction().  This is because may_commit_transaction()
+checks tickets and such, and in preemptive flushing we already know
+it'll be helpful, so use this to keep the code nice and clean and
+straightforward.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/ctree.h             | 1 +
+ fs/btrfs/space-info.c        | 8 ++++++++
+ include/trace/events/btrfs.h | 3 ++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index e817b3b3483d..84c5db91dc44 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -2654,6 +2654,7 @@ enum btrfs_flush_state {
+ 	ALLOC_CHUNK_FORCE	=	8,
+ 	RUN_DELAYED_IPUTS	=	9,
+ 	COMMIT_TRANS		=	10,
++	FORCE_COMMIT_TRANS	=	11,
+ };
+ 
+ int btrfs_subvolume_reserve_metadata(struct btrfs_root *root,
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 540960365787..cfcc3a5247f6 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -732,6 +732,14 @@ static void flush_space(struct btrfs_fs_info *fs_info,
+ 	case COMMIT_TRANS:
+ 		ret = may_commit_transaction(fs_info, space_info);
+ 		break;
++	case FORCE_COMMIT_TRANS:
++		trans = btrfs_join_transaction(root);
++		if (IS_ERR(trans)) {
++			ret = PTR_ERR(trans);
++			break;
++		}
++		ret = btrfs_commit_transaction(trans);
++		break;
+ 	default:
+ 		ret = -ENOSPC;
+ 		break;
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index eb348656839f..0a3d35d952c4 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -99,7 +99,8 @@ struct btrfs_space_info;
+ 	EM( ALLOC_CHUNK,		"ALLOC_CHUNK")			\
+ 	EM( ALLOC_CHUNK_FORCE,		"ALLOC_CHUNK_FORCE")		\
+ 	EM( RUN_DELAYED_IPUTS,		"RUN_DELAYED_IPUTS")		\
+-	EMe(COMMIT_TRANS,		"COMMIT_TRANS")
++	EM(COMMIT_TRANS,		"COMMIT_TRANS")			\
++	EMe(FORCE_COMMIT_TRANS,		"FORCE_COMMIT_TRANS")
+ 
+ /*
+  * First define the enums in the above macros to be exported to userspace via
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E03A2C433DF
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:45 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 92929222C3
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:45 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="h0LG/GlJ"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388511AbgJIN2o (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43950 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgJIN2o (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:44 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC204C0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:42 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id a23so10457292qkg.13
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=jCn7GUpY5gPxRnJ+UlkIaz2kGxV8aXQhAnCSOCMJGow=;
+        b=h0LG/GlJ8u1BiFHXyYE4kDmLRF2DOz72bu3anlBOpn0b0UOvddDf0K+GdZhMXUL7TM
+         TbEXXNcm7G3qLHKVX/xBdUzPjcMSsEAEyf46Ixj40XhkmrNY9yYBdAby9mENcZFF+Gn3
+         uHoRYoqcsR8PAFeZIbfbY41m1a9ihByTVocKuLiU0V5EDFJsySU6DDQE4nmksrLQkLk2
+         a7tC1gbakemSeWnjlEMOtMDxy35SCkXCDm5dlMh0KyMOfkIuNPMPKDkmQdoJl9XrKlWV
+         AIxUOcFRjU8I0BwHYdGM2tGaWKKZAmZ5KTOY9DV2xJleizxcHi9vETHNqjp2v35VE1qM
+         HbGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=jCn7GUpY5gPxRnJ+UlkIaz2kGxV8aXQhAnCSOCMJGow=;
+        b=tjl79AaBh8eR7qDipA8/CFFoX1fGdL9VFoJ7c7R7BmKLlnG5ooklnoTFBHNpVplZWh
+         tycw6l+QM3bSIO0Rnvh+AJAE3+Z3O7oqHmDlBgoUj7x/K6GPi3mYKVtNXESYyPTIwtAP
+         lW4CUF/52t2cqEkvqlNY570HcsVKGfK7QQUNOYI0zoijZLPVKaF/6PAhtL8+/xElMPes
+         LuLKL6+qi04NeJHDlxR7jXdf+cIyeHgXgpZIswpzSJdK4pO7KHuKhQUNNK2k766waN+a
+         a01ZNCwpm8GfyC3WhtAJDoxvUhnJSDsgzfQ3fdM5+DhTRI1FBDv1K5diKuwtdvD9RLN8
+         LNpQ==
+X-Gm-Message-State: AOAM532gIcUXs8BvkxHI3aR1jav2lIu5lWeDctV5sATAQTzADl9WzOsq
+        cg0ZnlRy0sU6IFEgwiRYNUr0xAARjgeBtwJ6
+X-Google-Smtp-Source: ABdhPJwUfZnrHpH9gHONu+1hWDmM50aFYFjo7B0tCbhVAk+n0AJeR04CKV/ZV7wKaewXRFV7GimOJQ==
+X-Received: by 2002:a37:4bc5:: with SMTP id y188mr9306447qka.429.1602250121334;
+        Fri, 09 Oct 2020 06:28:41 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id i62sm6301958qkf.36.2020.10.09.06.28.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:40 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Subject: [PATCH v3 05/12] btrfs: improve preemptive background space flushing
+Date:   Fri,  9 Oct 2020 09:28:22 -0400
+Message-Id: <26c66e1d02a0fee72d79ed92e24d2d2f4620d487.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/26c66e1d02a0fee72d79ed92e24d2d2f4620d487.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+Currently if we ever have to flush space because we do not have enough
+we allocate a ticket and attach it to the space_info, and then
+systematically flush things in the file system that hold space
+reservations until our space is reclaimed.
+
+However this has a latency cost, we must go to sleep and wait for the
+flushing to make progress before we are woken up and allowed to continue
+doing our work.
+
+In order to address that we used to kick off the async worker to flush
+space preemptively, so that we could be reclaiming space hopefully
+before any tasks needed to stop and wait for space to reclaim.
+
+When I introduced the ticketed ENOSPC stuff this broke slightly in the
+fact that we were using tickets to indicate if we were done flushing.
+No tickets, no more flushing.  However this meant that we essentially
+never preemptively flushed.  This caused a write performance regression
+that Nikolay noticed in an unrelated patch that removed the committing
+of the transaction during btrfs_end_transaction.
+
+The behavior that happened pre that patch was btrfs_end_transaction()
+would see that we were low on space, and it would commit the
+transaction.  This was bad because in this particular case you could end
+up with thousands and thousands of transactions being committed during
+the 5 minute reproducer.  With the patch to remove this behavior you got
+much more sane transaction commits, but we ended up slower because we
+would write for a while, flush, write for a while, flush again.
+
+To address this we need to reinstate a preemptive flushing mechanism.
+However it is distinctly different from our ticketing flushing in that
+it doesn't have tickets to base it's decisions on.  Instead of bolting
+this logic into our existing flushing work, add another worker to handle
+this preemptive flushing.  Here we will attempt to be slightly
+intelligent about the things that we flushing, attempting to balance
+between whichever pool is taking up the most space.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/ctree.h      |   1 +
+ fs/btrfs/disk-io.c    |   1 +
+ fs/btrfs/space-info.c | 101 +++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 101 insertions(+), 2 deletions(-)
+
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 84c5db91dc44..d72469ea7c87 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -922,6 +922,7 @@ struct btrfs_fs_info {
+ 	/* Used to reclaim the metadata space in the background. */
+ 	struct work_struct async_reclaim_work;
+ 	struct work_struct async_data_reclaim_work;
++	struct work_struct preempt_reclaim_work;
+ 
+ 	spinlock_t unused_bgs_lock;
+ 	struct list_head unused_bgs;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 61bb3321efaa..0b2b3a4a2b47 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4003,6 +4003,7 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
+ 
+ 	cancel_work_sync(&fs_info->async_reclaim_work);
+ 	cancel_work_sync(&fs_info->async_data_reclaim_work);
++	cancel_work_sync(&fs_info->preempt_reclaim_work);
+ 
+ 	/* Cancel or finish ongoing discard work */
+ 	btrfs_discard_cleanup(fs_info);
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index cfcc3a5247f6..0f84bee57c29 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -991,6 +991,101 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 	} while (flush_state <= COMMIT_TRANS);
+ }
+ 
++/*
++ * This handles pre-flushing of metadata space before we get to the point that
++ * we need to start blocking people on tickets.  The logic here is different
++ * from the other flush paths because it doesn't rely on tickets to tell us how
++ * much we need to flush, instead it attempts to keep us below the 80% full
++ * watermark of space by flushing whichever reservation pool is currently the
++ * largest.
++ */
++static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
++{
++	struct btrfs_fs_info *fs_info;
++	struct btrfs_space_info *space_info;
++	struct btrfs_block_rsv *delayed_block_rsv;
++	struct btrfs_block_rsv *delayed_refs_rsv;
++	struct btrfs_block_rsv *global_rsv;
++	struct btrfs_block_rsv *trans_rsv;
++	u64 used;
++
++	fs_info = container_of(work, struct btrfs_fs_info,
++			       preempt_reclaim_work);
++	space_info = btrfs_find_space_info(fs_info, BTRFS_BLOCK_GROUP_METADATA);
++	delayed_block_rsv = &fs_info->delayed_block_rsv;
++	delayed_refs_rsv = &fs_info->delayed_refs_rsv;
++	global_rsv = &fs_info->global_block_rsv;
++	trans_rsv = &fs_info->trans_block_rsv;
++
++	spin_lock(&space_info->lock);
++	used = btrfs_space_info_used(space_info, true);
++	while (need_do_async_reclaim(fs_info, space_info, used)) {
++		enum btrfs_flush_state flush;
++		u64 delalloc_size = 0;
++		u64 to_reclaim, block_rsv_size;
++		u64 global_rsv_size = global_rsv->reserved;
++
++		/*
++		 * We don't have a precise counter for the metadata being
++		 * reserved for delalloc, so we'll approximate it by subtracting
++		 * out the block rsv's space from the bytes_may_use.  If that
++		 * amount is higher than the individual reserves, then we can
++		 * assume it's tied up in delalloc reservations.
++		 */
++		block_rsv_size = global_rsv_size +
++			delayed_block_rsv->reserved +
++			delayed_refs_rsv->reserved +
++			trans_rsv->reserved;
++		if (block_rsv_size < space_info->bytes_may_use)
++			delalloc_size = space_info->bytes_may_use -
++				block_rsv_size;
++		spin_unlock(&space_info->lock);
++
++		/*
++		 * We don't want to include the global_rsv in our calculation,
++		 * because that's space we can't touch.  Subtract it from the
++		 * block_rsv_size for the next checks.
++		 */
++		block_rsv_size -= global_rsv_size;
++
++		/*
++		 * We really want to avoid flushing delalloc too much, as it
++		 * could result in poor allocation patterns, so only flush it if
++		 * it's larger than the rest of the pools combined.
++		 */
++		if (delalloc_size > block_rsv_size) {
++			to_reclaim = delalloc_size;
++			flush = FLUSH_DELALLOC;
++		} else if (space_info->bytes_pinned >
++			   (delayed_block_rsv->reserved +
++			    delayed_refs_rsv->reserved)) {
++			to_reclaim = space_info->bytes_pinned;
++			flush = FORCE_COMMIT_TRANS;
++		} else if (delayed_block_rsv->reserved >
++			   delayed_refs_rsv->reserved) {
++			to_reclaim = delayed_block_rsv->reserved;
++			flush = FLUSH_DELAYED_ITEMS_NR;
++		} else {
++			to_reclaim = delayed_refs_rsv->reserved;
++			flush = FLUSH_DELAYED_REFS_NR;
++		}
++
++		/*
++		 * We don't want to reclaim everything, just a portion, so scale
++		 * down the to_reclaim by 1/4.  If it takes us down to 0,
++		 * reclaim 1 items worth.
++		 */
++		to_reclaim >>= 2;
++		if (!to_reclaim)
++			to_reclaim = btrfs_calc_insert_metadata_size(fs_info, 1);
++		flush_space(fs_info, space_info, to_reclaim, flush);
++		cond_resched();
++		spin_lock(&space_info->lock);
++		used = btrfs_space_info_used(space_info, true);
++	}
++	spin_unlock(&space_info->lock);
++}
++
+ /*
+  * FLUSH_DELALLOC_WAIT:
+  *   Space is freed from flushing delalloc in one of two ways.
+@@ -1117,6 +1212,8 @@ void btrfs_init_async_reclaim_work(struct btrfs_fs_info *fs_info)
+ {
+ 	INIT_WORK(&fs_info->async_reclaim_work, btrfs_async_reclaim_metadata_space);
+ 	INIT_WORK(&fs_info->async_data_reclaim_work, btrfs_async_reclaim_data_space);
++	INIT_WORK(&fs_info->preempt_reclaim_work,
++		  btrfs_preempt_reclaim_metadata_space);
+ }
+ 
+ static const enum btrfs_flush_state priority_flush_states[] = {
+@@ -1400,11 +1497,11 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 		 */
+ 		if (!test_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags) &&
+ 		    need_do_async_reclaim(fs_info, space_info, used) &&
+-		    !work_busy(&fs_info->async_reclaim_work)) {
++		    !work_busy(&fs_info->preempt_reclaim_work)) {
+ 			trace_btrfs_trigger_flush(fs_info, space_info->flags,
+ 						  orig_bytes, flush, "preempt");
+ 			queue_work(system_unbound_wq,
+-				   &fs_info->async_reclaim_work);
++				   &fs_info->preempt_reclaim_work);
+ 		}
+ 	}
+ 	spin_unlock(&space_info->lock);
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80C9BC43457
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:47 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 28543222BA
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:47 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="tX8ykBby"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388530AbgJIN2q (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43956 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgJIN2p (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:45 -0400
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484B8C0613D5
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:44 -0700 (PDT)
+Received: by mail-qv1-xf44.google.com with SMTP id b10so2513139qvf.0
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=OeDbdP/tIxPai6xbCAP/bUyJD8V7RTa9uH5tUYyYHv0=;
+        b=tX8ykBbyGGAzv7lCFzSBTWAXwaNxCpuq02vrdDEt27rIvGy0kdBIuqCNdcuNs0+E6m
+         jgDaZfSf1OWSLiB7d8SvnL+mm738NyFeKuh67RiSfao/J5kdCRIOeU4BIgYwBeuwHjxH
+         MkIE0T3LT/GZrAJ1NybXCrXryUyzlVOUCR5aGTruMe1222iQ+dtmrE+KMxbgjWGMsrPr
+         /eG94bcnp1RZCwPl3cuOCUvt9gBvQCt5Aaud5BWXZt1DZC2t77iYXwvuikmogZ9wu5QF
+         kufucmot0+I5yiUDm6XmO7ClTj1n7XKP4usFDk4JpOnNWgj9XDyKgGVrsolcLffKV3OJ
+         rm2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=OeDbdP/tIxPai6xbCAP/bUyJD8V7RTa9uH5tUYyYHv0=;
+        b=smARDRqJ8fkNqxRJ182jND0sPjF64oOd6f+aw1Mu4dqV9JNC9g+wljSk0ir9fU3Voe
+         RqOasRw+O4bzhrGUmAjVwTiQ9fnCKKW37TcJivcFAjfzMn3UBM07K+PX7PvByJQuhxUJ
+         YI1BAIWN62NmugZdT+T8t5353vqz+ISMobVQhzpSjUWZEuN+YpiwARwQUVqFZN30AMpu
+         5ZikXvsfL3fN8ovdo5zMP9BJS3DANhmg3GRMOyZH2s344ucHFSS6P53D1ekU2uWbTfBq
+         GGaswz4LXRVHdOTeYfVjR8Sp+xisZxh5QSprk80UUG4hT4lspp1GnvqB7Y9492Aw+NVV
+         WZVw==
+X-Gm-Message-State: AOAM5311RdOBZ2JB6PbZvQ63G5lUdL8F1/y+8JL2teCo7lFRYSdVOe2N
+        cnHga/ap26L+cygwKdzTOm85xOxKHaHWLGK8
+X-Google-Smtp-Source: ABdhPJyknKotXWUMDDlCMmlvNZyd3ASrV3ccZMdaLs0CnORKd1UpVA+VQGTyZiamSZ8513Uw4Qt/ig==
+X-Received: by 2002:a0c:9789:: with SMTP id l9mr13557387qvd.2.1602250123065;
+        Fri, 09 Oct 2020 06:28:43 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id i62sm6302024qkf.36.2020.10.09.06.28.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:42 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 06/12] btrfs: rename need_do_async_reclaim
+Date:   Fri,  9 Oct 2020 09:28:23 -0400
+Message-Id: <d998cbf6d167d16ca51adea2fb631d36793a0a6f.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/d998cbf6d167d16ca51adea2fb631d36793a0a6f.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+All of our normal flushing is asynchronous reclaim, so this helper is
+poorly named.  This is more checking if we need to preemptively flush
+space, so rename it to need_preemptive_reclaim.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 0f84bee57c29..f37ead28bd05 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -799,9 +799,9 @@ btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
+ 	return to_reclaim;
+ }
+ 
+-static inline int need_do_async_reclaim(struct btrfs_fs_info *fs_info,
+-					struct btrfs_space_info *space_info,
+-					u64 used)
++static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
++					   struct btrfs_space_info *space_info,
++					   u64 used)
+ {
+ 	u64 thresh = div_factor_fine(space_info->total_bytes, 98);
+ 
+@@ -1019,7 +1019,7 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 
+ 	spin_lock(&space_info->lock);
+ 	used = btrfs_space_info_used(space_info, true);
+-	while (need_do_async_reclaim(fs_info, space_info, used)) {
++	while (need_preemptive_reclaim(fs_info, space_info, used)) {
+ 		enum btrfs_flush_state flush;
+ 		u64 delalloc_size = 0;
+ 		u64 to_reclaim, block_rsv_size;
+@@ -1496,7 +1496,7 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 		 * the async reclaim as we will panic.
+ 		 */
+ 		if (!test_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags) &&
+-		    need_do_async_reclaim(fs_info, space_info, used) &&
++		    need_preemptive_reclaim(fs_info, space_info, used) &&
+ 		    !work_busy(&fs_info->preempt_reclaim_work)) {
+ 			trace_btrfs_trigger_flush(fs_info, space_info->flags,
+ 						  orig_bytes, flush, "preempt");
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B39CFC433E7
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:49 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 5B2F5222BA
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:49 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="KB4sTonr"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388538AbgJIN2s (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43964 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgJIN2s (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:48 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B00EC0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:46 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id z6so10544496qkz.4
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=d99dx4jM28zJlRp3ANErbAewCnq3r4ED5sBLfe7V+0Q=;
+        b=KB4sTonrBIVkBxMIRixIB67VfpN6CgCRGCkEt1xnt6QxSesdPvEAAdK9RPtX6vsQWg
+         uzDRHVuHk67mC+Uaq/vBI1GZYV8Jtg6dXgBKhDn1NtkE9AWNXyiXrgmr7hYThI4pd6qP
+         PIXbchqlFDck8OnSsNHGe8x6ZWf+ZPq4vCH8gHBCuu3E3utJc9NXDGVSBL7MHLMkbJp4
+         a7fiIdWp4RT56LccxQBpJSRYPRVm+b64cxwuINjbRTmNPBHjojpAte93oz4rmvIwJ6KW
+         YrRwsrYPomI7Rj3Ze9nEVK0PBl8k2Tt/JA1+6+lUnHMyBBj2AenqlxVdNrZvEvb6aUva
+         ybCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=d99dx4jM28zJlRp3ANErbAewCnq3r4ED5sBLfe7V+0Q=;
+        b=avGrdRvoYRCbR7oJvXeTMNhF9irUcsMXnwJp78LkwI6xIZCxjQBjQfDyxXLQVTaBLI
+         nLf5vl9lrxmWgifw1H9m/bzJIr3cZZdSJgRAd2fR23ii6qLQvEfBSFgAAo8xmhjdDZtM
+         r6ZpsaT9FxKXCsUozTU8bFfSIEVR1NuppsCr9+iCButyIg+0ExVAvmVc7TCxg8H7ZYK5
+         RRCeb6lF5K8sOoUCMBFz/f7Nh9Tz/eRQFk0NYLVCzXCVm8JG7ycAeyweLawYXyYMcLnf
+         vIwTOGeDWsCpwd8qSC8moC5IRmwmT5G95tVRiGumQQBuyBO+Ig8ME67NASNc0CwGaVUr
+         bd4w==
+X-Gm-Message-State: AOAM533amASGMRgh4/ea84vWm7jJr5MdvuMPyqarnin9KnGzoXFjcIw4
+        82x2HHDByyHdFahUzaS2NjGqju6eam/w7rF+
+X-Google-Smtp-Source: ABdhPJymMDqu+1UaMXoikgdYBm6uXj1AElm+RkZM8rsxAE9tC++zjN+hJXDPPddUWnFACWfwKgJ2Lg==
+X-Received: by 2002:a37:b882:: with SMTP id i124mr13759491qkf.51.1602250125262;
+        Fri, 09 Oct 2020 06:28:45 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id d47sm6405162qtk.53.2020.10.09.06.28.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:44 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 07/12] btrfs: check reclaim_size in need_preemptive_reclaim
+Date:   Fri,  9 Oct 2020 09:28:24 -0400
+Message-Id: <ea52fe431b7c4a5c8729d6fd624dfa416206b35f.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/ea52fe431b7c4a5c8729d6fd624dfa416206b35f.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+If we're flushing space for tickets then we have
+space_info->reclaim_size set and we do not need to do background
+reclaim.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index f37ead28bd05..4a25f48fa000 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -809,6 +809,13 @@ static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+ 	if ((space_info->bytes_used + space_info->bytes_reserved) >= thresh)
+ 		return 0;
+ 
++	/*
++	 * We have tickets queued, bail so we don't compete with the async
++	 * flushers.
++	 */
++	if (space_info->reclaim_size)
++		return 0;
++
+ 	if (!btrfs_calc_reclaim_metadata_size(fs_info, space_info))
+ 		return 0;
+ 
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0162C433E7
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:54 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 95234222BA
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:54 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="CghjXa7J"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388603AbgJIN2w (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43970 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388573AbgJIN2u (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:50 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D5DC0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:48 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id c23so7923750qtp.0
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=MmfoaI3eJ+kGiCbdPPVipxfRlFoYOgOLm0TS7DpTfzc=;
+        b=CghjXa7JWyEBrmTpxwvm0f9wtQ3rOOOgv6jW2Fp8EnE32sLIxcIzTswdg24vA/V++J
+         zop+GxNxVqWrmjlufPAQyQWoozTCjerO2XhGRU9sp5BDKn4I85LDZ2r2QfXT/6OZN3Jk
+         9YPnWaZXuysmf92bF8Gz1CxLRmJVLToA1YvDDB3/oeAfBpPgrosYje4rT3pyGo/bZtUN
+         bIXcesWAGnLc0J6++2KSK1+ZHNOQ6dzNw6O2+PsrSI9BZSjwxPi6Ed5vLIOw6kQ3W6mu
+         6D4sHbiL4MGb98nHor/DIp1GI8IQT0q9aMIJMXISbuVEOW+cFIPTfTGHnHXdB/oSCsNH
+         m6lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=MmfoaI3eJ+kGiCbdPPVipxfRlFoYOgOLm0TS7DpTfzc=;
+        b=AY51WG9L9t5fKadus1iT9fMdDUFo4lSJx7seILQ9MM2IxP5tHDF5Q4YhwjV5E2tY4x
+         XTDrT0v7+qu4QSamD0T3Psiz6PqT24gnYXr9A4PZyMc7Tupqp5zRrAj7gc/gJLDqJpf2
+         ol398Em+CSw1XReC199LTjtIbQ6GbWXfd1jwW+WJtU0Gq4y5c71Xbfak2On4Uetm2tyq
+         lRPnCHFbfE0HnqNFjtO0Cu/m6OA/4EIaDoSpny35X02EeBKfmy6Td67O5HCdUCYO/Bbm
+         IIhDbgflbWO07yKBEdg5+Qfqj2R28qRJupVzcXIGb3nKk6GZQVGXQshewI+XjOpNFx4P
+         eI4g==
+X-Gm-Message-State: AOAM5303rpkuIHBW/S1PEj6AkDHDwcaJomibdMvGMf2topZDOSyrM7bl
+        D0QLvvkORO2bybAx7IX3g2zkhtz4TZ9kRuDN
+X-Google-Smtp-Source: ABdhPJxKVbHk/O8GdQW6c0byhd9G0kiuAcLFqlARWgLBOB6kjK4ieyZW00yJcAtDr2d49OHY+kDB6Q==
+X-Received: by 2002:ac8:37ef:: with SMTP id e44mr13293046qtc.342.1602250127150;
+        Fri, 09 Oct 2020 06:28:47 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id m97sm6204442qte.55.2020.10.09.06.28.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:46 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 08/12] btrfs: rework btrfs_calc_reclaim_metadata_size
+Date:   Fri,  9 Oct 2020 09:28:25 -0400
+Message-Id: <a4040579beba8551fd0aed11826749e82310df29.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/a4040579beba8551fd0aed11826749e82310df29.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+Currently btrfs_calc_reclaim_metadata_size does two things, it returns
+the space currently required for flushing by the tickets, and if there
+are no tickets it calculates a value for the preemptive flushing.
+
+However for the normal ticketed flushing we really only care about the
+space required for tickets.  We will accidentally come in and flush one
+time, but as soon as we see there are no tickets we bail out of our
+flushing.
+
+Fix this by making btrfs_calc_reclaim_metadata_size really only tell us
+what is required for flushing if we have people waiting on space.  Then
+move the preemptive flushing logic into need_preemptive_reclaim().  We
+ignore btrfs_calc_reclaim_metadata_size() in need_preemptive_reclaim()
+because if we are in this path then we made our reservation and there
+are not pending tickets currently, so we do not need to check it, simply
+do the fuzzy logic to check if we're getting low on space.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c | 44 ++++++++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 24 deletions(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 4a25f48fa000..03141251d44e 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -756,7 +756,6 @@ btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
+ {
+ 	u64 used;
+ 	u64 avail;
+-	u64 expected;
+ 	u64 to_reclaim = space_info->reclaim_size;
+ 
+ 	lockdep_assert_held(&space_info->lock);
+@@ -774,28 +773,6 @@ btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
+ 	if (space_info->total_bytes + avail < used)
+ 		to_reclaim += used - (space_info->total_bytes + avail);
+ 
+-	if (to_reclaim)
+-		return to_reclaim;
+-
+-	to_reclaim = min_t(u64, num_online_cpus() * SZ_1M, SZ_16M);
+-	if (btrfs_can_overcommit(fs_info, space_info, to_reclaim,
+-				 BTRFS_RESERVE_FLUSH_ALL))
+-		return 0;
+-
+-	used = btrfs_space_info_used(space_info, true);
+-
+-	if (btrfs_can_overcommit(fs_info, space_info, SZ_1M,
+-				 BTRFS_RESERVE_FLUSH_ALL))
+-		expected = div_factor_fine(space_info->total_bytes, 95);
+-	else
+-		expected = div_factor_fine(space_info->total_bytes, 90);
+-
+-	if (used > expected)
+-		to_reclaim = used - expected;
+-	else
+-		to_reclaim = 0;
+-	to_reclaim = min(to_reclaim, space_info->bytes_may_use +
+-				     space_info->bytes_reserved);
+ 	return to_reclaim;
+ }
+ 
+@@ -804,6 +781,7 @@ static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+ 					   u64 used)
+ {
+ 	u64 thresh = div_factor_fine(space_info->total_bytes, 98);
++	u64 to_reclaim, expected;
+ 
+ 	/* If we're just plain full then async reclaim just slows us down. */
+ 	if ((space_info->bytes_used + space_info->bytes_reserved) >= thresh)
+@@ -816,7 +794,25 @@ static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+ 	if (space_info->reclaim_size)
+ 		return 0;
+ 
+-	if (!btrfs_calc_reclaim_metadata_size(fs_info, space_info))
++	to_reclaim = min_t(u64, num_online_cpus() * SZ_1M, SZ_16M);
++	if (btrfs_can_overcommit(fs_info, space_info, to_reclaim,
++				 BTRFS_RESERVE_FLUSH_ALL))
++		return 0;
++
++	used = btrfs_space_info_used(space_info, true);
++	if (btrfs_can_overcommit(fs_info, space_info, SZ_1M,
++				 BTRFS_RESERVE_FLUSH_ALL))
++		expected = div_factor_fine(space_info->total_bytes, 95);
++	else
++		expected = div_factor_fine(space_info->total_bytes, 90);
++
++	if (used > expected)
++		to_reclaim = used - expected;
++	else
++		to_reclaim = 0;
++	to_reclaim = min(to_reclaim, space_info->bytes_may_use +
++				     space_info->bytes_reserved);
++	if (!to_reclaim)
+ 		return 0;
+ 
+ 	return (used >= thresh && !btrfs_fs_closing(fs_info) &&
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5842FC43467
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:29:00 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 02B3B22277
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:59 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="b7OMNvge"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388607AbgJIN24 (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388602AbgJIN2w (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:52 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDDCC0613D2
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:50 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id t9so7076938qtp.9
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=DvrRtm8z7A1+P+r6iBYaK/ETxF//2ZbyFMbquOwZMU4=;
+        b=b7OMNvgeVvhdWUIe/4kLPkY37CyzUHvuhdjcpn2twTXVj1cc/ldUC2+AUfsnwCRYyT
+         kj/PRLoJv+sHU1ktNwl8gXab32BBYWpZ1SJIDn4HHkYEFFVoyGAtCEcEQtdiouqnt3Ov
+         Ez+PfG56PLzFUT5kyTnWQePwRZYHSpyd5lBt7PmnAgHgwkoxe6QPo61ebGxYakn7Es4g
+         QaTqGi+ifnlTv3eigxz1x8nRkgVLbnhiDuGfOVCUPtFrg9rH5dfIIxIUdupb4GqousvX
+         UU3i5S3dNijuulVfmUucQomBTe1/GH/FpaJNaTK4J6jMVV4y2rLJ2VrmFe/oG/QYRphs
+         tgKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=DvrRtm8z7A1+P+r6iBYaK/ETxF//2ZbyFMbquOwZMU4=;
+        b=qHxWo5X6vcAFd0YcxKkT8EANtDWLvIa6XSydyLyg7HgSyrumoGrAnEHL+BtX6r1to1
+         HPK4B/W5t/+xqwGprwoAwWe1/tY2d1e2ZcW2ssRSkgx4eaRIQ1LwwtFsy0lcMpKMQ8Fn
+         vU7yP0l0WNptQsAYtKbcsG2GWqVV8GsN7wBsWN+/YsHQSOzQ+htaOUk7blHX9othQWbW
+         8oqGgTgExB6gLA/8Evsd/cSFmfDtPV0bOZ8CfZNM1BQvrtG9OtC1FdrprbRc9Wj1r6CE
+         QHzaIu3msPDz4vIxijCEMQNcMihLMyd+XwkZxRK0Gfq06r8H/f6Nn6a4u2k3mcxy5uh1
+         l3Rw==
+X-Gm-Message-State: AOAM532eYKomewb2v6jTbkpSL6AE/roeTUE96F3BWjh0X0GxZV1OqMkn
+        sECzQpIYy7l4q9tHhDdDSiHS6F+DVUVyadLI
+X-Google-Smtp-Source: ABdhPJwi97B1ZX4k5yBzANj4G3b6VALDj0IFmVx9txCxhFVCixlbT6EYctcnqoddWtxMdLsJznmgGQ==
+X-Received: by 2002:ac8:1a62:: with SMTP id q31mr6045590qtk.389.1602250129311;
+        Fri, 09 Oct 2020 06:28:49 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id i70sm6027178qke.11.2020.10.09.06.28.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:48 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Subject: [PATCH v3 09/12] btrfs: simplify the logic in need_preemptive_flushing
+Date:   Fri,  9 Oct 2020 09:28:26 -0400
+Message-Id: <8b46bf643eb38d6381345b9985b2abbdc47711ad.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/8b46bf643eb38d6381345b9985b2abbdc47711ad.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+A lot of this was added all in one go with no explanation, and is a bit
+unwieldy and confusing.  Simplify the logic to start preemptive flushing
+if we've reserved more than half of our available free space.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c | 73 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 25 deletions(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 03141251d44e..c56a4827956f 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -777,11 +777,11 @@ btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
+ }
+ 
+ static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+-					   struct btrfs_space_info *space_info,
+-					   u64 used)
++					   struct btrfs_space_info *space_info)
+ {
++	u64 ordered, delalloc;
+ 	u64 thresh = div_factor_fine(space_info->total_bytes, 98);
+-	u64 to_reclaim, expected;
++	u64 used;
+ 
+ 	/* If we're just plain full then async reclaim just slows us down. */
+ 	if ((space_info->bytes_used + space_info->bytes_reserved) >= thresh)
+@@ -794,26 +794,52 @@ static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+ 	if (space_info->reclaim_size)
+ 		return 0;
+ 
+-	to_reclaim = min_t(u64, num_online_cpus() * SZ_1M, SZ_16M);
+-	if (btrfs_can_overcommit(fs_info, space_info, to_reclaim,
+-				 BTRFS_RESERVE_FLUSH_ALL))
+-		return 0;
++	/*
++	 * If we have over half of the free space occupied by reservations or
++	 * pinned then we want to start flushing.
++	 *
++	 * We do not do the traditional thing here, which is to say
++	 *
++	 *   if (used >= ((total_bytes + avail) >> 1))
++	 *     return 1;
++	 *
++	 * because this doesn't quite work how we want.  If we had more than 50%
++	 * of the space_info used by bytes_used and we had 0 available we'd just
++	 * constantly run the background flusher.  Instead we want it to kick in
++	 * if our reclaimable space exceeds 50% of our available free space.
++	 */
++	thresh = calc_available_free_space(fs_info, space_info,
++					   BTRFS_RESERVE_FLUSH_ALL);
++	thresh += (space_info->total_bytes - space_info->bytes_used -
++		   space_info->bytes_reserved - space_info->bytes_readonly);
++	thresh >>= 1;
+ 
+-	used = btrfs_space_info_used(space_info, true);
+-	if (btrfs_can_overcommit(fs_info, space_info, SZ_1M,
+-				 BTRFS_RESERVE_FLUSH_ALL))
+-		expected = div_factor_fine(space_info->total_bytes, 95);
+-	else
+-		expected = div_factor_fine(space_info->total_bytes, 90);
++	used = space_info->bytes_pinned;
+ 
+-	if (used > expected)
+-		to_reclaim = used - expected;
++	/*
++	 * If we have more ordered bytes than delalloc bytes then we're either
++	 * doing a lot of DIO, or we simply don't have a lot of delalloc waiting
++	 * around.  Preemptive flushing is only useful in that it can free up
++	 * space before tickets need to wait for things to finish.  In the case
++	 * of ordered extents, preemptively waiting on ordered extents gets us
++	 * nothing, if our reservations are tied up in ordered extents we'll
++	 * simply have to slow down writers by forcing them to wait on ordered
++	 * extents.
++	 *
++	 * In the case that ordered is larger than delalloc, only include the
++	 * block reserves that we would actually be able to directly reclaim
++	 * from.  In this case if we're heavy on metadata operations this will
++	 * clearly be heavy enough to warrant preemptive flushing.  In the case
++	 * of heavy DIO or ordered reservations, preemptive flushing will just
++	 * waste time and cause us to slow down.
++	 */
++	ordered = percpu_counter_sum_positive(&fs_info->ordered_bytes);
++	delalloc = percpu_counter_sum_positive(&fs_info->delalloc_bytes);
++	if (ordered >= delalloc)
++		used += fs_info->delayed_refs_rsv.reserved +
++			fs_info->delayed_block_rsv.reserved;
+ 	else
+-		to_reclaim = 0;
+-	to_reclaim = min(to_reclaim, space_info->bytes_may_use +
+-				     space_info->bytes_reserved);
+-	if (!to_reclaim)
+-		return 0;
++		used += space_info->bytes_may_use;
+ 
+ 	return (used >= thresh && !btrfs_fs_closing(fs_info) &&
+ 		!test_bit(BTRFS_FS_STATE_REMOUNTING, &fs_info->fs_state));
+@@ -1010,7 +1036,6 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 	struct btrfs_block_rsv *delayed_refs_rsv;
+ 	struct btrfs_block_rsv *global_rsv;
+ 	struct btrfs_block_rsv *trans_rsv;
+-	u64 used;
+ 
+ 	fs_info = container_of(work, struct btrfs_fs_info,
+ 			       preempt_reclaim_work);
+@@ -1021,8 +1046,7 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 	trans_rsv = &fs_info->trans_block_rsv;
+ 
+ 	spin_lock(&space_info->lock);
+-	used = btrfs_space_info_used(space_info, true);
+-	while (need_preemptive_reclaim(fs_info, space_info, used)) {
++	while (need_preemptive_reclaim(fs_info, space_info)) {
+ 		enum btrfs_flush_state flush;
+ 		u64 delalloc_size = 0;
+ 		u64 to_reclaim, block_rsv_size;
+@@ -1084,7 +1108,6 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 		flush_space(fs_info, space_info, to_reclaim, flush);
+ 		cond_resched();
+ 		spin_lock(&space_info->lock);
+-		used = btrfs_space_info_used(space_info, true);
+ 	}
+ 	spin_unlock(&space_info->lock);
+ }
+@@ -1499,7 +1522,7 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 		 * the async reclaim as we will panic.
+ 		 */
+ 		if (!test_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags) &&
+-		    need_preemptive_reclaim(fs_info, space_info, used) &&
++		    need_preemptive_reclaim(fs_info, space_info) &&
+ 		    !work_busy(&fs_info->preempt_reclaim_work)) {
+ 			trace_btrfs_trigger_flush(fs_info, space_info->flags,
+ 						  orig_bytes, flush, "preempt");
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA11DC43457
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:57 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 7DCA0222BA
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:57 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="iG0DkuXP"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388610AbgJIN25 (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388604AbgJIN2x (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:53 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421A6C0613D5
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:52 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id 140so8792262qko.2
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=RS0oQDjA5A5QUfN1iSuMt4UMje6pwQsmdNJPdcNDTL4=;
+        b=iG0DkuXPyUcc/dsOG2jvgY9LB9PMkKiGv9tzaU+NsO6TVzn0Ag4kXGrBA8DF4kMsRZ
+         0/0bFR90GvbnSyizviPSRPQaYFHsruSkNwhkHWwKRRtvQNTiTBPuoh473gSormUKTu3E
+         1MgAvAXx0CvpHxpun3Zbhdk/bkUXaVGdp4fLm4dQgvXPyPjDs6qrnmsvjH8pEhqaBr6m
+         8725nJZbq/6iQRu7GgRpd/7Eb4Ipg7Ua+mpWV9lN2vyi0L2H+fw9524radBQIzJDvpGN
+         Y5hYvP5b4I4IJrcoCeZ6OHFsEX17o/5oTm50TnYyHC8N8F1Lpendm5ruxHfhWQb1zk7j
+         U47g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=RS0oQDjA5A5QUfN1iSuMt4UMje6pwQsmdNJPdcNDTL4=;
+        b=i5WkClp5Clp3NqtwSMr+ejEfwmX/UK8qEe4UqMdPrXDnHFJuugrzoVKoWrOXCkzZVg
+         FnqYJfFaLO+6p+I0bOdZQ5pPgDac5k7JiuE/MWeCAfh65qw8J8eSUAPK7VyP9R0Lrk1z
+         cwAlaHNWqifKNXV66KubX45bI1SzieEfFLw26cgih9LzuGrhrSyKtIBlU4WwoxaWdr8h
+         DL4jsLa4CRn6pMZRlme70yG/vsv8HVy5iS87RlomGQWtHYBzi9OuUgAsyMnCMOo86a0s
+         i6rlcZO61puFXiRDOWbksH5/S63LeNpjTpMGu8N1qPsxc1z4IC6Bc5kQOTdaN4zfMl/8
+         LF0w==
+X-Gm-Message-State: AOAM530amYHlYrc1YEV13LBuuSGce5CIscLV0hXiTsPQQeqcCerhNwju
+        0swZeq4ECdIGz4zIERu9ecjaYbnsRMTt+FRD
+X-Google-Smtp-Source: ABdhPJy1lr8WWgRyWqtA4QKK7JcHKq5JktbuZFllRgv9TjdhtHIKDz2gLr1jSJZ+BSNoNnKRdQIPDQ==
+X-Received: by 2002:a37:8044:: with SMTP id b65mr3147708qkd.24.1602250130981;
+        Fri, 09 Oct 2020 06:28:50 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id o6sm6304459qkb.103.2020.10.09.06.28.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:50 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 10/12] btrfs: implement space clamping for preemptive flushing
+Date:   Fri,  9 Oct 2020 09:28:27 -0400
+Message-Id: <5ddb5076afa5872f8edf3bb4ea17aacec8e079fd.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/5ddb5076afa5872f8edf3bb4ea17aacec8e079fd.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+Starting preemptive flushing at 50% of available free space is a good
+start, but some workloads are particularly abusive and can quickly
+overwhelm the preemptive flushing code and drive us into using tickets.
+
+Handle this by clamping down on our threshold for starting and
+continuing to run preemptive flushing.  This is particularly important
+for our overcommit case, as we can really drive the file system into
+overages and then it's more difficult to pull it back as we start to
+actually fill up the file system.
+
+The clamping is essentially 2^CLAMP, but we start at 1 so whatever we
+calculate for overcommit is the baseline.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c | 38 ++++++++++++++++++++++++++++++++++++--
+ fs/btrfs/space-info.h |  3 +++
+ 2 files changed, 39 insertions(+), 2 deletions(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index c56a4827956f..5ee698c12a7b 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -206,6 +206,7 @@ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
+ 	INIT_LIST_HEAD(&space_info->ro_bgs);
+ 	INIT_LIST_HEAD(&space_info->tickets);
+ 	INIT_LIST_HEAD(&space_info->priority_tickets);
++	space_info->clamp = 1;
+ 
+ 	ret = btrfs_sysfs_add_space_info_type(info, space_info);
+ 	if (ret)
+@@ -806,13 +807,13 @@ static inline bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+ 	 * because this doesn't quite work how we want.  If we had more than 50%
+ 	 * of the space_info used by bytes_used and we had 0 available we'd just
+ 	 * constantly run the background flusher.  Instead we want it to kick in
+-	 * if our reclaimable space exceeds 50% of our available free space.
++	 * if our reclaimable space exceeds our clamped free space.
+ 	 */
+ 	thresh = calc_available_free_space(fs_info, space_info,
+ 					   BTRFS_RESERVE_FLUSH_ALL);
+ 	thresh += (space_info->total_bytes - space_info->bytes_used -
+ 		   space_info->bytes_reserved - space_info->bytes_readonly);
+-	thresh >>= 1;
++	thresh >>= space_info->clamp;
+ 
+ 	used = space_info->bytes_pinned;
+ 
+@@ -1036,6 +1037,7 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 	struct btrfs_block_rsv *delayed_refs_rsv;
+ 	struct btrfs_block_rsv *global_rsv;
+ 	struct btrfs_block_rsv *trans_rsv;
++	int loops = 0;
+ 
+ 	fs_info = container_of(work, struct btrfs_fs_info,
+ 			       preempt_reclaim_work);
+@@ -1052,6 +1054,8 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 		u64 to_reclaim, block_rsv_size;
+ 		u64 global_rsv_size = global_rsv->reserved;
+ 
++		loops++;
++
+ 		/*
+ 		 * We don't have a precise counter for the metadata being
+ 		 * reserved for delalloc, so we'll approximate it by subtracting
+@@ -1109,6 +1113,10 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 		cond_resched();
+ 		spin_lock(&space_info->lock);
+ 	}
++
++	/* We only went through once, back off our clamping. */
++	if (loops == 1 && !space_info->reclaim_size)
++		space_info->clamp = max(1, space_info->clamp - 1);
+ 	spin_unlock(&space_info->lock);
+ }
+ 
+@@ -1422,6 +1430,24 @@ static inline bool is_normal_flushing(enum btrfs_reserve_flush_enum flush)
+ 		(flush == BTRFS_RESERVE_FLUSH_ALL_STEAL);
+ }
+ 
++static inline void maybe_clamp_preempt(struct btrfs_fs_info *fs_info,
++				       struct btrfs_space_info *space_info)
++{
++	u64 ordered = percpu_counter_sum_positive(&fs_info->ordered_bytes);
++	u64 delalloc = percpu_counter_sum_positive(&fs_info->delalloc_bytes);
++
++	/*
++	 * If we're heavy on ordered operations then clamping won't help us.  We
++	 * need to clamp specifically to keep up with dirty'ing buffered
++	 * writers, because there's not a 1:1 correlation of writing delalloc
++	 * and freeing space, like there is with flushing delayed refs or
++	 * delayed nodes.  If we're already more ordered than delalloc then
++	 * we're keeping up, otherwise we aren't and should probably clamp.
++	 */
++	if (ordered < delalloc)
++		space_info->clamp = min(space_info->clamp + 1, 8);
++}
++
+ /**
+  * reserve_metadata_bytes - try to reserve bytes from the block_rsv's space
+  * @root - the root we're allocating for
+@@ -1514,6 +1540,14 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 			list_add_tail(&ticket.list,
+ 				      &space_info->priority_tickets);
+ 		}
++
++		/*
++		 * We were forced to add a reserve ticket, so our preemptive
++		 * flushing is unable to keep up.  Clamp down on the threshold
++		 * for the preemptive flushing in order to keep up with the
++		 * workload.
++		 */
++		maybe_clamp_preempt(fs_info, space_info);
+ 	} else if (!ret && space_info->flags & BTRFS_BLOCK_GROUP_METADATA) {
+ 		used += orig_bytes;
+ 		/*
+diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
+index 5646393b928c..bcbbfae131f6 100644
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -22,6 +22,9 @@ struct btrfs_space_info {
+ 				   the space info if we had an ENOSPC in the
+ 				   allocator. */
+ 
++	int clamp;		/* Used to scale our threshold for preemptive
++				   flushing. */
++
+ 	unsigned int full:1;	/* indicates that we cannot allocate any more
+ 				   chunks for this space */
+ 	unsigned int chunk_alloc:1;	/* set if we are allocating a chunk */
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-9.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE112C433DF
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:58 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 7B0F722277
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:58 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="QpW+yRpA"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388612AbgJIN25 (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388573AbgJIN24 (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:56 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D835C0613D6
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:55 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id c23so7924053qtp.0
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=C47/6Lu3kLBk7z18hoHpNXzwGHJ09XisxNmwegv3ccI=;
+        b=QpW+yRpAJR60m8O5YO3fN7H+BejVIYfJG03BuWuOYTw8aWHMmIRsAiSCZ5JRBMMb2+
+         ECuq21ftaHXIuM7xhwImGJJh9UveTAhkF9P2A+vqP+9XMA2GGWBW5oWspk0SInQrQXG0
+         M0Pg+q3s0jmG3wncb2gQbcRN7K6vluPeO+NtcYHvOySfD7VfJ0nDrCblZXCO6JKym0rM
+         ZH6lDzybqlVkHyr1mJMvlaa/DARKT1DcKzghlNZFgXqu0hJ4qVXw2NFG/++8k2SNnH1M
+         e/BIwvD51TzvzP3Vy5lCH0UKJ/XZUUt/N8/Ej7H0kf+xkm7QA836ZmD9BakksqujaShK
+         cFnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=C47/6Lu3kLBk7z18hoHpNXzwGHJ09XisxNmwegv3ccI=;
+        b=iTz1DBmzDEexx7Z5py8bRHR+V+St/3RQ+gEmnUvYS0x4k/WuC5d4wOa1XSH8QpiHS2
+         lM/W7M5zKRtv1/erjOfmlmNhm4364cuiBtwp6Ufiik0S3DEJ/1rL5RMrNOVoJsSON8Ym
+         7dhHEOekl6nkI4/idpjwac5DMpLT3/gK7sZcgE5rRMe9zJw9nq3bgYKtIeep6gCD2gdw
+         n6GctJZU+7amgfj+0FNJuv4gShYVUiJ0eE1ENlt8UukaZlY1mIi5Mo6tSzZEsmedbRDD
+         ZYfYZyeW3cCk4J0VrzSr4zEJ0pxs4V075vEkxYOoPJ2uqEsgcLaMxrsbBDNs6ETZDiFx
+         l8qw==
+X-Gm-Message-State: AOAM531WACnoQYfyqJ7UhhNzQUkTPkbjPBxIkWAMcZIiv2bvD8DvGFsI
+        Qomyam1XVF3Vy6P4tNQBBGlDNfDb/r0Ban9J
+X-Google-Smtp-Source: ABdhPJwNTnwKed59LbRjub5hXmoh8Htg6Q/pa32jy4+PCAowkDUV8Ex6Wlt9DBI9rpJMm9/Xh8EuTA==
+X-Received: by 2002:ac8:5948:: with SMTP id 8mr13138469qtz.215.1602250133052;
+        Fri, 09 Oct 2020 06:28:53 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id r13sm6076138qtp.94.2020.10.09.06.28.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:52 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 11/12] btrfs: adjust the flush trace point to include the source
+Date:   Fri,  9 Oct 2020 09:28:28 -0400
+Message-Id: <cbc33fd7a2d39ca651ba1f1e44345663f5c369cc.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/cbc33fd7a2d39ca651ba1f1e44345663f5c369cc.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+Since we have normal ticketed flushing and preemptive flushing, adjust
+the tracepoint so that we know the source of the flushing action to make
+it easier to debug problems.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c        | 20 ++++++++++++--------
+ include/trace/events/btrfs.h | 10 ++++++----
+ 2 files changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 5ee698c12a7b..30474fa30985 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -664,7 +664,7 @@ static int may_commit_transaction(struct btrfs_fs_info *fs_info,
+  */
+ static void flush_space(struct btrfs_fs_info *fs_info,
+ 		       struct btrfs_space_info *space_info, u64 num_bytes,
+-		       enum btrfs_flush_state state)
++		       enum btrfs_flush_state state, bool for_preempt)
+ {
+ 	struct btrfs_root *root = fs_info->extent_root;
+ 	struct btrfs_trans_handle *trans;
+@@ -747,7 +747,7 @@ static void flush_space(struct btrfs_fs_info *fs_info,
+ 	}
+ 
+ 	trace_btrfs_flush_space(fs_info, space_info->flags, num_bytes, state,
+-				ret);
++				ret, for_preempt);
+ 	return;
+ }
+ 
+@@ -973,7 +973,8 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 
+ 	flush_state = FLUSH_DELAYED_ITEMS_NR;
+ 	do {
+-		flush_space(fs_info, space_info, to_reclaim, flush_state);
++		flush_space(fs_info, space_info, to_reclaim, flush_state,
++			    false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+ 			space_info->flush = 0;
+@@ -1109,7 +1110,7 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 		to_reclaim >>= 2;
+ 		if (!to_reclaim)
+ 			to_reclaim = btrfs_calc_insert_metadata_size(fs_info, 1);
+-		flush_space(fs_info, space_info, to_reclaim, flush);
++		flush_space(fs_info, space_info, to_reclaim, flush, true);
+ 		cond_resched();
+ 		spin_lock(&space_info->lock);
+ 	}
+@@ -1200,7 +1201,8 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 	spin_unlock(&space_info->lock);
+ 
+ 	while (!space_info->full) {
+-		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE);
++		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE,
++			    false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+ 			space_info->flush = 0;
+@@ -1213,7 +1215,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 
+ 	while (flush_state < ARRAY_SIZE(data_flush_states)) {
+ 		flush_space(fs_info, space_info, U64_MAX,
+-			    data_flush_states[flush_state]);
++			    data_flush_states[flush_state], false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+ 			space_info->flush = 0;
+@@ -1286,7 +1288,8 @@ static void priority_reclaim_metadata_space(struct btrfs_fs_info *fs_info,
+ 
+ 	flush_state = 0;
+ 	do {
+-		flush_space(fs_info, space_info, to_reclaim, states[flush_state]);
++		flush_space(fs_info, space_info, to_reclaim, states[flush_state],
++			    false);
+ 		flush_state++;
+ 		spin_lock(&space_info->lock);
+ 		if (ticket->bytes == 0) {
+@@ -1302,7 +1305,8 @@ static void priority_reclaim_data_space(struct btrfs_fs_info *fs_info,
+ 					struct reserve_ticket *ticket)
+ {
+ 	while (!space_info->full) {
+-		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE);
++		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE,
++			    false);
+ 		spin_lock(&space_info->lock);
+ 		if (ticket->bytes == 0) {
+ 			spin_unlock(&space_info->lock);
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 0a3d35d952c4..6d93637bae02 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -1112,15 +1112,16 @@ TRACE_EVENT(btrfs_trigger_flush,
+ TRACE_EVENT(btrfs_flush_space,
+ 
+ 	TP_PROTO(const struct btrfs_fs_info *fs_info, u64 flags, u64 num_bytes,
+-		 int state, int ret),
++		 int state, int ret, int for_preempt),
+ 
+-	TP_ARGS(fs_info, flags, num_bytes, state, ret),
++	TP_ARGS(fs_info, flags, num_bytes, state, ret, for_preempt),
+ 
+ 	TP_STRUCT__entry_btrfs(
+ 		__field(	u64,	flags			)
+ 		__field(	u64,	num_bytes		)
+ 		__field(	int,	state			)
+ 		__field(	int,	ret			)
++		__field(	int,	for_preempt		)
+ 	),
+ 
+ 	TP_fast_assign_btrfs(fs_info,
+@@ -1128,15 +1129,16 @@ TRACE_EVENT(btrfs_flush_space,
+ 		__entry->num_bytes	=	num_bytes;
+ 		__entry->state		=	state;
+ 		__entry->ret		=	ret;
++		__entry->for_preempt	=	for_preempt;
+ 	),
+ 
+-	TP_printk_btrfs("state=%d(%s) flags=%llu(%s) num_bytes=%llu ret=%d",
++	TP_printk_btrfs("state=%d(%s) flags=%llu(%s) num_bytes=%llu ret=%d for_preempt=%d",
+ 		  __entry->state,
+ 		  __print_symbolic(__entry->state, FLUSH_STATES),
+ 		  __entry->flags,
+ 		  __print_flags((unsigned long)__entry->flags, "|",
+ 				BTRFS_GROUP_FLAGS),
+-		  __entry->num_bytes, __entry->ret)
++		  __entry->num_bytes, __entry->ret, __entry->for_preempt)
+ );
+ 
+ DECLARE_EVENT_CLASS(btrfs__reserved_extent,
+-- 
+2.26.2
+
+
+From mboxrd@z Thu Jan  1 00:00:00 1970
+Return-Path: <SRS0=4JW5=DQ=vger.kernel.org=linux-btrfs-owner@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84311C433E7
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:59 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 26A3222277
+	for <linux-btrfs@archiver.kernel.org>; Fri,  9 Oct 2020 13:28:59 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20150623.gappssmtp.com header.i=@toxicpanda-com.20150623.gappssmtp.com header.b="0qc36ks7"
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S2388615AbgJIN26 (ORCPT <rfc822;linux-btrfs@archiver.kernel.org>);
+        Fri, 9 Oct 2020 09:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44000 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388573AbgJIN26 (ORCPT
+        <rfc822;linux-btrfs@vger.kernel.org>); Fri, 9 Oct 2020 09:28:58 -0400
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42391C0613D7
+        for <linux-btrfs@vger.kernel.org>; Fri,  9 Oct 2020 06:28:56 -0700 (PDT)
+Received: by mail-qv1-xf43.google.com with SMTP id t20so4738514qvv.8
+        for <linux-btrfs@vger.kernel.org>; Fri, 09 Oct 2020 06:28:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=JTr5aqhEyIRHE9K85alzYsjgkaWjmpYmLjJbpalEuuo=;
+        b=0qc36ks7BcjrARp6nLoDBw/77ZWZZWqyybrqkj4pcpG70V9q9Q8jy+TYYl1zJcx1SE
+         753nlO6m14cuj8sX8mvLRQTEsmhuuYe5Cf+7vktOkQ55cDFqCEnE9iZzgLqYSyUdiSkf
+         NYPAcuNo4r9zj7weIMcEo5Ssoerx0vFnpBnltHM3WxNQU1G/GmGrhOLUBXzI46id9TtW
+         DDoZT6AINW/ICrme4H4HSkV735+YmWVzkpuerVjoJNGl9hjkW5al0IF0MD2Hrh9+yuMt
+         X6MEtnH8L+3iMoWAZ++0QH/EwJWIxdYYbFnfYOewXdLoT8wT45zhIqRlHXUuw+lxVpOt
+         ixmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=JTr5aqhEyIRHE9K85alzYsjgkaWjmpYmLjJbpalEuuo=;
+        b=M4pP+QPWk6f0ggJm6ijZibFI8xXBVxIXtE+A81ATRr7szeSjgPVnCnNQAnIleZH2X+
+         WSpifi/W/hoGUte0GA3swQioB64V9FS9OKf+aMfqZ5I5dd3h9NOD533zy8FdMeAwqkBV
+         IlQBdu+maq6Zu/hNfk9hNLjt0/y9TbxuZtOi2mh9DHEKuDLL6vYmWF9DXA/fokjkHJHr
+         sTrhblFqzPFGpPFCWACOf+ievtG9A4GOMh+2bo9s14Va74MP10rkYtm7OrsENDQTTxpI
+         cx0GcwmcoBZFy2kHnL7ImsP8UtH4Gczox1GbL1XvCZ/RzEI8UM75rSVXBASCQEenoxlf
+         nPtg==
+X-Gm-Message-State: AOAM532O7nwkB+27Qr/AATpkl2fLSskSiAOMEO8gX+BJJBDQhcy7i/ml
+        ycXY21FLtMBHiPbFdRT8N2f9+UoxV0RnAYle
+X-Google-Smtp-Source: ABdhPJwTx+T9PoJQmtL7NIqCB9u2kTdPmek+u+8Rn4K7nPVohJ56wb6T9jF7QKGJzPpsXMv0Pt1Wiw==
+X-Received: by 2002:ad4:42b3:: with SMTP id e19mr12619789qvr.6.1602250135041;
+        Fri, 09 Oct 2020 06:28:55 -0700 (PDT)
+Received: from localhost (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
+        by smtp.gmail.com with ESMTPSA id k20sm6209420qtm.44.2020.10.09.06.28.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 06:28:54 -0700 (PDT)
+From:   Josef Bacik <josef@toxicpanda.com>
+To:     linux-btrfs@vger.kernel.org, kernel-team@fb.com
+Cc:     Nikolay Borisov <nborisov@suse.com>
+Subject: [PATCH v3 12/12] btrfs: add a trace class for dumping the current ENOSPC state
+Date:   Fri,  9 Oct 2020 09:28:29 -0400
+Message-Id: <3e5d1e29372cbbdb022185ffb5b10e6823478fc6.1602249928.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1602249928.git.josef@toxicpanda.com>
+References: <cover.1602249928.git.josef@toxicpanda.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+List-ID: <linux-btrfs.vger.kernel.org>
+X-Mailing-List: linux-btrfs@vger.kernel.org
+Archived-At: <https://lore.kernel.org/linux-btrfs/3e5d1e29372cbbdb022185ffb5b10e6823478fc6.1602249928.git.josef@toxicpanda.com/>
+List-Archive: <https://lore.kernel.org/linux-btrfs/>
+List-Post: <mailto:linux-btrfs@vger.kernel.org>
+
+Often when I'm debugging ENOSPC related issues I have to resort to
+printing the entire ENOSPC state with trace_printk() in different spots.
+This gets pretty annoying, so add a trace state that does this for us.
+Then add a trace point at the end of preemptive flushing so you can see
+the state of the space_info when we decide to exit preemptive flushing.
+This helped me figure out we weren't kicking in the preemptive flushing
+soon enough.
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+ fs/btrfs/space-info.c        |  1 +
+ include/trace/events/btrfs.h | 62 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
+
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 30474fa30985..656c46b77250 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -1118,6 +1118,7 @@ static void btrfs_preempt_reclaim_metadata_space(struct work_struct *work)
+ 	/* We only went through once, back off our clamping. */
+ 	if (loops == 1 && !space_info->reclaim_size)
+ 		space_info->clamp = max(1, space_info->clamp - 1);
++	trace_btrfs_done_preemptive_reclaim(fs_info, space_info);
+ 	spin_unlock(&space_info->lock);
+ }
+ 
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 6d93637bae02..74b466dc20ac 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -2028,6 +2028,68 @@ TRACE_EVENT(btrfs_convert_extent_bit,
+ 		  __print_flags(__entry->clear_bits, "|", EXTENT_FLAGS))
+ );
+ 
++DECLARE_EVENT_CLASS(btrfs_dump_space_info,
++	TP_PROTO(const struct btrfs_fs_info *fs_info,
++		 const struct btrfs_space_info *sinfo),
++
++	TP_ARGS(fs_info, sinfo),
++
++	TP_STRUCT__entry_btrfs(
++		__field(	u64,	flags			)
++		__field(	u64,	total_bytes		)
++		__field(	u64,	bytes_used		)
++		__field(	u64,	bytes_pinned		)
++		__field(	u64,	bytes_reserved		)
++		__field(	u64,	bytes_may_use		)
++		__field(	u64,	bytes_readonly		)
++		__field(	u64,	reclaim_size		)
++		__field(	int,	clamp			)
++		__field(	u64,	global_reserved		)
++		__field(	u64,	trans_reserved		)
++		__field(	u64,	delayed_refs_reserved	)
++		__field(	u64,	delayed_reserved	)
++		__field(	u64,	free_chunk_space	)
++	),
++
++	TP_fast_assign_btrfs(fs_info,
++		__entry->flags			=	sinfo->flags;
++		__entry->total_bytes		=	sinfo->total_bytes;
++		__entry->bytes_used		=	sinfo->bytes_used;
++		__entry->bytes_pinned		=	sinfo->bytes_pinned;
++		__entry->bytes_reserved		=	sinfo->bytes_reserved;
++		__entry->bytes_may_use		=	sinfo->bytes_may_use;
++		__entry->bytes_readonly		=	sinfo->bytes_readonly;
++		__entry->reclaim_size		=	sinfo->reclaim_size;
++		__entry->clamp			=	sinfo->clamp;
++		__entry->global_reserved	=	fs_info->global_block_rsv.reserved;
++		__entry->trans_reserved		=	fs_info->trans_block_rsv.reserved;
++		__entry->delayed_refs_reserved	=	fs_info->delayed_refs_rsv.reserved;
++		__entry->delayed_reserved	=	fs_info->delayed_block_rsv.reserved;
++		__entry->free_chunk_space	=	atomic64_read(&fs_info->free_chunk_space);
++	),
++
++	TP_printk_btrfs("flags=%s total_bytes=%llu bytes_used=%llu "
++			"bytes_pinned=%llu bytes_reserved=%llu "
++			"bytes_may_use=%llu bytes_readonly=%llu "
++			"reclaim_size=%llu clamp=%d global_reserved=%llu "
++			"trans_reserved=%llu delayed_refs_reserved=%llu "
++			"delayed_reserved=%llu chunk_free_space=%llu",
++			__print_flags(__entry->flags, "|", BTRFS_GROUP_FLAGS),
++			__entry->total_bytes, __entry->bytes_used,
++			__entry->bytes_pinned, __entry->bytes_reserved,
++			__entry->bytes_may_use, __entry->bytes_readonly,
++			__entry->reclaim_size, __entry->clamp,
++			__entry->global_reserved, __entry->trans_reserved,
++			__entry->delayed_refs_reserved,
++			__entry->delayed_reserved, __entry->free_chunk_space)
++);
++
++DEFINE_EVENT(btrfs_dump_space_info, btrfs_done_preemptive_reclaim,
++	TP_PROTO(const struct btrfs_fs_info *fs_info,
++		 const struct btrfs_space_info *sinfo),
++	TP_ARGS(fs_info, sinfo)
++);
++
+ TRACE_EVENT(btrfs_reserve_ticket,
+ 	TP_PROTO(const struct btrfs_fs_info *fs_info, u64 flags, u64 bytes,
+ 		 u64 start_ns, int flush, int error),
+-- 
+2.26.2
+
+

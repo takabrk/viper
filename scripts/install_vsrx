@@ -1,0 +1,3 @@
+#!/bin/sh
+sudo ubiquity -b &
+xfce4-terminal --hide-menubar -x sh -c 'FILE=$HOME/viper/scripts/install_vsrx_info.txt;zenity --text-info --filename=$FILE --title="Valkyrie Linuxインストール方法(旧)"; read' &

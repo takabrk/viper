@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="network_traffic" mtime="1405063260" type="bool" value="false"/>
+	<entry name="disk_usage" mtime="1405063260" type="bool" value="false"/>
+	<entry name="cpu_usage" mtime="1405063260" type="bool" value="false"/>
+</gconf>

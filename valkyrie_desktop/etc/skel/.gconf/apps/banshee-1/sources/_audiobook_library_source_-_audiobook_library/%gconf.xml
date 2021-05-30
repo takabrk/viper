@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="library-location" mtime="1402819494" type="string">
+		<stringvalue>/home/valkyrie/Audiobooks</stringvalue>
+	</entry>
+	<entry name="file_pattern" mtime="1402819492" type="string">
+		<stringvalue>%title%</stringvalue>
+	</entry>
+	<entry name="folder_pattern" mtime="1402819491" type="string">
+		<stringvalue>%author% - %book_title%</stringvalue>
+	</entry>
+	<entry name="expanded" mtime="1404042848" type="bool" value="true"/>
+</gconf>

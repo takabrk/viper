@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="mime_type" mtime="1361013867" type="string">
+		<stringvalue>image/jpeg</stringvalue>
+	</entry>
+</gconf>

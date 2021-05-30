@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="parole" version="1.0">
+  <property name="subtitles" type="empty">
+    <property name="font" type="string" value="Sans Bold 20"/>
+  </property>
+  <property name="folders" type="empty">
+    <property name="last-used-media" type="string" value="/media/4B5E87DA538052AF/DCIM"/>
+  </property>
+  <property name="window" type="empty">
+    <property name="width" type="int" value="758"/>
+    <property name="height" type="int" value="438"/>
+  </property>
+</channel>

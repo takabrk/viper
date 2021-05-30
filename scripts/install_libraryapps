@@ -1,0 +1,14 @@
+#!/bin/sh
+sudo apt-get update
+sudo apt-get install -y python python3 python-pip python3-pip xfce4-terminal libglade2-0 bison flex apngasm apngdis
+sudo apt-get install -y python-tk python3-tk python-dev libxml2-dev libxslt-dev python3-dev
+sudo dpkg -i ../gksu/*
+sudo apt-get install -y mecab mecab-utils mecab-naist-jdic  mecab-naist-jdic-eucjp mecab-jumandic python-mecab ffmpeg
+#sudo pip2 install --no-cache-dir scipy numpy pandas seaborn scikit-learn statsmodels beautifulsoup4 matplotlib
+#sudo pip3 install --no-cache-dir scipy numpy pandas seaborn scikit-learn statsmodels beautifulsoup4 matplotlib
+#sudo apt-get install python-pip python-dev python-virtualenv
+#sudo apt-get install python3-pip python3-dev python-virtualenv
+#sudo pip install --upgrade tensorflow
+#sudo pip3 install --upgrade tensorflow
+#sudo pip install --upgrade tensorflow-gpu
+#sudo pip3 install --upgrade tensorflow-gpu

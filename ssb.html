@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>Site Specific Browser</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="./CSS/vsrx.css">
+</head>
+<body>
+  <div class="linkpage">
+    <article>
+<iframe src="" style="width:100%;height:600px">SSB</iframe>
+<ul>
+    <li><a href="#">BROARDBAND Speedtest</a></li>
+    <li><a href="#">Animizer</a></li>
+    <li><a href="#">Waifu2x</a></li>
+    <li><a href="#">IP hiroba</a></li>
+    <li><a href="#">Printer Settings</a></li>
+</ul>
+</article>
+</div>
+</body>
+<script type="text/javascript">
+const urllists = [
+"http://www.bspeedtest.jp/",
+"http://animizer.net/",
+"http://waifu2x.udp.jp/index.ja.html",
+"http://www.iphiroba.jp/",
+"http://localhost:631/"];
+var litag = document.getElementsByTagName("li");
+var clickac = function(tagname,func){
+    document.getElementsByTagName("li")[parseInt(tagname.slice(2,tagname.length))].addEventListener("click",func,false);
+}
+clickac("li0",function(){document.getElementsByTagName("iframe")[0].src = urllists[0]});
+clickac("li1",function(){document.getElementsByTagName("iframe")[0].src = urllists[1]});
+clickac("li2",function(){document.getElementsByTagName("iframe")[0].src = urllists[2]});
+clickac("li3",function(){document.getElementsByTagName("iframe")[0].src = urllists[3]});
+clickac("li4",function(){location.href = urllists[4]});
+</script>
+</html>

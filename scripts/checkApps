@@ -1,0 +1,42 @@
+#!/bin/sh
+cd `dirname $0`
+
+which atom > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo "There is Atom."
+else
+    echo "No, Atom was not found."
+    yes | sudo apt-get install atom
+fi
+
+which gnome-boxes > /dev/null 2>&1
+if [ $? -eq 0 ];then
+    echo "There is GNOME Boxes."
+else
+    echo "No,GNOME Boxes not found."
+    yes | sudo apt-get install gnome-boxes
+fi
+
+which virtualbox > /dev/null 2>&1
+if [ $? -eq 0 ];then
+    echo "There is Virtualbox."
+else
+    echo "No,Virtualbox not found."
+    yes | sudo apt-get install virtualbox
+fi
+
+which inkscape > /dev/null 2>&1
+if [ $? -eq 0 ];then
+    echo "There is Inkscape."
+else
+    echo "No,Inkscape not  found."
+    yes | sudo apt-get install inkscape
+fi
+
+which blender > /dev/null 2>&1
+if [ $? -eq 0 ];then
+    echo "There is Blender."
+else
+    echo "No,Blender not found."
+    yes | sudo apt-get install blender
+fi

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="theme_name" mtime="1336717347" type="string">
+		<stringvalue>freedesktop</stringvalue>
+	</entry>
+	<entry name="event_sounds" mtime="1336717347" type="bool" value="true"/>
+</gconf>

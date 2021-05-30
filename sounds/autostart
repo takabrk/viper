@@ -1,0 +1,130 @@
+#!/bin/sh
+#System sound
+mplayer -ao alsa /usr/share/sounds/Moesound_SF_iori/stereo/desktop-login.ogg &
+
+#fbpanel
+#fbpanel -p default &
+
+#plank
+plank &
+
+#stalonetray
+stalonetray --dockapp-mode simple &
+
+#xfce4-power-manager
+xfce4-power-manager &
+
+#network manager
+nm-applet --sm-disable &
+
+#fcitx
+fcitx-autostart &
+
+#/usr/bin/gnome-keyring-daemon --start --components=gpg &
+#/usr/bin/gnome-keyring-daemon --start --components=ssh &
+blueman-applet &
+
+#xrandr
+#sh -c 'xrandr --output VGA --mode 1366x768 --rate 59.79'
+sh -c 'xrandr --output eDP-1 --off'
+
+#compton
+compton &
+
+#nitrogen
+nitrogen --restore &
+
+#feh
+#feh --bg-scale /usr/share/backgrounds/bg20180511.png
+
+#dunst
+dunst &
+
+sleep1;ln -s /mnt/vsrxcache ~/.cache/chromium &
+
+#Chromium Browser
+chromium-browser --disk-cache-dir="/mnt/vsrxcache" --allow-file-access-from-files &
+#chromium-browser --allow-file-access-from-files &
+
+#JACK+PulseAudio
+pactl load-module module-jack-sink channels=2
+pactl load-module module-jack-source channels=2
+pacmd set-default-sink jack_out
+pacmd set-default-source jack_in
+
+#sleep 2;ln -s /usr/bin/pulseaudio /tmp &
+#sleep 5;/tmp/pulseaudio --start & 
+pulseaudio --start & 
+sleep 5;jack_control start &
+sudo schedtool -R -I -n 4 -p 25 `pidof jackdbus`
+jack_control eps realtime true
+jack_control ds alsa
+jack_control dps device hw:0 
+jack_control dps rate 192000
+jack_control dps nperiods 3 
+jack_control dps period 1024
+
+#Delete Cache
+rm -r ~/.thumbnails/normal/* &
+rm -r ~/.thumbnails/large/* &
+rm -r ~/.cache/* &
+
+#Conky
+sleep 1;conky -c ~/.config/conky/.conkyrc1 &
+sleep 1;LANG=C conky -c ~/.config/conky/.conkyclock &
+
+sudo schedtool -R  -I -n 4 -p 24 `pidof pcsx2` &
+sudo schedtool -R  -I -n 4 -p 23 `pidof wine` &
+
+#x11vnc
+/usr/bin/sudo -u valkyrie x11vnc -forever -nossl -noncache -nolookup -bg -usepw &
+
+#Remmina
+#remmina -i
+
+#Dropbox
+~/.dropbox-dist/dropboxd &
+
+#Audacious
+sleep 2;nice -n -1 audacious &
+
+#VSRX Web UI
+cd ~/vsrx_web_ui && ./start_server &
+
+#Install Applications
+#xfce4-terminal --hide-menubar -x sh -c 'echo アプリケーションをインストールします。インストールをする場合はパスワードを入力してください。インストールしない場合は、ウィンドウを閉じてください。;sudo apt-get install inkscape freeplane filezilla blender; read' &
+
+#Stop tumblerd
+period=20
+tumblerpath="/usr/lib/*/tumbler-1/tumblerd" # The * here should find the right one, whether 32 and 64-bit
+cpu_threshold=50
+mem_threshold=20
+max_strikes=2                               # max number of above cpu/mem-threshold's in a row
+log="/tmp/tumblerd-watcher.log"
+
+if [[ -n "${log}" ]]; then
+    cat /dev/null > "${log}"
+    exec >"${log}" 2>&1
+fi
+
+
+strikes=0
+while sleep "${period}"; do
+    while read pid; do
+	cpu_usage=$(ps --no-headers -o pcpu -f "${pid}"|cut -f1 -d.)
+	mem_usage=$(ps --no-headers -o pmem -f "${pid}"|cut -f1 -d.)
+
+	if [[ $cpu_usage -gt $cpu_threshold ]] || [[ $mem_usage -gt $mem_threshold ]]; then
+	    echo "$(date +"%F %T") PID: $pid CPU: $cpu_usage/$cpu_threshold %cpu MEM: $mem_usage/$mem_threshold STRIKES: ${strikes} NPROCS: $(pgrep -c -f ${tumblerpath})"
+	    (( strikes++ ))
+	    if [[ ${strikes} -ge ${max_strikes} ]]; then
+		kill "${pid}"
+		echo "$(date +"%F %T") PID: $pid KILLED; NPROCS: $(pgrep -c -f ${tumblerpath})"
+		strikes=0
+	    fi
+	else
+	    strikes=0
+	fi
+    done < <(pgrep -f ${tumblerpath})
+done
+

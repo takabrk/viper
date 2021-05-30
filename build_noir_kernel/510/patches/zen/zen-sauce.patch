@@ -1,0 +1,3938 @@
+From dda238180bacda4c39f71dd16d754a48da38e676 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 21:32:57 +0100
+Subject: [PATCH 01/27] ZEN: Add ZEN branding
+
+Adds a tag to the kernel version string (uname -v) and a suffix to
+the kernel release (uname -r).
+---
+ scripts/mkcompile_h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
+index 4ae735039daf2..e7778a78022cf 100755
+--- a/scripts/mkcompile_h
++++ b/scripts/mkcompile_h
+@@ -41,8 +41,8 @@ else
+ fi
+ 
+ UTS_VERSION="#$VERSION"
+-CONFIG_FLAGS=""
+-if [ -n "$SMP" ] ; then CONFIG_FLAGS="SMP"; fi
++CONFIG_FLAGS="ZEN"
++if [ -n "$SMP" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS SMP"; fi
+ if [ -n "$PREEMPT" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS PREEMPT"; fi
+ if [ -n "$PREEMPT_RT" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS PREEMPT_RT"; fi
+ 
+
+From 9a2e0d950bfd77fb51a42a5fc7e81a9187606c38 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 17:59:54 +0100
+Subject: [PATCH 02/27] ZEN: Add VHBA driver
+
+remote git://git.code.sf.net/p/cdemu/code
+tag    vhba-module-20200106
+---
+ drivers/scsi/Kconfig       |    2 +
+ drivers/scsi/Makefile      |    1 +
+ drivers/scsi/vhba/Kconfig  |    9 +
+ drivers/scsi/vhba/Makefile |    4 +
+ drivers/scsi/vhba/vhba.c   | 1086 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 1102 insertions(+)
+ create mode 100644 drivers/scsi/vhba/Kconfig
+ create mode 100644 drivers/scsi/vhba/Makefile
+ create mode 100644 drivers/scsi/vhba/vhba.c
+
+diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
+index 701b61ec76eed..141cc881e2382 100644
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -1528,4 +1528,6 @@ endif # SCSI_LOWLEVEL
+ 
+ source "drivers/scsi/device_handler/Kconfig"
+ 
++source "drivers/scsi/vhba/Kconfig"
++
+ endmenu
+diff --git a/drivers/scsi/Makefile b/drivers/scsi/Makefile
+index c00e3dd57990c..97546650b6e51 100644
+--- a/drivers/scsi/Makefile
++++ b/drivers/scsi/Makefile
+@@ -153,6 +153,7 @@ obj-$(CONFIG_CHR_DEV_SCH)	+= ch.o
+ obj-$(CONFIG_SCSI_ENCLOSURE)	+= ses.o
+ 
+ obj-$(CONFIG_SCSI_HISI_SAS) += hisi_sas/
++obj-$(CONFIG_VHBA)		+= vhba/
+ 
+ # This goes last, so that "real" scsi devices probe earlier
+ obj-$(CONFIG_SCSI_DEBUG)	+= scsi_debug.o
+diff --git a/drivers/scsi/vhba/Kconfig b/drivers/scsi/vhba/Kconfig
+new file mode 100644
+index 0000000000000..e70a381fe3dff
+--- /dev/null
++++ b/drivers/scsi/vhba/Kconfig
+@@ -0,0 +1,9 @@
++config VHBA
++	tristate "Virtual (SCSI) Host Bus Adapter"
++	depends on SCSI
++	help
++	  This is the in-kernel part of CDEmu, a CD/DVD-ROM device
++	  emulator.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called vhba.
+diff --git a/drivers/scsi/vhba/Makefile b/drivers/scsi/vhba/Makefile
+new file mode 100644
+index 0000000000000..25219d1193b4a
+--- /dev/null
++++ b/drivers/scsi/vhba/Makefile
+@@ -0,0 +1,4 @@
++VHBA_VERSION := 20200106
++
++obj-$(CONFIG_VHBA)		+= vhba.o
++ccflags-y := -DVHBA_VERSION=\"$(VHBA_VERSION)\" -Werror
+diff --git a/drivers/scsi/vhba/vhba.c b/drivers/scsi/vhba/vhba.c
+new file mode 100644
+index 0000000000000..7655be66fbe60
+--- /dev/null
++++ b/drivers/scsi/vhba/vhba.c
+@@ -0,0 +1,1086 @@
++/*
++ * vhba.c
++ *
++ * Copyright (C) 2007-2012 Chia-I Wu <b90201047 AT ntu DOT edu DOT tw>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include <linux/version.h>
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/highmem.h>
++#include <linux/fs.h>
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0)
++#include <linux/sched/signal.h>
++#else
++#include <linux/sched.h>
++#endif
++#include <linux/platform_device.h>
++#include <linux/miscdevice.h>
++#include <linux/poll.h>
++#include <linux/slab.h>
++#include <linux/scatterlist.h>
++#ifdef CONFIG_COMPAT
++#include <linux/compat.h>
++#endif
++#include <asm/uaccess.h>
++#include <scsi/scsi.h>
++#include <scsi/scsi_host.h>
++#include <scsi/scsi_cmnd.h>
++#include <scsi/scsi_device.h>
++
++
++MODULE_AUTHOR("Chia-I Wu");
++MODULE_VERSION(VHBA_VERSION);
++MODULE_DESCRIPTION("Virtual SCSI HBA");
++MODULE_LICENSE("GPL");
++
++#ifdef DEBUG
++#define DPRINTK(fmt, args...) printk(KERN_DEBUG "%s: " fmt, __FUNCTION__, ## args)
++#else
++#define DPRINTK(fmt, args...)
++#endif
++
++/* scmd_dbg was introduced in 3.15 */
++#ifndef scmd_dbg
++#define scmd_dbg(scmd, fmt, a...)       \
++    dev_dbg(&(scmd)->device->sdev_gendev, fmt, ##a)
++#endif
++
++#define VHBA_MAX_SECTORS_PER_IO 256
++#define VHBA_MAX_BUS 16
++#define VHBA_MAX_ID 16 /* Usually 8 or 16 */
++#define VHBA_MAX_DEVICES (VHBA_MAX_BUS * (VHBA_MAX_ID-1))
++#define VHBA_CAN_QUEUE 32
++#define VHBA_INVALID_BUS -1
++#define VHBA_INVALID_ID -1
++#define VHBA_KBUF_SIZE PAGE_SIZE
++
++#define DATA_TO_DEVICE(dir) ((dir) == DMA_TO_DEVICE || (dir) == DMA_BIDIRECTIONAL)
++#define DATA_FROM_DEVICE(dir) ((dir) == DMA_FROM_DEVICE || (dir) == DMA_BIDIRECTIONAL)
++
++
++enum vhba_req_state {
++    VHBA_REQ_FREE,
++    VHBA_REQ_PENDING,
++    VHBA_REQ_READING,
++    VHBA_REQ_SENT,
++    VHBA_REQ_WRITING,
++};
++
++struct vhba_command {
++    struct scsi_cmnd *cmd;
++    unsigned long serial_number;
++    int status;
++    struct list_head entry;
++};
++
++struct vhba_device {
++    int bus; /* aka. channel */
++    int id;
++    int num;
++    spinlock_t cmd_lock;
++    struct list_head cmd_list;
++    wait_queue_head_t cmd_wq;
++    atomic_t refcnt;
++
++    unsigned char *kbuf;
++    size_t kbuf_size;
++
++    unsigned long cmd_count;
++};
++
++struct vhba_host {
++    struct Scsi_Host *shost;
++    spinlock_t cmd_lock;
++    int cmd_next;
++    struct vhba_command commands[VHBA_CAN_QUEUE];
++    spinlock_t dev_lock;
++    struct vhba_device *devices[VHBA_MAX_DEVICES];
++    int num_devices;
++    DECLARE_BITMAP(chgmap, VHBA_MAX_DEVICES);
++    int chgtype[VHBA_MAX_DEVICES];
++    struct work_struct scan_devices;
++};
++
++#define MAX_COMMAND_SIZE 16
++
++struct vhba_request {
++    __u32 tag;
++    __u32 lun;
++    __u8 cdb[MAX_COMMAND_SIZE];
++    __u8 cdb_len;
++    __u32 data_len;
++};
++
++struct vhba_response {
++    __u32 tag;
++    __u32 status;
++    __u32 data_len;
++};
++
++static struct vhba_command *vhba_alloc_command (void);
++static void vhba_free_command (struct vhba_command *vcmd);
++
++static struct platform_device vhba_platform_device;
++
++static struct vhba_device *vhba_device_alloc (void)
++{
++    struct vhba_device *vdev;
++
++    vdev = kzalloc(sizeof(struct vhba_device), GFP_KERNEL);
++    if (!vdev) {
++        return NULL;
++    }
++
++    vdev->bus = VHBA_INVALID_BUS;
++    vdev->id = VHBA_INVALID_ID;
++    spin_lock_init(&vdev->cmd_lock);
++    INIT_LIST_HEAD(&vdev->cmd_list);
++    init_waitqueue_head(&vdev->cmd_wq);
++    atomic_set(&vdev->refcnt, 1);
++
++    vdev->kbuf = NULL;
++    vdev->kbuf_size = 0;
++
++    vdev->cmd_count = 0;
++
++    return vdev;
++}
++
++static void devnum_to_bus_and_id(int devnum, int *bus, int *id)
++{
++    int a = devnum / (VHBA_MAX_ID-1);
++    int b = devnum % (VHBA_MAX_ID-1);
++
++    *bus = a;
++    *id  = b + 1;
++}
++
++static int bus_and_id_to_devnum(int bus, int id)
++{
++    return (bus * (VHBA_MAX_ID-1)) + id - 1;
++}
++
++static void vhba_device_put (struct vhba_device *vdev)
++{
++    if (atomic_dec_and_test(&vdev->refcnt)) {
++        kfree(vdev);
++    }
++}
++
++static struct vhba_device *vhba_device_get (struct vhba_device *vdev)
++{
++    atomic_inc(&vdev->refcnt);
++
++    return vdev;
++}
++
++static int vhba_device_queue (struct vhba_device *vdev, struct scsi_cmnd *cmd)
++{
++    struct vhba_command *vcmd;
++    unsigned long flags;
++
++    vcmd = vhba_alloc_command();
++    if (!vcmd) {
++        return SCSI_MLQUEUE_HOST_BUSY;
++    }
++
++    vcmd->cmd = cmd;
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    vcmd->serial_number = vdev->cmd_count++;
++    list_add_tail(&vcmd->entry, &vdev->cmd_list);
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    wake_up_interruptible(&vdev->cmd_wq);
++
++    return 0;
++}
++
++static int vhba_device_dequeue (struct vhba_device *vdev, struct scsi_cmnd *cmd)
++{
++    struct vhba_command *vcmd;
++    int retval;
++    unsigned long flags;
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        if (vcmd->cmd == cmd) {
++            list_del_init(&vcmd->entry);
++            break;
++        }
++    }
++
++    /* command not found */
++    if (&vcmd->entry == &vdev->cmd_list) {
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++        return SUCCESS;
++    }
++
++    while (vcmd->status == VHBA_REQ_READING || vcmd->status == VHBA_REQ_WRITING) {
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++        scmd_dbg(cmd, "wait for I/O before aborting\n");
++        schedule_timeout(1);
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++    }
++
++    retval = (vcmd->status == VHBA_REQ_SENT) ? FAILED : SUCCESS;
++
++    vhba_free_command(vcmd);
++
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return retval;
++}
++
++static inline void vhba_scan_devices_add (struct vhba_host *vhost, int bus, int id)
++{
++    struct scsi_device *sdev;
++
++    sdev = scsi_device_lookup(vhost->shost, bus, id, 0);
++    if (!sdev) {
++        scsi_add_device(vhost->shost, bus, id, 0);
++    } else {
++        dev_warn(&vhost->shost->shost_gendev, "tried to add an already-existing device %d:%d:0!\n", bus, id);
++        scsi_device_put(sdev);
++    }
++}
++
++static inline void vhba_scan_devices_remove (struct vhba_host *vhost, int bus, int id)
++{
++    struct scsi_device *sdev;
++
++    sdev = scsi_device_lookup(vhost->shost, bus, id, 0);
++    if (sdev) {
++        scsi_remove_device(sdev);
++        scsi_device_put(sdev);
++    } else {
++        dev_warn(&vhost->shost->shost_gendev, "tried to remove non-existing device %d:%d:0!\n", bus, id);
++    }
++}
++
++static void vhba_scan_devices (struct work_struct *work)
++{
++    struct vhba_host *vhost = container_of(work, struct vhba_host, scan_devices);
++    unsigned long flags;
++    int devnum, change, exists;
++    int bus, id;
++
++    while (1) {
++        spin_lock_irqsave(&vhost->dev_lock, flags);
++
++        devnum = find_first_bit(vhost->chgmap, VHBA_MAX_DEVICES);
++        if (devnum >= VHBA_MAX_DEVICES) {
++            spin_unlock_irqrestore(&vhost->dev_lock, flags);
++            break;
++        }
++        change = vhost->chgtype[devnum];
++        exists = vhost->devices[devnum] != NULL;
++
++        vhost->chgtype[devnum] = 0;
++        clear_bit(devnum, vhost->chgmap);
++
++        spin_unlock_irqrestore(&vhost->dev_lock, flags);
++
++        devnum_to_bus_and_id(devnum, &bus, &id);
++
++        if (change < 0) {
++            dev_dbg(&vhost->shost->shost_gendev, "trying to remove target %d:%d:0\n", bus, id);
++            vhba_scan_devices_remove(vhost, bus, id);
++        } else if (change > 0) {
++            dev_dbg(&vhost->shost->shost_gendev, "trying to add target %d:%d:0\n", bus, id);
++            vhba_scan_devices_add(vhost, bus, id);
++        } else {
++            /* quick sequence of add/remove or remove/add; we determine
++               which one it was by checking if device structure exists */
++            if (exists) {
++                /* remove followed by add: remove and (re)add */
++                dev_dbg(&vhost->shost->shost_gendev, "trying to (re)add target %d:%d:0\n", bus, id);
++                vhba_scan_devices_remove(vhost, bus, id);
++                vhba_scan_devices_add(vhost, bus, id);
++            } else {
++                /* add followed by remove: no-op */
++                dev_dbg(&vhost->shost->shost_gendev, "no-op for target %d:%d:0\n", bus, id);
++            }
++        }
++    }
++}
++
++static int vhba_add_device (struct vhba_device *vdev)
++{
++    struct vhba_host *vhost;
++    int i;
++    unsigned long flags;
++    int bus, id;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    vhba_device_get(vdev);
++
++    spin_lock_irqsave(&vhost->dev_lock, flags);
++    if (vhost->num_devices >= VHBA_MAX_DEVICES) {
++        spin_unlock_irqrestore(&vhost->dev_lock, flags);
++        vhba_device_put(vdev);
++        return -EBUSY;
++    }
++
++    for (i = 0; i < VHBA_MAX_DEVICES; i++) {
++        devnum_to_bus_and_id(i, &bus, &id);
++
++        if (vhost->devices[i] == NULL) {
++            vdev->bus = bus;
++            vdev->id  = id;
++            vdev->num = i;
++            vhost->devices[i] = vdev;
++            vhost->num_devices++;
++            set_bit(i, vhost->chgmap);
++            vhost->chgtype[i]++;
++            break;
++        }
++    }
++    spin_unlock_irqrestore(&vhost->dev_lock, flags);
++
++    schedule_work(&vhost->scan_devices);
++
++    return 0;
++}
++
++static int vhba_remove_device (struct vhba_device *vdev)
++{
++    struct vhba_host *vhost;
++    unsigned long flags;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    spin_lock_irqsave(&vhost->dev_lock, flags);
++    set_bit(vdev->num, vhost->chgmap);
++    vhost->chgtype[vdev->num]--;
++    vhost->devices[vdev->num] = NULL;
++    vhost->num_devices--;
++    vdev->bus = VHBA_INVALID_BUS;
++    vdev->id = VHBA_INVALID_ID;
++    spin_unlock_irqrestore(&vhost->dev_lock, flags);
++
++    vhba_device_put(vdev);
++
++    schedule_work(&vhost->scan_devices);
++
++    return 0;
++}
++
++static struct vhba_device *vhba_lookup_device (int devnum)
++{
++    struct vhba_host *vhost;
++    struct vhba_device *vdev = NULL;
++    unsigned long flags;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    if (likely(devnum < VHBA_MAX_DEVICES)) {
++        spin_lock_irqsave(&vhost->dev_lock, flags);
++        vdev = vhost->devices[devnum];
++        if (vdev) {
++            vdev = vhba_device_get(vdev);
++        }
++
++        spin_unlock_irqrestore(&vhost->dev_lock, flags);
++    }
++
++    return vdev;
++}
++
++static struct vhba_command *vhba_alloc_command (void)
++{
++    struct vhba_host *vhost;
++    struct vhba_command *vcmd;
++    unsigned long flags;
++    int i;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    spin_lock_irqsave(&vhost->cmd_lock, flags);
++
++    vcmd = vhost->commands + vhost->cmd_next++;
++    if (vcmd->status != VHBA_REQ_FREE) {
++        for (i = 0; i < vhost->shost->can_queue; i++) {
++            vcmd = vhost->commands + i;
++
++            if (vcmd->status == VHBA_REQ_FREE) {
++                vhost->cmd_next = i + 1;
++                break;
++            }
++        }
++
++        if (i == vhost->shost->can_queue) {
++            vcmd = NULL;
++        }
++    }
++
++    if (vcmd) {
++        vcmd->status = VHBA_REQ_PENDING;
++    }
++
++    vhost->cmd_next %= vhost->shost->can_queue;
++
++    spin_unlock_irqrestore(&vhost->cmd_lock, flags);
++
++    return vcmd;
++}
++
++static void vhba_free_command (struct vhba_command *vcmd)
++{
++    struct vhba_host *vhost;
++    unsigned long flags;
++
++    vhost = platform_get_drvdata(&vhba_platform_device);
++
++    spin_lock_irqsave(&vhost->cmd_lock, flags);
++    vcmd->status = VHBA_REQ_FREE;
++    spin_unlock_irqrestore(&vhost->cmd_lock, flags);
++}
++
++static int vhba_queuecommand_lck (struct scsi_cmnd *cmd, void (*done)(struct scsi_cmnd *))
++{
++    struct vhba_device *vdev;
++    int retval;
++
++    scmd_dbg(cmd, "queue %p\n", cmd);
++
++    vdev = vhba_lookup_device(bus_and_id_to_devnum(cmd->device->channel, cmd->device->id));
++    if (!vdev) {
++        scmd_dbg(cmd, "no such device\n");
++
++        cmd->result = DID_NO_CONNECT << 16;
++        done(cmd);
++
++        return 0;
++    }
++
++    cmd->scsi_done = done;
++    retval = vhba_device_queue(vdev, cmd);
++
++    vhba_device_put(vdev);
++
++    return retval;
++}
++
++#ifdef DEF_SCSI_QCMD
++DEF_SCSI_QCMD(vhba_queuecommand)
++#else
++#define vhba_queuecommand vhba_queuecommand_lck
++#endif
++
++static int vhba_abort (struct scsi_cmnd *cmd)
++{
++    struct vhba_device *vdev;
++    int retval = SUCCESS;
++
++    scmd_dbg(cmd, "abort %p\n", cmd);
++
++    vdev = vhba_lookup_device(bus_and_id_to_devnum(cmd->device->channel, cmd->device->id));
++    if (vdev) {
++        retval = vhba_device_dequeue(vdev, cmd);
++        vhba_device_put(vdev);
++    } else {
++        cmd->result = DID_NO_CONNECT << 16;
++    }
++
++    return retval;
++}
++
++static struct scsi_host_template vhba_template = {
++    .module = THIS_MODULE,
++    .name = "vhba",
++    .proc_name = "vhba",
++    .queuecommand = vhba_queuecommand,
++    .eh_abort_handler = vhba_abort,
++    .can_queue = VHBA_CAN_QUEUE,
++    .this_id = -1,
++    .cmd_per_lun = 1,
++    .max_sectors = VHBA_MAX_SECTORS_PER_IO,
++    .sg_tablesize = 256,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 0, 0)
++    .max_segment_size = VHBA_KBUF_SIZE,
++#endif
++};
++
++static ssize_t do_request (struct vhba_device *vdev, unsigned long cmd_serial_number, struct scsi_cmnd *cmd, char __user *buf, size_t buf_len)
++{
++    struct vhba_request vreq;
++    ssize_t ret;
++
++    scmd_dbg(cmd, "request %lu (%p), cdb 0x%x, bufflen %d, sg count %d\n",
++        cmd_serial_number, cmd, cmd->cmnd[0], scsi_bufflen(cmd), scsi_sg_count(cmd));
++
++    ret = sizeof(vreq);
++    if (DATA_TO_DEVICE(cmd->sc_data_direction)) {
++        ret += scsi_bufflen(cmd);
++    }
++
++    if (ret > buf_len) {
++        scmd_dbg(cmd, "buffer too small (%zd < %zd) for a request\n", buf_len, ret);
++        return -EIO;
++    }
++
++    vreq.tag = cmd_serial_number;
++    vreq.lun = cmd->device->lun;
++    memcpy(vreq.cdb, cmd->cmnd, MAX_COMMAND_SIZE);
++    vreq.cdb_len = cmd->cmd_len;
++    vreq.data_len = scsi_bufflen(cmd);
++
++    if (copy_to_user(buf, &vreq, sizeof(vreq))) {
++        return -EFAULT;
++    }
++
++    if (DATA_TO_DEVICE(cmd->sc_data_direction) && vreq.data_len) {
++        buf += sizeof(vreq);
++
++        if (scsi_sg_count(cmd)) {
++            unsigned char *kaddr, *uaddr;
++            struct scatterlist *sglist = scsi_sglist(cmd);
++            struct scatterlist *sg;
++            int i;
++
++            uaddr = (unsigned char *) buf;
++
++            for_each_sg(sglist, sg, scsi_sg_count(cmd), i) {
++                size_t len = sg->length;
++
++                if (len > vdev->kbuf_size) {
++                    scmd_dbg(cmd, "segment size (%zu) exceeds kbuf size (%zu)!", len, vdev->kbuf_size);
++                    len = vdev->kbuf_size;
++                }
++
++                kaddr = kmap_atomic(sg_page(sg));
++                memcpy(vdev->kbuf, kaddr + sg->offset, len);
++                kunmap_atomic(kaddr);
++
++                if (copy_to_user(uaddr, vdev->kbuf, len)) {
++                    return -EFAULT;
++                }
++                uaddr += len;
++            }
++        } else {
++            if (copy_to_user(buf, scsi_sglist(cmd), vreq.data_len)) {
++                return -EFAULT;
++            }
++        }
++    }
++
++    return ret;
++}
++
++static ssize_t do_response (struct vhba_device *vdev, unsigned long cmd_serial_number, struct scsi_cmnd *cmd, const char __user *buf, size_t buf_len, struct vhba_response *res)
++{
++    ssize_t ret = 0;
++
++    scmd_dbg(cmd, "response %lu (%p), status %x, data len %d, sg count %d\n",
++         cmd_serial_number, cmd, res->status, res->data_len, scsi_sg_count(cmd));
++
++    if (res->status) {
++        unsigned char sense_stack[SCSI_SENSE_BUFFERSIZE];
++
++        if (res->data_len > SCSI_SENSE_BUFFERSIZE) {
++            scmd_dbg(cmd, "truncate sense (%d < %d)", SCSI_SENSE_BUFFERSIZE, res->data_len);
++            res->data_len = SCSI_SENSE_BUFFERSIZE;
++        }
++
++        /* Copy via temporary buffer on stack in order to avoid problems
++           with PAX on grsecurity-enabled kernels */
++        if (copy_from_user(sense_stack, buf, res->data_len)) {
++            return -EFAULT;
++        }
++        memcpy(cmd->sense_buffer, sense_stack, res->data_len);
++
++        cmd->result = res->status;
++
++        ret += res->data_len;
++    } else if (DATA_FROM_DEVICE(cmd->sc_data_direction) && scsi_bufflen(cmd)) {
++        size_t to_read;
++
++        if (res->data_len > scsi_bufflen(cmd)) {
++            scmd_dbg(cmd, "truncate data (%d < %d)\n", scsi_bufflen(cmd), res->data_len);
++            res->data_len = scsi_bufflen(cmd);
++        }
++
++        to_read = res->data_len;
++
++        if (scsi_sg_count(cmd)) {
++            unsigned char *kaddr, *uaddr;
++            struct scatterlist *sglist = scsi_sglist(cmd);
++            struct scatterlist *sg;
++            int i;
++
++            uaddr = (unsigned char *)buf;
++
++            for_each_sg(sglist, sg, scsi_sg_count(cmd), i) {
++                size_t len = (sg->length < to_read) ? sg->length : to_read;
++
++                if (len > vdev->kbuf_size) {
++                    scmd_dbg(cmd, "segment size (%zu) exceeds kbuf size (%zu)!", len, vdev->kbuf_size);
++                    len = vdev->kbuf_size;
++                }
++
++                if (copy_from_user(vdev->kbuf, uaddr, len)) {
++                    return -EFAULT;
++                }
++                uaddr += len;
++
++                kaddr = kmap_atomic(sg_page(sg));
++                memcpy(kaddr + sg->offset, vdev->kbuf, len);
++                kunmap_atomic(kaddr);
++
++                to_read -= len;
++                if (to_read == 0) {
++                    break;
++                }
++            }
++        } else {
++            if (copy_from_user(scsi_sglist(cmd), buf, res->data_len)) {
++                return -EFAULT;
++            }
++
++            to_read -= res->data_len;
++        }
++
++        scsi_set_resid(cmd, to_read);
++
++        ret += res->data_len - to_read;
++    }
++
++    return ret;
++}
++
++static inline struct vhba_command *next_command (struct vhba_device *vdev)
++{
++    struct vhba_command *vcmd;
++
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        if (vcmd->status == VHBA_REQ_PENDING) {
++            break;
++        }
++    }
++
++    if (&vcmd->entry == &vdev->cmd_list) {
++        vcmd = NULL;
++    }
++
++    return vcmd;
++}
++
++static inline struct vhba_command *match_command (struct vhba_device *vdev, u32 tag)
++{
++    struct vhba_command *vcmd;
++
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        if (vcmd->serial_number == tag) {
++            break;
++        }
++    }
++
++    if (&vcmd->entry == &vdev->cmd_list) {
++        vcmd = NULL;
++    }
++
++    return vcmd;
++}
++
++static struct vhba_command *wait_command (struct vhba_device *vdev, unsigned long flags)
++{
++    struct vhba_command *vcmd;
++    DEFINE_WAIT(wait);
++
++    while (!(vcmd = next_command(vdev))) {
++        if (signal_pending(current)) {
++            break;
++        }
++
++        prepare_to_wait(&vdev->cmd_wq, &wait, TASK_INTERRUPTIBLE);
++
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++        schedule();
++
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++    }
++
++    finish_wait(&vdev->cmd_wq, &wait);
++    if (vcmd) {
++        vcmd->status = VHBA_REQ_READING;
++    }
++
++    return vcmd;
++}
++
++static ssize_t vhba_ctl_read (struct file *file, char __user *buf, size_t buf_len, loff_t *offset)
++{
++    struct vhba_device *vdev;
++    struct vhba_command *vcmd;
++    ssize_t ret;
++    unsigned long flags;
++
++    vdev = file->private_data;
++
++    /* Get next command */
++    if (file->f_flags & O_NONBLOCK) {
++        /* Non-blocking variant */
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++        vcmd = next_command(vdev);
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++        if (!vcmd) {
++            return -EWOULDBLOCK;
++        }
++    } else {
++        /* Blocking variant */
++        spin_lock_irqsave(&vdev->cmd_lock, flags);
++        vcmd = wait_command(vdev, flags);
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++        if (!vcmd) {
++            return -ERESTARTSYS;
++        }
++    }
++
++    ret = do_request(vdev, vcmd->serial_number, vcmd->cmd, buf, buf_len);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    if (ret >= 0) {
++        vcmd->status = VHBA_REQ_SENT;
++        *offset += ret;
++    } else {
++        vcmd->status = VHBA_REQ_PENDING;
++    }
++
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return ret;
++}
++
++static ssize_t vhba_ctl_write (struct file *file, const char __user *buf, size_t buf_len, loff_t *offset)
++{
++    struct vhba_device *vdev;
++    struct vhba_command *vcmd;
++    struct vhba_response res;
++    ssize_t ret;
++    unsigned long flags;
++
++    if (buf_len < sizeof(res)) {
++        return -EIO;
++    }
++
++    if (copy_from_user(&res, buf, sizeof(res))) {
++        return -EFAULT;
++    }
++
++    vdev = file->private_data;
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    vcmd = match_command(vdev, res.tag);
++    if (!vcmd || vcmd->status != VHBA_REQ_SENT) {
++        spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++        DPRINTK("not expecting response\n");
++        return -EIO;
++    }
++    vcmd->status = VHBA_REQ_WRITING;
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    ret = do_response(vdev, vcmd->serial_number, vcmd->cmd, buf + sizeof(res), buf_len - sizeof(res), &res);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    if (ret >= 0) {
++        vcmd->cmd->scsi_done(vcmd->cmd);
++        ret += sizeof(res);
++
++        /* don't compete with vhba_device_dequeue */
++        if (!list_empty(&vcmd->entry)) {
++            list_del_init(&vcmd->entry);
++            vhba_free_command(vcmd);
++        }
++    } else {
++        vcmd->status = VHBA_REQ_SENT;
++    }
++
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return ret;
++}
++
++static long vhba_ctl_ioctl (struct file *file, unsigned int cmd, unsigned long arg)
++{
++    struct vhba_device *vdev = file->private_data;
++    struct vhba_host *vhost;
++    struct scsi_device *sdev;
++
++    switch (cmd) {
++        case 0xBEEF001: {
++            vhost = platform_get_drvdata(&vhba_platform_device);
++            sdev = scsi_device_lookup(vhost->shost, vdev->bus, vdev->id, 0);
++
++            if (sdev) {
++                int id[4] = {
++                    sdev->host->host_no,
++                    sdev->channel,
++                    sdev->id,
++                    sdev->lun
++                };
++
++                scsi_device_put(sdev);
++
++                if (copy_to_user((void *)arg, id, sizeof(id))) {
++                    return -EFAULT;
++                }
++
++                return 0;
++            } else {
++                return -ENODEV;
++            }
++        }
++        case 0xBEEF002: {
++            int device_number = vdev->num;
++            if (copy_to_user((void *)arg, &device_number, sizeof(device_number))) {
++                return -EFAULT;
++            }
++            return 0;
++        }
++    }
++
++    return -ENOTTY;
++}
++
++#ifdef CONFIG_COMPAT
++static long vhba_ctl_compat_ioctl (struct file *file, unsigned int cmd, unsigned long arg)
++{
++    unsigned long compat_arg = (unsigned long)compat_ptr(arg);
++    return vhba_ctl_ioctl(file, cmd, compat_arg);
++}
++#endif
++
++static unsigned int vhba_ctl_poll (struct file *file, poll_table *wait)
++{
++    struct vhba_device *vdev = file->private_data;
++    unsigned int mask = 0;
++    unsigned long flags;
++
++    poll_wait(file, &vdev->cmd_wq, wait);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    if (next_command(vdev)) {
++        mask |= POLLIN | POLLRDNORM;
++    }
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    return mask;
++}
++
++static int vhba_ctl_open (struct inode *inode, struct file *file)
++{
++    struct vhba_device *vdev;
++    int retval;
++
++    DPRINTK("open\n");
++
++    /* check if vhba is probed */
++    if (!platform_get_drvdata(&vhba_platform_device)) {
++        return -ENODEV;
++    }
++
++    vdev = vhba_device_alloc();
++    if (!vdev) {
++        return -ENOMEM;
++    }
++
++    vdev->kbuf_size = VHBA_KBUF_SIZE;
++    vdev->kbuf = kmalloc(vdev->kbuf_size, GFP_KERNEL);
++    if (!vdev->kbuf) {
++        return -ENOMEM;
++    }
++
++    if (!(retval = vhba_add_device(vdev))) {
++        file->private_data = vdev;
++    }
++
++    vhba_device_put(vdev);
++
++    return retval;
++}
++
++static int vhba_ctl_release (struct inode *inode, struct file *file)
++{
++    struct vhba_device *vdev;
++    struct vhba_command *vcmd;
++    unsigned long flags;
++
++    DPRINTK("release\n");
++
++    vdev = file->private_data;
++
++    vhba_device_get(vdev);
++    vhba_remove_device(vdev);
++
++    spin_lock_irqsave(&vdev->cmd_lock, flags);
++    list_for_each_entry(vcmd, &vdev->cmd_list, entry) {
++        WARN_ON(vcmd->status == VHBA_REQ_READING || vcmd->status == VHBA_REQ_WRITING);
++
++        scmd_dbg(vcmd->cmd, "device released with command %lu (%p)\n", vcmd->serial_number, vcmd->cmd);
++        vcmd->cmd->result = DID_NO_CONNECT << 16;
++        vcmd->cmd->scsi_done(vcmd->cmd);
++
++        vhba_free_command(vcmd);
++    }
++    INIT_LIST_HEAD(&vdev->cmd_list);
++    spin_unlock_irqrestore(&vdev->cmd_lock, flags);
++
++    kfree(vdev->kbuf);
++    vdev->kbuf = NULL;
++
++    vhba_device_put(vdev);
++
++    return 0;
++}
++
++static struct file_operations vhba_ctl_fops = {
++    .owner = THIS_MODULE,
++    .open = vhba_ctl_open,
++    .release = vhba_ctl_release,
++    .read = vhba_ctl_read,
++    .write = vhba_ctl_write,
++    .poll = vhba_ctl_poll,
++    .unlocked_ioctl = vhba_ctl_ioctl,
++#ifdef CONFIG_COMPAT
++    .compat_ioctl = vhba_ctl_compat_ioctl,
++#endif
++};
++
++static struct miscdevice vhba_miscdev = {
++    .minor = MISC_DYNAMIC_MINOR,
++    .name = "vhba_ctl",
++    .fops = &vhba_ctl_fops,
++};
++
++static int vhba_probe (struct platform_device *pdev)
++{
++    struct Scsi_Host *shost;
++    struct vhba_host *vhost;
++    int i;
++
++    shost = scsi_host_alloc(&vhba_template, sizeof(struct vhba_host));
++    if (!shost) {
++        return -ENOMEM;
++    }
++
++    shost->max_channel = VHBA_MAX_BUS-1;
++    shost->max_id = VHBA_MAX_ID;
++    /* we don't support lun > 0 */
++    shost->max_lun = 1;
++    shost->max_cmd_len = MAX_COMMAND_SIZE;
++
++    vhost = (struct vhba_host *)shost->hostdata;
++    memset(vhost, 0, sizeof(*vhost));
++
++    vhost->shost = shost;
++    vhost->num_devices = 0;
++    spin_lock_init(&vhost->dev_lock);
++    spin_lock_init(&vhost->cmd_lock);
++    INIT_WORK(&vhost->scan_devices, vhba_scan_devices);
++    vhost->cmd_next = 0;
++    for (i = 0; i < vhost->shost->can_queue; i++) {
++        vhost->commands[i].status = VHBA_REQ_FREE;
++    }
++
++    platform_set_drvdata(pdev, vhost);
++
++    if (scsi_add_host(shost, &pdev->dev)) {
++        scsi_host_put(shost);
++        return -ENOMEM;
++    }
++
++    return 0;
++}
++
++static int vhba_remove (struct platform_device *pdev)
++{
++    struct vhba_host *vhost;
++    struct Scsi_Host *shost;
++
++    vhost = platform_get_drvdata(pdev);
++    shost = vhost->shost;
++
++    scsi_remove_host(shost);
++    scsi_host_put(shost);
++
++    return 0;
++}
++
++static void vhba_release (struct device * dev)
++{
++    return;
++}
++
++static struct platform_device vhba_platform_device = {
++    .name = "vhba",
++    .id = -1,
++    .dev = {
++        .release = vhba_release,
++    },
++};
++
++static struct platform_driver vhba_platform_driver = {
++    .driver = {
++        .owner = THIS_MODULE,
++        .name = "vhba",
++    },
++    .probe = vhba_probe,
++    .remove = vhba_remove,
++};
++
++static int __init vhba_init (void)
++{
++    int ret;
++
++    ret = platform_device_register(&vhba_platform_device);
++    if (ret < 0) {
++        return ret;
++    }
++
++    ret = platform_driver_register(&vhba_platform_driver);
++    if (ret < 0) {
++        platform_device_unregister(&vhba_platform_device);
++        return ret;
++    }
++
++    ret = misc_register(&vhba_miscdev);
++    if (ret < 0) {
++        platform_driver_unregister(&vhba_platform_driver);
++        platform_device_unregister(&vhba_platform_device);
++        return ret;
++    }
++
++    return 0;
++}
++
++static void __exit vhba_exit(void)
++{
++    misc_deregister(&vhba_miscdev);
++    platform_driver_unregister(&vhba_platform_driver);
++    platform_device_unregister(&vhba_platform_device);
++}
++
++module_init(vhba_init);
++module_exit(vhba_exit);
++
+
+From 5b3d9f2372600c3b908b1bd0e8c9b8c6ed351fa2 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
+Date: Mon, 3 Aug 2020 21:18:53 +0200
+Subject: [PATCH 03/27] ZEN: Add OpenRGB patches
+
+Squashed commit of the following:
+
+commit 942ded8f8652a4b4e6b46d04938bb66f1eac4c78
+Author: Steven Barrett <steven@liquorix.net>
+Date:   Sat Jul 4 21:28:54 2020 -0500
+
+    openrgb: Deduplicate piix4 setup for HUDSON2/KERNCZ SMBUS
+
+    In the original OpenRGB patches, the initialization code for CZ
+    secondary SMBus controllers was copied.  Later, an upstream commit
+    landed in 5.7 stable that combined the initialization code for both
+    primary/secondary smbus channels.
+
+    Combine the initialization code ahead of time so upstream merges
+    correctly with OpenRGB.
+
+    Fixes: https://github.com/zen-kernel/zen-kernel/issues/176
+
+commit a65e3ecf90b24fd44689cc0713af602965ffaf4e
+Author: Steven Barrett <steven@liquorix.net>
+Date:   Wed Jun 17 14:24:20 2020 -0500
+
+    Add OpenRGB patch - 0c45e26c
+
+    Source:
+    https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/master/OpenRGB.patch
+
+    History:
+    https://gitlab.com/CalcProgrammer1/OpenRGB/-/commits/master/OpenRGB.patch
+---
+ drivers/i2c/busses/Kconfig       |   9 +
+ drivers/i2c/busses/Makefile      |   1 +
+ drivers/i2c/busses/i2c-nct6775.c | 647 +++++++++++++++++++++++++++++++
+ drivers/i2c/busses/i2c-piix4.c   |   4 +-
+ 4 files changed, 659 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-nct6775.c
+
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index a49e0ed4a599d..2083d50c15607 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -219,6 +219,15 @@ config I2C_CHT_WC
+ 	  combined with a FUSB302 Type-C port-controller as such it is advised
+ 	  to also select CONFIG_TYPEC_FUSB302=m.
+ 
++config I2C_NCT6775
++	tristate "Nuvoton NCT6775 and compatible SMBus controller"
++	help
++		If you say yes to this option, support will be included for the
++		Nuvoton NCT6775 and compatible SMBus controllers.
++
++		This driver can also be built as a module.  If so, the module
++		will be called i2c-nct6775.
++
+ config I2C_NFORCE2
+ 	tristate "Nvidia nForce2, nForce3 and nForce4"
+ 	depends on PCI
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index 683c49faca05c..5f05ef8e23a63 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -17,6 +17,7 @@ obj-$(CONFIG_I2C_CHT_WC)	+= i2c-cht-wc.o
+ obj-$(CONFIG_I2C_I801)		+= i2c-i801.o
+ obj-$(CONFIG_I2C_ISCH)		+= i2c-isch.o
+ obj-$(CONFIG_I2C_ISMT)		+= i2c-ismt.o
++obj-$(CONFIG_I2C_NCT6775)   += i2c-nct6775.o
+ obj-$(CONFIG_I2C_NFORCE2)	+= i2c-nforce2.o
+ obj-$(CONFIG_I2C_NFORCE2_S4985)	+= i2c-nforce2-s4985.o
+ obj-$(CONFIG_I2C_NVIDIA_GPU)	+= i2c-nvidia-gpu.o
+diff --git a/drivers/i2c/busses/i2c-nct6775.c b/drivers/i2c/busses/i2c-nct6775.c
+new file mode 100644
+index 0000000000000..0462f09520431
+--- /dev/null
++++ b/drivers/i2c/busses/i2c-nct6775.c
+@@ -0,0 +1,647 @@
++/*
++ * i2c-nct6775 - Driver for the SMBus master functionality of
++ *	       Nuvoton NCT677x Super-I/O chips
++ *
++ * Copyright (C) 2019  Adam Honse <calcprogrammer1@gmail.com>
++ *
++ * Derived from nct6775 hwmon driver
++ * Copyright (C) 2012  Guenter Roeck <linux@roeck-us.net>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/jiffies.h>
++#include <linux/platform_device.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
++#include <linux/hwmon-vid.h>
++#include <linux/err.h>
++#include <linux/mutex.h>
++#include <linux/delay.h>
++#include <linux/ioport.h>
++#include <linux/i2c.h>
++#include <linux/acpi.h>
++#include <linux/bitops.h>
++#include <linux/dmi.h>
++#include <linux/io.h>
++#include <linux/nospec.h>
++
++#define DRVNAME "i2c-nct6775"
++
++/* Nuvoton SMBus address offsets */
++#define SMBHSTDAT       (0 + nuvoton_nct6793d_smba)
++#define SMBBLKSZ        (1 + nuvoton_nct6793d_smba)
++#define SMBHSTCMD       (2 + nuvoton_nct6793d_smba)
++#define SMBHSTIDX       (3 + nuvoton_nct6793d_smba)  //Index field is the Command field on other controllers
++#define SMBHSTCTL       (4 + nuvoton_nct6793d_smba)
++#define SMBHSTADD       (5 + nuvoton_nct6793d_smba)
++#define SMBHSTERR       (9 + nuvoton_nct6793d_smba)
++#define SMBHSTSTS       (0xE + nuvoton_nct6793d_smba)
++
++/* Command register */
++#define NCT6793D_READ_BYTE      0
++#define NCT6793D_READ_WORD      1
++#define NCT6793D_READ_BLOCK     2
++#define NCT6793D_BLOCK_WRITE_READ_PROC_CALL 3
++#define NCT6793D_PROC_CALL      4
++#define NCT6793D_WRITE_BYTE     8
++#define NCT6793D_WRITE_WORD     9
++#define NCT6793D_WRITE_BLOCK    10
++
++/* Control register */
++#define NCT6793D_MANUAL_START   128
++#define NCT6793D_SOFT_RESET     64
++
++/* Error register */
++#define NCT6793D_NO_ACK         32
++
++/* Status register */
++#define NCT6793D_FIFO_EMPTY     1
++#define NCT6793D_FIFO_FULL      2
++#define NCT6793D_MANUAL_ACTIVE  4
++
++#define NCT6775_LD_SMBUS		0x0B
++
++/* Other settings */
++#define MAX_RETRIES		400
++
++enum kinds { nct6106, nct6775, nct6776, nct6779, nct6791, nct6792, nct6793,
++	     nct6795, nct6796, nct6798 };
++
++struct nct6775_sio_data {
++	int sioreg;
++	enum kinds kind;
++};
++
++/* used to set data->name = nct6775_device_names[data->sio_kind] */
++static const char * const nct6775_device_names[] = {
++	"nct6106",
++	"nct6775",
++	"nct6776",
++	"nct6779",
++	"nct6791",
++	"nct6792",
++	"nct6793",
++	"nct6795",
++	"nct6796",
++	"nct6798",
++};
++
++static const char * const nct6775_sio_names[] __initconst = {
++	"NCT6106D",
++	"NCT6775F",
++	"NCT6776D/F",
++	"NCT6779D",
++	"NCT6791D",
++	"NCT6792D",
++	"NCT6793D",
++	"NCT6795D",
++	"NCT6796D",
++	"NCT6798D",
++};
++
++#define SIO_REG_LDSEL		0x07	/* Logical device select */
++#define SIO_REG_DEVID		0x20	/* Device ID (2 bytes) */
++#define SIO_REG_SMBA		0x62	/* SMBus base address register */
++
++#define SIO_NCT6106_ID		0xc450
++#define SIO_NCT6775_ID		0xb470
++#define SIO_NCT6776_ID		0xc330
++#define SIO_NCT6779_ID		0xc560
++#define SIO_NCT6791_ID		0xc800
++#define SIO_NCT6792_ID		0xc910
++#define SIO_NCT6793_ID		0xd120
++#define SIO_NCT6795_ID		0xd350
++#define SIO_NCT6796_ID		0xd420
++#define SIO_NCT6798_ID		0xd428
++#define SIO_ID_MASK			0xFFF0
++
++static inline void
++superio_outb(int ioreg, int reg, int val)
++{
++	outb(reg, ioreg);
++	outb(val, ioreg + 1);
++}
++
++static inline int
++superio_inb(int ioreg, int reg)
++{
++	outb(reg, ioreg);
++	return inb(ioreg + 1);
++}
++
++static inline void
++superio_select(int ioreg, int ld)
++{
++	outb(SIO_REG_LDSEL, ioreg);
++	outb(ld, ioreg + 1);
++}
++
++static inline int
++superio_enter(int ioreg)
++{
++	/*
++	 * Try to reserve <ioreg> and <ioreg + 1> for exclusive access.
++	 */
++	if (!request_muxed_region(ioreg, 2, DRVNAME))
++		return -EBUSY;
++
++	outb(0x87, ioreg);
++	outb(0x87, ioreg);
++
++	return 0;
++}
++
++static inline void
++superio_exit(int ioreg)
++{
++	outb(0xaa, ioreg);
++	outb(0x02, ioreg);
++	outb(0x02, ioreg + 1);
++	release_region(ioreg, 2);
++}
++
++/*
++ * ISA constants
++ */
++
++#define IOREGION_ALIGNMENT	(~7)
++#define IOREGION_LENGTH		2
++#define ADDR_REG_OFFSET		0
++#define DATA_REG_OFFSET		1
++
++#define NCT6775_REG_BANK	0x4E
++#define NCT6775_REG_CONFIG	0x40
++
++static struct i2c_adapter *nct6775_adapter;
++
++struct i2c_nct6775_adapdata {
++	unsigned short smba;
++};
++
++/* Return negative errno on error. */
++static s32 nct6775_access(struct i2c_adapter * adap, u16 addr,
++		 unsigned short flags, char read_write,
++		 u8 command, int size, union i2c_smbus_data * data)
++{
++	struct i2c_nct6775_adapdata *adapdata = i2c_get_adapdata(adap);
++	unsigned short nuvoton_nct6793d_smba = adapdata->smba;
++	int i, len, cnt;
++	union i2c_smbus_data tmp_data;
++	int timeout = 0;
++
++	tmp_data.word = 0;
++	cnt = 0;
++	len = 0;
++
++	outb_p(NCT6793D_SOFT_RESET, SMBHSTCTL);
++
++	switch (size) {
++		case I2C_SMBUS_QUICK:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			break;
++		case I2C_SMBUS_BYTE_DATA:
++			tmp_data.byte = data->byte;
++		case I2C_SMBUS_BYTE:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			outb_p(command, SMBHSTIDX);
++			if (read_write == I2C_SMBUS_WRITE) {
++				outb_p(tmp_data.byte, SMBHSTDAT);
++				outb_p(NCT6793D_WRITE_BYTE, SMBHSTCMD);
++			}
++			else {
++				outb_p(NCT6793D_READ_BYTE, SMBHSTCMD);
++			}
++			break;
++		case I2C_SMBUS_WORD_DATA:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			outb_p(command, SMBHSTIDX);
++			if (read_write == I2C_SMBUS_WRITE) {
++				outb_p(data->word & 0xff, SMBHSTDAT);
++				outb_p((data->word & 0xff00) >> 8, SMBHSTDAT);
++				outb_p(NCT6793D_WRITE_WORD, SMBHSTCMD);
++			}
++			else {
++				outb_p(NCT6793D_READ_WORD, SMBHSTCMD);
++			}
++			break;
++		case I2C_SMBUS_BLOCK_DATA:
++			outb_p((addr << 1) | read_write,
++			       SMBHSTADD);
++			outb_p(command, SMBHSTIDX);
++			if (read_write == I2C_SMBUS_WRITE) {
++				len = data->block[0];
++				if (len == 0 || len > I2C_SMBUS_BLOCK_MAX)
++					return -EINVAL;
++				outb_p(len, SMBBLKSZ);
++
++				cnt = 1;
++				if (len >= 4) {
++					for (i = cnt; i <= 4; i++) {
++						outb_p(data->block[i], SMBHSTDAT);
++					}
++
++					len -= 4;
++					cnt += 4;
++				}
++				else {
++					for (i = cnt; i <= len; i++ ) {
++						outb_p(data->block[i], SMBHSTDAT);
++					}
++
++					len = 0;
++				}
++
++				outb_p(NCT6793D_WRITE_BLOCK, SMBHSTCMD);
++			}
++			else {
++				return -ENOTSUPP;
++			}
++			break;
++		default:
++			dev_warn(&adap->dev, "Unsupported transaction %d\n", size);
++			return -EOPNOTSUPP;
++	}
++
++	outb_p(NCT6793D_MANUAL_START, SMBHSTCTL);
++
++	while ((size == I2C_SMBUS_BLOCK_DATA) && (len > 0)) {
++		if (read_write == I2C_SMBUS_WRITE) {
++			timeout = 0;
++			while ((inb_p(SMBHSTSTS) & NCT6793D_FIFO_EMPTY) == 0)
++			{
++				if(timeout > MAX_RETRIES)
++				{
++					return -ETIMEDOUT;
++				}
++				usleep_range(250, 500);
++				timeout++;
++			}
++
++			//Load more bytes into FIFO
++			if (len >= 4) {
++				for (i = cnt; i <= (cnt + 4); i++) {
++					outb_p(data->block[i], SMBHSTDAT);
++				}
++
++				len -= 4;
++				cnt += 4;
++			}
++			else {
++				for (i = cnt; i <= (cnt + len); i++) {
++					outb_p(data->block[i], SMBHSTDAT);
++				}
++
++				len = 0;
++			}
++		}
++		else {
++			return -ENOTSUPP;
++		}
++		
++	}
++
++	//wait for manual mode to complete
++	timeout = 0;
++	while ((inb_p(SMBHSTSTS) & NCT6793D_MANUAL_ACTIVE) != 0)
++	{
++		if(timeout > MAX_RETRIES)
++		{
++			return -ETIMEDOUT;
++		}
++		usleep_range(250, 500);
++		timeout++;
++	}
++
++	if ((inb_p(SMBHSTERR) & NCT6793D_NO_ACK) != 0) {    	
++		return -ENXIO;
++	}
++	else if ((read_write == I2C_SMBUS_WRITE) || (size == I2C_SMBUS_QUICK)) {
++		return 0;
++	}
++
++	switch (size) {
++		case I2C_SMBUS_QUICK:
++		case I2C_SMBUS_BYTE_DATA:
++			data->byte = inb_p(SMBHSTDAT);
++			break;
++		case I2C_SMBUS_WORD_DATA:
++			data->word = inb_p(SMBHSTDAT) + (inb_p(SMBHSTDAT) << 8);
++			break;
++	}
++	return 0;
++}
++
++static u32 nct6775_func(struct i2c_adapter *adapter)
++{
++	return I2C_FUNC_SMBUS_QUICK | I2C_FUNC_SMBUS_BYTE |
++	    I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA |
++	    I2C_FUNC_SMBUS_BLOCK_DATA;
++}
++
++static const struct i2c_algorithm smbus_algorithm = {
++	.smbus_xfer	= nct6775_access,
++	.functionality	= nct6775_func,
++};
++
++static int nct6775_add_adapter(unsigned short smba, const char *name, struct i2c_adapter **padap)
++{
++	struct i2c_adapter *adap;
++	struct i2c_nct6775_adapdata *adapdata;
++	int retval;
++
++	adap = kzalloc(sizeof(*adap), GFP_KERNEL);
++	if (adap == NULL) {
++		return -ENOMEM;
++	}
++
++	adap->owner = THIS_MODULE;
++	adap->class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
++	adap->algo = &smbus_algorithm;
++
++	adapdata = kzalloc(sizeof(*adapdata), GFP_KERNEL);
++	if (adapdata == NULL) {
++		kfree(adap);
++		return -ENOMEM;
++	}
++
++	adapdata->smba = smba;
++
++	snprintf(adap->name, sizeof(adap->name),
++		"SMBus NCT67xx adapter%s at %04x", name, smba);
++
++	i2c_set_adapdata(adap, adapdata);
++
++	retval = i2c_add_adapter(adap);
++	if (retval) {
++		kfree(adapdata);
++		kfree(adap);
++		return retval;
++	}
++
++	*padap = adap;
++	return 0;
++}
++
++static void nct6775_remove_adapter(struct i2c_adapter *adap)
++{
++	struct i2c_nct6775_adapdata *adapdata = i2c_get_adapdata(adap);
++
++	if (adapdata->smba) {
++		i2c_del_adapter(adap);
++		kfree(adapdata);
++		kfree(adap);
++	}
++}
++
++//static SIMPLE_DEV_PM_OPS(nct6775_dev_pm_ops, nct6775_suspend, nct6775_resume);
++
++/*
++ * when Super-I/O functions move to a separate file, the Super-I/O
++ * bus will manage the lifetime of the device and this module will only keep
++ * track of the nct6775 driver. But since we use platform_device_alloc(), we
++ * must keep track of the device
++ */
++static struct platform_device *pdev[2];
++
++static int nct6775_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct nct6775_sio_data *sio_data = dev_get_platdata(dev);
++	struct resource *res;
++
++	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
++	if (!devm_request_region(&pdev->dev, res->start, IOREGION_LENGTH,
++				 DRVNAME))
++		return -EBUSY;
++
++	switch (sio_data->kind) {
++	case nct6791:
++	case nct6792:
++	case nct6793:
++	case nct6795:
++	case nct6796:
++	case nct6798:
++		nct6775_add_adapter(res->start, "", &nct6775_adapter);
++		break;
++	default:
++		return -ENODEV;
++	}
++
++	return 0;
++}
++/*
++static void nct6791_enable_io_mapping(int sioaddr)
++{
++	int val;
++
++	val = superio_inb(sioaddr, NCT6791_REG_HM_IO_SPACE_LOCK_ENABLE);
++	if (val & 0x10) {
++		pr_info("Enabling hardware monitor logical device mappings.\n");
++		superio_outb(sioaddr, NCT6791_REG_HM_IO_SPACE_LOCK_ENABLE,
++			     val & ~0x10);
++	}
++}*/
++
++static struct platform_driver i2c_nct6775_driver = {
++	.driver = {
++		.name	= DRVNAME,
++//		.pm	= &nct6775_dev_pm_ops,
++	},
++	.probe		= nct6775_probe,
++};
++
++static void __exit i2c_nct6775_exit(void)
++{
++	int i;
++
++	if(nct6775_adapter)
++		nct6775_remove_adapter(nct6775_adapter);
++
++	for (i = 0; i < ARRAY_SIZE(pdev); i++) {
++		if (pdev[i])
++			platform_device_unregister(pdev[i]);
++	}
++	platform_driver_unregister(&i2c_nct6775_driver);
++}
++
++/* nct6775_find() looks for a '627 in the Super-I/O config space */
++static int __init nct6775_find(int sioaddr, struct nct6775_sio_data *sio_data)
++{
++	u16 val;
++	int err;
++	int addr;
++
++	err = superio_enter(sioaddr);
++	if (err)
++		return err;
++
++	val = (superio_inb(sioaddr, SIO_REG_DEVID) << 8) |
++		superio_inb(sioaddr, SIO_REG_DEVID + 1);
++
++	switch (val & SIO_ID_MASK) {
++	case SIO_NCT6106_ID:
++		sio_data->kind = nct6106;
++		break;
++	case SIO_NCT6775_ID:
++		sio_data->kind = nct6775;
++		break;
++	case SIO_NCT6776_ID:
++		sio_data->kind = nct6776;
++		break;
++	case SIO_NCT6779_ID:
++		sio_data->kind = nct6779;
++		break;
++	case SIO_NCT6791_ID:
++		sio_data->kind = nct6791;
++		break;
++	case SIO_NCT6792_ID:
++		sio_data->kind = nct6792;
++		break;
++	case SIO_NCT6793_ID:
++		sio_data->kind = nct6793;
++		break;
++	case SIO_NCT6795_ID:
++		sio_data->kind = nct6795;
++		break;
++	case SIO_NCT6796_ID:
++		sio_data->kind = nct6796;
++		break;
++	case SIO_NCT6798_ID:
++		sio_data->kind = nct6798;
++		break;
++	default:
++		if (val != 0xffff)
++			pr_debug("unsupported chip ID: 0x%04x\n", val);
++		superio_exit(sioaddr);
++		return -ENODEV;
++	}
++
++	/* We have a known chip, find the SMBus I/O address */
++	superio_select(sioaddr, NCT6775_LD_SMBUS);
++	val = (superio_inb(sioaddr, SIO_REG_SMBA) << 8)
++	    | superio_inb(sioaddr, SIO_REG_SMBA + 1);
++	addr = val & IOREGION_ALIGNMENT;
++	if (addr == 0) {
++		pr_err("Refusing to enable a Super-I/O device with a base I/O port 0\n");
++		superio_exit(sioaddr);
++		return -ENODEV;
++	}
++
++	//if (sio_data->kind == nct6791 || sio_data->kind == nct6792 ||
++	//    sio_data->kind == nct6793 || sio_data->kind == nct6795 ||
++	//    sio_data->kind == nct6796)
++	//	nct6791_enable_io_mapping(sioaddr);
++
++	superio_exit(sioaddr);
++	pr_info("Found %s or compatible chip at %#x:%#x\n",
++		nct6775_sio_names[sio_data->kind], sioaddr, addr);
++	sio_data->sioreg = sioaddr;
++
++	return addr;
++}
++
++static int __init i2c_nct6775_init(void)
++{
++	int i, err;
++	bool found = false;
++	int address;
++	struct resource res;
++	struct nct6775_sio_data sio_data;
++	int sioaddr[2] = { 0x2e, 0x4e };
++
++	err = platform_driver_register(&i2c_nct6775_driver);
++	if (err)
++		return err;
++
++	/*
++	 * initialize sio_data->kind and sio_data->sioreg.
++	 *
++	 * when Super-I/O functions move to a separate file, the Super-I/O
++	 * driver will probe 0x2e and 0x4e and auto-detect the presence of a
++	 * nct6775 hardware monitor, and call probe()
++	 */
++	for (i = 0; i < ARRAY_SIZE(pdev); i++) {
++		address = nct6775_find(sioaddr[i], &sio_data);
++		if (address <= 0)
++			continue;
++
++		found = true;
++
++		pdev[i] = platform_device_alloc(DRVNAME, address);
++		if (!pdev[i]) {
++			err = -ENOMEM;
++			goto exit_device_unregister;
++		}
++
++		err = platform_device_add_data(pdev[i], &sio_data,
++					       sizeof(struct nct6775_sio_data));
++		if (err)
++			goto exit_device_put;
++
++		memset(&res, 0, sizeof(res));
++		res.name = DRVNAME;
++		res.start = address;
++		res.end = address + IOREGION_LENGTH - 1;
++		res.flags = IORESOURCE_IO;
++
++		err = acpi_check_resource_conflict(&res);
++		if (err) {
++			platform_device_put(pdev[i]);
++			pdev[i] = NULL;
++			continue;
++		}
++
++		err = platform_device_add_resources(pdev[i], &res, 1);
++		if (err)
++			goto exit_device_put;
++
++		/* platform_device_add calls probe() */
++		err = platform_device_add(pdev[i]);
++		if (err)
++			goto exit_device_put;
++	}
++	if (!found) {
++		err = -ENODEV;
++		goto exit_unregister;
++	}
++
++	return 0;
++
++exit_device_put:
++	platform_device_put(pdev[i]);
++exit_device_unregister:
++	while (--i >= 0) {
++		if (pdev[i])
++			platform_device_unregister(pdev[i]);
++	}
++exit_unregister:
++	platform_driver_unregister(&i2c_nct6775_driver);
++	return err;
++}
++
++MODULE_AUTHOR("Adam Honse <calcprogrammer1@gmail.com>");
++MODULE_DESCRIPTION("SMBus driver for NCT6775F and compatible chips");
++MODULE_LICENSE("GPL");
++
++module_init(i2c_nct6775_init);
++module_exit(i2c_nct6775_exit);
+diff --git a/drivers/i2c/busses/i2c-piix4.c b/drivers/i2c/busses/i2c-piix4.c
+index 8c1b31ed0c429..0b1b36fa0b715 100644
+--- a/drivers/i2c/busses/i2c-piix4.c
++++ b/drivers/i2c/busses/i2c-piix4.c
+@@ -467,11 +467,11 @@ static int piix4_transaction(struct i2c_adapter *piix4_adapter)
+ 	if (srvrworks_csb5_delay) /* Extra delay for SERVERWORKS_CSB5 */
+ 		usleep_range(2000, 2100);
+ 	else
+-		usleep_range(250, 500);
++		usleep_range(25, 50);
+ 
+ 	while ((++timeout < MAX_TIMEOUT) &&
+ 	       ((temp = inb_p(SMBHSTSTS)) & 0x01))
+-		usleep_range(250, 500);
++		usleep_range(25, 50);
+ 
+ 	/* If the SMBus is still busy, we give up */
+ 	if (timeout == MAX_TIMEOUT) {
+
+From 986ea2483af3ba52c0e6c9e647c05c753a548fb8 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
+Date: Mon, 3 Aug 2020 20:58:52 +0200
+Subject: [PATCH 04/27] ZEN: Enable additional CPU Optimizations for GCC v10.1+
+ / Kernel v5.8+
+
+From https://github.com/graysky2/kernel_gcc_patch
+
+WARNING
+This patch works with gcc versions 10.1+ and with kernel version 5.8+ and should
+NOT be applied when compiling on older versions of gcc due to key name changes
+of the march flags introduced with the version 4.9 release of gcc.[1]
+
+Use the older version of this patch hosted on the same github for older
+versions of gcc.
+
+FEATURES
+This patch adds additional CPU options to the Linux kernel accessible under:
+ Processor type and features  --->
+  Processor family --->
+
+The expanded microarchitectures include:
+* AMD Improved K8-family
+* AMD K10-family
+* AMD Family 10h (Barcelona)
+* AMD Family 14h (Bobcat)
+* AMD Family 16h (Jaguar)
+* AMD Family 15h (Bulldozer)
+* AMD Family 15h (Piledriver)
+* AMD Family 15h (Steamroller)
+* AMD Family 15h (Excavator)
+* AMD Family 17h (Zen)
+* AMD Family 17h (Zen 2)
+* Intel Silvermont low-power processors
+* Intel Goldmont low-power processors (Apollo Lake and Denverton)
+* Intel Goldmont Plus low-power processors (Gemini Lake)
+* Intel 1st Gen Core i3/i5/i7 (Nehalem)
+* Intel 1.5 Gen Core i3/i5/i7 (Westmere)
+* Intel 2nd Gen Core i3/i5/i7 (Sandybridge)
+* Intel 3rd Gen Core i3/i5/i7 (Ivybridge)
+* Intel 4th Gen Core i3/i5/i7 (Haswell)
+* Intel 5th Gen Core i3/i5/i7 (Broadwell)
+* Intel 6th Gen Core i3/i5/i7 (Skylake)
+* Intel 6th Gen Core i7/i9 (Skylake X)
+* Intel 8th Gen Core i3/i5/i7 (Cannon Lake)
+* Intel 10th Gen Core i7/i9 (Ice Lake)
+* Intel Xeon (Cascade Lake)
+* Intel Xeon (Cooper Lake)
+* Intel 3rd Gen 10nm++  i3/i5/i7/i9-family (Tiger Lake)
+
+It also offers to compile passing the 'native' option which, "selects the CPU
+to generate code for at compilation time by determining the processor type of
+the compiling machine. Using -march=native enables all instruction subsets
+supported by the local machine and will produce code optimized for the local
+machine under the constraints of the selected instruction set."[2]
+
+Do NOT try using the 'native' option on AMD Piledriver, Steamroller, or
+Excavator CPUs (-march=bdver{2,3,4} flag). The build will error out due the
+kernel's objtool issue with these.[3a,b]
+
+MINOR NOTES
+This patch also changes 'atom' to 'bonnell' in accordance with the gcc v4.9
+changes. Note that upstream is using the deprecated 'match=atom' flags when I
+believe it should use the newer 'march=bonnell' flag for atom processors.[4]
+
+It is not recommended to compile on Atom-CPUs with the 'native' option.[5] The
+recommendation is to use the 'atom' option instead.
+
+BENEFITS
+Small but real speed increases are measurable using a make endpoint comparing
+a generic kernel to one built with one of the respective microarchs.
+
+See the following experimental evidence supporting this statement:
+https://github.com/graysky2/kernel_gcc_patch
+
+REQUIREMENTS
+linux version >=5.8
+gcc version >=10.1
+
+ACKNOWLEDGMENTS
+This patch builds on the seminal work by Jeroen.[6]
+
+REFERENCES
+1.  https://gcc.gnu.org/gcc-4.9/changes.html
+2.  https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+3a. https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95671#c11
+3b. https://github.com/graysky2/kernel_gcc_patch/issues/55
+4.  https://bugzilla.kernel.org/show_bug.cgi?id=77461
+5.  https://github.com/graysky2/kernel_gcc_patch/issues/15
+6.  http://www.linuxforge.net/docs/linux/linux-gcc.php
+---
+ arch/x86/Kconfig.cpu            | 301 ++++++++++++++++++++++++++++----
+ arch/x86/Makefile               |  53 +++++-
+ arch/x86/Makefile_32.cpu        |  32 +++-
+ arch/x86/include/asm/vermagic.h |  56 ++++++
+ 4 files changed, 407 insertions(+), 35 deletions(-)
+
+diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
+index 814fe0d349b01..7b08e87fe7978 100644
+--- a/arch/x86/Kconfig.cpu
++++ b/arch/x86/Kconfig.cpu
+@@ -123,6 +123,7 @@ config MPENTIUMM
+ config MPENTIUM4
+ 	bool "Pentium-4/Celeron(P4-based)/Pentium-4 M/older Xeon"
+ 	depends on X86_32
++	select X86_P6_NOP
+ 	help
+ 	  Select this for Intel Pentium 4 chips.  This includes the
+ 	  Pentium 4, Pentium D, P4-based Celeron and Xeon, and
+@@ -155,9 +156,8 @@ config MPENTIUM4
+ 		-Paxville
+ 		-Dempsey
+ 
+-
+ config MK6
+-	bool "K6/K6-II/K6-III"
++	bool "AMD K6/K6-II/K6-III"
+ 	depends on X86_32
+ 	help
+ 	  Select this for an AMD K6-family processor.  Enables use of
+@@ -165,7 +165,7 @@ config MK6
+ 	  flags to GCC.
+ 
+ config MK7
+-	bool "Athlon/Duron/K7"
++	bool "AMD Athlon/Duron/K7"
+ 	depends on X86_32
+ 	help
+ 	  Select this for an AMD Athlon K7-family processor.  Enables use of
+@@ -173,12 +173,90 @@ config MK7
+ 	  flags to GCC.
+ 
+ config MK8
+-	bool "Opteron/Athlon64/Hammer/K8"
++	bool "AMD Opteron/Athlon64/Hammer/K8"
+ 	help
+ 	  Select this for an AMD Opteron or Athlon64 Hammer-family processor.
+ 	  Enables use of some extended instructions, and passes appropriate
+ 	  optimization flags to GCC.
+ 
++config MK8SSE3
++	bool "AMD Opteron/Athlon64/Hammer/K8 with SSE3"
++	help
++	  Select this for improved AMD Opteron or Athlon64 Hammer-family processors.
++	  Enables use of some extended instructions, and passes appropriate
++	  optimization flags to GCC.
++
++config MK10
++	bool "AMD 61xx/7x50/PhenomX3/X4/II/K10"
++	help
++	  Select this for an AMD 61xx Eight-Core Magny-Cours, Athlon X2 7x50,
++		Phenom X3/X4/II, Athlon II X2/X3/X4, or Turion II-family processor.
++	  Enables use of some extended instructions, and passes appropriate
++	  optimization flags to GCC.
++
++config MBARCELONA
++	bool "AMD Barcelona"
++	help
++	  Select this for AMD Family 10h Barcelona processors.
++
++	  Enables -march=barcelona
++
++config MBOBCAT
++	bool "AMD Bobcat"
++	help
++	  Select this for AMD Family 14h Bobcat processors.
++
++	  Enables -march=btver1
++
++config MJAGUAR
++	bool "AMD Jaguar"
++	help
++	  Select this for AMD Family 16h Jaguar processors.
++
++	  Enables -march=btver2
++
++config MBULLDOZER
++	bool "AMD Bulldozer"
++	help
++	  Select this for AMD Family 15h Bulldozer processors.
++
++	  Enables -march=bdver1
++
++config MPILEDRIVER
++	bool "AMD Piledriver"
++	help
++	  Select this for AMD Family 15h Piledriver processors.
++
++	  Enables -march=bdver2
++
++config MSTEAMROLLER
++	bool "AMD Steamroller"
++	help
++	  Select this for AMD Family 15h Steamroller processors.
++
++	  Enables -march=bdver3
++
++config MEXCAVATOR
++	bool "AMD Excavator"
++	help
++	  Select this for AMD Family 15h Excavator processors.
++
++	  Enables -march=bdver4
++
++config MZEN
++	bool "AMD Zen"
++	help
++	  Select this for AMD Family 17h Zen processors.
++
++	  Enables -march=znver1
++
++config MZEN2
++	bool "AMD Zen 2"
++	help
++	  Select this for AMD Family 17h Zen 2 processors.
++
++	  Enables -march=znver2
++
+ config MCRUSOE
+ 	bool "Crusoe"
+ 	depends on X86_32
+@@ -260,6 +338,7 @@ config MVIAC7
+ 
+ config MPSC
+ 	bool "Intel P4 / older Netburst based Xeon"
++	select X86_P6_NOP
+ 	depends on X86_64
+ 	help
+ 	  Optimize for Intel Pentium 4, Pentium D and older Nocona/Dempsey
+@@ -269,8 +348,19 @@ config MPSC
+ 	  using the cpu family field
+ 	  in /proc/cpuinfo. Family 15 is an older Xeon, Family 6 a newer one.
+ 
++config MATOM
++	bool "Intel Atom"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Atom platform. Intel Atom CPUs have an
++	  in-order pipelining architecture and thus can benefit from
++	  accordingly optimized code. Use a recent GCC with specific Atom
++	  support in order to fully benefit from selecting this option.
++
+ config MCORE2
+-	bool "Core 2/newer Xeon"
++	bool "Intel Core 2"
++	select X86_P6_NOP
+ 	help
+ 
+ 	  Select this for Intel Core 2 and newer Core 2 Xeons (Xeon 51xx and
+@@ -278,14 +368,151 @@ config MCORE2
+ 	  family in /proc/cpuinfo. Newer ones have 6 and older ones 15
+ 	  (not a typo)
+ 
+-config MATOM
+-	bool "Intel Atom"
++	  Enables -march=core2
++
++config MNEHALEM
++	bool "Intel Nehalem"
++	select X86_P6_NOP
+ 	help
+ 
+-	  Select this for the Intel Atom platform. Intel Atom CPUs have an
+-	  in-order pipelining architecture and thus can benefit from
+-	  accordingly optimized code. Use a recent GCC with specific Atom
+-	  support in order to fully benefit from selecting this option.
++	  Select this for 1st Gen Core processors in the Nehalem family.
++
++	  Enables -march=nehalem
++
++config MWESTMERE
++	bool "Intel Westmere"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Westmere formerly Nehalem-C family.
++
++	  Enables -march=westmere
++
++config MSILVERMONT
++	bool "Intel Silvermont"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Silvermont platform.
++
++	  Enables -march=silvermont
++
++config MGOLDMONT
++	bool "Intel Goldmont"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Goldmont platform including Apollo Lake and Denverton.
++
++	  Enables -march=goldmont
++
++config MGOLDMONTPLUS
++	bool "Intel Goldmont Plus"
++	select X86_P6_NOP
++	help
++
++	  Select this for the Intel Goldmont Plus platform including Gemini Lake.
++
++	  Enables -march=goldmont-plus
++
++config MSANDYBRIDGE
++	bool "Intel Sandy Bridge"
++	select X86_P6_NOP
++	help
++
++	  Select this for 2nd Gen Core processors in the Sandy Bridge family.
++
++	  Enables -march=sandybridge
++
++config MIVYBRIDGE
++	bool "Intel Ivy Bridge"
++	select X86_P6_NOP
++	help
++
++	  Select this for 3rd Gen Core processors in the Ivy Bridge family.
++
++	  Enables -march=ivybridge
++
++config MHASWELL
++	bool "Intel Haswell"
++	select X86_P6_NOP
++	help
++
++	  Select this for 4th Gen Core processors in the Haswell family.
++
++	  Enables -march=haswell
++
++config MBROADWELL
++	bool "Intel Broadwell"
++	select X86_P6_NOP
++	help
++
++	  Select this for 5th Gen Core processors in the Broadwell family.
++
++	  Enables -march=broadwell
++
++config MSKYLAKE
++	bool "Intel Skylake"
++	select X86_P6_NOP
++	help
++
++	  Select this for 6th Gen Core processors in the Skylake family.
++
++	  Enables -march=skylake
++
++config MSKYLAKEX
++	bool "Intel Skylake X"
++	select X86_P6_NOP
++	help
++
++	  Select this for 6th Gen Core processors in the Skylake X family.
++
++	  Enables -march=skylake-avx512
++
++config MCANNONLAKE
++	bool "Intel Cannon Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for 8th Gen Core processors
++
++	  Enables -march=cannonlake
++
++config MICELAKE
++	bool "Intel Ice Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for 10th Gen Core processors in the Ice Lake family.
++
++	  Enables -march=icelake-client
++
++config MCASCADELAKE
++	bool "Intel Cascade Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for Xeon processors in the Cascade Lake family.
++
++	  Enables -march=cascadelake
++
++config MCOOPERLAKE
++	bool "Intel Cooper Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for Xeon processors in the Cooper Lake family.
++
++	  Enables -march=cooperlake
++
++config MTIGERLAKE
++	bool "Intel Tiger Lake"
++	select X86_P6_NOP
++	help
++
++	  Select this for third-generation 10 nm process processors in the Tiger Lake family.
++
++	  Enables -march=tigerlake
+ 
+ config GENERIC_CPU
+ 	bool "Generic-x86-64"
+@@ -294,6 +521,19 @@ config GENERIC_CPU
+ 	  Generic x86-64 CPU.
+ 	  Run equally well on all x86-64 CPUs.
+ 
++config MNATIVE
++ bool "Native optimizations autodetected by GCC"
++ help
++
++   GCC 4.2 and above support -march=native, which automatically detects
++   the optimum settings to use based on your processor. -march=native
++   also detects and applies additional settings beyond -march specific
++   to your CPU, (eg. -msse4). Unless you have a specific reason not to
++   (e.g. distcc cross-compiling), you should probably be using
++   -march=native rather than anything listed below.
++
++   Enables -march=native
++
+ endchoice
+ 
+ config X86_GENERIC
+@@ -318,7 +558,7 @@ config X86_INTERNODE_CACHE_SHIFT
+ config X86_L1_CACHE_SHIFT
+ 	int
+ 	default "7" if MPENTIUM4 || MPSC
+-	default "6" if MK7 || MK8 || MPENTIUMM || MCORE2 || MATOM || MVIAC7 || X86_GENERIC || GENERIC_CPU
++	default "6" if MK7 || MK8 || MK8SSE3 || MK10 || MBARCELONA || MBOBCAT || MBULLDOZER || MPILEDRIVER || MSTEAMROLLER || MEXCAVATOR || MZEN || MZEN2 || MJAGUAR || MPENTIUMM || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE || MATOM || MVIAC7 || X86_GENERIC || GENERIC_CPU
+ 	default "4" if MELAN || M486SX || M486 || MGEODEGX1
+ 	default "5" if MWINCHIP3D || MWINCHIPC6 || MCRUSOE || MEFFICEON || MCYRIXIII || MK6 || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || M586 || MVIAC3_2 || MGEODE_LX
+ 
+@@ -336,35 +576,36 @@ config X86_ALIGNMENT_16
+ 
+ config X86_INTEL_USERCOPY
+ 	def_bool y
+-	depends on MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M586MMX || X86_GENERIC || MK8 || MK7 || MEFFICEON || MCORE2
++	depends on MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M586MMX || X86_GENERIC || MK8 || MK8SSE3 || MK7 || MEFFICEON || MCORE2 || MK10 || MBARCELONA || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE
+ 
+ config X86_USE_PPRO_CHECKSUM
+ 	def_bool y
+-	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MATOM
++	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MK10 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MK8SSE3 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MATOM || MNATIVE
+ 
+ config X86_USE_3DNOW
+ 	def_bool y
+ 	depends on (MCYRIXIII || MK7 || MGEODE_LX) && !UML
+ 
+-#
+-# P6_NOPs are a relatively minor optimization that require a family >=
+-# 6 processor, except that it is broken on certain VIA chips.
+-# Furthermore, AMD chips prefer a totally different sequence of NOPs
+-# (which work on all CPUs).  In addition, it looks like Virtual PC
+-# does not understand them.
+-#
+-# As a result, disallow these if we're not compiling for X86_64 (these
+-# NOPs do work on all x86-64 capable chips); the list of processors in
+-# the right-hand clause are the cores that benefit from this optimization.
+-#
+ config X86_P6_NOP
+-	def_bool y
+-	depends on X86_64
+-	depends on (MCORE2 || MPENTIUM4 || MPSC)
++	default n
++	bool "Support for P6_NOPs on Intel chips"
++	depends on (MCORE2 || MPENTIUM4 || MPSC || MATOM || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS  || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE)
++	help
++	P6_NOPs are a relatively minor optimization that require a family >=
++	6 processor, except that it is broken on certain VIA chips.
++	Furthermore, AMD chips prefer a totally different sequence of NOPs
++	(which work on all CPUs).  In addition, it looks like Virtual PC
++	does not understand them.
++
++	As a result, disallow these if we're not compiling for X86_64 (these
++	NOPs do work on all x86-64 capable chips); the list of processors in
++	the right-hand clause are the cores that benefit from this optimization.
++
++	Say Y if you have Intel CPU newer than Pentium Pro, N otherwise.
+ 
+ config X86_TSC
+ 	def_bool y
+-	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MATOM) || X86_64
++	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MK8SSE3 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MNATIVE || MATOM) || X86_64
+ 
+ config X86_CMPXCHG64
+ 	def_bool y
+@@ -374,7 +615,7 @@ config X86_CMPXCHG64
+ # generates cmov.
+ config X86_CMOV
+ 	def_bool y
+-	depends on (MK8 || MK7 || MCORE2 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MCRUSOE || MEFFICEON || X86_64 || MATOM || MGEODE_LX)
++	depends on (MK8 || MK8SSE3 || MK10 || MBARCELONA || MBOBCAT || MBULLDOZER || MPILEDRIVER || MSTEAMROLLER || MEXCAVATOR || MZEN || MZEN2 || MJAGUAR || MK7 || MCORE2 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MCRUSOE || MEFFICEON || X86_64 || MNATIVE || MATOM || MGEODE_LX)
+ 
+ config X86_MINIMUM_CPU_FAMILY
+ 	int
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 1bf21746f4cea..d475323be684b 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -115,13 +115,60 @@ else
+ 	KBUILD_CFLAGS += $(call cc-option,-mskip-rax-setup)
+ 
+         # FIXME - should be integrated in Makefile.cpu (Makefile_32.cpu)
++        cflags-$(CONFIG_MNATIVE) += $(call cc-option,-march=native)
+         cflags-$(CONFIG_MK8) += $(call cc-option,-march=k8)
++        cflags-$(CONFIG_MK8SSE3) += $(call cc-option,-march=k8-sse3,-mtune=k8)
++        cflags-$(CONFIG_MK10) += $(call cc-option,-march=amdfam10)
++        cflags-$(CONFIG_MBARCELONA) += $(call cc-option,-march=barcelona)
++        cflags-$(CONFIG_MBOBCAT) += $(call cc-option,-march=btver1)
++        cflags-$(CONFIG_MJAGUAR) += $(call cc-option,-march=btver2)
++        cflags-$(CONFIG_MBULLDOZER) += $(call cc-option,-march=bdver1)
++        cflags-$(CONFIG_MPILEDRIVER) += $(call cc-option,-march=bdver2)
++        cflags-$(CONFIG_MPILEDRIVER) += $(call cc-option,-mno-tbm)
++        cflags-$(CONFIG_MSTEAMROLLER) += $(call cc-option,-march=bdver3)
++        cflags-$(CONFIG_MSTEAMROLLER) += $(call cc-option,-mno-tbm)
++        cflags-$(CONFIG_MEXCAVATOR) += $(call cc-option,-march=bdver4)
++        cflags-$(CONFIG_MEXCAVATOR) += $(call cc-option,-mno-tbm)
++        cflags-$(CONFIG_MZEN) += $(call cc-option,-march=znver1)
++        cflags-$(CONFIG_MZEN2) += $(call cc-option,-march=znver2)
+         cflags-$(CONFIG_MPSC) += $(call cc-option,-march=nocona)
+ 
+         cflags-$(CONFIG_MCORE2) += \
+-                $(call cc-option,-march=core2,$(call cc-option,-mtune=generic))
+-	cflags-$(CONFIG_MATOM) += $(call cc-option,-march=atom) \
+-		$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
++                $(call cc-option,-march=core2,$(call cc-option,-mtune=core2))
++        cflags-$(CONFIG_MNEHALEM) += \
++                $(call cc-option,-march=nehalem,$(call cc-option,-mtune=nehalem))
++        cflags-$(CONFIG_MWESTMERE) += \
++                $(call cc-option,-march=westmere,$(call cc-option,-mtune=westmere))
++        cflags-$(CONFIG_MSILVERMONT) += \
++                $(call cc-option,-march=silvermont,$(call cc-option,-mtune=silvermont))
++        cflags-$(CONFIG_MGOLDMONT) += \
++                $(call cc-option,-march=goldmont,$(call cc-option,-mtune=goldmont))
++        cflags-$(CONFIG_MGOLDMONTPLUS) += \
++                $(call cc-option,-march=goldmont-plus,$(call cc-option,-mtune=goldmont-plus))
++        cflags-$(CONFIG_MSANDYBRIDGE) += \
++                $(call cc-option,-march=sandybridge,$(call cc-option,-mtune=sandybridge))
++        cflags-$(CONFIG_MIVYBRIDGE) += \
++                $(call cc-option,-march=ivybridge,$(call cc-option,-mtune=ivybridge))
++        cflags-$(CONFIG_MHASWELL) += \
++                $(call cc-option,-march=haswell,$(call cc-option,-mtune=haswell))
++        cflags-$(CONFIG_MBROADWELL) += \
++                $(call cc-option,-march=broadwell,$(call cc-option,-mtune=broadwell))
++        cflags-$(CONFIG_MSKYLAKE) += \
++                $(call cc-option,-march=skylake,$(call cc-option,-mtune=skylake))
++        cflags-$(CONFIG_MSKYLAKEX) += \
++                $(call cc-option,-march=skylake-avx512,$(call cc-option,-mtune=skylake-avx512))
++        cflags-$(CONFIG_MCANNONLAKE) += \
++                $(call cc-option,-march=cannonlake,$(call cc-option,-mtune=cannonlake))
++        cflags-$(CONFIG_MICELAKE) += \
++                $(call cc-option,-march=icelake-client,$(call cc-option,-mtune=icelake-client))
++        cflags-$(CONFIG_MCASCADELAKE) += \
++                $(call cc-option,-march=cascadelake,$(call cc-option,-mtune=cascadelake))
++        cflags-$(CONFIG_MCOOPERLAKE) += \
++                $(call cc-option,-march=cooperlake,$(call cc-option,-mtune=cooperlake))
++        cflags-$(CONFIG_MTIGERLAKE) += \
++                $(call cc-option,-march=tigerlake,$(call cc-option,-mtune=tigerlake))
++        cflags-$(CONFIG_MATOM) += $(call cc-option,-march=bonnell) \
++                $(call cc-option,-mtune=bonnell,$(call cc-option,-mtune=generic))
+         cflags-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=generic)
+         KBUILD_CFLAGS += $(cflags-y)
+ 
+diff --git a/arch/x86/Makefile_32.cpu b/arch/x86/Makefile_32.cpu
+index cd30567598803..cb0a4c6bd9877 100644
+--- a/arch/x86/Makefile_32.cpu
++++ b/arch/x86/Makefile_32.cpu
+@@ -24,7 +24,19 @@ cflags-$(CONFIG_MK6)		+= -march=k6
+ # Please note, that patches that add -march=athlon-xp and friends are pointless.
+ # They make zero difference whatsosever to performance at this time.
+ cflags-$(CONFIG_MK7)		+= -march=athlon
++cflags-$(CONFIG_MNATIVE) += $(call cc-option,-march=native)
+ cflags-$(CONFIG_MK8)		+= $(call cc-option,-march=k8,-march=athlon)
++cflags-$(CONFIG_MK8SSE3)		+= $(call cc-option,-march=k8-sse3,-march=athlon)
++cflags-$(CONFIG_MK10)	+= $(call cc-option,-march=amdfam10,-march=athlon)
++cflags-$(CONFIG_MBARCELONA)	+= $(call cc-option,-march=barcelona,-march=athlon)
++cflags-$(CONFIG_MBOBCAT)	+= $(call cc-option,-march=btver1,-march=athlon)
++cflags-$(CONFIG_MJAGUAR)	+= $(call cc-option,-march=btver2,-march=athlon)
++cflags-$(CONFIG_MBULLDOZER)	+= $(call cc-option,-march=bdver1,-march=athlon)
++cflags-$(CONFIG_MPILEDRIVER)	+= $(call cc-option,-march=bdver2,-march=athlon)
++cflags-$(CONFIG_MSTEAMROLLER)	+= $(call cc-option,-march=bdver3,-march=athlon)
++cflags-$(CONFIG_MEXCAVATOR)	+= $(call cc-option,-march=bdver4,-march=athlon)
++cflags-$(CONFIG_MZEN)	+= $(call cc-option,-march=znver1,-march=athlon)
++cflags-$(CONFIG_MZEN2)	+= $(call cc-option,-march=znver2,-march=athlon)
+ cflags-$(CONFIG_MCRUSOE)	+= -march=i686 -falign-functions=0 -falign-jumps=0 -falign-loops=0
+ cflags-$(CONFIG_MEFFICEON)	+= -march=i686 $(call tune,pentium3) -falign-functions=0 -falign-jumps=0 -falign-loops=0
+ cflags-$(CONFIG_MWINCHIPC6)	+= $(call cc-option,-march=winchip-c6,-march=i586)
+@@ -33,8 +45,24 @@ cflags-$(CONFIG_MCYRIXIII)	+= $(call cc-option,-march=c3,-march=i486) -falign-fu
+ cflags-$(CONFIG_MVIAC3_2)	+= $(call cc-option,-march=c3-2,-march=i686)
+ cflags-$(CONFIG_MVIAC7)		+= -march=i686
+ cflags-$(CONFIG_MCORE2)		+= -march=i686 $(call tune,core2)
+-cflags-$(CONFIG_MATOM)		+= $(call cc-option,-march=atom,$(call cc-option,-march=core2,-march=i686)) \
+-	$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
++cflags-$(CONFIG_MNEHALEM)	+= -march=i686 $(call tune,nehalem)
++cflags-$(CONFIG_MWESTMERE)	+= -march=i686 $(call tune,westmere)
++cflags-$(CONFIG_MSILVERMONT)	+= -march=i686 $(call tune,silvermont)
++cflags-$(CONFIG_MGOLDMONT)	+= -march=i686 $(call tune,goldmont)
++cflags-$(CONFIG_MGOLDMONTPLUS)	+= -march=i686 $(call tune,goldmont-plus)
++cflags-$(CONFIG_MSANDYBRIDGE)	+= -march=i686 $(call tune,sandybridge)
++cflags-$(CONFIG_MIVYBRIDGE)	+= -march=i686 $(call tune,ivybridge)
++cflags-$(CONFIG_MHASWELL)	+= -march=i686 $(call tune,haswell)
++cflags-$(CONFIG_MBROADWELL)	+= -march=i686 $(call tune,broadwell)
++cflags-$(CONFIG_MSKYLAKE)	+= -march=i686 $(call tune,skylake)
++cflags-$(CONFIG_MSKYLAKEX)	+= -march=i686 $(call tune,skylake-avx512)
++cflags-$(CONFIG_MCANNONLAKE)	+= -march=i686 $(call tune,cannonlake)
++cflags-$(CONFIG_MICELAKE)	+= -march=i686 $(call tune,icelake-client)
++cflags-$(CONFIG_MCASCADELAKE)	+= -march=i686 $(call tune,cascadelake)
++cflags-$(CONFIG_MCOOPERLAKE)	+= -march=i686 $(call tune,cooperlake)
++cflags-$(CONFIG_MTIGERLAKE)	+= -march=i686 $(call tune,tigerlake)
++cflags-$(CONFIG_MATOM)		+= $(call cc-option,-march=bonnell,$(call cc-option,-march=core2,-march=i686)) \
++	$(call cc-option,-mtune=bonnell,$(call cc-option,-mtune=generic))
+ 
+ # AMD Elan support
+ cflags-$(CONFIG_MELAN)		+= -march=i486
+diff --git a/arch/x86/include/asm/vermagic.h b/arch/x86/include/asm/vermagic.h
+index 75884d2cdec37..14c222e78213f 100644
+--- a/arch/x86/include/asm/vermagic.h
++++ b/arch/x86/include/asm/vermagic.h
+@@ -17,6 +17,40 @@
+ #define MODULE_PROC_FAMILY "586MMX "
+ #elif defined CONFIG_MCORE2
+ #define MODULE_PROC_FAMILY "CORE2 "
++#elif defined CONFIG_MNATIVE
++#define MODULE_PROC_FAMILY "NATIVE "
++#elif defined CONFIG_MNEHALEM
++#define MODULE_PROC_FAMILY "NEHALEM "
++#elif defined CONFIG_MWESTMERE
++#define MODULE_PROC_FAMILY "WESTMERE "
++#elif defined CONFIG_MSILVERMONT
++#define MODULE_PROC_FAMILY "SILVERMONT "
++#elif defined CONFIG_MGOLDMONT
++#define MODULE_PROC_FAMILY "GOLDMONT "
++#elif defined CONFIG_MGOLDMONTPLUS
++#define MODULE_PROC_FAMILY "GOLDMONTPLUS "
++#elif defined CONFIG_MSANDYBRIDGE
++#define MODULE_PROC_FAMILY "SANDYBRIDGE "
++#elif defined CONFIG_MIVYBRIDGE
++#define MODULE_PROC_FAMILY "IVYBRIDGE "
++#elif defined CONFIG_MHASWELL
++#define MODULE_PROC_FAMILY "HASWELL "
++#elif defined CONFIG_MBROADWELL
++#define MODULE_PROC_FAMILY "BROADWELL "
++#elif defined CONFIG_MSKYLAKE
++#define MODULE_PROC_FAMILY "SKYLAKE "
++#elif defined CONFIG_MSKYLAKEX
++#define MODULE_PROC_FAMILY "SKYLAKEX "
++#elif defined CONFIG_MCANNONLAKE
++#define MODULE_PROC_FAMILY "CANNONLAKE "
++#elif defined CONFIG_MICELAKE
++#define MODULE_PROC_FAMILY "ICELAKE "
++#elif defined CONFIG_MCASCADELAKE
++#define MODULE_PROC_FAMILY "CASCADELAKE "
++#elif defined CONFIG_MCOOPERLAKE
++#define MODULE_PROC_FAMILY "COOPERLAKE "
++#elif defined CONFIG_MTIGERLAKE
++#define MODULE_PROC_FAMILY "TIGERLAKE "
+ #elif defined CONFIG_MATOM
+ #define MODULE_PROC_FAMILY "ATOM "
+ #elif defined CONFIG_M686
+@@ -35,6 +69,28 @@
+ #define MODULE_PROC_FAMILY "K7 "
+ #elif defined CONFIG_MK8
+ #define MODULE_PROC_FAMILY "K8 "
++#elif defined CONFIG_MK8SSE3
++#define MODULE_PROC_FAMILY "K8SSE3 "
++#elif defined CONFIG_MK10
++#define MODULE_PROC_FAMILY "K10 "
++#elif defined CONFIG_MBARCELONA
++#define MODULE_PROC_FAMILY "BARCELONA "
++#elif defined CONFIG_MBOBCAT
++#define MODULE_PROC_FAMILY "BOBCAT "
++#elif defined CONFIG_MBULLDOZER
++#define MODULE_PROC_FAMILY "BULLDOZER "
++#elif defined CONFIG_MPILEDRIVER
++#define MODULE_PROC_FAMILY "PILEDRIVER "
++#elif defined CONFIG_MSTEAMROLLER
++#define MODULE_PROC_FAMILY "STEAMROLLER "
++#elif defined CONFIG_MJAGUAR
++#define MODULE_PROC_FAMILY "JAGUAR "
++#elif defined CONFIG_MEXCAVATOR
++#define MODULE_PROC_FAMILY "EXCAVATOR "
++#elif defined CONFIG_MZEN
++#define MODULE_PROC_FAMILY "ZEN "
++#elif defined CONFIG_MZEN2
++#define MODULE_PROC_FAMILY "ZEN2 "
+ #elif defined CONFIG_MELAN
+ #define MODULE_PROC_FAMILY "ELAN "
+ #elif defined CONFIG_MCRUSOE
+
+From 228e792a116fd4cce8856ea73f2958ec8a241c0c Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 25 Nov 2019 22:24:42 +0100
+Subject: [PATCH 05/27] ZEN: Unrestrict CONFIG_OPTIMIZE_FOR_PERFORMANCE_O3
+
+---
+ init/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 0872a5a2e7590..03eaebc7c92ea 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1311,7 +1311,6 @@ config CC_OPTIMIZE_FOR_PERFORMANCE
+ 
+ config CC_OPTIMIZE_FOR_PERFORMANCE_O3
+ 	bool "Optimize more for performance (-O3)"
+-	depends on ARC
+ 	help
+ 	  Choosing this option will pass "-O3" to your compiler to optimize
+ 	  the kernel yet more for performance.
+
+From b81ab9b618d694217a54b5d2de70c7f37d3f3e07 Mon Sep 17 00:00:00 2001
+From: Sultan Alsawaf <sultan@kerneltoast.com>
+Date: Sun, 8 Mar 2020 00:31:35 -0800
+Subject: [PATCH 06/27] ZEN: Disable stack conservation for GCC
+
+There's plenty of room on the stack for a few more inlined bytes here
+and there. The measured stack usage at runtime is still safe without
+this, and performance is surely improved at a microscopic level, so
+remove it.
+
+Signed-off-by: Sultan Alsawaf <sultan@kerneltoast.com>
+---
+ Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 27a494785bc94..64a4bfec526ac 100644
+--- a/Makefile
++++ b/Makefile
+@@ -933,9 +933,6 @@ KBUILD_CFLAGS	+= -fno-strict-overflow
+ # Make sure -fstack-check isn't enabled (like gentoo apparently did)
+ KBUILD_CFLAGS  += -fno-stack-check
+ 
+-# conserve stack if available
+-KBUILD_CFLAGS   += $(call cc-option,-fconserve-stack)
+-
+ # Prohibit date/time macros, which would make the build non-deterministic
+ KBUILD_CFLAGS   += -Werror=date-time
+ 
+
+From 4ace3c6c50dbd58ee5f200a5461289d0491873a6 Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Thu, 2 Jun 2016 23:36:32 -0500
+Subject: [PATCH 07/27] ZEN: Initialize ata before graphics
+
+ATA init is the long pole in the boot process, and its asynchronous.
+move the graphics init after it so that ata and graphics initialize
+in parallel
+---
+ drivers/Makefile | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 5762280377186..cf79337dd279a 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -59,15 +59,8 @@ obj-y				+= char/
+ # iommu/ comes before gpu as gpu are using iommu controllers
+ obj-y				+= iommu/
+ 
+-# gpu/ comes after char for AGP vs DRM startup and after iommu
+-obj-y				+= gpu/
+-
+ obj-$(CONFIG_CONNECTOR)		+= connector/
+ 
+-# i810fb and intelfb depend on char/agp/
+-obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
+-obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
+-
+ obj-$(CONFIG_PARPORT)		+= parport/
+ obj-$(CONFIG_NVM)		+= lightnvm/
+ obj-y				+= base/ block/ misc/ mfd/ nfc/
+@@ -80,6 +73,14 @@ obj-$(CONFIG_IDE)		+= ide/
+ obj-y				+= scsi/
+ obj-y				+= nvme/
+ obj-$(CONFIG_ATA)		+= ata/
++
++# gpu/ comes after char for AGP vs DRM startup and after iommu
++obj-y				+= gpu/
++
++# i810fb and intelfb depend on char/agp/
++obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
++obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
++
+ obj-$(CONFIG_TARGET_CORE)	+= target/
+ obj-$(CONFIG_MTD)		+= mtd/
+ obj-$(CONFIG_SPI)		+= spi/
+
+From 0bf1b8c445de4481942ca8ace8dc209ece865bd3 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 16 Sep 2019 04:53:20 +0200
+Subject: [PATCH 08/27] ZEN: Add sysctl and CONFIG to disallow unprivileged
+ CLONE_NEWUSER
+
+Our default behavior continues to match the vanilla kernel.
+---
+ include/linux/user_namespace.h |  4 ++++
+ init/Kconfig                   | 16 ++++++++++++++++
+ kernel/fork.c                  | 14 ++++++++++++++
+ kernel/sysctl.c                | 12 ++++++++++++
+ kernel/user_namespace.c        |  7 +++++++
+ 5 files changed, 53 insertions(+)
+
+diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
+index 6ef1c7109fc4d..2140091b0b8d3 100644
+--- a/include/linux/user_namespace.h
++++ b/include/linux/user_namespace.h
+@@ -106,6 +106,8 @@ void dec_ucount(struct ucounts *ucounts, enum ucount_type type);
+ 
+ #ifdef CONFIG_USER_NS
+ 
++extern int unprivileged_userns_clone;
++
+ static inline struct user_namespace *get_user_ns(struct user_namespace *ns)
+ {
+ 	if (ns)
+@@ -139,6 +141,8 @@ extern bool current_in_userns(const struct user_namespace *target_ns);
+ struct ns_common *ns_get_owner(struct ns_common *ns);
+ #else
+ 
++#define unprivileged_userns_clone 0
++
+ static inline struct user_namespace *get_user_ns(struct user_namespace *ns)
+ {
+ 	return &init_user_ns;
+diff --git a/init/Kconfig b/init/Kconfig
+index 03eaebc7c92ea..9f6345d48d220 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1173,6 +1173,22 @@ config USER_NS
+ 
+ 	  If unsure, say N.
+ 
++config USER_NS_UNPRIVILEGED
++	bool "Allow unprivileged users to create namespaces"
++	default y
++	depends on USER_NS
++	help
++	  When disabled, unprivileged users will not be able to create
++	  new namespaces. Allowing users to create their own namespaces
++	  has been part of several recent local privilege escalation
++	  exploits, so if you need user namespaces but are
++	  paranoid^Wsecurity-conscious you want to disable this.
++
++	  This setting can be overridden at runtime via the
++	  kernel.unprivileged_userns_clone sysctl.
++
++	  If unsure, say Y.
++
+ config PID_NS
+ 	bool "PID Namespaces"
+ 	default y
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 6d266388d3804..635146a691c1c 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -97,6 +97,10 @@
+ #include <linux/scs.h>
+ #include <linux/io_uring.h>
+ 
++#ifdef CONFIG_USER_NS
++#include <linux/user_namespace.h>
++#endif
++
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+ #include <asm/mmu_context.h>
+@@ -1862,6 +1866,10 @@ static __latent_entropy struct task_struct *copy_process(
+ 	if ((clone_flags & (CLONE_NEWUSER|CLONE_FS)) == (CLONE_NEWUSER|CLONE_FS))
+ 		return ERR_PTR(-EINVAL);
+ 
++	if ((clone_flags & CLONE_NEWUSER) && !unprivileged_userns_clone)
++		if (!capable(CAP_SYS_ADMIN))
++			return ERR_PTR(-EPERM);
++
+ 	/*
+ 	 * Thread groups must share signals as well, and detached threads
+ 	 * can only be started up within the thread group.
+@@ -2927,6 +2935,12 @@ int ksys_unshare(unsigned long unshare_flags)
+ 	if (unshare_flags & CLONE_NEWNS)
+ 		unshare_flags |= CLONE_FS;
+ 
++	if ((unshare_flags & CLONE_NEWUSER) && !unprivileged_userns_clone) {
++		err = -EPERM;
++		if (!capable(CAP_SYS_ADMIN))
++			goto bad_unshare_out;
++	}
++
+ 	err = check_unshare_flags(unshare_flags);
+ 	if (err)
+ 		goto bad_unshare_out;
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index afad085960b81..a94828fb31c20 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -103,6 +103,9 @@
+ #ifdef CONFIG_LOCKUP_DETECTOR
+ #include <linux/nmi.h>
+ #endif
++#ifdef CONFIG_USER_NS
++#include <linux/user_namespace.h>
++#endif
+ 
+ #if defined(CONFIG_SYSCTL)
+ 
+@@ -1902,6 +1905,15 @@ static struct ctl_table kern_table[] = {
+ 		.proc_handler	= proc_dointvec,
+ 	},
+ #endif
++#ifdef CONFIG_USER_NS
++	{
++		.procname	= "unprivileged_userns_clone",
++		.data		= &unprivileged_userns_clone,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec,
++	},
++#endif
+ #ifdef CONFIG_PROC_SYSCTL
+ 	{
+ 		.procname	= "tainted",
+diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
+index e703d5d9cbe8e..5758274feaeea 100644
+--- a/kernel/user_namespace.c
++++ b/kernel/user_namespace.c
+@@ -21,6 +21,13 @@
+ #include <linux/bsearch.h>
+ #include <linux/sort.h>
+ 
++/* sysctl */
++#ifdef CONFIG_USER_NS_UNPRIVILEGED
++int unprivileged_userns_clone = 1;
++#else
++int unprivileged_userns_clone;
++#endif
++
+ static struct kmem_cache *user_ns_cachep __read_mostly;
+ static DEFINE_MUTEX(userns_state_mutex);
+ 
+
+From 513af58e2e4aa8267b1eebc1cd156e3e2a2a33e3 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 25 Nov 2019 22:53:25 +0100
+Subject: [PATCH 09/27] ZEN: Add CONFIG to rename the mq-deadline scheduler
+
+---
+ block/Kconfig.iosched | 9 +++++++++
+ block/elevator.c      | 4 ++++
+ block/mq-deadline.c   | 4 ++++
+ 3 files changed, 17 insertions(+)
+
+diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
+index 2f2158e05a91c..92a47e48fb3ed 100644
+--- a/block/Kconfig.iosched
++++ b/block/Kconfig.iosched
+@@ -9,6 +9,15 @@ config MQ_IOSCHED_DEADLINE
+ 	help
+ 	  MQ version of the deadline IO scheduler.
+ 
++config MQ_IOSCHED_DEADLINE_NODEFAULT
++	bool "Rename mq-deadline scheduler to mq-deadline-nodefault"
++	depends on MQ_IOSCHED_DEADLINE
++	default n
++	help
++	  This renames the mq-deadline scheduler to "mq-deadline-nodefault" and
++	  also drops its alias of "deadline". This can prevent existing
++	  userspace from forcing this scheduler over the kernel's choice.
++
+ config MQ_IOSCHED_KYBER
+ 	tristate "Kyber I/O scheduler"
+ 	default y
+diff --git a/block/elevator.c b/block/elevator.c
+index 293c5c81397a1..90181ad94ebf3 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -624,7 +624,11 @@ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
+ 
++#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++	return elevator_get(q, "mq-deadline-nodefault", false);
++#else
+ 	return elevator_get(q, "mq-deadline", false);
++#endif
+ }
+ 
+ /*
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 800ac902809b8..89b56d4526f55 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -798,8 +798,12 @@ static struct elevator_type mq_deadline = {
+ 	.queue_debugfs_attrs = deadline_queue_debugfs_attrs,
+ #endif
+ 	.elevator_attrs = deadline_attrs,
++#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
++	.elevator_name = "mq-deadline-nodefault",
++#else
+ 	.elevator_name = "mq-deadline",
+ 	.elevator_alias = "deadline",
++#endif
+ 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+ 	.elevator_owner = THIS_MODULE,
+ };
+
+From 28eaff69b01d9248cac394cce37361d0d6a52714 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 15 Jan 2020 20:43:56 -0600
+Subject: [PATCH 10/27] ZEN: intel-pstate: Implement "enable" parameter
+
+If intel-pstate is compiled into the kernel, it will preempt the loading
+of acpi-cpufreq so you can take advantage of hardware p-states without
+any friction.
+
+However, intel-pstate is not completely superior to cpufreq's ondemand
+for one reason.  There's no concept of an up_threshold property.
+
+In ondemand, up_threshold essentially reduces the maximum utilization to
+compare against, allowing you to hit max frequencies and turbo boost
+from a much lower core utilization.
+
+With intel-pstate, you have the concept of minimum and maximum
+performance, but no tunable that lets you define, maximum frequency
+means 50% core utilization.  For just this oversight, there's reasons
+you may want ondemand.
+
+Lets support setting "enable" in kernel boot parameters.  This lets
+kernel maintainers include "intel_pstate=disable" statically in the
+static boot parameters, but let users of the kernel override this
+selection.
+---
+ Documentation/admin-guide/kernel-parameters.txt | 3 +++
+ drivers/cpufreq/intel_pstate.c                  | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 44fde25bb221e..ce99d978153c1 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1897,6 +1897,9 @@
+ 			disable
+ 			  Do not enable intel_pstate as the default
+ 			  scaling driver for the supported processors
++			enable
++			  Enable intel_pstate in-case "disable" was passed
++			  previously in the kernel boot parameters
+ 			passive
+ 			  Use intel_pstate as a scaling driver, but configure it
+ 			  to work with generic cpufreq governors (instead of
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 36a3ccfe6d3d1..b0ec67997e40a 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -3119,6 +3119,8 @@ static int __init intel_pstate_setup(char *str)
+ 		pr_info("HWP disabled\n");
+ 		no_hwp = 1;
+ 	}
++	if (!strcmp(str, "enable"))
++		no_load = 0;
+ 	if (!strcmp(str, "force"))
+ 		force_load = 1;
+ 	if (!strcmp(str, "hwp_only"))
+
+From 973d42f99af15b2e610204fbe8252251ed7cc8c1 Mon Sep 17 00:00:00 2001
+From: Con Kolivas <kernel@kolivas.org>
+Date: Wed, 7 Dec 2016 21:13:16 +1100
+Subject: [PATCH 11/27] ZEN: Add an option to make threadirqs the default
+
+And a parameter 'nothreadirqs' to disable it again.
+---
+ kernel/irq/Kconfig  | 17 +++++++++++++++++
+ kernel/irq/manage.c | 11 +++++++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index 164a031cfdb66..016a445f589e6 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -113,6 +113,23 @@ config GENERIC_IRQ_RESERVATION_MODE
+ config IRQ_FORCED_THREADING
+        bool
+ 
++config FORCE_IRQ_THREADING
++	bool "Make IRQ threading compulsory"
++	depends on IRQ_FORCED_THREADING
++	default n
++	help
++
++	  Make IRQ threading mandatory for any IRQ handlers that support it
++	  instead of being optional and requiring the threadirqs kernel
++	  parameter. Instead they can be optionally disabled with the
++	  nothreadirqs kernel parameter.
++
++	  Enabling this may make some architectures not boot with runqueue
++	  sharing and MuQSS.
++
++	  Enable if you are building for a desktop or low latency system,
++	  otherwise say N.
++
+ config SPARSE_IRQ
+ 	bool "Support sparse irq numbering" if MAY_HAVE_SPARSE_IRQ
+ 	help
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index c460e0496006e..218fbcbb94e6b 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -25,9 +25,20 @@
+ #include "internals.h"
+ 
+ #if defined(CONFIG_IRQ_FORCED_THREADING) && !defined(CONFIG_PREEMPT_RT)
++#ifdef CONFIG_FORCE_IRQ_THREADING
++__read_mostly bool force_irqthreads = true;
++#else
+ __read_mostly bool force_irqthreads;
++#endif
+ EXPORT_SYMBOL_GPL(force_irqthreads);
+ 
++static int __init setup_noforced_irqthreads(char *arg)
++{
++	force_irqthreads = false;
++	return 0;
++}
++early_param("nothreadirqs", setup_noforced_irqthreads);
++
+ static int __init setup_forced_irqthreads(char *arg)
+ {
+ 	force_irqthreads = true;
+
+From 890ac858741436a40c274efb3514c5f6a96c7c80 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:10:06 +0100
+Subject: [PATCH 12/27] ZEN: INTERACTIVE: Base config item
+
+---
+ init/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 9f6345d48d220..477671290175d 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -96,6 +96,12 @@ config THREAD_INFO_IN_TASK
+ 
+ menu "General setup"
+ 
++config ZEN_INTERACTIVE
++	bool "Tune kernel for interactivity"
++	default y
++	help
++	  Tunes the kernel for responsiveness at the cost of throughput and power usage.
++
+ config BROKEN
+ 	bool
+ 
+
+From 0cbcc41992693254e5e4c7952853c6aa7404f28e Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:11:05 +0100
+Subject: [PATCH 13/27] ZEN: INTERACTIVE: Use BFQ as our elevator
+
+Add a scheduler even to multi-queue block devices: We prefer
+interactivity to throughput and want BFQ if possible.
+---
+ block/elevator.c | 6 +++++-
+ init/Kconfig     | 4 ++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/block/elevator.c b/block/elevator.c
+index 90181ad94ebf3..a056f4229ccd0 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -621,10 +621,14 @@ static inline bool elv_support_iosched(struct request_queue *q)
+  */
+ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ {
++#ifndef CONFIG_ZEN_INTERACTIVE
+ 	if (q->nr_hw_queues != 1)
+ 		return NULL;
++#endif
+ 
+-#if defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_MQ_IOSCHED_KYBER)
++	return elevator_get(q, "kyber", false);
++#elif defined(CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT)
+ 	return elevator_get(q, "mq-deadline-nodefault", false);
+ #else
+ 	return elevator_get(q, "mq-deadline", false);
+diff --git a/init/Kconfig b/init/Kconfig
+index 477671290175d..e8e14239a1ff8 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -102,6 +102,10 @@ config ZEN_INTERACTIVE
+ 	help
+ 	  Tunes the kernel for responsiveness at the cost of throughput and power usage.
+ 
++	  --- Block Layer ----------------------------------------
++
++	    Default scheduler.........: mq-deadline -> kyber
++
+ config BROKEN
+ 	bool
+ 
+
+From 9b6c7af596e209356850e0991969df68f396aea6 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:19:11 +0100
+Subject: [PATCH 14/27] ZEN: INTERACTIVE: Increase default writeback thresholds
+
+---
+ init/Kconfig        | 5 +++++
+ mm/page-writeback.c | 8 ++++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index e8e14239a1ff8..795a23ce38c45 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -106,6 +106,11 @@ config ZEN_INTERACTIVE
+ 
+ 	    Default scheduler.........: mq-deadline -> bfq
+ 
++	  --- Virtual Memory Subsystem ---------------------------
++
++	    Mem dirty before bg writeback..:  10 %  ->  20 %
++	    Mem dirty before sync writeback:  20 %  ->  50 %
++
+ config BROKEN
+ 	bool
+ 
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 586042472ac90..b0a26820f7904 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -71,7 +71,11 @@ static long ratelimit_pages = 32;
+ /*
+  * Start background writeback (via writeback threads) at this percentage
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++int dirty_background_ratio = 20;
++#else
+ int dirty_background_ratio = 10;
++#endif
+ 
+ /*
+  * dirty_background_bytes starts at 0 (disabled) so that it is a function of
+@@ -88,7 +92,11 @@ int vm_highmem_is_dirtyable;
+ /*
+  * The generator of dirty data starts writeback at this percentage
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++int vm_dirty_ratio = 50;
++#else
+ int vm_dirty_ratio = 20;
++#endif
+ 
+ /*
+  * vm_dirty_bytes starts at 0 (disabled) so that it is a function of
+
+From b5e9497d44347c16e732f6ea8838a79a64694b36 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:21:09 +0100
+Subject: [PATCH 15/27] ZEN: INTERACTIVE: Enable background reclaim of
+ hugepages
+
+Use [defer+madvise] as default khugepaged defrag strategy:
+
+For some reason, the default strategy to respond to THP fault fallbacks
+is still just madvise, meaning stall if the program wants transparent
+hugepages, but don't trigger a background reclaim / compaction if THP
+begins to fail allocations.  This creates a snowball affect where we
+still use the THP code paths, but we almost always fail once a system
+has been active and busy for a while.
+
+The option "defer" was created for interactive systems where THP can
+still improve performance.  If we have to fallback to a regular page due
+to an allocation failure or anything else, we will trigger a background
+reclaim and compaction so future THP attempts succeed and previous
+attempts eventually have their smaller pages combined without stalling
+running applications.
+
+We still want madvise to stall applications that explicitely want THP,
+so defer+madvise _does_ make a ton of sense.  Make it the default for
+interactive systems, especially if the kernel maintainer left
+transparent hugepages on "always".
+
+Reasoning and details in the original patch: https://lwn.net/Articles/711248/
+---
+ init/Kconfig     | 1 +
+ mm/huge_memory.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 795a23ce38c45..e9e7b6ca7470e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -110,6 +110,7 @@ config ZEN_INTERACTIVE
+ 
+ 	    Mem dirty before bg writeback..:  10 %  ->  20 %
+ 	    Mem dirty before sync writeback:  20 %  ->  50 %
++	    Background-reclaim hugepages...:    no  -> yes
+ 
+ config BROKEN
+ 	bool
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ec2bb93f74314..28af028951a3a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -53,7 +53,11 @@ unsigned long transparent_hugepage_flags __read_mostly =
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
+ 	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
+ #endif
++#ifdef CONFIG_ZEN_INTERACTIVE
++	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG)|
++#else
+ 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
++#endif
+ 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
+ 	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
+ 
+
+From 7e5629d0fc7ed407babc036c1bc7910d9c73dbef Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:28:13 +0100
+Subject: [PATCH 16/27] ZEN: INTERACTIVE: Tune CFS for interactivity
+
+---
+ init/Kconfig        |  8 ++++++++
+ kernel/sched/fair.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index e9e7b6ca7470e..400946237490b 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -112,6 +112,14 @@ config ZEN_INTERACTIVE
+ 	    Mem dirty before sync writeback:  20 %  ->  50 %
+ 	    Background-reclaim hugepages...:    no  -> yes
+ 
++	  --- CFS CPU Scheduler ----------------------------------
++
++	    Scheduling latency.............:   6    ->   4    ms
++	    Minimal granularity............:   0.75 ->   0.4  ms
++	    Wakeup granularity.............:   1    ->   0.5  ms
++	    CPU migration cost.............:   0.5  ->   0.25 ms
++	    Bandwidth slice size...........:   5    ->   3    ms
++
+ config BROKEN
+ 	bool
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index ae7ceba8fd4f2..e5d44fd075fb6 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -35,8 +35,13 @@
+  *
+  * (default: 6ms * (1 + ilog(ncpus)), units: nanoseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_latency			= 4000000ULL;
++static unsigned int normalized_sysctl_sched_latency	= 4000000ULL;
++#else
+ unsigned int sysctl_sched_latency			= 6000000ULL;
+ static unsigned int normalized_sysctl_sched_latency	= 6000000ULL;
++#endif
+ 
+ /*
+  * The initial- and re-scaling of tunables is configurable
+@@ -56,13 +61,22 @@ enum sched_tunable_scaling sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_L
+  *
+  * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_min_granularity			= 400000ULL;
++static unsigned int normalized_sysctl_sched_min_granularity	= 400000ULL;
++#else
+ unsigned int sysctl_sched_min_granularity			= 750000ULL;
+ static unsigned int normalized_sysctl_sched_min_granularity	= 750000ULL;
++#endif
+ 
+ /*
+  * This value is kept at sysctl_sched_latency/sysctl_sched_min_granularity
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++static unsigned int sched_nr_latency = 10;
++#else
+ static unsigned int sched_nr_latency = 8;
++#endif
+ 
+ /*
+  * After fork, child runs first. If set to 0 (default) then
+@@ -79,10 +93,17 @@ unsigned int sysctl_sched_child_runs_first __read_mostly;
+  *
+  * (default: 1 msec * (1 + ilog(ncpus)), units: nanoseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_wakeup_granularity			= 500000UL;
++static unsigned int normalized_sysctl_sched_wakeup_granularity	= 500000UL;
++
++const_debug unsigned int sysctl_sched_migration_cost	= 250000UL;
++#else
+ unsigned int sysctl_sched_wakeup_granularity			= 1000000UL;
+ static unsigned int normalized_sysctl_sched_wakeup_granularity	= 1000000UL;
+ 
+ const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
++#endif
+ 
+ int sched_thermal_decay_shift;
+ static int __init setup_sched_thermal_decay_shift(char *str)
+@@ -126,8 +147,12 @@ int __weak arch_asym_cpu_priority(int cpu)
+  *
+  * (default: 5 msec, units: microseconds)
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++unsigned int sysctl_sched_cfs_bandwidth_slice		= 3000UL;
++#else
+ unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
+ #endif
++#endif
+ 
+ static inline void update_load_add(struct load_weight *lw, unsigned long inc)
+ {
+
+From 0e9fea26940d7e6e784dcf57909428138b8109e8 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:28:46 +0100
+Subject: [PATCH 17/27] ZEN: INTERACTIVE: Add help text for the MuQSS tweaks
+
+The tweaks themselves get merged with the MuQSS scheduler.
+---
+ init/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 400946237490b..ca49a7e10bcf5 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -120,6 +120,12 @@ config ZEN_INTERACTIVE
+ 	    CPU migration cost.............:   0.5  ->   0.25 ms
+ 	    Bandwidth slice size...........:   5    ->   3    ms
+ 
++	  --- MuQSS CPU Scheduler --------------------------------
++
++	    Scheduling interval............:   6    ->   4    ms
++	    ISO task max realtime use......:  70 %  ->  25 %
++	    Yield type.....................:   1    ->   0
++
+ config BROKEN
+ 	bool
+ 
+
+From fade4cc2bf56ce6c563c04764224b6b84a45587f Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+Date: Mon, 27 Jan 2020 18:27:16 +0100
+Subject: [PATCH 18/27] ZEN: INTERACTIVE: Tune ondemand governor for
+ interactivity
+
+4.10:
+During some personal testing with the Dolphin emulator, MuQSS has
+serious problems scaling its frequencies causing poor performance where
+boosting the CPU frequencies would have fixed them.  Reducing the
+up_threshold to 45 with MuQSS appears to fix the issue, letting the
+introduction to "Star Wars: Rogue Leader" run at 100% speed versus about
+80% on my test system.
+
+Also, lets refactor the definitions and include some indentation to help
+the reader discern what the scope of all the macros are.
+
+5.4:
+On the last custom kernel benchmark from Phoronix with Xanmod, Michael
+configured all the kernels to run using ondemand instead of the kernel's
+default selection [1].  This reminded me that another option outside of
+the kernels control is the user's choice to change the cpufreq governor,
+for better or for worse.
+
+In Liquorix, performance is the default governor whether you're running
+acpi-cpufreq or intel-pstate.  I expect laptop users to install TLP or
+LMT to control the power balance on their system, especially when
+they're plugged in or on battery.  However, it's pretty clear to me a
+lot of people would choose ondemand over performance since it's not
+obvious it has huge performance ramifications with MuQSS, and ondemand
+otherwise is "good enough" for most people.
+
+Lets codify lower up thresholds for MuQSS to more closely synergize with
+its aggressive thread migration behavior.  This way when ondemand is
+configured, you get sort of a "performance-lite" type of result but with
+the power savings you expect when leaving the running system idle.
+
+[1] https://www.phoronix.com/scan.php?page=article&item=xanmod-2020-kernel
+---
+ drivers/cpufreq/cpufreq_ondemand.c | 14 +++++++++++++-
+ init/Kconfig                       |  4 ++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index ac361a8b1d3bb..ccd127945103b 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
+@@ -18,10 +18,22 @@
+ #include "cpufreq_ondemand.h"
+ 
+ /* On-demand governor macros */
++#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_SCHED_MUQSS)
++/* MuQSS is less likely to keep a single threaded task on the same core, so
++   have on-demand run at max speed from a much lower core utilization */
++#define DEF_FREQUENCY_UP_THRESHOLD		(40)
++#define MICRO_FREQUENCY_UP_THRESHOLD		(45)
++#define DEF_SAMPLING_DOWN_FACTOR		(5)
++#elif defined(CONFIG_ZEN_INTERACTIVE)
+ #define DEF_FREQUENCY_UP_THRESHOLD		(80)
++#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
++#define DEF_SAMPLING_DOWN_FACTOR		(5)
++#else
++#define DEF_FREQUENCY_UP_THRESHOLD		(80)
++#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
+ #define DEF_SAMPLING_DOWN_FACTOR		(1)
++#endif
+ #define MAX_SAMPLING_DOWN_FACTOR		(100000)
+-#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
+ #define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(10000)
+ #define MIN_FREQUENCY_UP_THRESHOLD		(1)
+ #define MAX_FREQUENCY_UP_THRESHOLD		(100)
+diff --git a/init/Kconfig b/init/Kconfig
+index ca49a7e10bcf5..24ae3647c6d5e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -119,12 +119,16 @@ config ZEN_INTERACTIVE
+ 	    Wakeup granularity.............:   1    ->   0.5  ms
+ 	    CPU migration cost.............:   0.5  ->   0.25 ms
+ 	    Bandwidth slice size...........:   5    ->   3    ms
++	    Ondemand sampling down factor..:   1    ->   5
+ 
+ 	  --- MuQSS CPU Scheduler --------------------------------
+ 
+ 	    Scheduling interval............:   6    ->   4    ms
+ 	    ISO task max realtime use......:  70 %  ->  25 %
+ 	    Yield type.....................:   1    ->   0
++	    Ondemand default freq up thresh:  80    ->  40
++	    Ondemand micro freq up thresh..:  95    ->  45
++	    Ondemand sampling down factor..:   1    ->   5
+ 
+ config BROKEN
+ 	bool
+
+From b7b24b494b62e02c21a9a349da2d036849f9dd8b Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Sat, 13 Jun 2020 15:55:18 -0500
+Subject: [PATCH 19/27] ZEN: INTERACTIVE: Increase max number of tasks
+ rebalanced at once
+
+Take "sysctl_sched_nr_migrate" tune from early XanMod builds of 128. As
+of 5.7, XanMod uses 256 but that may affect applications that require
+timely response to IRQs.
+---
+ init/Kconfig        | 1 +
+ kernel/sched/core.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 24ae3647c6d5e..9dd367af94434 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -119,6 +119,7 @@ config ZEN_INTERACTIVE
+ 	    Wakeup granularity.............:   1    ->   0.5  ms
+ 	    CPU migration cost.............:   0.5  ->   0.25 ms
+ 	    Bandwidth slice size...........:   5    ->   3    ms
++	    Task rebalancing threshold.....:   32   ->   256
+ 	    Ondemand sampling down factor..:   1    ->   5
+ 
+ 	  --- MuQSS CPU Scheduler --------------------------------
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index ff74fca39ed21..3c0bae61ec293 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -64,7 +64,11 @@ const_debug unsigned int sysctl_sched_features =
+  * Number of tasks to iterate in a single balance run.
+  * Limited because this is done with IRQs disabled.
+  */
++#ifdef CONFIG_ZEN_INTERACTIVE
++const_debug unsigned int sysctl_sched_nr_migrate = 256;
++#else
+ const_debug unsigned int sysctl_sched_nr_migrate = 32;
++#endif
+ 
+  /*
+  * period over which we measure -rt task CPU usage in us.
+@@ -76,9 +76,9 @@ __read_mostly int scheduler_running;
+ 
+ /*
+  * part of the period that we allow rt tasks to run in us.
+- * default: 0.95s
++ * LL default: 0.98s
+  */
+-int sysctl_sched_rt_runtime = 950000;
++int sysctl_sched_rt_runtime = 980000;
+ 
+ 
+ /*
+-- 
+2.29.2.456.g3a0b884cab
+
+From b7b984993f303b89dd738c26f8742cfcf0ac98ea Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 30 Dec 2020 15:23:55 -0600
+Subject: [PATCH 20/27] zen: Allow MSR writes by default
+
+Allow MSR writes by default, which enables support for popular tools
+like throttled (lenovo_fix), and anything else that uses MSR writes to
+adjust power limits of their CPU.
+---
+ arch/x86/kernel/msr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index c0d4098106589..b8e0d993d328c 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -48,7 +48,7 @@ enum allow_write_msrs {
+ 	MSR_WRITES_DEFAULT,
+ };
+ 
+-static enum allow_write_msrs allow_writes = MSR_WRITES_DEFAULT;
++static enum allow_write_msrs allow_writes = MSR_WRITES_ON;
+ 
+ static ssize_t msr_read(struct file *file, char __user *buf,
+ 			size_t count, loff_t *ppos)
+
+From 8cd3f16931b2a05a693bbfc093d44fd504c67700 Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <kernel@xanmod.org>
+Date: Mon, 14 Dec 2020 16:24:26 +0000
+Subject: [PATCH 21/27] block: set rq_affinity to force full multithreading I/O
+ requests
+
+Signed-off-by: Alexandre Frade <kernel@xanmod.org>
+---
+ include/linux/blkdev.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 033eb5f73b654..dfecd59c901a2 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -628,6 +628,7 @@ struct request_queue {
+ 
+ #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
+ 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
++				 (1 << QUEUE_FLAG_SAME_FORCE) |		\
+ 				 (1 << QUEUE_FLAG_NOWAIT))
+ 
+ void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
+
+From 843f85a8fb80f3b8e4de4ca3c0cab34730cc1b33 Mon Sep 17 00:00:00 2001
+From: Piotr Gorski <lucjan.lucjanov@gmail.com>
+Date: Fri, 8 Jan 2021 18:48:23 -0800
+Subject: [PATCH 22/27] init: add support for zstd compressed modules
+
+kmod 28 supports modules compressed in zstd format so let's add this possibility to kernel.
+
+Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
+---
+ Makefile     | 7 +++++--
+ init/Kconfig | 9 ++++++---
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 64a4bfec526ac..c6ad320484f23 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1046,8 +1046,8 @@ endif # INSTALL_MOD_STRIP
+ export mod_strip_cmd
+ 
+ # CONFIG_MODULE_COMPRESS, if defined, will cause module to be compressed
+-# after they are installed in agreement with CONFIG_MODULE_COMPRESS_GZIP
+-# or CONFIG_MODULE_COMPRESS_XZ.
++# after they are installed in agreement with CONFIG_MODULE_COMPRESS_GZIP,
++# CONFIG_MODULE_COMPRESS_XZ, or CONFIG_MODULE_COMPRESS_ZSTD.
+ 
+ mod_compress_cmd = true
+ ifdef CONFIG_MODULE_COMPRESS
+@@ -1057,6 +1057,9 @@ ifdef CONFIG_MODULE_COMPRESS
+   ifdef CONFIG_MODULE_COMPRESS_XZ
+     mod_compress_cmd = $(XZ) -f
+   endif # CONFIG_MODULE_COMPRESS_XZ
++  ifdef CONFIG_MODULE_COMPRESS_ZSTD
++    mod_compress_cmd = $(ZSTD) -T0 -20 --ultra --rm -f
++  endif # CONFIG_MODULE_COMPRESS_ZSTD
+ endif # CONFIG_MODULE_COMPRESS
+ export mod_compress_cmd
+ 
+diff --git a/init/Kconfig b/init/Kconfig
+index 9dd367af94434..8e4d0b19dc851 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2266,8 +2266,8 @@ config MODULE_COMPRESS
+ 	bool "Compress modules on installation"
+ 	help
+ 
+-	  Compresses kernel modules when 'make modules_install' is run; gzip or
+-	  xz depending on "Compression algorithm" below.
++	  Compresses kernel modules when 'make modules_install' is run; gzip,
++	  xz, or zstd depending on "Compression algorithm" below.
+ 
+ 	  module-init-tools MAY support gzip, and kmod MAY support gzip and xz.
+ 
+@@ -2289,7 +2289,7 @@ choice
+ 	  This determines which sort of compression will be used during
+ 	  'make modules_install'.
+ 
+-	  GZIP (default) and XZ are supported.
++	  GZIP (default), XZ, and ZSTD are supported.
+ 
+ config MODULE_COMPRESS_GZIP
+ 	bool "GZIP"
+@@ -2297,6 +2297,9 @@ config MODULE_COMPRESS_GZIP
+ config MODULE_COMPRESS_XZ
+ 	bool "XZ"
+ 
++config MODULE_COMPRESS_ZSTD
++	bool "ZSTD"
++
+ endchoice
+ 
+ config MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS
+
+From 5dc3c67b4c2497187c2e4331a4822cb52db9aa65 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Tue, 12 Jan 2021 21:37:20 -0600
+Subject: [PATCH 23/27] ZEN: Reduce module compression level for ZSTD
+
+Using the original values of "-T0 -20 --ultra" leads to compression runtime
+of over a minute and a half on a 374m module directory, reducing folder
+size to 108m.  This is using a Haswell CPU running at 4.2ghz on a single
+core.
+
+Dropping compress levels down to "-T0 -9" increases the final compressed
+folder size by 4m but reduces the total runtime of compression to 6
+seconds.  When penny pinching with ondemand cloud CI, this tradeoff is
+completely worthwhile.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index c6ad320484f23..2bcd6ef779ead 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1058,7 +1058,7 @@ ifdef CONFIG_MODULE_COMPRESS
+     mod_compress_cmd = $(XZ) -f
+   endif # CONFIG_MODULE_COMPRESS_XZ
+   ifdef CONFIG_MODULE_COMPRESS_ZSTD
+-    mod_compress_cmd = $(ZSTD) -T0 -20 --ultra --rm -f
++    mod_compress_cmd = $(ZSTD) -T0 -9 --rm -f
+   endif # CONFIG_MODULE_COMPRESS_ZSTD
+ endif # CONFIG_MODULE_COMPRESS
+ export mod_compress_cmd
+
+From 3f2c3d43bb1330953e090c01f8dfb6a4701bbac4 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 27 Jan 2021 14:16:04 -0600
+Subject: [PATCH 24/27] Revert "block: set rq_affinity to force full
+ multithreading I/O requests"
+
+Forcing full multithreading I/O may not be doing what we want it do,
+especially if we have an IO scheduler on top of the storage device.
+
+This reverts commit 8cd3f16931b2a05a693bbfc093d44fd504c67700.
+---
+ include/linux/blkdev.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index dfecd59c901a2..033eb5f73b654 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -628,7 +628,6 @@ struct request_queue {
+ 
+ #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
+ 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
+-				 (1 << QUEUE_FLAG_SAME_FORCE) |		\
+ 				 (1 << QUEUE_FLAG_NOWAIT))
+ 
+ void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
+
+From 223b7e095efa96045c164f3bf3576e1d1f599946 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 27 Jan 2021 14:27:35 -0600
+Subject: [PATCH 25/27] ZEN: Fix mq-deadline scheduler renaming
+
+In recent ZEN commit ("ZEN: Add CONFIG to rename the mq-deadline
+scheduler"), we only handled the elevator name if mq-deadline, but not
+its elevator or module alias.  Fix these two so that we can pick
+mq-deadline-nodefault without errors.
+---
+ block/mq-deadline.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 89b56d4526f55..2206e1734c3f2 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -800,6 +800,7 @@ static struct elevator_type mq_deadline = {
+ 	.elevator_attrs = deadline_attrs,
+ #ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
+ 	.elevator_name = "mq-deadline-nodefault",
++	.elevator_alias = "deadline-nodefault",
+ #else
+ 	.elevator_name = "mq-deadline",
+ 	.elevator_alias = "deadline",
+@@ -807,7 +808,11 @@ static struct elevator_type mq_deadline = {
+ 	.elevator_features = ELEVATOR_F_ZBD_SEQ_WRITE,
+ 	.elevator_owner = THIS_MODULE,
+ };
++#ifdef CONFIG_MQ_IOSCHED_DEADLINE_NODEFAULT
++MODULE_ALIAS("mq-deadline-nodefault-iosched");
++#else
+ MODULE_ALIAS("mq-deadline-iosched");
++#endif
+ 
+ static int __init deadline_init(void)
+ {
+
+From 2b52b792670d6c1a93d086a10c6872575e849c17 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Wed, 27 Jan 2021 17:39:54 -0600
+Subject: [PATCH 26/27] ZEN: Increase max elevator name size
+
+After renaming mq-deadline to mq-deadline-nodefault, setting the new
+scheduler name would always fail.  Part of that reason was the module
+alias that was fixed in "ZEN: Fix mq-deadline scheduler renaming", but
+also the scheduler name was longer than ELV_NAME_MAX (by default, 15
+usable characters).
+
+Increase to 24 so we can support our longer IO scheduler names.
+---
+ include/linux/elevator.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/elevator.h b/include/linux/elevator.h
+index bacc40a0bdf39..6d499e2b79f38 100644
+--- a/include/linux/elevator.h
++++ b/include/linux/elevator.h
+@@ -52,7 +52,7 @@ struct elevator_mq_ops {
+ 	void (*exit_icq)(struct io_cq *);
+ };
+ 
+-#define ELV_NAME_MAX	(16)
++#define ELV_NAME_MAX	(24)
+ 
+ struct elv_fs_entry {
+ 	struct attribute attr;
+
+From e1b127aa22601f9cb2afa3daad4c69e6a42a89f5 Mon Sep 17 00:00:00 2001
+From: Steven Barrett <steven@liquorix.net>
+Date: Sat, 30 Jan 2021 11:34:18 -0600
+Subject: [PATCH 27/27] ZEN: Add ACS override support
+
+Source: https://gitlab.com/Queuecumber/linux-acs-override/-/raw/master/workspaces/5.10.4/acso.patch
+---
+ .../admin-guide/kernel-parameters.txt         |   9 ++
+ drivers/pci/quirks.c                          | 101 ++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index ce99d978153c1..bcfd4f0433527 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3632,6 +3632,15 @@
+ 		nomsi		[MSI] If the PCI_MSI kernel config parameter is
+ 				enabled, this kernel boot option can be used to
+ 				disable the use of MSI interrupts system-wide.
++		pcie_acs_override =
++					[PCIE] Override missing PCIe ACS support for:
++				downstream
++					All downstream ports - full ACS capabilities
++				multfunction
++					All multifunction devices - multifunction ACS subset
++				id:nnnn:nnnn
++					Specfic device - full ACS capabilities
++					Specified as vid:did (vendor/device ID) in hex
+ 		noioapicquirk	[APIC] Disable all boot interrupt quirks.
+ 				Safety option to keep boot IRQs enabled. This
+ 				should never be necessary.
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index f70692ac79c56..00e6a7cf5ebd6 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3557,6 +3557,106 @@ static void quirk_no_bus_reset(struct pci_dev *dev)
+ 	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET;
+ }
+ 
++static bool acs_on_downstream;
++static bool acs_on_multifunction;
++
++#define NUM_ACS_IDS 16
++struct acs_on_id {
++	unsigned short vendor;
++	unsigned short device;
++};
++static struct acs_on_id acs_on_ids[NUM_ACS_IDS];
++static u8 max_acs_id;
++
++static __init int pcie_acs_override_setup(char *p)
++{
++	if (!p)
++		return -EINVAL;
++
++	while (*p) {
++		if (!strncmp(p, "downstream", 10))
++			acs_on_downstream = true;
++		if (!strncmp(p, "multifunction", 13))
++			acs_on_multifunction = true;
++		if (!strncmp(p, "id:", 3)) {
++			char opt[5];
++			int ret;
++			long val;
++
++			if (max_acs_id >= NUM_ACS_IDS - 1) {
++				pr_warn("Out of PCIe ACS override slots (%d)\n",
++						NUM_ACS_IDS);
++				goto next;
++			}
++
++			p += 3;
++			snprintf(opt, 5, "%s", p);
++			ret = kstrtol(opt, 16, &val);
++			if (ret) {
++				pr_warn("PCIe ACS ID parse error %d\n", ret);
++				goto next;
++			}
++			acs_on_ids[max_acs_id].vendor = val;
++
++			p += strcspn(p, ":");
++			if (*p != ':') {
++				pr_warn("PCIe ACS invalid ID\n");
++				goto next;
++			}
++
++			p++;
++			snprintf(opt, 5, "%s", p);
++			ret = kstrtol(opt, 16, &val);
++			if (ret) {
++				pr_warn("PCIe ACS ID parse error %d\n", ret);
++				goto next;
++			}
++			acs_on_ids[max_acs_id].device = val;
++			max_acs_id++;
++		}
++next:
++		p += strcspn(p, ",");
++		if (*p == ',')
++			p++;
++	}
++
++	if (acs_on_downstream || acs_on_multifunction || max_acs_id)
++		pr_warn("Warning: PCIe ACS overrides enabled; This may allow non-IOMMU protected peer-to-peer DMA\n");
++
++	return 0;
++}
++early_param("pcie_acs_override", pcie_acs_override_setup);
++
++static int pcie_acs_overrides(struct pci_dev *dev, u16 acs_flags)
++{
++	int i;
++
++	/* Never override ACS for legacy devices or devices with ACS caps */
++	if (!pci_is_pcie(dev) ||
++		pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS))
++			return -ENOTTY;
++
++	for (i = 0; i < max_acs_id; i++)
++		if (acs_on_ids[i].vendor == dev->vendor &&
++			acs_on_ids[i].device == dev->device)
++				return 1;
++
++	switch (pci_pcie_type(dev)) {
++	case PCI_EXP_TYPE_DOWNSTREAM:
++	case PCI_EXP_TYPE_ROOT_PORT:
++		if (acs_on_downstream)
++			return 1;
++		break;
++	case PCI_EXP_TYPE_ENDPOINT:
++	case PCI_EXP_TYPE_UPSTREAM:
++	case PCI_EXP_TYPE_LEG_END:
++	case PCI_EXP_TYPE_RC_END:
++		if (acs_on_multifunction && dev->multifunction)
++			return 1;
++	}
++
++	return -ENOTTY;
++}
+ /*
+  * Some Atheros AR9xxx and QCA988x chips do not behave after a bus reset.
+  * The device will throw a Link Down error on AER-capable systems and
+@@ -4769,6 +4869,7 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_ZHAOXIN, 0x9083, pci_quirk_mf_endpoint_acs },
+ 	/* Zhaoxin Root/Downstream Ports */
+ 	{ PCI_VENDOR_ID_ZHAOXIN, PCI_ANY_ID, pci_quirk_zhaoxin_pcie_ports_acs },
++	{ PCI_ANY_ID, PCI_ANY_ID, pcie_acs_overrides },
+ 	{ 0 }
+ };
+ 

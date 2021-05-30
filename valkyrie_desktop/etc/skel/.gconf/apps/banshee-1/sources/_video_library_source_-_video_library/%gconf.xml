@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="library-location" mtime="1402819494" type="string">
+		<stringvalue>/home/valkyrie/ビデオ</stringvalue>
+	</entry>
+	<entry name="copy-on-import" mtime="1350832893" type="bool" value="false"/>
+	<entry name="expanded" mtime="1404042848" type="bool" value="true"/>
+</gconf>

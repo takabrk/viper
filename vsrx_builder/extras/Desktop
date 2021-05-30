@@ -1,0 +1,77 @@
+#!/bin/bash
+
+. vsrx_builder/extras/config
+
+(echo
+echo STARTING DESKTOP
+echo
+
+cp /etc/hosts $FSPATH/etc/
+
+read RESOLUTION < $WORKPATH/configs/RESOLUTION
+
+mount --bind /dev $FSPATH/dev
+mount --bind /var/run/dbus $FSPATH/var/lib/dbus
+mount --bind /var/run/dbus $FSPATH/var/run/dbus
+
+touch $FSPATH/tmp/script.bash
+cat > $FSPATH/tmp/script.bash << "EOF"
+########### Settings for GUI-Chroot Environment ###########
+#!/bin/bash
+
+DISPLAY=localhost:9
+export DISPLAY=localhost:9
+DEBIAN_FRONTEND=noninteractive
+DEBCONF_NONINTERACTIVE_SEEN=true
+export DEBIAN_FRONTEND DEBCONF_NONINTERACTIVE_SEEN
+export HOME=/root
+export LC_ALL=C
+mount none -t proc /proc
+mount none -t sysfs /sys
+mount none -t devpts /dev/pts
+update-gconf-defaults
+
+if [ -e /usr/bin/gnome-session ]; then
+	gnome-session
+elif [ -e /usr/bin/startkde ]; then
+	startkde
+elif [ -e /usr/bin/startlubuntu ]; then
+        startlubuntu
+elif [ -e /usr/bin/lxsession ]; then
+        startlxde
+elif [ -e /usr/bin/openbox-session ]; then
+	openbox-session	
+elif [ -e /usr/bin/xfce4-session ]; then
+	xfce4-session
+elif [ -e /usr/bin/mate-session ]; then
+	mate-session	
+elif [ -e /usr/bin/startfluxbox ]; then
+	startfluxbox
+elif [ -e /usr/bin/blackbox ]; then
+	blackbox	
+elif [ -e /usr/bin/icewm-session ]; then
+	icewm-session
+fi
+
+EOF
+######################### on EXIT #########################
+echo "apt-get clean
+rm -rf /tmp/*
+rm -rf /etc/hosts
+umount -lf /proc
+umount -lf /sys
+umount -lf /dev/pts
+umount -lf /var/lib/dbus
+umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
+
+Xephyr -ac -screen $RESOLUTION -br :1 :9 > /dev/null & chroot $FSPATH sh /tmp/script.bash
+umount -l $FSPATH/dev
+
+rm -r $FSPATH/root/.kde/share/apps/nepomuk
+rm -r $FSPATH/root/.cache
+rm -r $FSPATH/root/.dbus
+rm -r $FSPATH/root/.thumbnails
+
+cp -rf $FSPATH/root/* $FSPATH/etc/skel
+cp -rf $FSPATH/root/.??* $FSPATH/etc/skel
+) | tee -a $WORKPATH/ubuntu-builder.log

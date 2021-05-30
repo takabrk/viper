@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2007-2010 PlayOnLinux Team
+# Copyright (C) 2007 Pâris Quentin
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+
+[ "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources" 
+
+menu="$1"
+
+if ! POL_Notice_IsAck "KEEP_DEFAULT_INSTALLER_OPTIONS" || ! POL_Notice_IsAck "DONT_BOTHER_WINEHQ"; then
+    POL_SetupWindow_Init
+    POL_SetupWindow_notice "$(eval_gettext "During a $APPLICATION_TITLE installation: \n\n - Leave the default install directory unchanged; Just make sure to install to the C: drive, which is the only one managed by $APPLICATION_TITLE. Check in the wiki how you can manage the host system disk space;\n\n - If asked, don't let the installer launch the newly installed program for you at the end of the installation;\n\n - If asked if you wish to reboot Windows immediately, you may answer Yes, but in no case should you reboot the host operating system by yourself.")" "KEEP_DEFAULT_INSTALLER_OPTIONS" "$(eval_gettext 'Please read this')"
+    # Distro packagers: please keep this message on your package. It's a real pain for wine devs
+    POL_SetupWindow_notice "$(eval_gettext "$APPLICATION_TITLE is not related to WineHQ.\n\nTo ensure that the results will be comparable from one computer to another and to avoid regressions, we specify a working Wine version for each program. This Wine version will quickly become out to date, but we won't change the installer until new tests are made and it takes time.\n\nFor those reason, please do NOT send any bug report or ask any support on WineHQ forums if you are using $APPLICATION_TITLE.\n\nIf you want to help the project to make some tests in order to avoid using out of date Wine versions, do not hesitate to go on our website.\n\nThank you.")" "DONT_BOTHER_WINEHQ" "$(eval_gettext 'Please read this')"
+    POL_SetupWindow_Close
+fi
+
+if [ "$menu" = "ExecLiveInstall" ]
+then
+	exec bash "$PLAYONLINUX/bash/manual_install"
+	exit
+fi
+
+if [ ! "$menu" = "" ]
+then
+	export TITLE="$menu"
+	export SCRIPTID="$menu"
+	type="$(echo "$menu" | cut -d ':' -f1)"
+	if [ "$type" = "get" ]
+	then
+		id=$(echo "$menu" | cut -d ":" -f2)
+		rm "$POL_USER_ROOT/install"
+		$POL_WGET "$SITE/V4_data/repository/get_file_n.php?version=PlayOn$POL_OS-$VERSION&id=$id" -O "$POL_USER_ROOT/install"
+		[ -e "$POL_USER_ROOT/install" ] && POL_Bash "$POL_USER_ROOT/install"
+		exit
+	fi
+	rm "$POL_USER_ROOT/install"
+	$POL_WGET "$SITE/V4_data/repository/get_file.php?version=PlayOn$POL_OS-$VERSION&id=$(POL_Website_urlparse "$menu")" -O "$POL_USER_ROOT/install"
+	[ -e "$POL_USER_ROOT/install" ] && POL_Bash "$POL_USER_ROOT/install"
+fi
+

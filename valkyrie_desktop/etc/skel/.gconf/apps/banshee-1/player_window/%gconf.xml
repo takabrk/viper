@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="open_location_history" mtime="1402977863" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>file:///home/valkyrie/DCIM/AV/fuluoka12.mp4</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue></stringvalue>
+		</li>
+	</entry>
+	<entry name="last_file_chooser_uri" mtime="1402977851" type="string">
+		<stringvalue>file:///home/valkyrie/DCIM/AV</stringvalue>
+	</entry>
+	<entry name="height" mtime="1404042850" type="int" value="695"/>
+	<entry name="width" mtime="1404042850" type="int" value="679"/>
+	<entry name="y_pos" mtime="1404042850" type="int" value="50"/>
+	<entry name="x_pos" mtime="1404042850" type="int" value="0"/>
+	<entry name="maximized" mtime="1404042850" type="bool" value="false"/>
+	<entry name="disable_album_grid" mtime="1404042848" type="bool" value="false"/>
+	<entry name="seek_slider_width" mtime="1404042848" type="int" value="175"/>
+	<entry name="source_view_width" mtime="1404042851" type="int" value="175"/>
+</gconf>

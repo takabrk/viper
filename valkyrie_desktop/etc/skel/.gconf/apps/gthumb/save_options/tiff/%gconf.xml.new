@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="vertical_resolution" mtime="1361014267" type="int" value="72"/>
+	<entry name="horizontal_resolution" mtime="1361014267" type="int" value="72"/>
+	<entry name="compression" mtime="1361014267" type="string">
+		<stringvalue>deflate</stringvalue>
+	</entry>
+	<entry name="default_ext" mtime="1361014267" type="string">
+		<stringvalue>tiff</stringvalue>
+	</entry>
+</gconf>

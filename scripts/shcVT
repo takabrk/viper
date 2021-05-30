@@ -1,0 +1,2 @@
+#!/bin/sh
+shc -v -r -T -f vipertools

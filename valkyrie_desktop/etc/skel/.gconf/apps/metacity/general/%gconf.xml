@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="theme" mtime="1341908507" type="string">
+		<stringvalue>Greybird</stringvalue>
+	</entry>
+	<entry name="compositing_manager" mtime="1333464369" type="bool" value="true"/>
+	<entry name="button_layout" mtime="1334123842" type="string">
+		<stringvalue>:minimize,maximize,close</stringvalue>
+	</entry>
+	<entry name="num_workspaces" mtime="1335282523" type="int" value="2"/>
+</gconf>

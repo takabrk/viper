@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo apt-get install obmenu obconf-qt lxappearance lxrandr lxinput chromium-browser software-properties-gtk nitrogen gnome-alsamixer xfce4-terminal

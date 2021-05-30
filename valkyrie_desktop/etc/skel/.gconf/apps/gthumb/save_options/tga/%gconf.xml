@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="rle_compression" mtime="1361014267" type="bool" value="true"/>
+</gconf>

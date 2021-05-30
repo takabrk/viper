@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="ftp_allow_write" mtime="1333133086" type="bool" value="false"/>
+	<entry name="shared_path" mtime="1379564553" type="string">
+		<stringvalue>/home/valkyrie</stringvalue>
+	</entry>
+	<entry name="ftp_enabled" mtime="1326727558" type="bool" value="true"/>
+	<entry name="opp_enabled" mtime="1326727558" type="bool" value="true"/>
+</gconf>

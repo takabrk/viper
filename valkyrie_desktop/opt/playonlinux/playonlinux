@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2007-2010 PlayOnLinux Team
+# Copyright (C) 2011 Pâris Quentin
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.   
+
+                              #######                           
+                           ############                         
+                          ##################                    
+                          ########################              
+             ######       ##########################            
+         #############    ###########################           
+        ###############    ##########################           
+       #################   ##########################           
+      ##################    #########################           
+      ###################    #######################            
+    ######################   #####################              
+   ########################   #################                 
+  #########################    ###########        ######        
+ ###########################   ######        #############      
+ ##############################       ######################    
+  ##########################   #############################    
+   ##################        ##   ##########################    
+     ###########        ########   ########################     
+                   ##############   ######################      
+              ####################   ####################       
+           #######################    ##################        
+          #########################    ################         
+         ###########################    ###############         
+         ###########################     ##############         
+         ###########################      ############          
+          ##########################         #######            
+             ######################                             
+                     #############                              
+                       #########                                
+
+#Variables
+die() ## PHP function copy
+{
+	echo "$@" 1>&2
+	exit 1
+}
+
+usage() {
+    local self="$(basename $0)"
+    echo "Usage: $self"
+    echo "       $self [-h] [--help]"
+    echo "       $self --run <Shortcut name> [<Filename>]"
+    echo "       $self --version"
+}
+
+export WorkingDirectory="$PWD"
+
+# Take absolute path this script resides in
+POLDIR="$(dirname "$0")"
+cd "$POLDIR"
+POLDIR="$PWD"
+
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
+	usage
+	exit
+elif [ "$1" = "--version" ]; then
+	cd "$POLDIR"
+	version="$(cat python/lib/Variables.py | grep 'os.environ\["VERSION"\] = ' | cut -d = -f2 | tr -d \" | tr -d " ")"
+	echo "PlayOnLinux $version"
+	exit 0
+fi
+
+[ "$(uname -s)" = "Linux" ] || die "This script must be run on a linux system"
+
+export POL_PYTHON=""
+export POL_OS="Linux"
+export UBUNTU_MENUPROXY=0 
+export MACHTYPE
+
+[ "$PLAYONLINUX" = "" ] || die "You are already in a PlayOnLinux environment" 
+
+source "$POLDIR/bash/find_python"
+
+if [ "$1" = "--run" ]; then
+	cd "$POLDIR"
+	shift
+	NAME="$1"
+
+	shift
+	
+	FILENAME="$1"
+	
+	if [ "$FILENAME" -a ! "${FILENAME::1}" = "/" ]; then
+		FILENAME="$WorkingDirectory/$FILENAME"
+	fi
+	
+	if [ -e "$FILENAME" ]; then ## Trying to open a file
+		exec ./playonlinux-bash "$POLDIR/bash/document_reader" "$NAME" "$FILENAME"
+	else
+		# SetDebugState(game, False)
+		# export WINEDEBUG= found and is not WINEDEBUG="-all"?
+		if grep '^export WINEDEBUG=' "$HOME/.PlayOnLinux/shortcuts/$NAME"|grep -qv 'WINEDEBUG="-all"'; then
+			cp "$HOME/.PlayOnLinux/shortcuts/$NAME" "$HOME/.PlayOnLinux/tmp/debug_$NAME" && \
+			sed -e 's/^export WINEDEBUG="\(.*\)"/export WINEDEBUG="-all"/' "$HOME/.PlayOnLinux/tmp/debug_$NAME" > "$HOME/.PlayOnLinux/shortcuts/$NAME"
+		fi
+
+		if [ -e "$HOME/.PlayOnLinux/configurations/pre_shortcut/$NAME" ]; then
+			source "$HOME/.PlayOnLinux/configurations/pre_shortcut/$NAME"
+		fi
+
+		exec ./playonlinux-bash "$HOME/.PlayOnLinux/shortcuts/$NAME" "$@"
+	fi
+else
+	cd "$POLDIR/python"
+	search_python && "$POL_PYTHON" mainwindow.py "$@"
+	exitcode=$?
+fi
+
+[ $exitcode -eq 63 ] && exec "$POLDIR/playonlinux"
+exit $exitcode

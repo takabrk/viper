@@ -1,0 +1,48 @@
+#!/bin/bash
+
+. vsrx_builder/extras/config
+
+(echo
+echo STARTING SYNAPTIC
+echo
+
+xhost +local:
+cp /etc/hosts $FSPATH/etc/
+
+mount --bind /dev $FSPATH/dev
+mount --bind /var/run/dbus $FSPATH/var/lib/dbus
+mount --bind /var/run/dbus $FSPATH/var/run/dbus
+
+touch $FSPATH/tmp/script.bash
+cat > $FSPATH/tmp/script.bash << "EOF"
+#################### CHROOT ENVIRONMENT ####################
+#!/bin/bash
+
+export HOME=/root
+export LC_ALL=C
+mount none -t proc /proc
+mount none -t sysfs /sys
+mount none -t devpts /dev/pts
+
+if [ ! -e /usr/sbin/synaptic ]; then
+	apt-get update -q
+	apt-get install -y synaptic
+fi
+EOF
+######################### on EXIT #########################
+echo "synaptic
+apt-get clean
+rm -rf /tmp/*
+rm -rf /root/.synaptic/log
+rm -rf /etc/hosts
+umount -lf /proc
+umount -lf /sys
+umount -lf /dev/pts
+umount -lf /var/lib/dbus
+umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
+
+chroot $FSPATH sh /tmp/script.bash
+umount -l $FSPATH/dev
+
+xhost -local:
+) | tee -a /home/ubuntu-builder/ubuntu-builder.log

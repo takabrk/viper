@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="ShowHovers" mtime="1407053943" type="bool" value="true"/>
+	<entry name="CurrentDesktopOnly" mtime="1407053942" type="bool" value="false"/>
+</gconf>

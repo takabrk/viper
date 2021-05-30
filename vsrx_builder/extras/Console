@@ -1,0 +1,50 @@
+#!/bin/bash
+
+. vsrx_builder/extras/config
+
+(echo
+echo STARTING TERMINAL
+echo
+cp /etc/hosts $FSPATH/etc/
+
+mount --bind /dev $FSPATH/dev
+mount --bind /var/run/dbus $FSPATH/var/lib/dbus
+mount --bind /var/run/dbus $FSPATH/var/run/dbus
+
+#################### Checking Internet Connection ####################
+
+wget -O /dev/null www.google.com > /dev/null
+if [ ! "$?" -eq 0 ]; then
+	zenity --warning --text "You are not connected to the Internet, some features will be unavailable."
+fi
+
+touch $FSPATH/tmp/script.bash
+cat > $FSPATH/tmp/script.bash << "EOF"
+
+#################### Chroot environment ####################
+#!/bin/bash
+
+export HOME=/root
+export LC_ALL=C
+mount none -t proc /proc
+mount none -t sysfs /sys
+mount none -t devpts /dev/pts
+reset
+echo "# You need to run 'apt-get update' before installing packages"
+echo "# Type 'exit' to quit chroot console"
+echo
+/bin/bash
+EOF
+######################### on EXIT #########################
+echo "apt-get clean
+rm -rf /tmp/*
+rm -rf /etc/hosts
+umount -lf /proc
+umount -lf /sys
+umount -lf /dev/pts
+umount -lf /var/lib/dbus
+umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
+
+chroot $FSPATH sh /tmp/script.bash
+umount -l $FSPATH/dev
+) | tee -a /home/ubuntu-builder/ubuntu-builder.log

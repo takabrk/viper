@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="services_last_item" mtime="1379564550" type="int" value="2"/>
+	<entry name="window_posy" mtime="1455206452" type="int" value="40"/>
+	<entry name="window_posx" mtime="1455206452" type="int" value="2"/>
+	<entry name="window_width" mtime="1455206452" type="int" value="1364"/>
+	<entry name="window_height" mtime="1455206452" type="int" value="677"/>
+	<entry name="AppletPlugin" mtime="1326727557" type="list" ltype="string">
+	</entry>
+</gconf>

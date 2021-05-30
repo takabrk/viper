@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openbox_menu xmlns="http://openbox.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://openbox.org/                 file:///usr/share/openbox/menu.xsd">
+	<menu id="root-menu" label="Phantom Valkyrie Linux Menu">
+		<separator label="Phantom Valkyrie Linux Menu"/>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/chromium.svg" label="Chromium Browser">
+			<action name="Execute">
+				<execute>chromium-browser --disk-cache-dir=&quot;/tmp&quot; --allow-file-access-from-files --user-agent=&quot;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36&quot; %u</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/firefox.svg" label="Firefox">
+			<action name="Execute">
+				<execute>firefox</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/synaptic.svg" label="Synaptic package manager">
+			<action name="Execute">
+				<execute>synaptic-pkexec</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/vipertools_icon.png" label="Viper Tools">
+			<action name="Execute">
+				<execute>xfce4-terminal --hide-menubar -x sh -c 'cd ~/viper &amp;&amp; python3 vipertools.py; read'</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/file-manager.svg" label="PCManFM-qt">
+			<action name="Execute">
+				<execute>pcmanfm-qt --desktop 1</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/terminal.svg" label="Terminal emulator">
+			<action name="Execute">
+				<execute>x-terminal-emulator</execute>
+			</action>
+		</item>
+		<item label="CPU/Storage temperature">
+			<action name="Execute">
+				<execute>psensor</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/system-monitor-app.svg" label="System Monitor">
+			<action name="Execute">
+				<execute>xfce4-taskmanager</execute>
+			</action>
+		</item>
+		<item label="Monitor Off">
+			<action name="Execute">
+				<execute>xset dpms force standby</execute>
+			</action>
+		</item>
+		<separator/>
+		<menu id="root-menu-87415" label="PRIME">
+			<item label="steam">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 steam&quot;</execute>
+				</action>
+			</item>
+			<item label="PlayOnLinux(Windows)">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 /opt/playonlinux/playonlinux&quot;</execute>
+				</action>
+			</item>
+			<item label="PCSX2(PlayStation2)">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 env GDK_BACKEND=x11 __GL_THREADED_OPTIMIZATIONS=1 /opt/pcsx2.AppImage&quot;</execute>
+				</action>
+			</item>
+			<item label="PPSSPP">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 ppsspp&quot;</execute>
+				</action>
+			</item>
+			<item label="Mednafen(Multi)">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 /opt/mednaffe&quot;</execute>
+				</action>
+			</item>
+			<item label="Firefox">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 firefox&quot;</execute>
+				</action>
+			</item>
+			<item label="Chromium Browser">
+				<action name="Execute">
+					<execute>sh -c 'DRI_PRIME=1 chromium-browser --disk-cache-dir=&quot;/tmp&quot; --allow-file-access-from-files %u'</execute>
+				</action>
+			</item>
+			<item label="Blender">
+				<action name="Execute">
+					<execute>sh -c &quot;DRI_PRIME=1 blender&quot;</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/image.svg" id="root-menu-334956-445128" label="Media">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/gimp.svg" label="GIMP">
+				<action name="Execute">
+					<execute>/opt/GIMP.AppImage</execute>
+				</action>
+			</item>
+			<item label="OBS Studio">
+				<action name="Execute">
+					<execute>obs</execute>
+				</action>
+			</item>
+			<item label="Shotcut">
+				<action name="Execute">
+					<execute>/opt/Shotcut.AppImage</execute>
+				</action>
+			</item>
+			<item label="Avidemux">
+				<action name="Execute">
+					<execute>avidemux2.7_qt5</execute>
+				</action>
+			</item>
+			<item label="Audacious">
+				<action name="Execute">
+					<execute>audacious</execute>
+				</action>
+			</item>
+			<item label="SoundConverter">
+				<action name="Execute">
+					<execute>soundconverter</execute>
+				</action>
+			</item>
+			<item label="Audacity">
+				<action name="Execute">
+					<execute>audacity</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/image-viewer.svg" label="lximage-qt">
+				<action name="Execute">
+					<execute>lximage-qt</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/network.svg" id="root-menu-334956-11549" label="Network">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/remmina.svg" label="Remmina">
+				<action name="Execute">
+					<execute>remmina</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/X11VNC.svg" label="X11VNC">
+				<action name="Execute">
+					<execute>x11vnc -gui tray=setpass -rfbport PROMPT -bg -o %%HOME/.x11vnc.log.%%VNCDISPLAY</execute>
+				</action>
+			</item>
+			<item label="Blueman">
+				<action name="Execute">
+					<execute>blueman-applet</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/eclipse.svg" id="root-menu-334956-575854" label="Development">
+			<item label="DB_Browser_for_SQLite">
+				<action name="Execute">
+					<execute>sqlitebrowser</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/emacs-nox.svg" label="Emacs">
+				<action name="Execute">
+					<execute>xfce4-terminal --hide-menubar -x sh -c 'emacs; read'</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/glade.svg" label="Glade">
+				<action name="Execute">
+					<execute>glade</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/office-address-book.svg" id="root-menu-334956-395158" label="Office">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/calc.svg" label="Calc">
+				<action name="Execute">
+					<execute>galculator</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/abiword.svg" label="Abiword">
+				<action name="Execute">
+					<execute>abiword</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/gnumeric.svg" label="Gnumeric">
+				<action name="Execute">
+					<execute>gnumeric</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/leafpad.svg" label="mousepad">
+				<action name="Execute">
+					<execute>mousepad</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/file-manager.svg" id="root-menu-51437" label="FileManager">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/file-manager.svg" label="PCManFM Qt">
+				<action name="Execute">
+					<execute>pcmanfm-qt</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/password.svg" id="root-menu-214259" label="Password Manager">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/keepassxc.svg" label="KeepassXC">
+				<action name="Execute">
+					<execute>keepassxc</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" id="root-menu-334956-315947" label="Game">
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/playonlinux.svg" label="Windows">
+				<action name="Execute">
+					<execute>/opt/playonlinux/playonlinux</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" label="PS/SFC/FC/MD/PCE">
+				<action name="Execute">
+					<execute>/opt/mednaffe</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/PCSX2.svg" label="PlayStation2">
+				<action name="Execute">
+					<execute>sh -c &quot;env GDK_BACKEND=x11 __GL_THREADED_OPTIMIZATIONS=1 /opt/pcsx2.AppImage&quot;</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/ppsspp.svg" label="PSP">
+				<action name="Execute">
+					<execute>ppsspp</execute>
+				</action>
+			</item>
+			<item label="Steam">
+				<action name="Execute">
+					<execute>steam</execute>
+				</action>
+			</item>
+			<item label="MegaDrive/Genesis">
+				<action name="Execute">
+					<execute>/opt/Fusion/Fusion</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/game.svg" label="Sega Saturn">
+				<action name="Execute">
+					<execute>yabause</execute>
+				</action>
+			</item>
+			<item label="Dream Cast">
+				<action name="Execute">
+					<execute>~/redream</execute>
+				</action>
+			</item>
+		</menu>
+		<menu icon="/usr/share/icons/suru-plus-master/apps/22/settings.svg" id="root-menu-454350" label="Settings">
+			<item label="Network Manager">
+				<action name="Execute">
+					<execute>nm-connection-editor</execute>
+				</action>
+			</item>
+			<item label="Bluetooth Manager">
+				<action name="Execute">
+					<execute>blueman-manager</execute>
+				</action>
+			</item>
+			<item label="lxqt-config">
+				<action name="Execute">
+					<execute>lxqt-config</execute>
+				</action>
+			</item>
+			<item label="radeon-profile">
+				<action name="Execute">
+					<execute>radeon-profile</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/tint2.svg" label="Tint2 settings">
+				<action name="Execute">
+					<execute>/opt/tint2conf</execute>
+				</action>
+			</item>
+			<item label="xfce4-power-manager-settings">
+				<action name="Execute">
+					<execute>xfce4-power-manager-settings</execute>
+				</action>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/lxde.svg" label="PCManFM-qt Settings">
+				<action name="Execute">
+					<execute>pcmanfm-qt --desktop-pref</execute>
+				</action>
+			</item>
+			<item label="Openbox menu edit">
+				<action name="Execute">
+					<execute>python2 /opt/obmenu/obmenu</execute>
+				</action>
+			</item>
+			<item label="Openbox settings">
+				<action name="Execute">
+					<execute>obconf-qt</execute>
+				</action>
+			</item>
+			<item label="Openbox Reconfigure">
+				<action name="Reconfigure"/>
+			</item>
+			<item icon="/usr/share/icons/suru-plus-master/apps/22/lightdm-gtkdm-gtk-greeter-settings.svg" label="lightdm-gtk-greeter-settings">
+				<action name="Execute">
+					<execute>gksu lightdm-gtk-greeter-settings</execute>
+				</action>
+			</item>
+		</menu>
+		<!-- This requires the presence of the 'menu' package to work -->
+		<separator/>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/web-browser.svg" label="To Main Site">
+			<action name="Execute">
+				<execute>chromium-browser --disk-cache-dir=&quot;/tmp&quot; --app=&quot;http://vsrx.work&quot;</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/ubiquity.svg" label="Install Phantom Valkyrie Linux">
+			<action name="Execute">
+				<execute>~/viper/scripts/install_vsrx</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/unetbootin.svg" label="UNetbootin">
+			<action name="Execute">
+				<execute>unetbootin</execute>
+			</action>
+		</item>
+		<item label="GParted">
+			<action name="Execute">
+				<execute>/usr/sbin/gparted</execute>
+			</action>
+		</item>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/boot-repair.svg" label="boot-repair">
+			<action name="Execute">
+				<execute>boot-repair-pkexec</execute>
+			</action>
+		</item>
+		<item label="About Valkyrie Linux">
+			<action name="Execute">
+				<execute>python3 ~/viper/scripts/info.py</execute>
+			</action>
+		</item>
+		<separator/>
+		<item icon="/usr/share/icons/suru-plus-master/apps/22/lxsession-logout.svg" label="Exit">
+			<action name="Execute">
+				<execute>lxqt-leave</execute>
+			</action>
+		</item>
+	</menu>
+</openbox_menu>

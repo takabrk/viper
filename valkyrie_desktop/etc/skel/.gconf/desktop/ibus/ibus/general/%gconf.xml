@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="preload_engine_mode" mtime="1351222255" type="int" value="0"/>
+	<entry name="global_engine" mtime="1333106713" type="string">
+		<stringvalue>mozc-jp</stringvalue>
+	</entry>
+	<entry name="use_global_engine" mtime="1333168063" type="bool" value="false"/>
+	<entry name="use_system_keyboard_layout" mtime="1351222269" type="bool" value="true"/>
+	<entry name="preload_engines" mtime="1351222255" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>mozc-jp</stringvalue>
+		</li>
+	</entry>
+</gconf>

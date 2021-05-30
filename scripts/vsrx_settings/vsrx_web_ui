@@ -1,0 +1,2 @@
+#!/bin/sh
+chromium-browser --disk-cache-dir="/tmp" --app="http://localhost:8000"

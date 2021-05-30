@@ -1,0 +1,105 @@
+#!/bin/bash
+
+#cd `dirname $0`
+. extras/config
+
+rm -f $WORKPATH/ubuntu-builder.log
+
+(echo UBUNTU BUILDER LOG FILE
+echo
+echo THIS IS A `uname -m` MACHINE RUNNING ON LINUX `uname -r` \(`lsb_release -irs`\)
+echo
+echo STARTING EXTRACTION ON `date +%F` `date +%H:%M`
+echo) | tee $WORKPATH/ubuntu-builder.log 1> /dev/null
+
+(
+if [ ! -d $MOUNTPATH ]; then
+    mkdir $MOUNTPATH
+elif [ ! -d $ISOPATH ]; then
+    mkdir $ISOPATH
+elif [ ! -d $FSPATH ]; then
+    mkdir $FSPATH
+fi
+
+read FILE < $WORKPATH/configs/ISOFILE
+
+echo -n "# Mounting ISO"
+if mount -t iso9660 -o loop "$FILE" "$MOUNTPATH" > /dev/null
+then
+	echo "                            [DONE]"
+else
+	zenity --error --text="Unable to mount! The reason may be that the folder $MOUNTPATH is currently busy or you don't have the required privileges."
+	rm -rf $ISOPATH $FSPATH
+	exit
+fi
+
+echo -n "# Checking ISO" 
+if [ ! -d $MOUNTPATH/casper ] || [ ! -e $MOUNTPATH/casper/filesystem.squashfs ]; then
+	zenity --error --text="Check failed! Make sure you've selected a valid Ubuntu ISO and try again."
+	echo
+	echo -n "# Unmounting ISO"
+	umount -l $MOUNTPATH
+	rm -rf $ISOPATH $FSPATH
+	echo "                          [DONE]"
+	exit
+fi
+
+if [ ! -d $MOUNTPATH/dists ]; then
+	zenity --error --text="An important directory was not found, this means that you are not using an official Ubuntu ISO image.\n\nThe extraction process will continue but errors may occur.\n\nRemember to check the sources.list in order to activate all the repositories you need."
+	if [ ! -d $MOUNTPATH/efi ]; then
+		echo "i386" > $WORKPATH/configs/ARCH
+		ISOARCH=i386
+	else
+		echo "amd64" > $WORKPATH/configs/ARCH
+		ISOARCH=amd64
+	fi
+else
+	if [ -d $MOUNTPATH/dists/stable/main/binary-amd64 ]; then
+		echo "amd64" > $WORKPATH/configs/ARCH
+		ISOARCH=amd64
+	else
+		echo "i386" > $WORKPATH/configs/ARCH
+		ISOARCH=i386
+	fi
+fi	
+
+if [[ $ISOARCH = "amd64" ]] && [[ $YOURARCH != "x86_64" ]]; then
+	zenity --warning --text='You have selected an incompatible ISO image. You can customize amd64 ISO images only if you have an amd64 release on your machine!'
+	umount $MOUNTPATH
+	exit
+fi
+echo "                            [DONE]"
+
+echo -n "# Cleaning existing directories"
+rm -rf $FSPATH/*
+rm -rf $ISOPATH/*
+rm -rf $ISOPATH/.??*
+echo "           [DONE]"
+
+echo -n "# Extracting File System"
+echo
+unsquashfs -f -d $FSPATH $MOUNTPATH/casper/filesystem.squashfs
+echo
+(ISOVERSION=`ls $MOUNTPATH/dists/ | grep -v stable`
+if [ -d "$MOUNTPATH/ubuntu" ]; then
+cp $FSPATH/etc/apt/sources.list $FSPATH/etc/apt/sources.list.bak.part
+cp /sources/$ISOVERSION $FSPATH/etc/apt/sources.list
+cp -f /etc/fstab /home/ubuntu-builder/FileSystem/etc/fstab
+fi) > /dev/null 2>&1
+echo "                   [DONE]"
+
+echo -n "# Completing extracting operation"
+(rsync --exclude=/casper/* --exclude=/md5sum.txt --exclude=/README.diskdefines -a $MOUNTPATH/ $ISOPATH
+echo `cat $FSPATH/etc/lsb-release | grep DISTRIB_ID= | sed 's/DISTRIB_ID=//'` > $WORKPATH/configs/DIST
+echo `cat $FSPATH/etc/lsb-release | grep DISTRIB_RELEASE= | sed 's/DISTRIB_RELEASE=//'` > $WORKPATH/configs/VERSION
+echo `cat $FSPATH/etc/lsb-release | grep DISTRIB_CODENAME= | sed 's/DISTRIB_CODENAME=//'` > $WORKPATH/configs/CODENAME
+echo `cat $FSPATH/etc/lsb-release | grep DISTRIB_DESCRIPTION= | sed 's/DISTRIB_DESCRIPTION=//'` > $WORKPATH/configs/DESCRIPTION
+sed -i 's/"//g' $WORKPATH/configs/DESCRIPTION
+echo `cat $ISOPATH/.disk/release_notes_url` > $WORKPATH/configs/RELEASENOTES
+echo `cat $ISOPATH/.disk/info` > $WORKPATH/configs/EXTENDED
+mkdir -p $FSPATH/var/lib/dbus
+mkdir -p $FSPATH/var/run/dbus
+cp /etc/resolv.conf $FSPATH/etc/resolv.conf
+umount -l $MOUNTPATH) > /dev/null 2>&1
+echo "         [DONE]"
+) | tee -a $WORKPATH/ubuntu-builder.log

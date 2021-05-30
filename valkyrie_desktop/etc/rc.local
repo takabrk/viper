@@ -1,0 +1,23 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+#mount -t tmpfs -w -o size=512m tmpfs /tmp
+echo deadline >/sys/block/xvda/queue/scheduler
+echo 0 >/sys/block/xvda/queue/iosched/front_merges
+echo 1 >/sys/block/xvda/queue/iosched/fifo_batch
+echo 10 >/sys/block/xvda/queue/iosched/writes_starved 
+echo 50 >/sys/block/xvda/queue/iosched/read_expire
+echo 300000 >/sys/block/xvda/queue/iosched/write_expire
+echo 256 > /sys/block/xvda/queue/nr_requests
+exit 0
+            

@@ -1,0 +1,252 @@
+#!/bin/bash
+
+. vsrx_builder/extras/config
+
+##### DEBS, COMMANDS AND OTHER FEATURES #####
+
+(echo
+echo STARTING WIZARD
+echo
+
+if [ -e $WORKPATH/configs/DEBS ]; then
+	cp $WORKPATH/configs/debs/* $FSPATH/tmp/
+elif [ -e $APPS ]; then
+	cp $WORKPATH/configs/PACKAGES $FSPATH/tmp/
+elif [ -e $AUTOCOMMANDS ]; then
+	cp $WORKPATH/configs/AUTOCOMMANDS $FSPATH/tmp/
+fi
+
+cp /etc/hosts $FSPATH/etc/
+
+mount --bind /dev $FSPATH/dev
+mount --bind /var/run/dbus $FSPATH/var/lib/dbus
+mount --bind /var/run/dbus $FSPATH/var/run/dbus
+
+touch $FSPATH/tmp/script.bash
+cat > $FSPATH/tmp/script.bash << "EOF"
+#################### CHROOT ENVIRONMENT ####################
+#!/bin/bash
+export HOME=/root
+export LC_ALL=C
+apt-get update -q
+apt-get install dbus -qq -y
+dbus-uuidgen > /var/lib/dbus/machine-id
+dpkg-divert --local --rename --add /sbin/initctl
+ln -s /bin/true /sbin/initctl
+
+# Install presets
+if [ -e /tmp/APPS ]; then
+	read APPS < /tmp/APPS
+	apt-get install -y $APPLIST --no-install-recommends
+fi
+
+# Install DEB packages
+if [ -e /tmp/DEBS ]; then
+	dpkg -i -G -E /tmp/*.deb
+	apt-get -f install --yes
+fi
+
+# Execute commands
+if [ -e /tmp/AUTOCOMMANDS]; then
+	paste /tmp/AUTOCOMMANDS | /bin/bash
+fi
+
+EOF
+######################### on EXIT #########################
+echo "apt-get clean
+rm -f /boot/*.bak
+rm -f /var/lib/dpkg/*-old
+rm -f /var/lib/aptitude/*.old
+rm -f /var/cache/debconf/*.dat-old
+rm -f /var/log/*.gz
+rm /var/lib/dbus/machine-id
+rm /sbin/initctl
+dpkg-divert --rename --remove /sbin/initctl
+rm -f ~/.bash_history
+rm -rf /tmp/*" >> $FSPATH/tmp/script.bash
+
+chroot $FSPATH sh /tmp/script.bash
+
+##### STOP FEATURES #####
+
+##### BUILDING ISO #####
+
+# Check if all the required files and directories exist
+echo -n "# Checking configs"
+if [ ! -e $WORKPATH/configs/DIST ] || [ ! -e $WORKPATH/configs/ARCH ]; then
+        zenity --error --text "One or more configuration files are missing. Close the program and start it again."
+	exit
+else
+	echo "                      [DONE]"
+fi
+
+echo -n "# Checking folders"
+if [ ! -d $ISOPATH/casper ]; then
+	zenity --error --text "The 'casper' folder doesn't exist in $ISOPATH . Please remove the $WORKPATH directory and try again."
+	exit
+elif [ ! -d $ISOPATH/.disk ]; then
+	zenity --error --text "The '.disk' folder doesn't exists in $ISOPATH. Please remove the $WORKPATH directory and try again."
+	exit
+elif [ ! -d $ISOPATH ] || [ ! -d $FSPATH ]; then
+	zenity --error --text "At least one of the required directories doesn't exist. Please remove the $WORKPATH directory and try again."
+	exit
+fi
+echo "                      [DONE]"
+
+# Delete old ISO files
+echo -n "# Deleting obsolete files"
+rm -f $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH
+rm -f $ISOPATH/casper/filesystem.squashfs
+rm -f $ISOPATH/casper/initrd.lz
+rm -f $ISOPATH/casper/vmlinuz
+rm -f $ISOPATH/casper/filesystem.manifest
+rm -f $ISOPATH/casper/filesystem.manifest-desktop
+rm -f $ISOPATH/casper/filesystem.size
+rm -f $ISOPATH/md5sum.txt
+rm -f $ISOPATH/casper/README.diskdefines
+echo "               [DONE]"
+
+# Load the new system configuration
+echo -n "# Loading configs"
+read DIST < $WORKPATH/configs/DIST
+read ARCH < $WORKPATH/configs/ARCH
+read RELEASENOTES < $ISOPATH/.disk/release_notes_url
+
+# Check if the Windows related files were selected for deletion and delete them if true
+if [ -e $WORKPATH/configs/WIN ]; then
+	read WIN < $WORKPATH/configs/WIN
+	if [[ "$WIN" = "yes" ]]; then
+		rm -rf $ISOPATH/bin
+		rm -rf $ISOPATH/disctree
+		rm -rf $ISOPATH/pics
+		rm -rf $ISOPATH/programs
+		rm -f $ISOPATH/autorun.inf
+		rm -f $ISOPATH/start.bmp
+		rm -f $ISOPATH/start.exe
+		rm -f $ISOPATH/start.ini
+		rm -f $ISOPATH/ubuntu.ico
+		rm -f $ISOPATH/kubuntu.ico
+		rm -f $ISOPATH/xubuntu.ico
+		rm -f $ISOPATH/lubuntu.ico
+		rm -f $ISOPATH/wubi-cdboot.exe
+		rm -f $ISOPATH/wubi.exe
+		rm -f $ISOPATH/umenu.exe
+		rm -f $ISOPATH/usb-creator.exe
+		rm -f $ISOPATH/mint4win.exe
+	fi
+fi
+echo "                       [DONE]"
+
+# Set the new informations
+echo -n "# Setting up distribution informations"
+sed -i 's/DISTRIB_ID=.*/DISTRIB_ID='\"$DIST\"'/' $FSPATH/etc/lsb-release
+sed -i 's/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="'$DIST' - Custom distribution made with Ubuntu Builder"/' $FSPATH/etc/lsb-release
+echo "$DIST $VERSION \n \l" > $FSPATH/etc/issue
+echo "$DIST $VERSION" > $FSPATH/etc/issue.net
+echo -e "$DIST $VERSION \n\n Welcome to $DIST! \n * $RELEASENOTES\n\n" > $FSPATH/etc/motd
+
+echo "#!/bin/sh
+if uname -r | grep -qs \"\-server\"; then
+echo
+echo \"Welcome to the $DIST Server!\"
+echo \" * $RELEASENOTES\"
+else
+echo
+echo \"Welcome to $DIST!\"
+echo \" * $RELEASENOTES\"
+fi" > $FSPATH/etc/update-motd.d/10-help-text
+echo "  [DONE]"
+
+# Start building process
+echo -n "# Cleaning up the build environment"
+(cp /etc/hosts $FSPATH/etc/
+
+touch $FSPATH/tmp/script.bash
+cat > $FSPATH/tmp/script.bash << "EOF"
+
+#################### CHROOT ENVIRONMENT ####################
+#!/bin/bash
+
+export HOME=/root
+export LC_ALL=C
+mount none -t proc /proc
+mount none -t sysfs /sys
+mount none -t devpts /dev/pts
+apt-get update -q
+apt-get install dbus -qq -y
+if [ ! -e $FSPATH/boot/vmlinuz* ]; then
+	rm $FSPATH/initrd.img vmlinuz
+	apt-get purge linux-image-* -qq -y
+	apt-get install linux-image-generic -qq -y
+fi
+EOF
+######################### on EXIT #########################
+echo "apt-get clean
+rm -rf /tmp/*
+rm -rf /etc/hosts
+rm -rf /boot/*.bak
+rm -rf /var/lib/dpkg/*-old
+rm -rf /var/lib/aptitude/*.old
+rm -rf /var/cache/debconf/*.dat-old
+rm -rf /var/log/*.gz
+rm -rf ~/.bash_history
+umount -lf /proc
+umount -lf /sys
+umount -lf /dev/pts
+umount -lf /var/lib/dbus
+umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
+
+chroot $FSPATH sh /tmp/script.bash
+umount -f -l $FSPATH/dev) > /dev/null 2>&1
+echo "     [DONE]"
+
+echo -n "# Copying boot files"
+(cp -f $FSPATH/boot/initrd.img-*-generic $ISOPATH/casper/initrd.lz
+cp -f $FSPATH/boot/vmlinuz-*-generic $ISOPATH/casper/vmlinuz) > /dev/null 2>&1
+echo "                    [DONE]"
+
+echo -n "# Creating File System"
+echo
+mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery
+printf $(du -sx --block-size=1 $FSPATH | cut -f1) > $ISOPATH/casper/filesystem.size
+echo "                  [DONE]"
+
+echo -n "# Creating Manifest files"
+chroot $FSPATH dpkg-query -W --showformat='${Package} ${Version}\n' > $ISOPATH/casper/filesystem.manifest
+cp $ISOPATH/casper/filesystem.manifest $ISOPATH/casper/filesystem.manifest-desktop
+REMOVE='ubiquity casper live-initramfs user-setup discover1 xresprobe os-prober libdebian-installer4'
+for i in $REMOVE
+do
+        sed -i "/${i}/d" $ISOPATH/casper/filesystem.manifest-desktop
+done
+echo "               [DONE]"
+
+echo -n "# Gathering information files"
+echo "#define DISKNAME  ${DIST} - Release ${ARCH}
+#define TYPE  binary
+#define TYPEbinary  1
+#define ARCH  ${ARCH}
+#define ARCH  ${ARCH}  1
+#define DISKNUM  1
+#define DISKNUM1  1
+#define TOTALNUM  0
+#define TOTALNUM0  1" > $ISOPATH/README.diskdefines
+
+echo "$DIST \"$CODENAME\" - Release $ARCH ($VERSION)" > $ISOPATH/.disk/info
+echo "           [DONE]"
+
+echo -n "# Creating MD5Sums"
+(cd $WORKPATH
+find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt") > $WORKPATH/md5sum.txt
+echo "                      [DONE]"
+
+echo -ne "# Creating ISO, this may take a moment"
+cd $ISOPATH
+genisoimage -r -V "${DIST//[[:space:]]}-$VERSION-$ARCH" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table -o $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH.iso -input-charset utf-8 .
+
+chmod 755 $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH.iso
+echo $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH.iso > $WORKPATH/configs/ISOCREATED
+echo "  [DONE]"
+
+zenity --info --text "${DIST//[[:space:]]}-$VERSION-$ARCH successfully created. You can test it with QEMU."
+) | tee -a $WORKPATH/ubuntu-builder.log

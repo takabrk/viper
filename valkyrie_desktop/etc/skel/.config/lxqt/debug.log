@@ -1,0 +1,728 @@
+2019-11-02 14:40:01.403 (0x7fffeb495010) Warning: "Icon Theme not set. Fallbacking to Oxygen, if installed"
+2019-11-02 14:40:01.403 (0x7fffeb495010) Warning: "Fallback Icon Theme (Oxygen) not found"
+2019-11-02 14:40:01.449 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.449 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:01.450 (0x7fffeb495010) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 14:40:09.975 (0x7ffd77e90f80) Warning: "Icon Theme not set. Fallbacking to Oxygen, if installed"
+2019-11-02 14:40:09.975 (0x7ffd77e90f80) Warning: "Fallback Icon Theme (Oxygen) not found"
+2019-11-02 14:40:10.855 (0x7ffd2ba549e0) Warning: "Icon Theme not set. Fallbacking to Oxygen, if installed"
+2019-11-02 14:40:10.855 (0x7ffd2ba549e0) Warning: "Fallback Icon Theme (Oxygen) not found"
+2019-11-02 14:40:51.267 (0x7ffefb6900f0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 14:41:07.755 (0x7ffefb6900f0) Debug: delete ProxyFolderModel
+2019-11-02 14:41:07.757 (0x7ffefb6900f0) Debug: delete FolderModel
+2019-11-02 14:41:09.705 (0x7ffefb6900f0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 14:41:18.061 (0x7ffefb6900f0) Debug: delete ProxyFolderModel
+2019-11-02 14:41:18.062 (0x7ffefb6900f0) Debug: delete FolderModel
+2019-11-02 14:41:37.012 (0x7ffc6145d2b0) Debug: Connecting to KScreen...
+2019-11-02 14:42:18.496 (0x7ffdf701f690) Warning: LXQt-Volume: Context connection failed or terminated lets try to reconnect
+2019-11-02 14:43:00.651 (0x7ffef8b8ecb0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 14:43:08.075 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:16.022 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:20.330 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:28.741 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:29.064 (0x7ffef8b8ecb0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 14:43:29.201 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:32.230 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:33.766 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:56.118 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:43:59.456 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:44:01.445 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:44:05.903 (0x7ffef8b8ecb0) Debug: delete ProxyFolderModel
+2019-11-02 14:44:05.904 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:44:10.939 (0x7ffef8b8ecb0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 14:44:21.699 (0x7ffef8b8ecb0) Debug: delete ProxyFolderModel
+2019-11-02 14:44:21.701 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:44:29.946 (0x7ffef8b8ecb0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 14:44:46.078 (0x7ffef8b8ecb0) Debug: delete ProxyFolderModel
+2019-11-02 14:44:46.082 (0x7ffef8b8ecb0) Debug: delete FolderModel
+2019-11-02 14:44:48.261 (0x7ffc984baee0) Debug: WinIdChange 2200005 handle QWidgetWindow(0x564376ad3f60, name="LXQtPanel panel1Window") QScreen(0x5643769cd330, name="DVI-D-0")
+2019-11-02 14:46:37.245 (0x7ffc984baee0) Warning: Another systray is running
+2019-11-02 14:48:13.197 (0x7ffc984baee0) Debug: delete FolderModel
+2019-11-02 14:48:24.768 (0x7ffc984baee0) Warning: QXcbConnection: XCB error: 3 (BadWindow), sequence: 3024, resource id: 18875831, major code: 40 (TranslateCoords), minor code: 0
+2019-11-02 14:48:24.774 (0x7ffc984baee0) Debug: delete ProxyFolderModel
+2019-11-02 14:55:57.299 (0x7ffc984baee0) Debug: execAction "/usr/share/applications/pcmanfm-qt.desktop"
+2019-11-02 14:58:34.347 (0x7ffc3e1cc580) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x562230a5f6a0, name="LXQtPanel panel1Window") QScreen(0x5622308f1330, name="DVI-D-0")
+2019-11-02 14:58:55.865 (0x7ffc3e1cc580) Debug: execAction "/usr/share/applications/pcmanfm-qt.desktop"
+2019-11-02 14:59:35.299 (0x7ffdd29e3990) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-02 15:00:00.047 (0x7ffd9ec2c820) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55e0a3c0ed70, name="LXQtPanel panel1Window") QScreen(0x55e0a3aba330, name="DVI-D-0")
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.876 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.877 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.877 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:00:17.877 (0x7ffc61a7eee0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:01:01.495 (0x7ffce8cd4ab0) Debug: evince-thumbnailer -s 128 'file:///usr/bin/fix-qdf' /home/valkyrie/.cache/thumbnails/normal/ff169c4ac6079d5e0e12dc32ed07906a.png
+2019-11-02 15:01:10.691 (0x7ffce8cd4ab0) Debug: delete ProxyFolderModel
+2019-11-02 15:01:10.693 (0x7ffce8cd4ab0) Debug: delete FolderModel
+2019-11-02 15:01:23.409 (0x7ffd9ec2c820) Debug: execAction "/usr/share/applications/pcmanfm-qt.desktop"
+2019-11-02 15:02:59.443 (0x7ffce30bb8c0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x564bc78db1a0, name="LXQtPanel panel1Window") QScreen(0x564bc7764330, name="DVI-D-0")
+2019-11-02 15:03:53.070 (0x7ffe0b740030) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55f6d1532c70, name="LXQtPanel panel1Window") QScreen(0x55f6d13d2330, name="DVI-D-0")
+2019-11-02 15:05:56.415 (0x7fff3e32afd0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-02 15:06:28.942 (0x7fffad468800) Debug: WinIdChange 2400005 handle QWidgetWindow(0x557ad6f74e80, name="LXQtPanel panel1Window") QScreen(0x7f0994005360, name="DVI-D-0")
+2019-11-02 15:07:54.930 (0x7fff2c2e1d10) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55e16fad4ad0, name="LXQtPanel panel1Window") QScreen(0x7f897c0053b0, name="DVI-D-0")
+2019-11-02 15:08:59.585 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.585 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:08:59.586 (0x7ffc82f50fa0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:09:37.846 (0x7fff2c2e1d10) Debug: execAction "/usr/share/applications/pcmanfm-qt.desktop"
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:14:02.349 (0x7fff346918b0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.537 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:20:01.538 (0x7ffeff58c7c0) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:21:39.772 (0x7ffd6b0fd310) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.158 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.159 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.159 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:35:38.159 (0x7ffd0b8a5810) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:38:19.229 (0x7fff113a2570) Warning: QFSFileEngine::open: No file name specified
+2019-11-02 15:42:56.101 (0x7ffd3db5a4d0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-02 16:36:45.493 (0x7ffcd2c73c90) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-02 16:36:45.570 (0x7ffcd2c73c90) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-11-03 04:17:22.051 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.051 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:17:22.052 (0x7fff7ef77800) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:02.411 (0x7ffdf38efc20) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55fdcda73910, name="LXQtPanel panel1Window") QScreen(0x55fdcd906330, name="DVI-D-0")
+2019-11-03 04:18:23.736 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.736 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.736 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.736 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.736 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.736 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.737 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.737 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.737 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.737 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.737 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 04:18:23.737 (0x7ffd8cde6e40) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 10:16:40.152 (0x7ffe2a640950) Debug: WinIdChange 1600005 handle QWidgetWindow(0x563c13a1fdc0, name="LXQtPanel panel1Window") QScreen(0x563c1389f330, name="DVI-D-0")
+2019-11-03 11:11:22.557 (0x7ffe2a640950) Warning: Another systray is running
+2019-11-03 20:57:37.168 (0x7ffea6fb0ec0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x56005ee4f9c0, name="LXQtPanel panel1Window") QScreen(0x56005ecd7330, name="DVI-D-0")
+2019-11-03 22:24:26.791 (0x7ffc51067270) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-03 22:28:01.028 (0x7ffef902e300) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55bcdbed9cf0, name="LXQtPanel panel1Window") QScreen(0x55bcdbd74330, name="DVI-D-0")
+2019-11-03 22:33:28.254 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.254 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.254 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.254 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:33:28.255 (0x7fff59b30ed0) Warning: QFSFileEngine::open: No file name specified
+2019-11-03 22:34:30.633 (0x7ffd835e6a40) Debug: WinIdChange 2800005 handle QWidgetWindow(0x55e82dd0e120, name="LXQtPanel panel1Window") QScreen(0x55e82db9f330, name="DVI-D-0")
+2019-11-03 22:39:06.215 (0x7ffc20c43390) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5632c5921090, name="LXQtPanel panel1Window") QScreen(0x7fb8d8005360, name="DVI-D-0")
+2019-11-03 22:40:51.426 (0x7fff8abd8440) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55adced71160, name="LXQtPanel panel1Window") QScreen(0x55adcebeb330, name="DVI-D-0")
+2019-11-03 23:29:58.931 (0x7fff8abd8440) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-03 23:29:58.936 (0x7ffc2be14640) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-03 23:33:44.688 (0x7ffe0601d9d0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55cd09a8c780, name="LXQtPanel panel1Window") QScreen(0x55cd0994b330, name="DVI-D-0")
+2019-11-04 10:13:39.936 (0x7ffd616978c0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5629149f1c20, name="LXQtPanel panel1Window") QScreen(0x56291486e330, name="DVI-D-0")
+2019-11-04 18:36:47.998 (0x7ffdea07ec60) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55a1e43e6820, name="LXQtPanel panel1Window") QScreen(0x55a1e4295330, name="DVI-D-0")
+2019-11-04 18:37:59.320 (0x7ffc528c64c0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/12019-11-04 18:38:36.567 (0x7ffedf36eb50) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x563eb417a5f0, name="LXQtPanel panel1Window") QScreen(0x563eb4050330, name="DVI-D-0")
+2019-11-05 05:27:21.367 (0x7ffe363c63e0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-05 12:52:56.139 (0x7ffd82c4b840) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5620de99aa80, name="LXQtPanel panel1Window") QScreen(0x5620de7fc330, name="DVI-D-0")
+2019-11-05 18:01:38.657 (0x7ffd25209f20) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55d9aa4a0ab0, name="LXQtPanel panel1Window") QScreen(0x55d9aa34a330, name="DVI-D-0")
+2019-11-06 04:43:34.671 (0x7ffc336f2670) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-06 13:20:01.245 (0x7ffc11a0d4a0) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x5636b4ea3c60, name="LXQtPanel panel1Window") QScreen(0x5636b4d82330, name="DVI-D-0")
+2019-11-07 05:59:24.431 (0x7ffc601fc7c0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-07 13:44:12.178 (0x7ffd2987be60) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55a7b779fd10, name="LXQtPanel panel1Window") QScreen(0x55a7b764a330, name="DVI-D-0")
+2019-11-08 02:12:23.940 (0x7ffccc289d70) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5628b4307b60, name="LXQtPanel panel1Window") QScreen(0x5628b4183330, name="DVI-D-0")
+2019-11-08 05:55:25.622 (0x7fffbbd07bb0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-08 05:55:25.631 (0x7fffbbd07bb0) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-11-08 05:55:25.637 (0x7ffccc289d70) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-08 05:55:25.637 (0x7fffbbd07bb0) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-11-08 13:01:42.261 (0x7ffdaccd4f60) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x56426ed4f440, name="LXQtPanel panel1Window") QScreen(0x7f5b40005900, name="DVI-D-0")
+2019-11-08 18:21:04.602 (0x7ffd2719a350) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55c4e9482b10, name="LXQtPanel panel1Window") QScreen(0x7f8db8005360, name="DVI-D-0")
+2019-11-09 02:58:25.005 (0x7ffd51c29ff0) Debug: WinIdChange 2400005 handle QWidgetWindow(0x5593db664bf0, name="LXQtPanel panel1Window") QScreen(0x7f8058005360, name="DVI-D-0")
+2019-11-09 13:33:58.708 (0x7ffd1473af70) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55a8742a02c0, name="LXQtPanel panel1Window") QScreen(0x7fda3c005770, name="DVI-D-0")
+2019-11-10 05:25:06.169 (0x7ffd426cc430) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-10 11:34:41.317 (0x7fff2262bd70) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5648544071a0, name="LXQtPanel panel1Window") QScreen(0x564854265330, name="DVI-D-0")
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-10 11:48:58.014 (0x7ffedbec1520) Warning: QFSFileEngine::open: No file name specified
+2019-11-11 03:25:07.676 (0x7fff262c9b90) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-11 10:30:41.578 (0x7ffc7bf4dc50) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x5629b72cec50, name="LXQtPanel panel1Window") QScreen(0x5629b716a330, name="DVI-D-0")
+2019-11-11 16:31:27.439 (0x7ffe49b15170) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-11 16:32:25.277 (0x7ffed34c9140) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5609f6a86b40, name="LXQtPanel panel1Window") QScreen(0x5609f68f5330, name="DVI-D-0")
+2019-11-11 16:49:03.375 (0x7ffe24904330) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-11 17:44:22.633 (0x7ffe3077f590) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5576c4a2bba0, name="LXQtPanel panel1Window") QScreen(0x5576c48c9330, name="DVI-D-0")
+2019-11-12 05:08:38.751 (0x7ffdeaa372d0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-12 13:30:34.619 (0x7fff7f697b10) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55c7b536e060, name="LXQtPanel panel1Window") QScreen(0x55c7b522b330, name="DVI-D-0")
+2019-11-12 18:58:27.705 (0x7ffe60c1bd90) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x555671c9d0d0, name="LXQtPanel panel1Window") QScreen(0x7efe84005360, name="DVI-D-0")
+2019-11-13 12:47:45.786 (0x7ffc2d5b6150) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55ed97299800, name="LXQtPanel panel1Window") QScreen(0x7f7fbc0053b0, name="DVI-D-0")
+2019-11-13 18:52:10.118 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000A/input/input34', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.126 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000B/input/input35', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.138 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000B/input/input36', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.138 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.142 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.145 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000B/input/input35/event7', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.149 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000A/input/input34/event6', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.157 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33/event5', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 18:52:10.226 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000B/input/input36/event8', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.950 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0010/input/input40', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.950 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0010/input/input39', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.951 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000F/input/input38', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.956 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.000D/0003:046D:4019.000E/input/input37', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.963 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.000D/0003:046D:4019.000E/input/input37/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.966 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0010/input/input39/event7', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.967 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0010/input/input40/event8', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.968 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000F/input/input38/event6', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:14.972 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.000D/0003:046D:4019.000E/input/input37/event5', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.193 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0014/input/input42', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.207 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0012/0003:046D:4019.0013/input/input41', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.208 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0015/input/input43', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.208 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0015/input/input44', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.211 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0012/0003:046D:4019.0013/input/input41/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.225 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0014/input/input42/event6', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.228 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0015/input/input43/event7', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.230 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0012/0003:046D:4019.0013/input/input41/event5', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 19:03:19.234 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0015/input/input44/event8', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.811 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0019/input/input46', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.822 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001A/input/input47', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.825 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001A/input/input48', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.833 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0019/input/input46/event6', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.836 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0017/0003:046D:4019.0018/input/input45', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.840 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0017/0003:046D:4019.0018/input/input45/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.906 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001A/input/input48/event8', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.906 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001A/input/input47/event7', keyboard setting will be (optionaly) reloaded..."
+2019-11-13 23:25:14.906 (0x7fff2c4cd6f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0017/0003:046D:4019.0018/input/input45/event5', keyboard setting will be (optionaly) reloaded..."
+2019-11-14 06:17:17.552 (0x7ffc2d5b6150) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-14 06:17:19.541 (0x7fff2c4cd6f0) Warning: "Module 'lxqt-panel.desktop' won't terminate ... killing."
+2019-11-14 06:17:19.542 (0x7fff2c4cd6f0) Warning: QProcess: Destroyed while process ("lxqt-panel") is still running.
+2019-11-14 11:08:32.119 (0x7ffe42005e50) Debug: WinIdChange 1600005 handle QWidgetWindow(0x55f5188245f0, name="LXQtPanel panel1Window") QScreen(0x55f5186f2330, name="DVI-D-0")
+2019-11-14 13:50:03.056 (0x7fff31319a40) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-14 13:51:02.279 (0x7ffff4f0c6a0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55f3f95fb300, name="LXQtPanel panel1Window") QScreen(0x55f3f9457330, name="DVI-D-0")
+2019-11-14 20:15:35.784 (0x7ffe7082e3b0) Debug: WinIdChange 2200005 handle QWidgetWindow(0x5638b815d6e0, name="LXQtPanel panel1Window") QScreen(0x7f14c0005360, name="DVI-D-0")
+2019-11-15 06:53:11.224 (0x7fff75e9a250) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-15 06:53:11.230 (0x7ffe7082e3b0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-15 11:54:20.005 (0x7ffc82159e60) Debug: WinIdChange 1800005 handle QWidgetWindow(0x5581298716c0, name="LXQtPanel panel1Window") QScreen(0x5581296f1330, name="DVI-D-0")
+2019-11-15 19:38:06.974 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-15 19:38:06.975 (0x7ffca16d7480) Warning: QFSFileEngine::open: No file name specified
+2019-11-16 05:47:39.384 (0x7ffd060efad0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-16 11:03:48.753 (0x7ffe6d7d0700) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x555567557470, name="LXQtPanel panel1Window") QScreen(0x55556741b330, name="DVI-D-0")
+2019-11-16 11:08:03.997 (0x7ffe252417b0) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55f0ffcc7a30, name="LXQtPanel panel1Window") QScreen(0x7f07fc007950, name="DVI-D-0")
+2019-11-16 19:10:33.559 (0x7ffef12cacf0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x560576df5810, name="LXQtPanel panel1Window") QScreen(0x560576cc6330, name="DVI-D-0")
+2019-11-17 00:31:21.478 (0x7ffe37ec1290) Debug: WinIdChange 1800005 handle QWidgetWindow(0x560b05f62bc0, name="LXQtPanel panel1Window") QScreen(0x560b05ddf330, name="DVI-D-0")
+2019-11-17 11:02:38.163 (0x7ffca9b3d270) Debug: WinIdChange 1400005 handle QWidgetWindow(0x561f8208d340, name="LXQtPanel panel1Window") QScreen(0x561f81ef4330, name="DVI-D-0")
+2019-11-18 10:07:10.584 (0x7ffd30738620) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55dd89c2ed60, name="LXQtPanel panel1Window") QScreen(0x55dd89a6f330, name="DVI-D-0")
+2019-11-19 11:06:06.704 (0x7fff02f824b0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x564ebd0262d0, name="LXQtPanel panel1Window") QScreen(0x7f0f98005900, name="DVI-D-0")
+2019-11-19 13:52:48.268 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.4/1-7.4:1.0/0003:11FF:3331.0007/input/input36', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.279 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.4/1-7.4:1.0/0003:11FF:3331.0007/input/input36/js0', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.328 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.4/1-7.4:1.0/0003:11FF:3331.0007/input/input36/event4', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.947 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.3/1-7.3.3:1.1/0003:04B4:0101.000C/input/input39', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.948 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.3/1-7.3.3:1.0/0003:04B4:0101.000B/input/input38', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.948 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.3/1-7.3.3:1.1/0003:04B4:0101.000C/input/input40', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.957 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.2/1-7.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input37', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.961 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.2/1-7.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input37/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.977 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.3/1-7.3.3:1.1/0003:04B4:0101.000C/input/input39/event7', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.977 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.3/1-7.3.3:1.0/0003:04B4:0101.000B/input/input38/event6', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.978 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.3/1-7.3.3:1.1/0003:04B4:0101.000C/input/input40/event8', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:52:48.980 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3.2/1-7.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input37/event5', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.205 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:11FF:3331.000D/input/input41', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.218 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:11FF:3331.000D/input/input41/js0', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.307 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:11FF:3331.000D/input/input41/event4', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.822 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.0011/input/input43', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.825 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0012/input/input44', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.830 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0012/input/input45', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.840 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0012/input/input44/event7', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.840 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.0011/input/input43/event6', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.847 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000F/0003:046D:4019.0010/input/input42', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.850 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000F/0003:046D:4019.0010/input/input42/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.944 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0012/input/input45/event8', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:54:25.944 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000F/0003:046D:4019.0010/input/input42/event5', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:55:29.319 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:11FF:3331.0013/input/input46', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:55:29.331 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:11FF:3331.0013/input/input46/js0', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 13:55:29.373 (0x7ffc9dd7d8e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:11FF:3331.0013/input/input46/event4', keyboard setting will be (optionaly) reloaded..."
+2019-11-19 16:42:56.144 (0x7ffc9dd7d8e0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-19 17:32:01.436 (0x7fff266031c0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x558d3a8469a0, name="LXQtPanel panel1Window") QScreen(0x7fe278007660, name="DVI-D-0")
+2019-11-20 12:06:16.412 (0x7ffd5c3dc9c0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5563a47e3370, name="LXQtPanel panel1Window") QScreen(0x5563a468d330, name="DVI-D-0")
+2019-11-20 15:49:37.069 (0x7ffd5c3dc9c0) Debug: execAction "/usr/share/applications/galculator.desktop"
+2019-11-20 18:30:11.814 ((nil)) Warning: The X11 connection broke: I/O error (code 1)
+2019-11-20 18:35:08.077 (0x7ffd03477220) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55fb5b0e5470, name="LXQtPanel panel1Window") QScreen(0x55fb5afbd330, name="DVI-D-0")
+2019-11-21 04:01:36.306 (0x7fffae34d5c0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-21 04:01:36.387 (0x7fffae34d5c0) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-11-21 12:29:49.338 (0x7ffef50dd3a0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55c4a0751470, name="LXQtPanel panel1Window") QScreen(0x7feabc006a60, name="DVI-D-0")
+2019-11-21 19:18:47.852 (0x7ffca2edf350) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55a249dafb00, name="LXQtPanel panel1Window") QScreen(0x55a249c70940, name="DVI-D-0")
+2019-11-22 11:36:35.696 (0x7ffdcce163a0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5606753592a0, name="LXQtPanel panel1Window") QScreen(0x7f6240005ac0, name="DVI-D-0")
+2019-11-22 14:23:11.315 (0x7fff1701fc80) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55b9ee956f70, name="LXQtPanel panel1Window") QScreen(0x7f08c00063a0, name="DVI-D-0")
+2019-11-22 20:14:02.676 (0x7ffe60ea7760) Debug: WinIdChange 1800005 handle QWidgetWindow(0x56301ddf7130, name="LXQtPanel panel1Window") QScreen(0x7facb4005360, name="DVI-D-0")
+2019-11-23 11:52:24.696 (0x7ffe2575d5a0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55bfcb1f9900, name="LXQtPanel panel1Window") QScreen(0x55bfcb039330, name="DVI-D-0")
+2019-11-23 15:24:24.843 (0x7fff78370540) Debug: WinIdChange 1600005 handle QWidgetWindow(0x557fa2fae780, name="LXQtPanel panel1Window") QScreen(0x557fa2e4b330, name="DVI-D-0")
+2019-11-23 20:01:20.455 (0x7ffe10eb6c30) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55728d023d20, name="LXQtPanel panel1Window") QScreen(0x55728ceca330, name="DVI-D-0")
+2019-11-24 03:51:54.742 (0x7ffcd40a6fd0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55defb8731a0, name="LXQtPanel panel1Window") QScreen(0x55defb743330, name="DVI-D-0")
+2019-11-24 05:40:47.483 (0x7ffcd40a6fd0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-24 05:40:49.476 (0x7ffc5827a920) Warning: "Module 'lxqt-panel.desktop' won't terminate ... killing."
+2019-11-24 05:40:49.477 (0x7ffc5827a920) Warning: QProcess: Destroyed while process ("lxqt-panel") is still running.
+2019-11-24 11:44:16.753 (0x7ffccc93e810) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55a1333ad710, name="LXQtPanel panel1Window") QScreen(0x7f6880005360, name="DVI-D-0")
+2019-11-24 17:07:44.625 (0x7ffd4888e610) Debug: WinIdChange 2000005 handle QWidgetWindow(0x557e2c2abaa0, name="LXQtPanel panel1Window") QScreen(0x7efdc4005360, name="DVI-D-0")
+2019-11-25 04:06:34.778 (0x7fff6739a340) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-25 11:16:37.086 (0x7fffd03acc90) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5632341ad830, name="LXQtPanel panel1Window") QScreen(0x563234084330, name="DVI-D-0")
+2019-11-25 16:30:59.958 (0x7ffea8086b40) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-25 17:21:56.477 (0x7fffe7416380) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5565318a22a0, name="LXQtPanel panel1Window") QScreen(0x556531737330, name="DVI-D-0")
+2019-11-25 19:42:55.439 (0x7ffe6adaa160) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x56472bf6bb00, name="LXQtPanel panel1Window") QScreen(0x7f34f4005360, name="DVI-D-0")
+2019-11-26 11:38:23.553 (0x7ffe71fb1880) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55f845803d50, name="LXQtPanel panel1Window") QScreen(0x7f10d0005360, name="DVI-D-0")
+2019-11-26 12:28:31.278 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.278 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-26 12:28:31.279 (0x7fffece2a490) Warning: QFSFileEngine::open: No file name specified
+2019-11-27 01:26:36.763 (0x7ffd97bc9f70) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55714e181530, name="LXQtPanel panel1Window") QScreen(0x7f3850005900, name="DVI-D-0")
+2019-11-27 11:54:52.479 (0x7ffe1df4a440) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55dfe8d81360, name="LXQtPanel panel1Window") QScreen(0x7fa744005900, name="DVI-D-0")
+2019-11-28 12:13:23.745 (0x7ffd7035e750) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55e9505e0820, name="LXQtPanel panel1Window") QScreen(0x7f14f4005d60, name="DVI-D-0")
+2019-11-28 19:35:43.216 (0x7ffe3b2066c0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x562e64298410, name="LXQtPanel panel1Window") QScreen(0x7f41a00064c0, name="DVI-D-0")
+2019-11-29 03:01:38.680 (0x7ffdf9de34a0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5577d8721990, name="LXQtPanel panel1Window") QScreen(0x7f9ec80056e0, name="DVI-D-0")
+2019-11-29 11:15:55.615 (0x7fff7f73d500) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55b819417510, name="LXQtPanel panel1Window") QScreen(0x7f31e4005b00, name="DVI-D-0")
+2019-11-29 14:00:41.528 (0x7ffc39eb4030) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-29 14:01:38.940 (0x7ffd95e04590) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55aef0ecbb30, name="LXQtPanel panel1Window") QScreen(0x55aef0d27330, name="DVI-D-0")
+2019-11-29 15:54:43.315 (0x7ffe014c51d0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x557651f3aee0, name="LXQtPanel panel1Window") QScreen(0x7f9a08005900, name="DVI-D-0")
+2019-11-29 16:35:34.371 (0x7fffeacba110) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-29 17:27:01.604 (0x7ffe516b22b0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55f1f92c4a40, name="LXQtPanel panel1Window") QScreen(0x55f1f9167330, name="DVI-D-0")
+2019-11-30 04:04:20.216 (0x7ffdc4f0d770) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-30 04:04:20.260 (0x7ffdc4f0d770) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-11-30 13:09:39.591 (0x7ffda1e91c80) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x564a44407150, name="LXQtPanel panel1Window") QScreen(0x7ff200005360, name="DVI-D-0")
+2019-11-30 21:01:50.265 (0x7ffe57e710c0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-11-30 21:01:50.265 (0x7ffda1e91c80) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-01 02:36:02.036 (0x7fff7ecb21b0) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55fca7c505e0, name="LXQtPanel panel1Window") QScreen(0x7f95f80064e0, name="DVI-D-0")
+2019-12-01 10:58:29.533 (0x7ffdfd998130) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55bcf14648f0, name="LXQtPanel panel1Window") QScreen(0x7f4c88005b20, name="DVI-D-0")
+2019-12-02 02:20:07.731 (0x7ffc785e9380) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-02 02:22:05.433 (0x7ffebc6bd3d0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x562029765240, name="LXQtPanel panel1Window") QScreen(0x7f2eb80057c0, name="DVI-D-0")
+2019-12-02 11:28:23.175 (0x7ffd9a8c0c20) Debug: WinIdChange 2000005 handle QWidgetWindow(0x560e30baa820, name="LXQtPanel panel1Window") QScreen(0x7f75f0006480, name="DVI-D-0")
+2019-12-02 17:20:54.107 (0x7ffeace075f0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5570a2fc5860, name="LXQtPanel panel1Window") QScreen(0x5570a2e9b310, name="DVI-D-0")
+2019-12-03 09:23:34.046 (0x7ffe3bf0b240) Debug: WinIdChange 2000005 handle QWidgetWindow(0x56017ae2bc20, name="LXQtPanel panel1Window") QScreen(0x7f2b38005900, name="DVI-D-0")
+2019-12-03 17:54:02.645 (0x7fffae764110) Debug: WinIdChange 2000005 handle QWidgetWindow(0x559dd9eeb910, name="LXQtPanel panel1Window") QScreen(0x7f6564005360, name="DVI-D-0")
+2019-12-03 22:10:26.421 (0x7ffdeb78abe0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-04 01:15:44.808 (0x7ffc3d00a870) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55936055c760, name="LXQtPanel panel1Window") QScreen(0x7fc734005730, name="DVI-D-0")
+2019-12-04 04:27:29.308 (0x7fff2d9afd90) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-04 12:22:57.484 (0x7ffcd8343570) Debug: WinIdChange 2400005 handle QWidgetWindow(0x5570ea91bd40, name="LXQtPanel panel1Window") QScreen(0x7f4fb40069c0, name="DVI-D-0")
+2019-12-04 19:20:21.651 (0x7ffc0bc85820) Debug: WinIdChange 2000005 handle QWidgetWindow(0x556737ee8790, name="LXQtPanel panel1Window") QScreen(0x7fd000006060, name="DVI-D-0")
+2019-12-05 11:28:36.165 (0x7ffff3c17720) Debug: WinIdChange 2000005 handle QWidgetWindow(0x557e0e97da10, name="LXQtPanel panel1Window") QScreen(0x7fd18c005360, name="DVI-D-0")
+2019-12-05 16:45:24.450 (0x7ffec361f1d0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x56122daa8180, name="LXQtPanel panel1Window") QScreen(0x7f8190005900, name="DVI-D-0")
+2019-12-06 04:28:46.628 (0x7ffec361f1d0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-06 04:28:46.636 (0x7ffe435d04e0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-06 11:34:45.372 (0x7fff0c82ded0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x557524152f60, name="LXQtPanel panel1Window") QScreen(0x7fc054005360, name="DVI-D-0")
+2019-12-07 00:35:19.195 (0x7ffc04456630) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55de2f98a0b0, name="LXQtPanel panel1Window") QScreen(0x7fcc3c006620, name="DVI-D-0")
+2019-12-07 03:35:39.365 (0x7ffc04456630) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-07 03:35:41.349 (0x7ffc47c19980) Warning: "Module 'lxqt-panel.desktop' won't terminate ... killing."
+2019-12-07 03:35:41.349 (0x7ffc47c19980) Warning: QProcess: Destroyed while process ("lxqt-panel") is still running.
+2019-12-07 03:37:15.418 (0x7ffe5b2814e0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x559f980a1c00, name="LXQtPanel panel1Window") QScreen(0x559f97f15330, name="DVI-D-0")
+2019-12-07 12:54:49.890 (0x7fff7fd55360) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55f2c4336870, name="LXQtPanel panel1Window") QScreen(0x55f2c4197330, name="DVI-D-0")
+2019-12-07 15:50:00.798 (0x7ffe1b634fd0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-07 22:54:13.765 (0x7ffe0dc7f0e0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x56369cc32e50, name="LXQtPanel panel1Window") QScreen(0x7f20f4005360, name="DVI-D-0")
+2019-12-08 14:06:54.049 (0x7ffc11e79ae0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x563e54d8a450, name="LXQtPanel panel1Window") QScreen(0x7f10400053b0, name="DVI-D-0")
+2019-12-09 04:39:05.837 (0x7ffc65a03320) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-09 12:21:36.937 (0x7fffdc088180) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5567bf0338e0, name="LXQtPanel panel1Window") QScreen(0x5567beec7330, name="DVI-D-0")
+2019-12-09 15:23:01.229 (0x7ffcb1629900) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-09 21:13:37.167 (0x7ffc0582dcf0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55d80fd65c70, name="LXQtPanel panel1Window") QScreen(0x55d80fbf3330, name="DVI-D-0")
+2019-12-10 13:03:36.153 (0x7fff2560d1d0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55a4966cf120, name="LXQtPanel panel1Window") QScreen(0x55a49652f330, name="DVI-D-0")
+2019-12-10 20:19:37.894 (0x7ffff7d3d8d0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55c99d19e370, name="LXQtPanel panel1Window") QScreen(0x55c99d03e330, name="DVI-D-0")
+2019-12-11 02:43:44.562 (0x7ffcf33b0f10) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x5588fc490c80, name="LXQtPanel panel1Window") QScreen(0x5588fc354330, name="DVI-D-0")
+2019-12-11 12:45:09.913 (0x7ffd7f76ebf0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5643a319ced0, name="LXQtPanel panel1Window") QScreen(0x5643a3001330, name="DVI-D-0")
+2019-12-12 03:04:30.056 ((nil)) Warning: The X11 connection broke: I/O error (code 1)
+2019-12-12 11:27:58.575 (0x7ffde8c4baf0) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55f3e8a4b380, name="LXQtPanel panel1Window") QScreen(0x55f3e8928330, name="DVI-D-0")
+2019-12-12 16:55:17.097 (0x7ffe75409360) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55de692b0b00, name="LXQtPanel panel1Window") QScreen(0x55de6916b330, name="DVI-D-0")
+2019-12-12 21:08:17.135 (0x7ffe1ab64e10) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55995c85c290, name="LXQtPanel panel1Window") QScreen(0x7f69b0005360, name="DVI-D-0")
+2019-12-13 00:41:27.627 (0x7ffda616e9b0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-13 00:43:59.230 (0x7ffce09b2750) Debug: WinIdChange 2400005 handle QWidgetWindow(0x564281d54790, name="LXQtPanel panel1Window") QScreen(0x7f1c20005360, name="DVI-D-0")
+2019-12-13 12:31:31.589 (0x7ffdd843de20) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x558fdaa68ef0, name="LXQtPanel panel1Window") QScreen(0x558fda8ee330, name="DVI-D-0")
+2019-12-13 15:23:38.682 (0x7ffec9cc4670) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-13 15:27:05.613 (0x7ffef3e310b0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x562139632b00, name="LXQtPanel panel1Window") QScreen(0x5621394cc330, name="DVI-D-0")
+2019-12-13 16:06:40.013 (0x7ffec2ea37d0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-13 16:06:40.019 (0x7ffef3e310b0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-13 16:06:40.031 (0x7ffec2ea37d0) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-12-13 16:06:40.035 (0x7ffec2ea37d0) Critical: "unable to write into socketpair, 不正なファイル記述子です"
+2019-12-13 20:20:10.479 (0x7ffcad991b70) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5568e6632cb0, name="LXQtPanel panel1Window") QScreen(0x7fdde4005360, name="DVI-D-0")
+2019-12-14 12:50:41.794 (0x7ffc107f8150) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5634f74551d0, name="LXQtPanel panel1Window") QScreen(0x5634f7331330, name="DVI-D-0")
+2019-12-14 17:24:35.085 (0x7ffdba992d90) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x561b91367c70, name="LXQtPanel panel1Window") QScreen(0x561b911f7330, name="DVI-D-0")
+2019-12-14 18:45:54.056 (0x7ffdf12b9370) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-15 00:23:55.649 (0x7ffc3fcff150) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55f0bcb9b410, name="LXQtPanel panel1Window") QScreen(0x55f0bca1c330, name="DVI-D-0")
+2019-12-15 04:47:36.097 (0x7ffee960c460) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-15 12:27:33.425 (0x7ffcb4d78e40) Debug: WinIdChange 2400005 handle QWidgetWindow(0x5628349f9f70, name="LXQtPanel panel1Window") QScreen(0x56283487a330, name="DVI-D-0")
+2019-12-15 16:56:07.558 (0x7ffc122f3490) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55ed629239e0, name="LXQtPanel panel1Window") QScreen(0x55ed627d2330, name="DVI-D-0")
+2019-12-16 11:08:33.368 (0x7ffd00ccc860) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55c123e8a790, name="LXQtPanel panel1Window") QScreen(0x7fa0bc0076e0, name="DVI-D-0")
+2019-12-16 12:13:48.672 (0x7ffea2807e70) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x561034c96a20, name="LXQtPanel panel1Window") QScreen(0x7fdff8005360, name="DVI-D-0")
+2019-12-16 12:30:04.201 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:04.208 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:04.215 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33/event16', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.331 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.000D/input/input35', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.344 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000E/input/input36', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.348 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000E/input/input37', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.349 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000B/0003:046D:4019.000C/input/input34', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.353 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000B/0003:046D:4019.000C/input/input34/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.356 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.000D/input/input35/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.359 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000E/input/input36/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.367 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000B/0003:046D:4019.000C/input/input34/event16', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:05.466 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000E/input/input37/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:10.993 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.0012/input/input39', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:10.998 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0013/input/input41', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.001 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0010/0003:046D:4019.0011/input/input38', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.002 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0013/input/input40', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.005 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0010/0003:046D:4019.0011/input/input38/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.027 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0013/input/input41/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.029 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0010/0003:046D:4019.0011/input/input38/event16', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.029 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.0012/input/input39/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:11.035 (0x7ffce22c25f0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0013/input/input40/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:30:50.879 (0x7ffc24344cf0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55b8e1008c60, name="LXQtPanel panel1Window") QScreen(0x55b8e0ea2340, name="DVI-D-0")
+2019-12-16 12:31:23.850 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.850 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.850 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.850 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:23.851 (0x7ffe3f3d7860) Warning: QFSFileEngine::open: No file name specified
+2019-12-16 12:31:30.607 (0x7ffc9dc23680) Debug: add "jp" ""
+2019-12-16 12:32:31.181 (0x7ffc9dc23680) Debug: "setxkbmap -model microsoft -layout jp"
+2019-12-16 12:32:52.637 (0x7ffca666cbb0) Debug: add "jp" ""
+2019-12-16 12:33:32.514 (0x7ffca666cbb0) Debug: "setxkbmap -model logitech_base -layout jp"
+2019-12-16 12:41:34.677 (0x7fffb6505110) Debug: WinIdChange 2200005 handle QWidgetWindow(0x561e51511db0, name="LXQtPanel panel1Window") QScreen(0x7f31480059c0, name="DVI-D-0")
+2019-12-16 12:51:53.375 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.000A/input/input34', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.380 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000B/input/input35', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.384 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000B/input/input36', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.389 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.393 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.399 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000B/input/input35/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.402 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.000B/input/input36/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.404 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.000A/input/input34/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:53.505 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0008/0003:046D:4019.0009/input/input33/event7', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.760 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.000F/input/input38', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.767 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000D/0003:046D:4019.000E/input/input37', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.771 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000D/0003:046D:4019.000E/input/input37/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.773 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0010/input/input39', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.778 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0010/input/input40', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.783 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.000F/input/input38/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.787 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.000D/0003:046D:4019.000E/input/input37/event7', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.796 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0010/input/input39/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:51:56.872 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0010/input/input40/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.864 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.0014/input/input42', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.883 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0015/input/input43', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.887 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0015/input/input44', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.888 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0012/0003:046D:4019.0013/input/input41', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.890 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.0/0003:04B4:0101.0014/input/input42/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.891 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0012/0003:046D:4019.0013/input/input41/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.898 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0015/input/input43/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.975 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.2/1-10.3.2:1.1/0003:046D:C52F.0012/0003:046D:4019.0013/input/input41/event7', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 12:52:11.976 (0x7fff8cfd8550) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3.3/1-10.3.3:1.1/0003:04B4:0101.0015/input/input44/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-16 13:15:33.743 (0x7ffe276a1d30) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55a0421af890, name="LXQtPanel panel1Window") QScreen(0x7f731c0068a0, name="DVI-D-0")
+2019-12-16 14:04:37.779 (0x7ffdda0cc0a0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-16 14:04:37.789 (0x7ffe276a1d30) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-16 14:22:20.444 (0x7ffc32ee6990) Debug: WinIdChange 1800005 handle QWidgetWindow(0x56457f4f3f50, name="LXQtPanel panel1Window") QScreen(0x7f17b0005360, name="DVI-D-0")
+2019-12-16 15:00:28.299 (0x7fffbe7c2e20) Debug: WinIdChange 2200005 handle QWidgetWindow(0x558b3be1dba0, name="LXQtPanel panel1Window") QScreen(0x558b3bc78330, name="DVI-D-0")
+2019-12-16 15:31:19.862 (0x7ffe27fb5d60) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-16 15:41:33.646 (0x7ffd32d0ce30) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x555e6062ce20, name="LXQtPanel panel1Window") QScreen(0x7f9f440065a0, name="DVI-D-0")
+2019-12-16 17:24:22.709 (0x7fffac6e2df0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x5617829e01e0, name="LXQtPanel panel1Window") QScreen(0x5617828a82e0, name="DVI-D-0")
+2019-12-16 22:25:36.424 (0x7ffefc65c7c0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-17 02:36:16.611 (0x7ffc493f9870) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55c650abf620, name="LXQtPanel panel1Window") QScreen(0x7f51900053b0, name="DVI-D-0")
+2019-12-17 11:42:26.099 (0x7ffdd29e62b0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5627a68fc4e0, name="LXQtPanel panel1Window") QScreen(0x5627a67e12e0, name="DVI-D-0")
+2019-12-17 14:59:13.785 (0x7ffebc848380) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55c76e3dc490, name="LXQtPanel panel1Window") QScreen(0x55c76e2562e0, name="DVI-D-0")
+2019-12-17 15:27:50.075 (0x7ffcdb70b330) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-17 15:31:24.819 (0x7fff26d56ed0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x563522ae20c0, name="LXQtPanel panel1Window") QScreen(0x7f8fa4005900, name="DVI-D-0")
+2019-12-17 15:33:16.707 (0x7ffe4043f1c0) Debug: WinIdChange 2400005 handle QWidgetWindow(0x555ee58a96b0, name="LXQtPanel panel1Window") QScreen(0x555ee57852e0, name="DVI-D-0")
+2019-12-17 15:36:54.881 (0x7ffffb963ed0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-17 15:38:32.138 (0x7ffd6a1cde90) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55a4130c2e40, name="LXQtPanel panel1Window") QScreen(0x55a412f372e0, name="DVI-D-0")
+2019-12-17 15:45:26.877 (0x7fff5d42c3d0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55e1af5c3d10, name="LXQtPanel panel1Window") QScreen(0x55e1af4642e0, name="DVI-D-0")
+2019-12-17 15:48:38.652 (0x7ffced1a1040) Debug: WinIdChange 1800005 handle QWidgetWindow(0x5611f3f80050, name="LXQtPanel panel1Window") QScreen(0x5611f3e022e0, name="DVI-D-0")
+2019-12-17 16:02:52.379 (0x7ffd79525670) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-17 16:03:18.886 (0x7fff0ee549a0) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55a8ca62ac70, name="LXQtPanel panel1Window") QScreen(0x7f2288005360, name="DVI-D-0")
+2019-12-17 16:09:20.794 (0x7fff6b5da740) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x56071c462ce0, name="LXQtPanel panel1Window") QScreen(0x7f09a0005360, name="DVI-D-0")
+2019-12-17 16:14:10.608 (0x7ffe868395b0) Debug: WinIdChange 2600005 handle QWidgetWindow(0x55c48a492910, name="LXQtPanel panel1Window") QScreen(0x55c48a3362e0, name="DVI-D-0")
+2019-12-17 16:16:19.694 (0x7ffd683ca190) Debug: WinIdChange 1800005 handle QWidgetWindow(0x55e83b4f5840, name="LXQtPanel panel1Window") QScreen(0x55e83b3d12e0, name="DVI-D-0")
+2019-12-17 16:22:01.829 (0x7ffec4622bf0) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55ede5521800, name="LXQtPanel panel1Window") QScreen(0x55ede53be2e0, name="DVI-D-0")
+2019-12-17 16:27:47.318 (0x7ffc36d2af60) Debug: WinIdChange 2200005 handle QWidgetWindow(0x5610411622a0, name="LXQtPanel panel1Window") QScreen(0x7f1f1c005360, name="DVI-D-0")
+2019-12-17 16:40:38.920 (0x7ffd3a9ca6e0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x563259fc2570, name="LXQtPanel panel1Window") QScreen(0x563259e3d2e0, name="DVI-D-0")
+2019-12-18 12:12:48.362 (0x7ffdd8612fa0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x560f720dda30, name="LXQtPanel panel1Window") QScreen(0x560f71f642e0, name="DVI-D-0")
+2019-12-18 17:09:18.969 (0x7ffc54fc74f0) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x5653c0987ba0, name="LXQtPanel panel1Window") QScreen(0x5653c07ff2e0, name="DVI-D-0")
+2019-12-19 01:10:00.398 (0x7ffc3056cdb0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55af3df33a20, name="LXQtPanel panel1Window") QScreen(0x7f16bc005360, name="DVI-D-0")
+2019-12-19 12:23:24.640 (0x7ffc8c779590) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x555f1eb40fa0, name="LXQtPanel panel1Window") QScreen(0x555f1e9ff2e0, name="DVI-D-0")
+2019-12-19 15:15:45.066 (0x7fff54868fb0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5600f2680140, name="LXQtPanel panel1Window") QScreen(0x5600f24ff2e0, name="DVI-D-0")
+2019-12-19 19:46:02.491 (0x7ffc431fe740) Debug: WinIdChange 1800005 handle QWidgetWindow(0x56131650fbd0, name="LXQtPanel panel1Window") QScreen(0x7f5408005360, name="DVI-D-0")
+2019-12-20 02:11:54.181 (0x7ffc431fe740) Debug: execAction "/usr/share/applications/chromium-browser.desktop"
+2019-12-20 11:39:02.535 (0x7ffc2ceb6430) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55713dfd59a0, name="LXQtPanel panel1Window") QScreen(0x55713de392e0, name="DVI-D-0")
+2019-12-20 14:12:10.811 (0x7fff9bace530) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x56143e628000, name="LXQtPanel panel1Window") QScreen(0x7f2580006220, name="DVI-D-0")
+2019-12-20 19:33:37.708 (0x7ffe56c2d060) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55f6916a5040, name="LXQtPanel panel1Window") QScreen(0x7fa584005360, name="DVI-D-0")
+2019-12-21 04:05:21.035 (0x7ffe8e7e47d0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-21 13:29:09.013 (0x7ffd883e8950) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x56420d5e8ff0, name="LXQtPanel panel1Window") QScreen(0x56420d4842e0, name="DVI-D-0")
+2019-12-21 16:48:08.857 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input36', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:08.865 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input36/js0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:08.913 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input36/event16', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.503 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input40', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.503 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input39', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.509 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000B/input/input38', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.522 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input39/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.523 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input40/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.525 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000B/input/input38/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.529 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input37', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.589 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input37/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:48:09.590 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input37/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:00.698 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.000D/input/input41', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:00.708 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.000D/input/input41/js0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:00.814 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.000D/input/input41/event16', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.318 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0011/input/input43', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.319 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.000F/0003:046D:4019.0010/input/input42', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.321 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0012/input/input45', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.322 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0012/input/input44', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.325 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.000F/0003:046D:4019.0010/input/input42/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.462 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0012/input/input45/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.462 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.000F/0003:046D:4019.0010/input/input42/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.463 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0012/input/input44/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:01.463 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0011/input/input43/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.734 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0016/input/input47', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.748 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0017/input/input48', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.749 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0017/input/input49', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.752 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0014/0003:046D:4019.0015/input/input46', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.756 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0014/0003:046D:4019.0015/input/input46/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.756 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0016/input/input47/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.775 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0017/input/input49/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.777 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0017/input/input48/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:49:30.777 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0014/0003:046D:4019.0015/input/input46/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.052 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001C/input/input52', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.052 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001C/input/input53', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.054 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.001B/input/input51', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.071 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0019/0003:046D:4019.001A/input/input50', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.077 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0019/0003:046D:4019.001A/input/input50/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.077 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001C/input/input53/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.079 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.001B/input/input51/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.080 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.001C/input/input52/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:50:06.087 (0x7ffeb9b5b450) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0019/0003:046D:4019.001A/input/input50/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:51:07.058 (0x7fff75ca39c0) Warning: QXcbConnection: XCB error: 148 (Unknown), sequence: 177, resource id: 0, major code: 140 (Unknown), minor code: 20
+2019-12-21 16:51:08.102 (0x7ffe89ab1990) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5655258c7780, name="LXQtPanel panel1Window") QScreen(0x7f0d20005680, name=":0.0")
+2019-12-21 16:51:08.108 (0x7ffe89ab1990) Warning: QXcbConnection: XCB error: 148 (Unknown), sequence: 177, resource id: 0, major code: 140 (Unknown), minor code: 20
+2019-12-21 16:52:21.246 (0x7ffd2e816370) Warning: QXcbConnection: XCB error: 148 (Unknown), sequence: 177, resource id: 0, major code: 140 (Unknown), minor code: 20
+2019-12-21 16:52:22.189 (0x7ffcb410c630) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55ed7c893830, name="LXQtPanel panel1Window") QScreen(0x55ed7c7062c0, name=":0.0")
+2019-12-21 16:52:22.193 (0x7ffcb410c630) Warning: QXcbConnection: XCB error: 148 (Unknown), sequence: 177, resource id: 0, major code: 140 (Unknown), minor code: 20
+2019-12-21 16:53:55.400 (0x7ffeb3032420) Warning: QXcbConnection: XCB error: 148 (Unknown), sequence: 177, resource id: 0, major code: 140 (Unknown), minor code: 20
+2019-12-21 16:53:55.697 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0005/input/input25', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.697 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0005/input/input26', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.697 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0004/input/input24', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.697 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0005/input/input25/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.698 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.0005/input/input26/event21', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.698 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.0004/input/input24/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.751 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/input/input21', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.755 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.0/0003:046D:C52F.0002/input/input20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.759 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.0/0003:046D:C52F.0002/input/input20/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.783 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/input/input21/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.806 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.0/0003:046D:C52F.0002/input/input20/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.903 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input28', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.906 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input27', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.907 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input28/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.911 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input27/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.959 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input27/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:55.997 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input32', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:56.001 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input32/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:56.026 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0003/0003:046D:4019.0006/input/input32/event17', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:53:56.373 (0x7ffe70716c80) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55d5dad424f0, name="LXQtPanel panel1Window") QScreen(0x55d5dabbf2c0, name=":0.0")
+2019-12-21 16:53:56.378 (0x7ffe70716c80) Warning: QXcbConnection: XCB error: 148 (Unknown), sequence: 177, resource id: 0, major code: 140 (Unknown), minor code: 20
+2019-12-21 16:54:18.219 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input33', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.228 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input33/js0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.327 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input33/event16', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.840 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000B/input/input35', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.850 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input36', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.854 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input37', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.860 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.0/0003:04B4:0101.000B/input/input35/event18', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.863 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input34', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.867 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input34/mouse0', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.870 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input36/event19', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.937 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.3/1-3.3.3:1.1/0003:04B4:0101.000C/input/input37/event20', keyboard setting will be (optionaly) reloaded..."
+2019-12-21 16:54:18.938 (0x7ffeb3032420) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.3/1-3.3.2/1-3.3.2:1.1/0003:046D:C52F.0009/0003:046D:4019.000A/input/input34/event17', keyboard setting will be (optionaly) reloaded..."
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         2019-12-21 16:57:06.968 (0x7ffcdde1cb60) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55a877e229e0, name="LXQtPanel panel1Window") QScreen(0x55a877ce42e0, name="DVI-D-0")
+2019-12-21 19:03:47.832 (0x7ffe8ba93df0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5613b792dad0, name="LXQtPanel panel1Window") QScreen(0x5613b77c02e0, name="DVI-D-0")
+2019-12-22 03:30:39.632 (0x7ffdd8b104a0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-22 12:09:17.088 (0x7fffe54eb0a0) Debug: WinIdChange 2400005 handle QWidgetWindow(0x555a1bf9e120, name="LXQtPanel panel1Window") QScreen(0x555a1be362e0, name="DVI-D-0")
+2019-12-22 13:43:33.013 (0x7ffe67c72af0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-22 13:45:39.974 (0x7fff264670b0) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55a63b3f65a0, name="LXQtPanel panel1Window") QScreen(0x55a63b2a42e0, name="DVI-D-0")
+2019-12-22 14:19:35.213 (0x7ffc7d658b90) Debug: WinIdChange 2200005 handle QWidgetWindow(0x555ac9df1420, name="LXQtPanel panel1Window") QScreen(0x555ac9cbf2e0, name="DVI-D-0")
+2019-12-22 14:26:07.149 (0x7ffd3a327b00) Debug: WinIdChange 2200005 handle QWidgetWindow(0x5602c69b6e30, name="LXQtPanel panel1Window") QScreen(0x5602c68562e0, name="DVI-D-0")
+2019-12-22 14:44:01.015 (0x7ffdb8ec9b30) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55560c8a7ad0, name="LXQtPanel panel1Window") QScreen(0x55560c7492e0, name="DVI-D-0")
+2019-12-22 14:50:52.241 ((nil)) Warning: The X11 connection broke: I/O error (code 1)
+2019-12-22 14:51:47.908 (0x7ffd5f17f180) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5621fa98ad50, name="LXQtPanel panel1Window") QScreen(0x5621fa7fa2e0, name="DVI-D-0")
+2019-12-22 23:51:49.764 (0x7ffcea3170b0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-22 23:51:49.782 (0x7ffd5f17f180) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-23 11:16:14.893 (0x7fff14bb71a0) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x557d6e799bc0, name="LXQtPanel panel1Window") QScreen(0x557d6e61f2e0, name="DVI-D-0")
+2019-12-23 22:29:45.380 (0x7ffdc3ccc770) Debug: WinIdChange 1800005 handle QWidgetWindow(0x56323f86ffd0, name="LXQtPanel panel1Window") QScreen(0x56323f7292e0, name="DVI-D-0")
+2019-12-24 12:15:09.335 (0x7fff9357c4b0) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x562d37ef25a0, name="LXQtPanel panel1Window") QScreen(0x7fd39c007460, name="DVI-D-0")
+2019-12-24 17:27:04.669 (0x7ffd69e12300) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x55c7ff673c00, name="LXQtPanel panel1Window") QScreen(0x7faba4005360, name="DVI-D-0")
+2019-12-25 12:48:53.487 (0x7ffe88904180) Debug: WinIdChange 2600005 handle QWidgetWindow(0x56220f8abfa0, name="LXQtPanel panel1Window") QScreen(0x7fb28c005380, name="DVI-D-0")
+2019-12-25 14:12:14.809 (0x7ffc79ba9f60) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55af6d1508a0, name="LXQtPanel panel1Window") QScreen(0x7f5b94005360, name="DVI-D-0")
+2019-12-25 23:48:31.841 (0x7ffd28567e00) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x5641abf0ce30, name="LXQtPanel panel1Window") QScreen(0x7ffb8c005660, name="DVI-D-0")
+2019-12-26 13:25:19.972 (0x7ffc8a690ee0) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55eefc1c1300, name="LXQtPanel panel1Window") QScreen(0x7f14700076a0, name="DVI-D-0")
+2019-12-26 20:15:14.005 (0x7fff8c9a3e70) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-26 20:15:14.023 (0x7ffc8a690ee0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-27 00:08:08.744 (0x7ffd96762930) Debug: WinIdChange 2000005 handle QWidgetWindow(0x559a4214db10, name="LXQtPanel panel1Window") QScreen(0x559a4200f2e0, name="DVI-D-0")
+2019-12-27 01:19:55.158 (0x7ffdc1d84b60) Debug: WinIdChange 2200005 handle QWidgetWindow(0x564b87379740, name="LXQtPanel panel1Window") QScreen(0x564b8723d2e0, name="DVI-D-0")
+2019-12-27 12:28:26.213 (0x7ffe6f774e50) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x558de38cd660, name="LXQtPanel panel1Window") QScreen(0x7f99080053b0, name="DVI-D-0")
+2019-12-27 22:42:13.415 (0x7ffc4b6edec0) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x5566b54f58b0, name="LXQtPanel panel1Window") QScreen(0x5566b53852e0, name="DVI-D-0")
+2019-12-28 12:57:54.366 (0x7ffc769d66e0) Debug: WinIdChange 1e00005 handle QWidgetWindow(0x564174149560, name="LXQtPanel panel1Window") QScreen(0x7f6178007320, name="DVI-D-0")
+2019-12-29 01:56:42.355 (0x7ffd60c23590) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55d74411acd0, name="LXQtPanel panel1Window") QScreen(0x7f0cf4005360, name="DVI-D-0")
+2019-12-29 11:59:06.296 (0x7ffc4fa52de0) Debug: WinIdChange 2200005 handle QWidgetWindow(0x5556acf4ae80, name="LXQtPanel panel1Window") QScreen(0x7f99cc005360, name="DVI-D-0")
+2019-12-29 22:46:31.341 (0x7ffe51b24d90) Debug: WinIdChange 1800005 handle QWidgetWindow(0x5573046e1a50, name="LXQtPanel panel1Window") QScreen(0x7fbdd80059c0, name="DVI-D-0")
+2019-12-30 13:05:18.405 (0x7ffe70bfa690) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x556ae45d0d80, name="LXQtPanel panel1Window") QScreen(0x7fb4d0007660, name="DVI-D-0")
+2019-12-30 19:33:39.254 (0x7fff416575f0) Debug: WinIdChange 2400005 handle QWidgetWindow(0x55685b0d7ae0, name="LXQtPanel panel1Window") QScreen(0x55685af382e0, name="DVI-D-0")
+2019-12-30 19:34:20.738 (0x7ffcf69df770) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-30 22:04:52.305 (0x7fffe6f3b810) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55b694c567f0, name="LXQtPanel panel1Window") QScreen(0x7fe948005360, name="DVI-D-0")
+2019-12-31 05:30:40.916 (0x7ffd1732bb90) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2019-12-31 12:40:36.335 (0x7ffc5b391850) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55e74953c740, name="LXQtPanel panel1Window") QScreen(0x7f5bb4005660, name="DVI-D-0")
+2019-12-31 18:56:41.520 (0x7ffd12999710) Debug: WinIdChange 1a00005 handle QWidgetWindow(0x55bbb7a74370, name="LXQtPanel panel1Window") QScreen(0x7f44e8005360, name="DVI-D-0")
+2020-01-01 00:03:12.457 (0x7ffec8c80050) Debug: WinIdChange 1c00005 handle QWidgetWindow(0x55dc5c769a10, name="LXQtPanel panel1Window") QScreen(0x7f41180076a0, name="DVI-D-0")
+2020-01-01 11:40:44.064 (0x7ffdd8de9260) Debug: WinIdChange 2200005 handle QWidgetWindow(0x56056f5a3660, name="LXQtPanel panel1Window") QScreen(0x56056f4552e0, name="DVI-D-0")
+2020-01-01 23:22:05.987 (0x7ffdd8de9260) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2020-01-01 23:22:06.012 (0x7fff83bed8a0) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2020-01-01 23:23:16.279 (0x7fffd6d9a620) Debug: WinIdChange 2200005 handle QWidgetWindow(0x55f6a4709380, name="LXQtPanel panel1Window") QScreen(0x7f6d68005390, name="DVI-D-0")
+2020-01-02 15:15:09.202 (0x7ffd58851a40) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55a0f28ecf30, name="LXQtPanel panel1Window") QScreen(0x7fc604005360, name="DVI-D-0")
+2020-01-02 23:20:01.461 (0x7ffeedfcf3e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input33', keyboard setting will be (optionaly) reloaded..."
+2020-01-02 23:20:01.482 (0x7ffeedfcf3e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input33/js0', keyboard setting will be (optionaly) reloaded..."
+2020-01-02 23:20:01.570 (0x7ffeedfcf3e0) Warning: "Session 'session', new input device '/devices/pci0000:00/0000:00:14.0/usb1/1-3/1-3.4/1-3.4:1.0/0003:11FF:3331.0007/input/input33/event4', keyboard setting will be (optionaly) reloaded..."
+2020-01-03 15:31:47.283 (0x7ffd60992450) Debug: WinIdChange 2400005 handle QWidgetWindow(0x56355d8c9ff0, name="LXQtPanel panel1Window") QScreen(0x56355d74a2e0, name="DVI-D-0")
+2020-01-03 16:48:01.321 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.322 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.323 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.323 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-03 16:48:01.323 (0x7ffce0c3bf60) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 00:05:26.269 (0x7ffff0782b50) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5589523cae00, name="LXQtPanel panel1Window") QScreen(0x7f26ec005360, name="DVI-D-0")
+2020-01-04 00:43:56.898 (0x7ffff0782b50) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2020-01-04 00:43:56.899 (0x7ffc1f9edc40) Warning: The X11 connection broke (error 1). Did the X11 server die?
+2020-01-04 00:46:19.457 (0x7ffe3fe9f8f0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x55a38a2d7ea0, name="LXQtPanel panel1Window") QScreen(0x7fe3ac005360, name="DVI-D-0")
+2020-01-04 01:50:01.002 (0x7fff179223b0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x5644b230c2f0, name="LXQtPanel panel1Window") QScreen(0x5644b21b22e0, name="DVI-D-0")
+2020-01-04 02:23:54.293 (0x7ffe7b6033d0) Debug: WinIdChange 2000005 handle QWidgetWindow(0x562d9a759800, name="LXQtPanel panel1Window") QScreen(0x562d9a5b32e0, name="DVI-D-0")
+2020-01-04 03:14:52.588 (0x7ffd99897630) Debug: WinIdChange 1800005 handle QWidgetWindow(0x5604fe36a450, name="LXQtPanel panel1Window") QScreen(0x5604fe1c92e0, name="DVI-D-0")
+2020-01-04 04:07:56.187 (0x7ffd99897630) Warning: LXQt-Volume: Context connection failed or terminated lets try to reconnect
+2020-01-04 14:21:35.125 (0x7ffe3cfc3060) Debug: WinIdChange 2000005 handle QWidgetWindow(0x561da80b0f70, name="LXQtPanel panel1Window") QScreen(0x7f7318005360, name="DVI-D-0")
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 14:49:07.900 (0x7ffc42bdd050) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:39:56.322 (0x7ffc92d35020) Debug: WinIdChange 1800005 handle QWidgetWindow(0x5568b79f90f0, name="LXQtPanel panel1Window") QScreen(0x7f6724005360, name="DVI-D-0")
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.290 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.291 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.291 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified
+2020-01-04 15:40:48.291 (0x7ffd3e385af0) Warning: QFSFileEngine::open: No file name specified

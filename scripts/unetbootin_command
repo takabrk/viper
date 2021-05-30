@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo unetbootin installtype=USB targetdrive="/dev/sdc1"

@@ -1,0 +1,62 @@
+[
+    {
+        "id": "1",
+        "name": "FOX",
+        "description": "http://tv.foxjapan.com/fox/timetable/"
+    },
+    {
+        "id": "10",
+        "name": "TBSチャンネル1",
+        "description": "http://www.tbs.co.jp/tbs-ch/schedules/weekly/tch1/"
+    },
+    {
+        "id": "11",
+        "name": "TBSチャンネル2",
+        "description": "http://www.tbs.co.jp/tbs-ch/schedules/weekly/tch2/"
+    },
+    {
+        "id": "12",
+        "name": "Yahoo!テレビガイド",
+        "description": "http://tv.yahoo.co.jp/"
+    },
+    {
+        "id": "2",
+        "name": "フジテレビONE",
+        "description": "http://otn.fujitv.co.jp/schedule/one/index.html"
+    },
+    {
+        "id": "3",
+        "name": "フジテレビTWO",
+        "description": "http://otn.fujitv.co.jp/schedule/two/index.html"
+    },
+    {
+        "id": "4",
+        "name": "フジテレビNEXT",
+        "description": "http://otn.fujitv.co.jp/schedule/next/next_week.html"
+    },
+    {
+        "id": "5",
+        "name": "スーパードラマTV",
+        "description": "http://www.superdramatv.com/program/"
+    },
+    {
+        "id": "6",
+        "name": "アニマックス",
+        "description": "http://www.animax.co.jp/schedule"
+    },
+    {
+        "id": "7",
+        "name": "キッズステーション",
+        "description": "http://www.kids-station.com/tv/program/daily.aspx"
+    },
+    {
+        "id": "8",
+        "name": "ディズニーチャンネル",
+        "description": "http://www.disney.co.jp/tv/dc/timetable/daily.html"
+    },
+    {
+        "id": "9",
+        "name": "ファミリー劇場",
+        "description": "http://www.fami-geki.com/timetable/daily.php"
+    }
+]
