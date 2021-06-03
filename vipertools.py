@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-#vipertools.py @takamitsu hamada 20201026
+#vipertools.py @takamitsu hamada 20210603
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -33,14 +33,14 @@ class valkyrie_setting(object):
         self.tree = Gtk.Builder()
         self.tree.add_from_file(os.path.dirname(os.path.abspath(__file__)) + "/" + gladefile)
         dic = {
-            "on_button4_clicked" : self.on_buttonkyotei_clicked,
-            "on_buttontmpfs_clicked" : self.on_buttontmpfs_clicked,
-            "on_button13_clicked" : self.on_button13_clicked,
-            "on_button17_clicked" : self.on_button17_clicked,
-            "on_button18_clicked" : self.on_button18_clicked,
-            "on_button19_clicked" : self.on_button19_clicked,
-            "on_button20_clicked" : self.on_button20_clicked,
-            "on_button21_clicked" : self.on_button21_clicked,
+            "on_kyotei_clicked" : self.on_kyotei_clicked,
+            "on_tmpfs_clicked" : self.on_tmpfs_clicked,
+            "on_system_tune_clicked" : self.on_system_tune_clicked,
+            "on_settings_clicked" : self.on_settings_clicked,
+            "on_console_clicked" : self.on_console_clicked,
+            "on_synaptic_clicked" : self.on_synaptic_clicked,
+            "on_extract_clicked" : self.on_extract_clicked,
+            "on_build_clicked" : self.on_build_clicked,
             "on_sound_clicked" : self.on_sound_clicked,
             "on_numbers_clicked" : self.on_numbers_clicked,
             "on_apps_clicked" : self.on_apps_clicked,
@@ -48,38 +48,38 @@ class valkyrie_setting(object):
             "on_reading_clicked" : self.on_reading_clicked,
             "on_apng_asvg_clicked" : self.on_apng_asvg_clicked,
             "on_cancel_clicked" : self.on_cancel_clicked,
-            "on_download_youtube_clicked" : self.on_download_youtube_clicked,
+            "on_downloader_clicked" : self.on_downloader_clicked,
             "on_movie_enc_clicked" : self.on_movie_enc_clicked,
-            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set,
+            "on_os_chooser" : self.on_os_chooser,
             "on_ssb_clicked" : self.on_ssb_clicked,
             "on_imagetool_clicked" : self.on_imagetool_clicked
         }
         treeObj = self.tree.get_object
         self.tree.connect_signals(dic)
-        self.window = treeObj("button3")
-        self.window = treeObj("button4")
-        self.window = treeObj("button5")
-        self.window = treeObj("button6")
-        self.window = treeObj("button13")
+        self.window = treeObj("console")
+        self.window = treeObj("synaptic")
+        self.window = treeObj("extract")
+        self.window = treeObj("build")
+        self.window = treeObj("settings")
         self.window = treeObj("sound")
         self.window = treeObj("numbers")
         self.window = treeObj("apps")
         self.window = treeObj("m2p")
         self.window = treeObj("reading")
         self.window = treeObj("apng_asvg")
-        self.window = treeObj("download_youtube")
+        self.window = treeObj("downloader")
         self.window = treeObj("movie_enc")
-        self.window = treeObj("on_buttonkyotei_clicked")
-        self.window = treeObj("on_imagetool_clicked")
-        self.window = treeObj("on_ssb_clicked")
-        self.entry1 = treeObj("entry1")
-        self.entry2 = treeObj("entry2")
-        self.entry3 = treeObj("entry3")
-        self.entry4 = treeObj("entry4")
-        self.entry5 = treeObj("entry5")
-        self.entry6 = treeObj("entry6")
-        self.fcb1 = treeObj("filechooserbutton1")
-        self.window = treeObj("window1")
+        self.window = treeObj("kyotei")
+        self.window = treeObj("imagetool")
+        self.window = treeObj("ssb")
+        self.name = treeObj("name")
+        self.version = treeObj("version")
+        self.codename = treeObj("codename")
+        self.os_name = treeObj("os_name")
+        self.url = treeObj("url")
+        self.description = treeObj("description")
+        self.os_chooser = treeObj("os_chooser")
+        self.window = treeObj("viper_tools")
         #self.vte1 = treeObj("vte1")
         #bigbox = Gtk.Box()
         #self.vte1.add(bigbox)
@@ -112,7 +112,7 @@ class valkyrie_setting(object):
     def on_apng_asvg_clicked(self,widget):
         sp.run("python3 alisa/apng_asvg.py".strip().split(" "))
 #downloader
-    def on_download_youtube_clicked(self,widget):
+    def on_downloader_clicked(self,widget):
         os.chdir("downloader")
         sp.run("python3 downloader.py".strip().split(" "))
         os.chdir("../")
@@ -122,14 +122,14 @@ class valkyrie_setting(object):
         sp.run("python3 movieui.py".strip().split(" "))
         os.chdir("../")
 #kyotei
-    def on_buttonkyotei_clicked(self,widget):
+    def on_kyotei_clicked(self,widget):
         def kyotei():
             os.chdir("kyotei")
             sp.run("./kyotei.sh".strip().split(" "))
             os.chdir("../")
         Thread(target=kyotei).start()
 #change the settings of tmpfs 
-    def on_buttontmpfs_clicked(self,widget):
+    def on_tmpfs_clicked(self,widget):
         def ramdisk():
             os.chdir("ramdisk")
             sp.run("sudo python3 ramdisk_slider.py".strip().split(" "))
@@ -139,10 +139,11 @@ class valkyrie_setting(object):
         sp.run("python3 viper.py deldpkginfo".strip().split(" "))
         sp.run("sudo apt-get upgrade".strip().split(" "))
 #compression file
-    def on_button10_clicked(self,widget):
-        Thread(target=lambda : sp.run("python3 file_compression.py".strip().split(" "))).start()
+#    def on_button10_clicked(self,widget):
+#        Thread(target=lambda : sp.run("python3 #file_compression.py".strip().split(" "))).start()
+
 #setting faststart
-    def on_button13_clicked(self,widget):
+    def on_system_tune_clicked(self,widget):
         sp.run("sudo python3 viper.py faststart".strip().split(" "))
         sp.run("sudo python3 viper.py valkyrie".strip().split(" "))
         print("Finish Settings")
@@ -157,14 +158,14 @@ class valkyrie_setting(object):
         os.chdir("../")
 #Valkyrie Linux builder
 #settings
-    def on_button17_clicked(self,widget):
-        msg1 = self.entry1.get_text()
-        msg2 = self.entry2.get_text()
-        msg3 = self.entry3.get_text()
-        msg4 = self.entry4.get_text()
-        msg5 = self.entry5.get_text()
-        msg6 = self.entry6.get_text()
-        msg7 = self.on_filechooserbutton1_file_set(widget)
+    def on_settings_clicked(self,widget):
+        msg1 = self.name.get_text()
+        msg2 = self.version.get_text()
+        msg3 = self.codename.get_text()
+        msg4 = self.os_name.get_text()
+        msg5 = self.url.get_text()
+        msg6 = self.description.get_text()
+        msg7 = self.on_os_chooser(widget)
         f1 = open("vsrx_builder/configs/DIST","w")
         f1.write(msg1)
         f1.close()
@@ -190,22 +191,22 @@ class valkyrie_setting(object):
         sudo cp -a vsrx_builder/configs /home/ubuntu-builder
         """,shell=True)
 #Console
-    def on_button18_clicked(self,widget):
+    def on_console_clicked(self,widget):
         sp.run("sudo vsrx_builder/extras/Console",shell=True)
 #Synaptic
-    def on_button19_clicked(self,widget):
+    def on_synaptic_clicked(self,widget):
         sp.run("sudo vsrx_builder/extras/Synaptic",shell=True)
 #Extract
-    def on_button20_clicked(self,widget):
+    def on_extract_clicked(self,widget):
         os.chdir("vsrx_builder")
         sp.run("sudo extras/Extract",shell=True)
         os.chdir("../")
-#on_filechooserbutton1_file_set
-    def on_filechooserbutton1_file_set(self,widget):
-        msg_ss = self.fcb1.get_filename()
+#on_os_chooser
+    def on_os_chooser(self,widget):
+        msg_ss = self.os_chooser.get_filename()
         return msg_ss
 #Build
-    def on_button21_clicked(self,widget):
+    def on_build_clicked(self,widget):
         sp.run("sudo vsrx_builder/extras/Build",shell=True)
 
 #Cancel

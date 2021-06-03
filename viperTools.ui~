@@ -2,21 +2,21 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkWindow" id="window1">
+  <object class="GtkWindow" id="viper_tools">
     <property name="can_focus">False</property>
     <child type="titlebar">
-      <object class="GtkLabel">
+      <object class="GtkLabel" id="title">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Viper Tools</property>
       </object>
     </child>
     <child>
-      <object class="GtkBox" id="box1">
+      <object class="GtkBox" id="mainbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkBox" id="box3">
+          <object class="GtkBox" id="builder">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
@@ -29,7 +29,7 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Phantom Valkyrie Linux Builder</property>
+                    <property name="label" translatable="yes">Valkyrie Linux Builder</property>
                     <property name="use_markup">True</property>
                   </object>
                   <packing>
@@ -51,7 +51,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry1">
+                  <object class="GtkEntry" id="name">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">Ubuntu</property>
@@ -76,7 +76,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry2">
+                  <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">18.04.5</property>
@@ -92,7 +92,7 @@
                   <object class="GtkLabel" id="label7">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Release</property>
+                    <property name="label" translatable="yes">Codename</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -101,7 +101,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry3">
+                  <object class="GtkEntry" id="codename">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">bionic</property>
@@ -117,7 +117,7 @@
                   <object class="GtkLabel" id="label8">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Description</property>
+                    <property name="label" translatable="yes">OS name</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -126,7 +126,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry4">
+                  <object class="GtkEntry" id="os_name">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">Valkyrie Linux 21v7</property>
@@ -141,7 +141,7 @@
                   <object class="GtkLabel" id="label9">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Release notes</property>
+                    <property name="label" translatable="yes">URL</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -150,7 +150,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry5">
+                  <object class="GtkEntry" id="url">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">http://vsrx.work</property>
@@ -165,7 +165,7 @@
                   <object class="GtkLabel" id="label10">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Extended Description</property>
+                    <property name="label" translatable="yes">Description</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -174,7 +174,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry6">
+                  <object class="GtkEntry" id="description">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="text" translatable="yes">Ubuntu 18.04.5 based</property>
@@ -198,7 +198,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkFileChooserButton" id="filechooserbutton1">
+                  <object class="GtkFileChooserButton" id="os_chooser">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -209,12 +209,12 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button17">
+                  <object class="GtkButton" id="settings">
                     <property name="label" translatable="yes">Settings</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="on_button17_clicked" swapped="no"/>
+                    <signal name="clicked" handler="on_settings_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -227,12 +227,12 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkButton" id="button18">
+                      <object class="GtkButton" id="console">
                         <property name="label" translatable="yes">Console</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_button18_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_console_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -241,12 +241,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="button19">
+                      <object class="GtkButton" id="synaptic">
                         <property name="label" translatable="yes">Synaptic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_button19_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_synaptic_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -255,12 +255,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="button20">
+                      <object class="GtkButton" id="extract">
                         <property name="label" translatable="yes">Extract</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_button20_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_extract_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -269,12 +269,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="button21">
+                      <object class="GtkButton" id="build">
                         <property name="label" translatable="yes">Build</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_button21_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_build_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -304,7 +304,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box2">
+          <object class="GtkBox" id="tools">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
@@ -335,12 +335,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button13">
+              <object class="GtkButton" id="system_tune">
                 <property name="label" translatable="yes">System Tuneup</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_button13_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_system_tune_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -349,13 +349,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button5">
+              <object class="GtkButton" id="tmpfs">
                 <property name="label" translatable="yes">tmpfs RAM Slider</property>
-                <property name="use_action_appearance">True</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_buttontmpfs_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_tmpfs_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -364,7 +363,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="apps">
+              <object class="GtkButton" id="application">
                 <property name="label" translatable="yes">Inatall Applications</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -404,13 +403,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button4">
+              <object class="GtkButton" id="kyotei">
                 <property name="label" translatable="yes">競艇予想</property>
-                <property name="use_action_appearance">True</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_button4_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_kyotei_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -433,12 +431,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="download_youtube">
+              <object class="GtkButton" id="downloader">
                 <property name="label" translatable="yes">downloader</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_download_youtube_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_downloader_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -489,20 +487,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button10">
-                <property name="label" translatable="yes">File Compression</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_buttontmpfs_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">13</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="movie_enc">
                 <property name="label" translatable="yes">QSV Movie Encode</property>
                 <property name="visible">True</property>
@@ -513,7 +497,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">14</property>
+                <property name="position">13</property>
               </packing>
             </child>
             <child>
@@ -527,8 +511,11 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">15</property>
+                <property name="position">14</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>
@@ -553,7 +540,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20210524)
+Viper Tools(20210601)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>
