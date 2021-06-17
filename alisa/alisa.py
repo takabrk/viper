@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-#alisa.py @takamitsu hamada 20210417
+#alisa.py @takamitsu hamada 20210604
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -14,8 +14,6 @@ import textwrap
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-#from viper import PrepareChain
-#from viper import GenerateText
 try:
     import gi
     gi.require_version("Gtk","3.0")
@@ -29,74 +27,73 @@ class alisa(object):
         self.tree = Gtk.Builder()
         self.tree.add_from_file(os.path.dirname(os.path.abspath(__file__)) + "/" + gladefile)
         dic = {
-            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set,
-            "on_button7_clicked" : self.on_button7_clicked,
-            "on_button23_clicked" : self.on_button23_clicked
+            "on_talk_text_clicked" : self.on_talk_text_clicked,
+            "on_talk_text_file_clicked" : self.on_talk_text_file_clicked
         }
         treeObj = self.tree.get_object
         self.tree.connect_signals(dic)
-        self.window = treeObj("button7")
-        self.window = treeObj("button23")
-        self.entry7 = treeObj("entry7")
-        self.fcb1 = treeObj("filechoose1")
-        self.combo1 = treeObj("comboboxtext1")
+        self.window = treeObj("talk_text")
+        self.window = treeObj("talk_text_file")
+        self.input_text = treeObj("input_text")
+        self.select_text_file = treeObj("select_text_file")
+        self.select_mode = treeObj("select_mode")
         self.window = treeObj("window1")
         self.window.show_all()
         if(self.window):
             self.window.connect("destroy",Gtk.main_quit)
         Gtk.main()
 #alisa
-    def on_button7_clicked(self,widget):
-        msg = self.entry7.get_text()
-        if(self.combo1.get_active_text() == "mei_happy"):
+    def on_talk_text_clicked(self,widget):
+        msg = self.input_text.get_text()
+        if(self.select_mode.get_active_text() == "mei_happy"):
             mv = "mei_happy"
-        if(self.combo1.get_active_text() == "mei_angry"):
+        if(self.select_mode.get_active_text() == "mei_angry"):
             mv = "mei_angry"
-        if(self.combo1.get_active_text() == "mei_bashful"):
+        if(self.select_mode.get_active_text() == "mei_bashful"):
             mv = "mei_bashful"
-        if(self.combo1.get_active_text() == "mei_normal"):
+        if(self.select_mode.get_active_text() == "mei_normal"):
             mv = "mei_normal"
-        if(self.combo1.get_active_text() == "mei_sad"):
+        if(self.select_mode.get_active_text() == "mei_sad"):
             mv = "mei_sad"
-        if(self.combo1.get_active_text() == "miku_a"):
+        if(self.select_mode.get_active_text() == "miku_a"):
             mv = "miku_a"
-        if(self.combo1.get_active_text() == "miku_b"):
+        if(self.select_mode.get_active_text() == "miku_b"):
             mv = "miku_b"
-        if(self.combo1.get_active_text() == "tohoku_happy"):
+        if(self.select_mode.get_active_text() == "tohoku_happy"):
             mv = "tohoku_happy"
-        if(self.combo1.get_active_text() == "tohoku_angry"):
+        if(self.select_mode.get_active_text() == "tohoku_angry"):
             mv = "tohoku_angry"
-        if(self.combo1.get_active_text() == "tohoku_neutral"):
+        if(self.select_mode.get_active_text() == "tohoku_neutral"):
             mv = "tohoku_neutral"
-        if(self.combo1.get_active_text() == "tohoku_sad"):
+        if(self.select_mode.get_active_text() == "tohoku_sad"):
             mv = "tohoku_sad"
         cmd = "python3 viper.py jsay %s %s" % (msg,mv)
         print(cmd)
         sp.call(cmd.strip().split(" "))
-    def on_button23_clicked(self,widget):
-        if(self.combo1.get_active_text() == "mei_happy"):
+    def on_talk_text_file_clicked(self,widget):
+        if(self.select_mode.get_active_text() == "mei_happy"):
             mv = "mei_happy"
-        if(self.combo1.get_active_text() == "mei_angry"):
+        if(self.select_mode.get_active_text() == "mei_angry"):
             mv = "mei_angry"
-        if(self.combo1.get_active_text() == "mei_bashful"):
+        if(self.select_mode.get_active_text() == "mei_bashful"):
             mv = "mei_bashful"
-        if(self.combo1.get_active_text() == "mei_normal"):
+        if(self.select_mode.get_active_text() == "mei_normal"):
             mv = "mei_normal"
-        if(self.combo1.get_active_text() == "mei_sad"):
+        if(self.select_mode.get_active_text() == "mei_sad"):
             mv = "mei_sad"
-        if(self.combo1.get_active_text() == "miku_a"):
+        if(self.select_mode.get_active_text() == "miku_a"):
             mv = "miku_a"
-        if(self.combo1.get_active_text() == "miku_b"):
+        if(self.select_mode.get_active_text() == "miku_b"):
             mv = "miku_b"
-        if(self.combo1.get_active_text() == "tohoku_happy"):
+        if(self.select_mode.get_active_text() == "tohoku_happy"):
             mv = "tohoku_happy"
-        if(self.combo1.get_active_text() == "tohoku_angry"):
+        if(self.select_mode.get_active_text() == "tohoku_angry"):
             mv = "tohoku_angry"
-        if(self.combo1.get_active_text() == "tohoku_neutral"):
+        if(self.select_mode.get_active_text() == "tohoku_neutral"):
             mv = "tohoku_neutral"
-        if(self.combo1.get_active_text() == "tohoku_sad"):
+        if(self.select_mode.get_active_text() == "tohoku_sad"):
             mv = "tohoku_sad"
-        fc1 =  self.fcb1.get_filename()
+        fc1 =  self.select_text_file.get_filename()
         Thread(target=self.thread1).start()
         with open(fc1,mode="rt",encoding="utf-8") as f:
             for textline in f.read().splitlines():
@@ -104,8 +101,8 @@ class alisa(object):
                  cmd = "python viper.py jsay %s %s" % (textline,mv)
                  sp.call(cmd.strip().split(" "))
         f.close()
-    def on_filechooserbutton1_file_set(self,widget):
-        msg1 = self.fcb1.get_filename()
+    def on_select_mode(self,widget):
+        msg1 = self.select_mode.get_filename()
         return msg1
     def thread1(self):
         sp.call("./record.sh".strip().split(" "))

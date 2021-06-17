@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8 -*-
-#downloader.py @takamitsu hamada 20201026
-#mainsite : http://vsrx.site
+#downloader.py @takamitsu hamada 20210604
+#mainsite : http://vsrx.work
 
 import sys,os,os.path,json
 from urllib.request import urlopen
@@ -21,33 +21,33 @@ class download_youtube(object):
         self.tree = Gtk.Builder()
         self.tree.add_from_file(os.path.dirname(os.path.abspath(__file__)) + "/" + gladefile)
         dic = {
-            "on_button1_clicked" : self.on_button1_clicked,
-            "on_button2_clicked" : self.on_button2_clicked,
-            "on_button3_clicked" : self.on_button3_clicked
+            "on_ok1_clicked" : self.on_ok1_clicked,
+            "on_ok2_clicked" : self.on_ok2_clicked,
+            "on_close_clicked" : self.on_close_clicked
         }
         treeObj = self.tree.get_object
         self.tree.connect_signals(dic)
-        self.entry1 = treeObj("entry1")
-        self.entry2 = treeObj("entry2")
-        self.entry3 = treeObj("entry3")
-        self.window = treeObj("button1")
-        self.window = treeObj("button2")
-        self.window = treeObj("button3")
+        self.downloader = treeObj("downloader")
+        self.hls_url = treeObj("hls_url")
+        self.output = treeObj("output")
+        self.window = treeObj("ok1")
+        self.window = treeObj("ok2")
+        self.window = treeObj("close")
         self.window = treeObj("window1")
         self.window.show_all()
         if(self.window):
             self.window.connect("destroy",Gtk.main_quit)
         Gtk.main()
-    def on_button1_clicked(self,widget):
-        msg1 = self.entry1.get_text()
+    def on_ok1_clicked(self,widget):
+        msg1 = self.downloader.get_text()
         cmd = "./downloader.sh %s" % (msg1)
         sp.call(cmd.strip().split(" "))
-    def on_button2_clicked(self,widget):
-        Gtk.main_quit()
-    def on_button3_clicked(self,widget):
-        msg1=self.entry2.get_text()
-        msg2=self.entry3.get_text()
+    def on_ok2_clicked(self,widget):
+        msg1=self.hls_url.get_text()
+        msg2=self.output.get_text()
         cmd = "./download_hls.sh %s %s" % (msg1,msg2)
         sp.call(cmd.strip().split(" "))
+    def on_close_clicked(self,widget):
+        Gtk.main_quit()
 if __name__ == "__main__":
     download_youtube()
