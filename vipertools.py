@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-#vipertools.py @takamitsu hamada 20210603
+#vipertools.py @takamitsu hamada 20210618
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -95,7 +95,7 @@ class valkyrie_setting(object):
     def on_numbers_clicked(self,widget):
         #os.chdir("numbers") 
         #Thread(target=lambda : sp.call("python viper.py jsay ナンバーズの予想を行います。   mei_happy string".strip().split(" "))).start()
-        Thread(target=lambda : sp.call("python2 numbers/numbers.py",shell=True)).start()
+        Thread(target=lambda : sp.call("python2 numbers_yosou/numbers.py",shell=True)).start()
         #os.chdir("../")
 #install apps
     def on_apps_clicked(self,widget):
@@ -192,7 +192,7 @@ class valkyrie_setting(object):
         """,shell=True)
 #Console
     def on_console_clicked(self,widget):
-        sp.run("sudo vsrx_builder/extras/Console",shell=True)
+        sp.run("xfce4-terminal --hide-menubar -x sh -c 'sudo vsrx_builder/extras/Console; read'",shell=True)
 #Synaptic
     def on_synaptic_clicked(self,widget):
         sp.run("sudo vsrx_builder/extras/Synaptic",shell=True)
