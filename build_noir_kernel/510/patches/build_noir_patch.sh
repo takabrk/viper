@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.10.34"
+VERSIONPOINT="5.10.46"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -28,28 +28,15 @@ cat add_noir_version.patch \
        UKSM/0001-UKSM-for-5.10.patch \
        LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
        LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
-       other/0001-iosched-Add-i10-I-O-Scheduler.patch \
        other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
-       VALVE/futex-multiple-wait-v3.patch \
-       other/seccomp-Implement-syscall-isolation-based-on-memory-areas.patch \
        aufs5/aufs5-base.patch \
        aufs5/aufs5-kbuild.patch\
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
-       intel/0001-clearlinux-patches.patch \
-       other/0001-rapl-patches.patch \
-       other/0001-v4l2loopback-5.10-initial-merge.patch \
-       intel/optimized-avx512.patch \
-       other/reiser4-for-5.10.2.patch \
-       other/NTFS-read-write-driver-GPL-implementation-by-Paragon-Software.patch \
-       other/le9aa1-5.10.patch \
        other/zstd.patch \
-       other/Enable-fp16-display-support-for-DCE8.patch \
        other/bbr2.patch \
+       VALVE/futex-multiple-wait-v3.patch \
        other/futex2.patch \
-       other/logitech.patch \
-       other/Improve-preemptive-ENOSPC-flushing.patch \
-       IBM/introduce_per-task_latency_nice_for_scheduler_hints-for-muqss.patch \
        > noir.patch
 ;;
 pds)

@@ -1,12 +1,12 @@
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2021-05-06 09:36:35.230042239 +0900
-+++ .config	2021-05-06 09:52:02.679990000 +0900
-@@ -0,0 +1,10298 @@
+--- /dev/null	2021-06-25 12:21:45.001456757 +0900
++++ .config	2021-06-25 14:08:27.855085000 +0900
+@@ -0,0 +1,10297 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.10.34-noir Kernel Configuration
++# Linux/x86 5.10.46-noir Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 11.1.0-1ubuntu1~18.04.1) 11.1.0"
 +CONFIG_CC_IS_GCC=y
@@ -512,12 +512,12 @@ index 000000000000..dcbcaa389249
 +CONFIG_EFI=y
 +CONFIG_EFI_STUB=y
 +CONFIG_EFI_MIXED=y
-+CONFIG_HZ_100=y
++# CONFIG_HZ_100 is not set
 +# CONFIG_HZ_250 is not set
 +# CONFIG_HZ_300 is not set
-+# CONFIG_HZ_750 is not set
++CONFIG_HZ_750=y
 +# CONFIG_HZ_1000 is not set
-+CONFIG_HZ=100
++CONFIG_HZ=750
 +CONFIG_SCHED_HRTICK=y
 +CONFIG_KEXEC=y
 +CONFIG_KEXEC_FILE=y
@@ -8480,7 +8480,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_AD7923=m
 +# CONFIG_AD7949 is not set
 +CONFIG_AD799X=m
-+# CONFIG_AD9467 is not set
 +CONFIG_AXP20X_ADC=m
 +CONFIG_AXP288_ADC=m
 +CONFIG_CC10001_ADC=m
