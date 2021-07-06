@@ -306,7 +306,7 @@ class numbers3(object):
         return e
 #リハーサル数字削除
     def del_rehearsal_mini(self,e):
-        reh_mini = [i[1] for i in rehearsal_mini]
+        reh_mini = [i for i in rehearsal_mini]
         for i in reh_mini:
             try:
                 e.remove(i)
