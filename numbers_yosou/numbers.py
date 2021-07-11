@@ -713,7 +713,7 @@ class allnumbers(object):
         n3.delstmini(39,ee)
         n3.delbeforemini(200,ee)
         #n3.makeMiniNumber3(ee)
-        n3.del_rehearsal_mini(ee)
+        #n3.del_rehearsal_mini(ee)
         e = ee
         #e = sorted(set([random.choice(ee) for i in range(20)]))
         n3a = sorted(set(zip(e,[n3.full_mini.count(i) for i in e])))

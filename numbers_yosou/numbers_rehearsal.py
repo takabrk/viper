@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 rehearsal_mini = [
-93,68,88,13
+0
 ]
 
 rehearsal3 = [
