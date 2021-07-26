@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#July 7,2021
+#July 26,2021
 
 while getopts e: OPT
 do
@@ -11,7 +11,7 @@ do
   esac
 done
 VERSIONBASE="5.13"
-VERSIONPOINT="5.13"
+VERSIONPOINT="5.13.5"
 case $e_num in
     base)
            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
@@ -43,7 +43,7 @@ case $e_num in
            #make INSTALL_MOD_PATH=../linux_modules modules_install -j4
            sudo make-kpkg clean
            cd ../
-           zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
+           #zip -r linux-$VERSIONPOINT-noir.zip linux-$VERSIONPOINT-noir
            sudo rm -r linux-$VERSIONPOINT-noir
            sudo dpkg -i *.deb
            sudo update-grub

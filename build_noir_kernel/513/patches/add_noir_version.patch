@@ -11,7 +11,7 @@ index 51540b291738..ab8c480660a6 100644
  __all:
  
 +NRVERSION = -noir
-+NRNAME = MuQSS Powered
++NRNAME = CFS Powered
 +EXTRAVERSION := $(EXTRAVERSION)$(NRVERSION)
 +
  # We are using a recursive build, so we need to do a little thinking
