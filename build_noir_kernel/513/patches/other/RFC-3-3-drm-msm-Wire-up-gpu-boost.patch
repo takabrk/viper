@@ -1,0 +1,83 @@
+diff --git a/drivers/gpu/drm/msm/msm_fence.c b/drivers/gpu/drm/msm/msm_fence.c
+index cd59a5918038..e58895603726 100644
+--- a/drivers/gpu/drm/msm/msm_fence.c
++++ b/drivers/gpu/drm/msm/msm_fence.c
+@@ -8,6 +8,7 @@
+ 
+ #include "msm_drv.h"
+ #include "msm_fence.h"
++#include "msm_gpu.h"
+ 
+ 
+ struct msm_fence_context *
+@@ -114,10 +115,19 @@ static bool msm_fence_signaled(struct dma_fence *fence)
+ 	return fence_completed(f->fctx, f->base.seqno);
+ }
+ 
++static void msm_fence_boost(struct dma_fence *fence)
++{
++	struct msm_fence *f = to_msm_fence(fence);
++	struct msm_drm_private *priv = f->fctx->dev->dev_private;
++
++	msm_gpu_boost(priv->gpu);
++}
++
+ static const struct dma_fence_ops msm_fence_ops = {
+ 	.get_driver_name = msm_fence_get_driver_name,
+ 	.get_timeline_name = msm_fence_get_timeline_name,
+ 	.signaled = msm_fence_signaled,
++	.boost = msm_fence_boost,
+ };
+ 
+ struct dma_fence *
+diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
+index 9dd1c58430ab..c90b79116500 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -62,6 +62,10 @@ static int msm_devfreq_get_dev_status(struct device *dev,
+ 	status->total_time = ktime_us_delta(time, gpu->devfreq.time);
+ 	gpu->devfreq.time = time;
+ 
++	if (atomic_dec_if_positive(&gpu->devfreq.boost) >= 0) {
++		status->busy_time = status->total_time;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -84,6 +88,15 @@ static struct devfreq_dev_profile msm_devfreq_profile = {
+ 	.get_cur_freq = msm_devfreq_get_cur_freq,
+ };
+ 
++void msm_gpu_boost(struct msm_gpu *gpu)
++{
++	if (!gpu->funcs->gpu_busy)
++		return;
++
++	/* Add three devfreq polling intervals worth of boost: */
++	atomic_add(3, &gpu->devfreq.boost);
++}
++
+ static void msm_devfreq_init(struct msm_gpu *gpu)
+ {
+ 	/* We need target support to do devfreq */
+diff --git a/drivers/gpu/drm/msm/msm_gpu.h b/drivers/gpu/drm/msm/msm_gpu.h
+index 18baf935e143..7a082a12d98f 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.h
++++ b/drivers/gpu/drm/msm/msm_gpu.h
+@@ -150,6 +150,7 @@ struct msm_gpu {
+ 		struct devfreq *devfreq;
+ 		u64 busy_cycles;
+ 		ktime_t time;
++		atomic_t boost;
+ 	} devfreq;
+ 
+ 	uint32_t suspend_count;
+@@ -295,6 +296,7 @@ static inline void gpu_write64(struct msm_gpu *gpu, u32 lo, u32 hi, u64 val)
+ int msm_gpu_pm_suspend(struct msm_gpu *gpu);
+ int msm_gpu_pm_resume(struct msm_gpu *gpu);
+ void msm_gpu_resume_devfreq(struct msm_gpu *gpu);
++void msm_gpu_boost(struct msm_gpu *gpu);
+ 
+ int msm_gpu_hw_init(struct msm_gpu *gpu);
+ 

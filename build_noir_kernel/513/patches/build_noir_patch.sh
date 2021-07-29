@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.13.5"
+VERSIONPOINT="5.13.6"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -32,32 +32,13 @@ cat add_noir_version.patch \
       > noir.patch
 ;;
 
-pds)
-cat add_noir_version.patch \
-       linux/patch-$VERSIONPOINT \
-       other/prjc_v5.13-r1.patch \
-       custom_config.patch \
-       LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
-       LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
-       LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
-       other/uksm-5.13.patch \
-       aufs5/aufs5-base.patch \
-       aufs5/aufs5-kbuild.patch\
-       aufs5/aufs5-mmap.patch \
-       aufs5/aufs5-standalone.patch \
-       other/0001-bbr2-patches.patch \
-       other/0001-cpu-patches.patch \
-       other/0001-futex2-resync-from-gitlab.collabora.com.patch \
-       le9db-5.13-rc2-mg-LRU-v3.patch \
-      > noir.patch
-;;
-bmq)
+base)
 cat add_noir_version.patch \
        linux/patch-$VERSIONPOINT \
        other/prjc_v5.13-r1.patch \
        custom_config.patch \
        add_noir_version.patch \
-       LL/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
+       other/0003-glitched-cfs.patch \
        LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
        LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
        other/uksm-5.13.patch \
@@ -67,11 +48,14 @@ cat add_noir_version.patch \
        aufs5/aufs5-standalone.patch \
        other/0001-bbr2-patches.patch \
        other/0001-cpu-patches.patch \
-       other/0001-futex2-resync-from-gitlab.collabora.com.patch \
        other/use_kyber2.patch \
        ck1/ck1.patch \
        other/le9db-5.10.patch \
        other/LRU.patch \
+       other/RFC-1-3-dma-fence-Add-boost-fence-op.patch \
+       other/RFC-2-3-drm-atomic-Call-dma_fence_boost-when-we-ve-missed-a-vblank.patch \
+       other/RFC-3-3-drm-msm-Wire-up-gpu-boost.patch \
+       other/0006-add-acs-overrides_iommu.patch \
       > noir.patch
 ;;
 esac

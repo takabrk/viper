@@ -1,0 +1,44 @@
+diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
+index 9f12efaaa93a..172702521acc 100644
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -231,6 +231,17 @@ struct dma_fence_ops {
+ 	signed long (*wait)(struct dma_fence *fence,
+ 			    bool intr, signed long timeout);
+ 
++	/**
++	 * @boost:
++	 *
++	 * Optional callback, to indicate that a fence waiter missed a deadline.
++	 * This can serve as a signal that (if possible) whatever signals the
++	 * fence should boost it's clocks.
++	 *
++	 * This can be called in any context that can call dma_fence_wait().
++	 */
++	void (*boost)(struct dma_fence *fence);
++
+ 	/**
+ 	 * @release:
+ 	 *
+@@ -586,6 +597,21 @@ static inline signed long dma_fence_wait(struct dma_fence *fence, bool intr)
+ 	return ret < 0 ? ret : 0;
+ }
+ 
++/**
++ * dma_fence_boost - hint from waiter that it missed a deadline
++ *
++ * @fence: the fence that caused the missed deadline
++ *
++ * This function gives a hint from a fence waiter that a deadline was
++ * missed, so that the fence signaler can factor this in to device
++ * power state decisions
++ */
++static inline void dma_fence_boost(struct dma_fence *fence)
++{
++	if (fence->ops->boost)
++		fence->ops->boost(fence);
++}
++
+ struct dma_fence *dma_fence_get_stub(void);
+ u64 dma_fence_context_alloc(unsigned num);
+ 
