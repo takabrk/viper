@@ -50,11 +50,11 @@
 ; log-time = no
 ; log-backtrace = 0
 
- resample-method = soxr-vhq
- avoid-resampling = yes
+ resample-method = speex-float-1
+; avoid-resampling = false
 ; enable-remixing = yes
 ; remixing-use-all-sink-channels = yes
-; enable-lfe-remixing = no
+ enable-lfe-remixing = no
 ; lfe-crossover-freq = 0
 
 flat-volumes = no
@@ -80,11 +80,11 @@ flat-volumes = no
  alternate-sample-rate = 44100
 ;default-sample-channels = 6
 ;default-channel-map = front-left,front-right,rear-left,rear-right,front-center,lfe
-default-sample-channels = 2
-default-channel-map = front-left,front-right
+;default-sample-channels = 2
+;default-channel-map = front-left,front-right
 
  default-fragments = 2
- default-fragment-size-msec = 5
+ default-fragment-size-msec = 125
 
 ; enable-deferred-volume = yes
 deferred-volume-safety-margin-usec = 1
