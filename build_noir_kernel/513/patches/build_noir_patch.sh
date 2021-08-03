@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.13.6"
+VERSIONPOINT="5.13.7"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -35,27 +35,27 @@ cat add_noir_version.patch \
 base)
 cat add_noir_version.patch \
        linux/patch-$VERSIONPOINT \
-       other/prjc_v5.13-r1.patch \
        custom_config.patch \
        add_noir_version.patch \
+       other/use_kyber2.patch \
        other/0003-glitched-cfs.patch \
        LL/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
        LL/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
-       other/uksm-5.13.patch \
        aufs5/aufs5-base.patch \
        aufs5/aufs5-kbuild.patch\
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
-       other/0001-bbr2-patches.patch \
        other/0001-cpu-patches.patch \
-       other/use_kyber2.patch \
        ck1/ck1.patch \
+       other/0001-bbr2-patches.patch \
+       other/0001-futex-resync-from-gitlab.collabora.com.patch \
+       other/0001-futex2-resync-from-gitlab.collabora.com.patch \
+       other/uksm-5.13.patch \
        other/le9db-5.10.patch \
        other/LRU.patch \
-       other/RFC-1-3-dma-fence-Add-boost-fence-op.patch \
-       other/RFC-2-3-drm-atomic-Call-dma_fence_boost-when-we-ve-missed-a-vblank.patch \
-       other/RFC-3-3-drm-msm-Wire-up-gpu-boost.patch \
-       other/0006-add-acs-overrides_iommu.patch \
+       other/0001-ntfs3-patches.patch \
+       other/0001-zstd-patches.patch \
+       other/prjc_v5.13-r2.patch \
       > noir.patch
 ;;
 esac
