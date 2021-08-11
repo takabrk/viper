@@ -1,0 +1,501 @@
+From 149a5b5fc8cae0249b8fe998979bb5a8ae103b8c Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <kernel@xanmod.org>
+Date: Mon, 14 Dec 2020 16:24:26 +0000
+Subject: [PATCH 03/14] XANMOD: block: set rq_affinity to force full
+ multithreading I/O requests
+
+Signed-off-by: Alexandre Frade <kernel@xanmod.org>
+---
+ include/linux/blkdev.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index f69c75bd6d27..d57633f15b7f 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -629,6 +629,7 @@ struct request_queue {
+ 
+ #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
+ 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
++				 (1 << QUEUE_FLAG_SAME_FORCE) |		\
+ 				 (1 << QUEUE_FLAG_NOWAIT))
+ 
+ void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
+-- 
+2.32.0
+From 0d114eaffe0e3b0da3172e5b31f8860427cc9668 Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <admfrade@gmail.com>
+Date: Mon, 29 Jan 2018 16:59:22 +0000
+Subject: [PATCH 06/14] XANMOD: dcache: cache_pressure = 50 decreases the rate
+ at which VFS caches are reclaimed
+
+Signed-off-by: Alexandre Frade <admfrade@gmail.com>
+---
+ fs/dcache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/dcache.c b/fs/dcache.c
+index cf871a81f4fd..38ec53b50294 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -71,7 +71,7 @@
+  * If no ancestor relationship:
+  * arbitrary, since it's serialized on rename_lock
+  */
+-int sysctl_vfs_cache_pressure __read_mostly = 100;
++int sysctl_vfs_cache_pressure __read_mostly = 50;
+ EXPORT_SYMBOL_GPL(sysctl_vfs_cache_pressure);
+ 
+ __cacheline_aligned_in_smp DEFINE_SEQLOCK(rename_lock);
+-- 
+2.32.0
+
+From 5c255f6bcd36c8a40c1c577da1d615346776ad7e Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <kernel@xanmod.org>
+Date: Thu, 13 Aug 2020 14:57:06 +0000
+Subject: [PATCH 07/14] XANMOD: sched/autogroup: Add kernel parameter and
+ config option to enable/disable autogroup feature by default
+
+Signed-off-by: Alexandre Frade <kernel@xanmod.org>
+---
+ Documentation/admin-guide/kernel-parameters.txt |  6 ++++--
+ init/Kconfig                                    | 12 ++++++++++++
+ kernel/sched/autogroup.c                        | 10 ++++++----
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index cb89dbdedc46..341f536d706f 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -356,6 +356,10 @@
+ 	autoconf=	[IPV6]
+ 			See Documentation/networking/ipv6.rst.
+ 
++	autogroup=	[KNL] Enable or disable scheduler automatic task group
++			creation.
++			Format: <bool>
++
+ 	show_lapic=	[APIC,X86] Advanced Programmable Interrupt Controller
+ 			Limit apic dumping. The parameter defines the maximal
+ 			number of local apics being dumped. Also it is possible
+@@ -3235,8 +3239,6 @@
+ 	noapic		[SMP,APIC] Tells the kernel to not make use of any
+ 			IOAPICs that may be present in the system.
+ 
+-	noautogroup	Disable scheduler automatic task group creation.
+-
+ 	nobats		[PPC] Do not use BATs for mapping kernel lowmem
+ 			on "Classic" PPC cores.
+ 
+diff --git a/init/Kconfig b/init/Kconfig
+index a61c92066c2e..b52bb739bfa6 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1238,6 +1238,18 @@ config SCHED_AUTOGROUP
+ 	  desktop applications.  Task group autogeneration is currently based
+ 	  upon task session.
+ 
++config SCHED_AUTOGROUP_DEFAULT_ENABLED
++	bool "Enable automatic process group scheduling feature"
++	default y
++	depends on SCHED_AUTOGROUP
++	help
++	  If set, automatic process group scheduling will be enabled per
++	  default but can be disabled through passing autogroup=0 on the
++	  kernel commandline during boot or a value of 0 via the file
++	  proc/sys/kernel/sched_autogroup_enabled.
++
++	  If unsure say Y.
++
+ config SYSFS_DEPRECATED
+ 	bool "Enable deprecated sysfs features to support old userspace tools"
+ 	depends on SYSFS
+diff --git a/kernel/sched/autogroup.c b/kernel/sched/autogroup.c
+index 2067080bb235..573b313efe4c 100644
+--- a/kernel/sched/autogroup.c
++++ b/kernel/sched/autogroup.c
+@@ -5,7 +5,8 @@
+ #include <linux/nospec.h>
+ #include "sched.h"
+ 
+-unsigned int __read_mostly sysctl_sched_autogroup_enabled = 1;
++unsigned int __read_mostly sysctl_sched_autogroup_enabled =
++		IS_ENABLED(CONFIG_SCHED_AUTOGROUP_DEFAULT_ENABLED) ? 1 : 0;
+ static struct autogroup autogroup_default;
+ static atomic_t autogroup_seq_nr;
+ 
+@@ -197,11 +198,12 @@ void sched_autogroup_exit(struct signal_struct *sig)
+ 
+ static int __init setup_autogroup(char *str)
+ {
+-	sysctl_sched_autogroup_enabled = 0;
+-
++	unsigned long enabled;
++	if (!kstrtoul(str, 0, &enabled))
++		sysctl_sched_autogroup_enabled = enabled ? 1 : 0;
+ 	return 1;
+ }
+-__setup("noautogroup", setup_autogroup);
++__setup("autogroup=", setup_autogroup);
+ 
+ #ifdef CONFIG_PROC_FS
+ 
+-- 
+2.32.0
+From 4c03c7bd9798279aa504ac776c1e49295ddff344 Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <admfrade@gmail.com>
+Date: Mon, 29 Jan 2018 17:31:25 +0000
+Subject: [PATCH 08/14] XANMOD: mm/vmscan: vm_swappiness = 30 decreases the
+ amount of swapping
+
+Signed-off-by: Alexandre Frade <admfrade@gmail.com>
+---
+ mm/vmscan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 5199b9696bab..5bc76e67d4de 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -167,7 +167,7 @@ struct scan_control {
+ /*
+  * From 0 .. 200.  Higher means more swappy.
+  */
+-int vm_swappiness = 60;
++int vm_swappiness = 30;
+ 
+ static void set_task_reclaim_state(struct task_struct *task,
+ 				   struct reclaim_state *rs)
+-- 
+2.32.0
+
+From aa8e8f2b383d5296dad5e0bbecbc7a599907fc82 Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <admfrade@gmail.com>
+Date: Thu, 25 Jun 2020 16:40:43 -0300
+Subject: [PATCH 11/14] XANMOD: lib/kconfig.debug: disable default
+ CONFIG_SYMBOLIC_ERRNAME and CONFIG_DEBUG_BUGVERBOSE
+
+Signed-off-by: Alexandre Frade <admfrade@gmail.com>
+---
+ lib/Kconfig.debug | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 678c13967580..81c58b4c6c1a 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -179,7 +179,7 @@ config DYNAMIC_DEBUG_CORE
+ 
+ config SYMBOLIC_ERRNAME
+ 	bool "Support symbolic error names in printf"
+-	default y if PRINTK
++	default n
+ 	help
+ 	  If you say Y here, the kernel's printf implementation will
+ 	  be able to print symbolic error names such as ENOSPC instead
+@@ -189,7 +189,7 @@ config SYMBOLIC_ERRNAME
+ config DEBUG_BUGVERBOSE
+ 	bool "Verbose BUG() reporting (adds 70K)" if DEBUG_KERNEL && EXPERT
+ 	depends on BUG && (GENERIC_BUG || HAVE_DEBUG_BUGVERBOSE)
+-	default y
++	default n
+ 	help
+ 	  Say Y here to make BUG() panics output the file name and line number
+ 	  of the BUG call as well as the EIP and oops trace.  This aids
+-- 
+2.32.0
+
+From 1c6c20f66ea53087ed1bd459f762a4e2353430a9 Mon Sep 17 00:00:00 2001
+From: Alexandre Frade <kernel@xanmod.org>
+Date: Wed, 14 Jul 2021 19:40:16 +0000
+Subject: [PATCH] XANMOD: fair: Remove all energy efficiency functions
+ [v5.13.2+]
+
+Signed-off-by: Alexandre Frade <kernel@xanmod.org>
+---
+ kernel/sched/fair.c | 263 --------------------------------------------
+ 1 file changed, 263 deletions(-)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index e807b743353d..20f10945752c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6569,261 +6569,6 @@ static unsigned long cpu_util_without(int cpu, struct task_struct *p)
+ 	return min_t(unsigned long, util, capacity_orig_of(cpu));
+ }
+ 
+-/*
+- * Predicts what cpu_util(@cpu) would return if @p was migrated (and enqueued)
+- * to @dst_cpu.
+- */
+-static unsigned long cpu_util_next(int cpu, struct task_struct *p, int dst_cpu)
+-{
+-	struct cfs_rq *cfs_rq = &cpu_rq(cpu)->cfs;
+-	unsigned long util_est, util = READ_ONCE(cfs_rq->avg.util_avg);
+-
+-	/*
+-	 * If @p migrates from @cpu to another, remove its contribution. Or,
+-	 * if @p migrates from another CPU to @cpu, add its contribution. In
+-	 * the other cases, @cpu is not impacted by the migration, so the
+-	 * util_avg should already be correct.
+-	 */
+-	if (task_cpu(p) == cpu && dst_cpu != cpu)
+-		lsub_positive(&util, task_util(p));
+-	else if (task_cpu(p) != cpu && dst_cpu == cpu)
+-		util += task_util(p);
+-
+-	if (sched_feat(UTIL_EST)) {
+-		util_est = READ_ONCE(cfs_rq->avg.util_est.enqueued);
+-
+-		/*
+-		 * During wake-up, the task isn't enqueued yet and doesn't
+-		 * appear in the cfs_rq->avg.util_est.enqueued of any rq,
+-		 * so just add it (if needed) to "simulate" what will be
+-		 * cpu_util() after the task has been enqueued.
+-		 */
+-		if (dst_cpu == cpu)
+-			util_est += _task_util_est(p);
+-
+-		util = max(util, util_est);
+-	}
+-
+-	return min(util, capacity_orig_of(cpu));
+-}
+-
+-/*
+- * compute_energy(): Estimates the energy that @pd would consume if @p was
+- * migrated to @dst_cpu. compute_energy() predicts what will be the utilization
+- * landscape of @pd's CPUs after the task migration, and uses the Energy Model
+- * to compute what would be the energy if we decided to actually migrate that
+- * task.
+- */
+-static long
+-compute_energy(struct task_struct *p, int dst_cpu, struct perf_domain *pd)
+-{
+-	struct cpumask *pd_mask = perf_domain_span(pd);
+-	unsigned long cpu_cap = arch_scale_cpu_capacity(cpumask_first(pd_mask));
+-	unsigned long max_util = 0, sum_util = 0;
+-	unsigned long _cpu_cap = cpu_cap;
+-	int cpu;
+-
+-	_cpu_cap -= arch_scale_thermal_pressure(cpumask_first(pd_mask));
+-
+-	/*
+-	 * The capacity state of CPUs of the current rd can be driven by CPUs
+-	 * of another rd if they belong to the same pd. So, account for the
+-	 * utilization of these CPUs too by masking pd with cpu_online_mask
+-	 * instead of the rd span.
+-	 *
+-	 * If an entire pd is outside of the current rd, it will not appear in
+-	 * its pd list and will not be accounted by compute_energy().
+-	 */
+-	for_each_cpu_and(cpu, pd_mask, cpu_online_mask) {
+-		unsigned long util_freq = cpu_util_next(cpu, p, dst_cpu);
+-		unsigned long cpu_util, util_running = util_freq;
+-		struct task_struct *tsk = NULL;
+-
+-		/*
+-		 * When @p is placed on @cpu:
+-		 *
+-		 * util_running = max(cpu_util, cpu_util_est) +
+-		 *		  max(task_util, _task_util_est)
+-		 *
+-		 * while cpu_util_next is: max(cpu_util + task_util,
+-		 *			       cpu_util_est + _task_util_est)
+-		 */
+-		if (cpu == dst_cpu) {
+-			tsk = p;
+-			util_running =
+-				cpu_util_next(cpu, p, -1) + task_util_est(p);
+-		}
+-
+-		/*
+-		 * Busy time computation: utilization clamping is not
+-		 * required since the ratio (sum_util / cpu_capacity)
+-		 * is already enough to scale the EM reported power
+-		 * consumption at the (eventually clamped) cpu_capacity.
+-		 */
+-		cpu_util = effective_cpu_util(cpu, util_running, cpu_cap,
+-					      ENERGY_UTIL, NULL);
+-
+-		sum_util += min(cpu_util, _cpu_cap);
+-
+-		/*
+-		 * Performance domain frequency: utilization clamping
+-		 * must be considered since it affects the selection
+-		 * of the performance domain frequency.
+-		 * NOTE: in case RT tasks are running, by default the
+-		 * FREQUENCY_UTIL's utilization can be max OPP.
+-		 */
+-		cpu_util = effective_cpu_util(cpu, util_freq, cpu_cap,
+-					      FREQUENCY_UTIL, tsk);
+-		max_util = max(max_util, min(cpu_util, _cpu_cap));
+-	}
+-
+-	return em_cpu_energy(pd->em_pd, max_util, sum_util);
+-}
+-
+-/*
+- * find_energy_efficient_cpu(): Find most energy-efficient target CPU for the
+- * waking task. find_energy_efficient_cpu() looks for the CPU with maximum
+- * spare capacity in each performance domain and uses it as a potential
+- * candidate to execute the task. Then, it uses the Energy Model to figure
+- * out which of the CPU candidates is the most energy-efficient.
+- *
+- * The rationale for this heuristic is as follows. In a performance domain,
+- * all the most energy efficient CPU candidates (according to the Energy
+- * Model) are those for which we'll request a low frequency. When there are
+- * several CPUs for which the frequency request will be the same, we don't
+- * have enough data to break the tie between them, because the Energy Model
+- * only includes active power costs. With this model, if we assume that
+- * frequency requests follow utilization (e.g. using schedutil), the CPU with
+- * the maximum spare capacity in a performance domain is guaranteed to be among
+- * the best candidates of the performance domain.
+- *
+- * In practice, it could be preferable from an energy standpoint to pack
+- * small tasks on a CPU in order to let other CPUs go in deeper idle states,
+- * but that could also hurt our chances to go cluster idle, and we have no
+- * ways to tell with the current Energy Model if this is actually a good
+- * idea or not. So, find_energy_efficient_cpu() basically favors
+- * cluster-packing, and spreading inside a cluster. That should at least be
+- * a good thing for latency, and this is consistent with the idea that most
+- * of the energy savings of EAS come from the asymmetry of the system, and
+- * not so much from breaking the tie between identical CPUs. That's also the
+- * reason why EAS is enabled in the topology code only for systems where
+- * SD_ASYM_CPUCAPACITY is set.
+- *
+- * NOTE: Forkees are not accepted in the energy-aware wake-up path because
+- * they don't have any useful utilization data yet and it's not possible to
+- * forecast their impact on energy consumption. Consequently, they will be
+- * placed by find_idlest_cpu() on the least loaded CPU, which might turn out
+- * to be energy-inefficient in some use-cases. The alternative would be to
+- * bias new tasks towards specific types of CPUs first, or to try to infer
+- * their util_avg from the parent task, but those heuristics could hurt
+- * other use-cases too. So, until someone finds a better way to solve this,
+- * let's keep things simple by re-using the existing slow path.
+- */
+-static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+-{
+-	unsigned long prev_delta = ULONG_MAX, best_delta = ULONG_MAX;
+-	struct root_domain *rd = cpu_rq(smp_processor_id())->rd;
+-	unsigned long cpu_cap, util, base_energy = 0;
+-	int cpu, best_energy_cpu = prev_cpu;
+-	struct sched_domain *sd;
+-	struct perf_domain *pd;
+-
+-	rcu_read_lock();
+-	pd = rcu_dereference(rd->pd);
+-	if (!pd || READ_ONCE(rd->overutilized))
+-		goto fail;
+-
+-	/*
+-	 * Energy-aware wake-up happens on the lowest sched_domain starting
+-	 * from sd_asym_cpucapacity spanning over this_cpu and prev_cpu.
+-	 */
+-	sd = rcu_dereference(*this_cpu_ptr(&sd_asym_cpucapacity));
+-	while (sd && !cpumask_test_cpu(prev_cpu, sched_domain_span(sd)))
+-		sd = sd->parent;
+-	if (!sd)
+-		goto fail;
+-
+-	sync_entity_load_avg(&p->se);
+-	if (!task_util_est(p))
+-		goto unlock;
+-
+-	for (; pd; pd = pd->next) {
+-		unsigned long cur_delta, spare_cap, max_spare_cap = 0;
+-		unsigned long base_energy_pd;
+-		int max_spare_cap_cpu = -1;
+-
+-		/* Compute the 'base' energy of the pd, without @p */
+-		base_energy_pd = compute_energy(p, -1, pd);
+-		base_energy += base_energy_pd;
+-
+-		for_each_cpu_and(cpu, perf_domain_span(pd), sched_domain_span(sd)) {
+-			if (!cpumask_test_cpu(cpu, p->cpus_ptr))
+-				continue;
+-
+-			util = cpu_util_next(cpu, p, cpu);
+-			cpu_cap = capacity_of(cpu);
+-			spare_cap = cpu_cap;
+-			lsub_positive(&spare_cap, util);
+-
+-			/*
+-			 * Skip CPUs that cannot satisfy the capacity request.
+-			 * IOW, placing the task there would make the CPU
+-			 * overutilized. Take uclamp into account to see how
+-			 * much capacity we can get out of the CPU; this is
+-			 * aligned with sched_cpu_util().
+-			 */
+-			util = uclamp_rq_util_with(cpu_rq(cpu), util, p);
+-			if (!fits_capacity(util, cpu_cap))
+-				continue;
+-
+-			/* Always use prev_cpu as a candidate. */
+-			if (cpu == prev_cpu) {
+-				prev_delta = compute_energy(p, prev_cpu, pd);
+-				prev_delta -= base_energy_pd;
+-				best_delta = min(best_delta, prev_delta);
+-			}
+-
+-			/*
+-			 * Find the CPU with the maximum spare capacity in
+-			 * the performance domain
+-			 */
+-			if (spare_cap > max_spare_cap) {
+-				max_spare_cap = spare_cap;
+-				max_spare_cap_cpu = cpu;
+-			}
+-		}
+-
+-		/* Evaluate the energy impact of using this CPU. */
+-		if (max_spare_cap_cpu >= 0 && max_spare_cap_cpu != prev_cpu) {
+-			cur_delta = compute_energy(p, max_spare_cap_cpu, pd);
+-			cur_delta -= base_energy_pd;
+-			if (cur_delta < best_delta) {
+-				best_delta = cur_delta;
+-				best_energy_cpu = max_spare_cap_cpu;
+-			}
+-		}
+-	}
+-unlock:
+-	rcu_read_unlock();
+-
+-	/*
+-	 * Pick the best CPU if prev_cpu cannot be used, or if it saves at
+-	 * least 6% of the energy used by prev_cpu.
+-	 */
+-	if (prev_delta == ULONG_MAX)
+-		return best_energy_cpu;
+-
+-	if ((prev_delta - best_delta) > ((prev_delta + base_energy) >> 4))
+-		return best_energy_cpu;
+-
+-	return prev_cpu;
+-
+-fail:
+-	rcu_read_unlock();
+-
+-	return -1;
+-}
+-
+ /*
+  * select_task_rq_fair: Select target runqueue for the waking task in domains
+  * that have the relevant SD flag set. In practice, this is SD_BALANCE_WAKE,
+@@ -6849,14 +6594,6 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
+ 
+ 	if (wake_flags & WF_TTWU) {
+ 		record_wakee(p);
+-
+-		if (sched_energy_enabled()) {
+-			new_cpu = find_energy_efficient_cpu(p, prev_cpu);
+-			if (new_cpu >= 0)
+-				return new_cpu;
+-			new_cpu = prev_cpu;
+-		}
+-
+ 		want_affine = !wake_wide(p) && cpumask_test_cpu(cpu, p->cpus_ptr);
+ 	}
+ 
+-- 
+2.32.0

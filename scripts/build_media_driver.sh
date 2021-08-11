@@ -48,5 +48,5 @@ sudo make uninstall
 sudo make install
 
 export LIBVA_DRIVER_NAME=iHD
-;sudo echo LIBVA_DRIVER_NAME=iHD >> /etc/environment
+#sudo echo LIBVA_DRIVER_NAME=iHD >> /etc/environment
 vainfo
