@@ -29,7 +29,10 @@ cat add_noir_version.patch \
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
        other/uksm-5.13.patch \
-       other/v5.13.12-lqx1.patch \
+       other/0001-zstd-patches.patch \
+       other/0001-ntfs3-patches.patch \
+       other/xanmod.patch \
+       other/v5.13.12-lqx4.patch \
       > noir.patch
 ;;
 
@@ -47,7 +50,6 @@ cat add_noir_version.patch \
        aufs5/aufs5-mmap.patch \
        aufs5/aufs5-standalone.patch \
        other/0001-cpu-patches.patch \
-       other/ck1.patch \
        other/0001-bbr2-patches.patch \
        other/0001-futex-resync-from-gitlab.collabora.com.patch \
        other/0001-futex2-resync-from-gitlab.collabora.com.patch \
@@ -57,7 +59,8 @@ cat add_noir_version.patch \
        other/0001-ntfs3-patches.patch \
        other/0001-zstd-patches.patch \
        other/xanmod.patch \
-       other/prjc_v5.13-r2.patch \
+       other/ck1.patch \
+       other/prjc_v5.13-r3.patch \
       > noir.patch
 ;;
 esac
