@@ -709,8 +709,8 @@ class allnumbers(object):
 #mini
         ee = n3.makeMiniNumber1()
         n3.del031(ee)
-        ee = ee+n3.group3c
-        n3.delstmini(39,ee)
+        ee = ee
+        n3.delstmini(40,ee)
         n3.delbeforemini(200,ee)
         #n3.makeMiniNumber3(ee)
         #n3.del_rehearsal_mini(ee)
@@ -731,7 +731,7 @@ class allnumbers(object):
 #Numbers4予想
         n4 = numbers4()
         rs = n4.make_straight_under3000()
-        rs = n4.make_straight()
+        #rs = n4.make_straight()
         n4.delst(rs)
         n4.dellow2(50,rs)
         n4.dellow3(500,rs)
