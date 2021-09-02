@@ -10,16 +10,16 @@ def information():
     cmd3 = "dmesg | grep scheduler"
     cmd4 = "cat /proc/cpuinfo | grep 'model name' | tail -n 1"
     cmd5 = "cat /proc/meminfo | grep MemTotal"
-    cmd6 = "dmesg | grep -i PDS"
+    #cmd6 = "dmesg | grep -i PDS"
     #cmd7 = "dmesg | grep -i MuQSS"
+    cmd8 = 'dmesg | grep -i "cacule cpu"'
     
     ret1 = sp.check_output(cmd1,shell=True)
     ret2 = sp.check_output(cmd2.split(" "))
     ret3 = sp.check_output(cmd3,shell=True)
     ret4 = sp.check_output(cmd4,shell=True)
     ret5 = sp.check_output(cmd5,shell=True)
-    ret6 = sp.check_output(cmd6,shell=True)
-    #ret7 = sp.check_output(cmd7,shell=True)
+    ret6 = sp.check_output(cmd8,shell=True)
     msb.showinfo("About Valkyrie Linux",ret1+ ret2 + ret3 + ret4 + ret5 + ret6)
 if __name__ == "__main__":
     information()
