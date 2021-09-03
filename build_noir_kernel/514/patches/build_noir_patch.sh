@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.14"
+VERSIONPOINT="5.14.1"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
@@ -35,6 +35,7 @@ cat add_noir_version.patch \
 
 cacule)
 cat add_noir_version.patch \
+      linux/patch-$VERSIONPOINT \
       other/0001-futex2-resync-from-gitlab.collabora.com.patch \
       other/use_kyber2.patch \
       other/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
@@ -51,8 +52,8 @@ cat add_noir_version.patch \
       other/le9ec-5.14.patch \
       other/0001-aufs-20210809.patch \
       other/0001-clearlinux-patches.patch \
+      other/0007-v5.14-winesync.patch \
       > noir.patch
 ;;
 
 esac
-#       linux/patch-$VERSIONPOINT \
