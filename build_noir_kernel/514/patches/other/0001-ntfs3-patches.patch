@@ -1,7 +1,7 @@
-From 240c87a61c4b2c0f3dbc9f7c6f3c1626d15c71a0 Mon Sep 17 00:00:00 2001
+From a7d118267fb8efc96772d9e4346e500e731ac54d Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:29 +0300
-Subject: [PATCH 01/31] fs/ntfs3: Add headers and misc files
+Subject: [PATCH 01/35] fs/ntfs3: Add headers and misc files
 
 This adds headers and misc files
 
@@ -2544,10 +2544,10 @@ index 000000000..9617382ac
 2.33.0
 
 
-From a97776190fed47c05b30a4cf5cf7332e2198978d Mon Sep 17 00:00:00 2001
+From 3d33af7161623a6765b5723c77e3cbf0f723cf95 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:29 +0300
-Subject: [PATCH 02/31] fs/ntfs3: Add initialization of super block
+Subject: [PATCH 02/35] fs/ntfs3: Add initialization of super block
 
 This adds initialization of super block
 
@@ -11322,10 +11322,10 @@ index 000000000..6be13e256
 2.33.0
 
 
-From 195b2b3f5de8bda00599cd9979ee8166213cddc8 Mon Sep 17 00:00:00 2001
+From 6c1bd6a73993a4a7a7888b112bf33493997d5e30 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:29 +0300
-Subject: [PATCH 03/31] fs/ntfs3: Add bitmap
+Subject: [PATCH 03/35] fs/ntfs3: Add bitmap
 
 This adds bitmap
 
@@ -13007,10 +13007,10 @@ index 000000000..32aab0031
 2.33.0
 
 
-From 7a2abee37c63d78143f5dc059c66c496069ded9f Mon Sep 17 00:00:00 2001
+From 60c4084bd46d4febfc25010fc140b6ca92783b58 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:29 +0300
-Subject: [PATCH 04/31] fs/ntfs3: Add file operations and implementation
+Subject: [PATCH 04/35] fs/ntfs3: Add file operations and implementation
 
 This adds file operations and implementation
 
@@ -20248,10 +20248,10 @@ index 000000000..5cdf6efe6
 2.33.0
 
 
-From be49658453b92fa7fd97cbb4fb116af8ad8ad26f Mon Sep 17 00:00:00 2001
+From d769336ee83c78a39d90bfc51737a5cfba11c4de Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:30 +0300
-Subject: [PATCH 05/31] fs/ntfs3: Add attrib operations
+Subject: [PATCH 05/35] fs/ntfs3: Add attrib operations
 
 This adds attrib operations
 
@@ -23967,10 +23967,10 @@ index 000000000..98871c895
 2.33.0
 
 
-From 0432e590895235b56337600fc91f30679e145f36 Mon Sep 17 00:00:00 2001
+From f5e5e493108711fb9a23dd0e7e8223e5951dbe1e Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:30 +0300
-Subject: [PATCH 06/31] fs/ntfs3: Add compression
+Subject: [PATCH 06/35] fs/ntfs3: Add compression
 
 This patch adds different types of NTFS-applicable compressions:
 - lznt
@@ -26037,10 +26037,10 @@ index 000000000..ead9ab7d6
 2.33.0
 
 
-From e3038901c290394faa5aba70302f9c65a482247f Mon Sep 17 00:00:00 2001
+From 773041bde13d2207ae600d43dd1795bf69caa877 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:30 +0300
-Subject: [PATCH 07/31] fs/ntfs3: Add NTFS journal
+Subject: [PATCH 07/35] fs/ntfs3: Add NTFS journal
 
 This adds NTFS journal
 
@@ -31242,10 +31242,10 @@ index 000000000..397ba6a95
 2.33.0
 
 
-From f3797c72ea63b3ad8012e4cbf4e53abaddba600e Mon Sep 17 00:00:00 2001
+From 13340a818c64a74942dec18ebfd20d6e0d4b0ecd Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:30 +0300
-Subject: [PATCH 08/31] fs/ntfs3: Add Kconfig, Makefile and doc
+Subject: [PATCH 08/35] fs/ntfs3: Add Kconfig, Makefile and doc
 
 This adds Kconfig, Makefile and doc
 
@@ -31483,10 +31483,10 @@ index 000000000..279701b62
 2.33.0
 
 
-From e50a0c3bc9da78aab6706f6eb52632ac73d492e5 Mon Sep 17 00:00:00 2001
+From 83a0291f5e89d1addf6cb7ea9feeb409d7134786 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:30 +0300
-Subject: [PATCH 09/31] fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+Subject: [PATCH 09/35] fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
 
 This adds NTFS3 in fs/Kconfig and fs/Makefile
 
@@ -31524,10 +31524,10 @@ index f98f3e691..25daacebb 100644
 2.33.0
 
 
-From dac24996b75207ea687aec2ef7480fc2552532cc Mon Sep 17 00:00:00 2001
+From 3475965d8981d6d97113c27639f5270d2d7e3421 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Fri, 13 Aug 2021 17:21:31 +0300
-Subject: [PATCH 10/31] fs/ntfs3: Add MAINTAINERS
+Subject: [PATCH 10/35] fs/ntfs3: Add MAINTAINERS
 
 This adds MAINTAINERS
 
@@ -31560,10 +31560,10 @@ index d7b4f3287..952d23cf7 100644
 2.33.0
 
 
-From 46a315495eecefdea147ef33af5426459138b755 Mon Sep 17 00:00:00 2001
+From d2d3a913500ae84e0b785fb3087970c58f20d8c3 Mon Sep 17 00:00:00 2001
 From: Colin Ian King <colin.king@canonical.com>
 Date: Mon, 16 Aug 2021 11:13:08 +0100
-Subject: [PATCH 11/31] fs/ntfs3: Fix various spelling mistakes
+Subject: [PATCH 11/35] fs/ntfs3: Fix various spelling mistakes
 
 There is a spelling mistake in a ntfs_err error message. Also
 fix various spelling mistakes in comments.
@@ -31657,10 +31657,10 @@ index 9617382ac..b53943538 100644
 2.33.0
 
 
-From 36440f72e4889b5282676bae9ba697e4baa252da Mon Sep 17 00:00:00 2001
+From fb8ddb00b6057a9fad20d93166f9010455caff10 Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Mon, 16 Aug 2021 13:37:32 +0300
-Subject: [PATCH 12/31] fs/ntfs3: Use linux/log2 is_power_of_2 function
+Subject: [PATCH 12/35] fs/ntfs3: Use linux/log2 is_power_of_2 function
 
 We do not need our own implementation for this function in this
 driver. It is much better to use generic one.
@@ -31759,10 +31759,10 @@ index 84d4f389f..903975b7e 100644
 2.33.0
 
 
-From 7fcebffff07265d66ed1d7a7b15d6d159dbf3284 Mon Sep 17 00:00:00 2001
+From 86869125c90969ba3e0e182b3e8450eda0b6831b Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Mon, 16 Aug 2021 15:01:56 +0300
-Subject: [PATCH 13/31] fs/ntfs3: Add ifndef + define to all header files
+Subject: [PATCH 13/35] fs/ntfs3: Add ifndef + define to all header files
 
 Add guards so that compiler will only include header files once.
 
@@ -31838,10 +31838,10 @@ index c8ea6dd38..b5da2f06f 100644
 2.33.0
 
 
-From 1e1e6264317a10390b8dcf1bb6ed1e038a641a16 Mon Sep 17 00:00:00 2001
+From 4aa0db8bd3c52786da9a5340bf4d7d48ab6d06e0 Mon Sep 17 00:00:00 2001
 From: Colin Ian King <colin.king@canonical.com>
 Date: Mon, 16 Aug 2021 17:30:25 +0100
-Subject: [PATCH 14/31] fs/ntfs3: Fix integer overflow in multiplication
+Subject: [PATCH 14/35] fs/ntfs3: Fix integer overflow in multiplication
 
 The multiplication of the u32 data_size with a int is being performed
 using 32 bit arithmetic however the results is being assigned to the
@@ -31874,10 +31874,10 @@ index 6aa9540ec..9386c551e 100644
 2.33.0
 
 
-From d294fb481bb7052261c376fdfe998e103fb10d24 Mon Sep 17 00:00:00 2001
+From a0851fbd1b965cca65bb84c8100ade7d05c369a8 Mon Sep 17 00:00:00 2001
 From: Nathan Chancellor <nathan@kernel.org>
 Date: Mon, 16 Aug 2021 12:30:41 -0700
-Subject: [PATCH 15/31] fs/ntfs3: Remove unused variable cnt in
+Subject: [PATCH 15/35] fs/ntfs3: Remove unused variable cnt in
  ntfs_security_init()
 
 Clang warns:
@@ -31933,10 +31933,10 @@ index 92140050f..c6599c514 100644
 2.33.0
 
 
-From fd4b8da62544c90c2fe8a4e0abc2c7b56804b12e Mon Sep 17 00:00:00 2001
+From a98286dbfac88a614dbc23eb44f2ddc1521dd990 Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Wed, 18 Aug 2021 04:06:47 +0300
-Subject: [PATCH 16/31] fs/ntfs3: Fix one none utf8 char in source file
+Subject: [PATCH 16/35] fs/ntfs3: Fix one none utf8 char in source file
 
 In one source file there is for some reason non utf8 char. But hey this
 is fs development so this kind of thing might happen.
@@ -31964,10 +31964,10 @@ index c3121bf9c..e377d7247 100644
 2.33.0
 
 
-From 1f4fc94d552148c42310eb0d4b02511aee9558a6 Mon Sep 17 00:00:00 2001
+From f92ea4883895b0b93239834a5b2e7f3ea1bc31d0 Mon Sep 17 00:00:00 2001
 From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Date: Wed, 18 Aug 2021 17:21:46 -0500
-Subject: [PATCH 17/31] fs/ntfs3: Fix fall-through warnings for Clang
+Subject: [PATCH 17/35] fs/ntfs3: Fix fall-through warnings for Clang
 
 Fix the following fallthrough warnings:
 
@@ -32014,10 +32014,10 @@ index bf51e2944..a573c6e98 100644
 2.33.0
 
 
-From d3f4c7fbdeb88cdd343ae1e27a916ed444568f4f Mon Sep 17 00:00:00 2001
+From 72a3668bdaecbbf42becd93eaac83897833f2fdc Mon Sep 17 00:00:00 2001
 From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Date: Thu, 19 Aug 2021 16:23:37 +0800
-Subject: [PATCH 18/31] fs/ntfs3: Remove unused including <linux/version.h>
+Subject: [PATCH 18/35] fs/ntfs3: Remove unused including <linux/version.h>
 
 Eliminate the follow versioncheck warning:
 
@@ -32048,10 +32048,10 @@ index a573c6e98..ed64489ed 100644
 2.33.0
 
 
-From 8bb7fe098d0860d7166dc773c1e929f71c348264 Mon Sep 17 00:00:00 2001
+From 54470ca5d2ed80143ca3bac6d3a4239799719629 Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Tue, 24 Aug 2021 21:37:06 +0300
-Subject: [PATCH 19/31] fs/ntfs3: Restyle comment block in ni_parse_reparse()
+Subject: [PATCH 19/35] fs/ntfs3: Restyle comment block in ni_parse_reparse()
 
 First of this fix one none utf8 char in this comment block. Maybe
 this happened because error in filesystem ;)
@@ -32099,10 +32099,10 @@ index e377d7247..e94d830b2 100644
 2.33.0
 
 
-From 70739c3e7eda25668f654222e6cf87b1271cf0cb Mon Sep 17 00:00:00 2001
+From 64eb36e89dd67ea5788ace9fe2fb42362d3851e2 Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Thu, 26 Aug 2021 11:56:29 +0300
-Subject: [PATCH 20/31] fs/ntfs3: Use kernel ALIGN macros over driver specific
+Subject: [PATCH 20/35] fs/ntfs3: Use kernel ALIGN macros over driver specific
 
 The static checkers (Smatch) were complaining because QuadAlign() was
 buggy.  If you try to align something higher than UINT_MAX it got
@@ -32674,10 +32674,10 @@ index 98871c895..6b17d46b9 100644
 2.33.0
 
 
-From 0321ef7055f097284feaba0749da61e0d9c82193 Mon Sep 17 00:00:00 2001
+From 70ed32ec20192e6821bbcc8bacc357b07baca279 Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Tue, 24 Aug 2021 21:37:07 +0300
-Subject: [PATCH 21/31] fs/ntfs3: Do not use driver own alloc wrappers
+Subject: [PATCH 21/35] fs/ntfs3: Do not use driver own alloc wrappers
 
 Problem with these wrapper is that we cannot take off example GFP_NOFS
 flag. It is not recomended use those in all places. Also if we change
@@ -34257,10 +34257,10 @@ index 6b17d46b9..af89e50f7 100644
 2.33.0
 
 
-From 65dfff3014902b0f81683694818bab8c2fc277eb Mon Sep 17 00:00:00 2001
+From 0abaa520b3c0da47e9b2d7753edfa2fd8821463e Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Tue, 24 Aug 2021 21:37:08 +0300
-Subject: [PATCH 22/31] fs/ntfs3: Use kcalloc/kmalloc_array over
+Subject: [PATCH 22/35] fs/ntfs3: Use kcalloc/kmalloc_array over
  kzalloc/kmalloc
 
 Use kcalloc/kmalloc_array over kzalloc/kmalloc when we allocate array.
@@ -34338,10 +34338,10 @@ index 2f7d16543..329bc76df 100644
 2.33.0
 
 
-From 66308ebdd8567b43e17c608854862b9e5c5562ab Mon Sep 17 00:00:00 2001
+From 026331cb95d9e2df05dc7412ca41accd65709926 Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <dan.carpenter@oracle.com>
 Date: Tue, 24 Aug 2021 14:52:36 +0300
-Subject: [PATCH 23/31] fs/ntfs3: add checks for allocation failure
+Subject: [PATCH 23/35] fs/ntfs3: add checks for allocation failure
 
 Add a check for when the kzalloc() in init_rsttbl() fails.  Some of
 the callers checked for NULL and some did not.  I went down the call
@@ -34410,10 +34410,10 @@ index 2c213b559..7144ea8a9 100644
 2.33.0
 
 
-From 3aa5d1b05c3d715c47920fc68c94f2770e4c5563 Mon Sep 17 00:00:00 2001
+From 5c5ddb45582957322609570b010f943ec2194945 Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <dan.carpenter@oracle.com>
 Date: Tue, 24 Aug 2021 14:48:58 +0300
-Subject: [PATCH 24/31] fs/ntfs3: fix an error code in ntfs_get_acl_ex()
+Subject: [PATCH 24/35] fs/ntfs3: fix an error code in ntfs_get_acl_ex()
 
 The ntfs_get_ea() function returns negative error codes or on success
 it returns the length.  In the original code a zero length return was
@@ -34444,10 +34444,10 @@ index af89e50f7..d3d5b9d33 100644
 2.33.0
 
 
-From 2a34956eee353d7cee9497da6b08a79ba6eb74cb Mon Sep 17 00:00:00 2001
+From 5735a16cd25d9a85e5924fdd952c8ad692d14cc0 Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <dan.carpenter@oracle.com>
 Date: Tue, 24 Aug 2021 10:49:32 +0300
-Subject: [PATCH 25/31] fs/ntfs3: Fix error code in indx_add_allocate()
+Subject: [PATCH 25/35] fs/ntfs3: Fix error code in indx_add_allocate()
 
 Return -EINVAL if ni_find_attr() fails.  Don't return success.
 
@@ -34475,10 +34475,10 @@ index 334a3cef7..5fb41c9c8 100644
 2.33.0
 
 
-From 1a1c524db9f196668ffa299444f02a8f0544ce6c Mon Sep 17 00:00:00 2001
+From 947af1bfe5e615861582fbf862dd786a1dc99b59 Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <dan.carpenter@oracle.com>
 Date: Tue, 24 Aug 2021 10:50:15 +0300
-Subject: [PATCH 26/31] fs/ntfs3: Potential NULL dereference in
+Subject: [PATCH 26/35] fs/ntfs3: Potential NULL dereference in
  hdr_find_split()
 
 The "e" pointer is dereferenced before it has been checked for NULL.
@@ -34514,10 +34514,10 @@ index 5fb41c9c8..f4729aa50 100644
 2.33.0
 
 
-From dfaf4ba352911f697bca24f78aa96577afaea1fa Mon Sep 17 00:00:00 2001
+From 52162c25505cf985852d88a78f930d4a688c8dc4 Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <dan.carpenter@oracle.com>
 Date: Tue, 24 Aug 2021 10:51:04 +0300
-Subject: [PATCH 27/31] fs/ntfs3: Fix error handling in indx_insert_into_root()
+Subject: [PATCH 27/35] fs/ntfs3: Fix error handling in indx_insert_into_root()
 
 There are three bugs in this code:
 1) If indx_get_root() fails, then return -EINVAL instead of success.
@@ -34668,10 +34668,10 @@ index f4729aa50..69c6c4e0b 100644
 2.33.0
 
 
-From 17a012b5e4ce51fee4c60af871d8797f9f29510e Mon Sep 17 00:00:00 2001
+From 6fa0abe707209e7b4d3dc4545c324b5a0593694b Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Tue, 3 Aug 2021 14:57:09 +0300
-Subject: [PATCH 28/31] fs/ntfs3: Restyle comments to better align with
+Subject: [PATCH 28/35] fs/ntfs3: Restyle comments to better align with
  kernel-doc
 
 Capitalize comments and end with period for better reading.
@@ -46891,10 +46891,10 @@ index d3d5b9d33..b4c921e4b 100644
 2.33.0
 
 
-From 2e1a6a7849512de81083ca35637981e78d53b78e Mon Sep 17 00:00:00 2001
+From f0afcdd86248223d4c827676b695814c542b4b8a Mon Sep 17 00:00:00 2001
 From: Kari Argillander <kari.argillander@gmail.com>
 Date: Tue, 24 Aug 2021 21:20:20 +0300
-Subject: [PATCH 29/31] fs/ntfs3: Remove fat ioctl's from ntfs3 driver for now
+Subject: [PATCH 29/35] fs/ntfs3: Remove fat ioctl's from ntfs3 driver for now
 
 For some reason we have FAT ioctl calls. Even old ntfs driver did not
 use these. We should not use these because it his hard to get things out
@@ -46941,10 +46941,10 @@ index 26346771d..62ebfa324 100644
 2.33.0
 
 
-From 3527233bf4e734f95e3a02b84b5e78f8796993e7 Mon Sep 17 00:00:00 2001
+From f1e4403139c6bc27bd0e6e338fbd67b58ddcb7df Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Tue, 31 Aug 2021 18:52:39 +0300
-Subject: [PATCH 30/31] fs/ntfs3: Rework file operations
+Subject: [PATCH 30/35] fs/ntfs3: Rework file operations
 
 Rename now works "Add new name and remove old name".
 "Remove old name and add new name" may result in bad inode
@@ -48920,10 +48920,10 @@ index b4c921e4b..22fd5eb32 100644
 2.33.0
 
 
-From d70fff57ab0082472667e98a79e3c356cce3c2dd Mon Sep 17 00:00:00 2001
+From 152a82ddf38657827d64a0c8ad5a57c4200fd6c5 Mon Sep 17 00:00:00 2001
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Date: Tue, 31 Aug 2021 16:57:40 +0300
-Subject: [PATCH 31/31] fs/ntfs3: Restyle comments to better align with
+Subject: [PATCH 31/35] fs/ntfs3: Restyle comments to better align with
  kernel-doc
 
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
@@ -49525,6 +49525,296 @@ index 22fd5eb32..b15d532e4 100644
  }
  
  static inline size_t packed_ea_size(const struct EA_FULL *ea)
+-- 
+2.33.0
+
+
+From d803f0d0252c750071c0b1ef5b925116a98f6063 Mon Sep 17 00:00:00 2001
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Wed, 25 Aug 2021 21:24:35 +0300
+Subject: [PATCH 32/35] fs/ntfs3: Fix integer overflow in ni_fiemap with
+ fiemap_prep()
+
+Use fiemap_prep() to check valid flags. It also shrink request scope
+(@len) to what the fs can actually handle.
+
+This address following Smatch static checker warning:
+	fs/ntfs3/frecord.c:1894 ni_fiemap()
+	warn: potential integer overflow from user 'vbo + len'
+
+Because fiemap_prep() shrinks @len this cannot happened anymore.
+
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Link: lore.kernel.org/ntfs3/20210825080440.GA17407@kili/
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+---
+ fs/ntfs3/file.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 89557d60a..f9c9a8c91 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1212,8 +1212,9 @@ int ntfs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 	int err;
+ 	struct ntfs_inode *ni = ntfs_i(inode);
+ 
+-	if (fieinfo->fi_flags & FIEMAP_FLAG_XATTR)
+-		return -EOPNOTSUPP;
++	err = fiemap_prep(inode, fieinfo, start, &len, ~FIEMAP_FLAG_XATTR);
++	if (err)
++		return err;
+ 
+ 	ni_lock(ni);
+ 
+-- 
+2.33.0
+
+
+From 70c571d4a08ca3df9851c40b46f793b4b1618bf6 Mon Sep 17 00:00:00 2001
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Wed, 25 Aug 2021 21:25:22 +0300
+Subject: [PATCH 33/35] fs/ntfs3: Remove unnecessary condition checking from
+ ntfs_file_read_iter
+
+This check will be also performed in generic_file_read_iter() so we do
+not want to check this two times in a row.
+
+This was founded with Smatch
+	fs/ntfs3/file.c:803 ntfs_file_read_iter()
+	warn: unused return: count = iov_iter_count()
+
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+---
+ fs/ntfs3/file.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index f9c9a8c91..424450e77 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -793,8 +793,6 @@ int ntfs3_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
+ 
+ static ssize_t ntfs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ {
+-	ssize_t err;
+-	size_t count = iov_iter_count(iter);
+ 	struct file *file = iocb->ki_filp;
+ 	struct inode *inode = file->f_mapping->host;
+ 	struct ntfs_inode *ni = ntfs_i(inode);
+@@ -823,9 +821,7 @@ static ssize_t ntfs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	err = count ? generic_file_read_iter(iocb, iter) : 0;
+-
+-	return err;
++	return generic_file_read_iter(iocb, iter);
+ }
+ 
+ /*
+-- 
+2.33.0
+
+
+From e9f02334e2274ad7bdc55c8af92fd81cb6cfb110 Mon Sep 17 00:00:00 2001
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Fri, 27 Aug 2021 00:44:41 +0300
+Subject: [PATCH 34/35] fs/ntfs3: Remove GPL boilerplates from decompress lib
+ files
+
+Files already have SDPX identifier so no reason to keep boilerplates in
+these files anymore.
+
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+Acked-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+---
+ fs/ntfs3/lib/decompress_common.c | 13 -------------
+ fs/ntfs3/lib/decompress_common.h | 14 --------------
+ fs/ntfs3/lib/lzx_decompress.c    | 13 -------------
+ fs/ntfs3/lib/xpress_decompress.c | 13 -------------
+ 4 files changed, 53 deletions(-)
+
+diff --git a/fs/ntfs3/lib/decompress_common.c b/fs/ntfs3/lib/decompress_common.c
+index 850d8e8c8..e96652240 100644
+--- a/fs/ntfs3/lib/decompress_common.c
++++ b/fs/ntfs3/lib/decompress_common.c
+@@ -3,19 +3,6 @@
+  * decompress_common.c - Code shared by the XPRESS and LZX decompressors
+  *
+  * Copyright (C) 2015 Eric Biggers
+- *
+- * This program is free software: you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License as published by the Free Software
+- * Foundation, either version 2 of the License, or (at your option) any later
+- * version.
+- *
+- * This program is distributed in the hope that it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public License along with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+ #include "decompress_common.h"
+diff --git a/fs/ntfs3/lib/decompress_common.h b/fs/ntfs3/lib/decompress_common.h
+index 66297f398..2d70ae42f 100644
+--- a/fs/ntfs3/lib/decompress_common.h
++++ b/fs/ntfs3/lib/decompress_common.h
+@@ -1,22 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+ /*
+  * decompress_common.h - Code shared by the XPRESS and LZX decompressors
+  *
+  * Copyright (C) 2015 Eric Biggers
+- *
+- * This program is free software: you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License as published by the Free Software
+- * Foundation, either version 2 of the License, or (at your option) any later
+- * version.
+- *
+- * This program is distributed in the hope that it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public License along with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+ #include <linux/string.h>
+diff --git a/fs/ntfs3/lib/lzx_decompress.c b/fs/ntfs3/lib/lzx_decompress.c
+index 77a381a69..6b16f0707 100644
+--- a/fs/ntfs3/lib/lzx_decompress.c
++++ b/fs/ntfs3/lib/lzx_decompress.c
+@@ -6,19 +6,6 @@
+  * this is the only size used in System Compression.
+  *
+  * Copyright (C) 2015 Eric Biggers
+- *
+- * This program is free software: you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License as published by the Free Software
+- * Foundation, either version 2 of the License, or (at your option) any later
+- * version.
+- *
+- * This program is distributed in the hope that it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public License along with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+ #include "decompress_common.h"
+diff --git a/fs/ntfs3/lib/xpress_decompress.c b/fs/ntfs3/lib/xpress_decompress.c
+index 3d98f36a9..769c6d3dd 100644
+--- a/fs/ntfs3/lib/xpress_decompress.c
++++ b/fs/ntfs3/lib/xpress_decompress.c
+@@ -5,19 +5,6 @@
+  * based on the code from wimlib.
+  *
+  * Copyright (C) 2015 Eric Biggers
+- *
+- * This program is free software: you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License as published by the Free Software
+- * Foundation, either version 2 of the License, or (at your option) any later
+- * version.
+- *
+- * This program is distributed in the hope that it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public License along with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+ #include "decompress_common.h"
+-- 
+2.33.0
+
+
+From fb655aff7a92a67befa032a5ed1dc64df582cef9 Mon Sep 17 00:00:00 2001
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Sun, 29 Aug 2021 17:42:39 +0300
+Subject: [PATCH 35/35] fs/ntfs3: Change how module init/info messages are
+ displayed
+
+Usually in file system init() messages are only displayed in info level.
+Change level from notice to info, but keep CONFIG_NTFS3_64BIT_CLUSTER in
+notice level. Also this need even more attention so let's put big
+warning here so that nobody will not try accidentally use it.
+
+There is also no good reason to display internal stuff like binary tree
+search. This is always on option which can only disabled for debugging
+purposes by developer. Also this message does not even check if
+developer has disabled it or not so it is useless info.
+
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+---
+ fs/ntfs3/super.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
+
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index dbecf095d..55bbc9200 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -1448,21 +1448,14 @@ static int __init init_ntfs_fs(void)
+ {
+ 	int err;
+ 
+-	pr_notice("ntfs3: Index binary search\n");
+-	pr_notice("ntfs3: Hot fix free clusters\n");
+-	pr_notice("ntfs3: Max link count %u\n", NTFS_LINK_MAX);
++	pr_info("ntfs3: Max link count %u\n", NTFS_LINK_MAX);
+ 
+-#ifdef CONFIG_NTFS3_FS_POSIX_ACL
+-	pr_notice("ntfs3: Enabled Linux POSIX ACLs support\n");
+-#endif
+-#ifdef CONFIG_NTFS3_64BIT_CLUSTER
+-	pr_notice("ntfs3: Activated 64 bits per cluster\n");
+-#else
+-	pr_notice("ntfs3: Activated 32 bits per cluster\n");
+-#endif
+-#ifdef CONFIG_NTFS3_LZX_XPRESS
+-	pr_notice("ntfs3: Read-only LZX/Xpress compression included\n");
+-#endif
++	if (IS_ENABLED(CONFIG_NTFS3_FS_POSIX_ACL))
++		pr_info("ntfs3: Enabled Linux POSIX ACLs support\n");
++	if (IS_ENABLED(CONFIG_NTFS3_64BIT_CLUSTER))
++		pr_notice("ntfs3: Warning: Activated 64 bits per cluster. Windows does not support this\n");
++	if (IS_ENABLED(CONFIG_NTFS3_LZX_XPRESS))
++		pr_info("ntfs3: Read-only LZX/Xpress compression included\n");
+ 
+ 	err = ntfs3_init_bitmap();
+ 	if (err)
+@@ -1502,15 +1495,11 @@ static void __exit exit_ntfs_fs(void)
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("ntfs3 read/write filesystem");
+-MODULE_INFO(behaviour, "Index binary search");
+-MODULE_INFO(behaviour, "Hot fix free clusters");
+ #ifdef CONFIG_NTFS3_FS_POSIX_ACL
+ MODULE_INFO(behaviour, "Enabled Linux POSIX ACLs support");
+ #endif
+ #ifdef CONFIG_NTFS3_64BIT_CLUSTER
+-MODULE_INFO(cluster, "Activated 64 bits per cluster");
+-#else
+-MODULE_INFO(cluster, "Activated 32 bits per cluster");
++MODULE_INFO(cluster, "Warning: Activated 64 bits per cluster. Windows does not support this");
+ #endif
+ #ifdef CONFIG_NTFS3_LZX_XPRESS
+ MODULE_INFO(compression, "Read-only lzx/xpress compression included");
 -- 
 2.33.0
 

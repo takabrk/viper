@@ -47,15 +47,19 @@ cat add_noir_version.patch \
       other/0001-bbr2-5.14-introduce-BBRv2.patch \
       other/0001-ntfs3-patches.patch \
       other/0001-zstd-patches.patch \
-      other/lru_v4.patch \
+      other/lru.patch \
       other/le9ec-5.14.patch \
-      other/0001-aufs-20210809.patch \
+      other/0001-aufs-20210906.patch \
       other/0001-clearlinux-patches.patch \
       other/0001-futex2-resync-from-gitlab.collabora.com.patch \
       other/0007-v5.14-winesync.patch \
       other/acso.patch \
       other/OpenRGB.patch \
       other/VHBA.patch \
+      other/0006-x86-ACPI-State-Optimize-C3-entry-on-AMD-CPUs.patch \
+      other/0001-v4l2loopback-5.14-merge-v0.12.5.patch \
+      other/0001-zen-Allow-MSR-writes-by-default.patch \
+      other/0002-PCI-Add-Intel-remapped-NVMe-device-support.patch \
       > noir.patch
 ;;
 
