@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.14.1"
+VERSIONPOINT="5.14.2"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate custom_config.patch --size 0
