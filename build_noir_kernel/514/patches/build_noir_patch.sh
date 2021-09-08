@@ -42,12 +42,11 @@ cat add_noir_version.patch \
       other/0001-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch \
       other/0003-sched-core-nr_migrate-256-increases-number-of-tasks-.patch \
       other/0004-mm-set-8-megabytes-for-address_space-level-file-read.patch \
-      other/0001-UKSM-for-5.14.patch \
       other/ck1.patch \
+      other/0001-UKSM-for-5.14.patch \
       other/0001-bbr2-5.14-introduce-BBRv2.patch \
       other/0001-ntfs3-patches.patch \
       other/0001-zstd-patches.patch \
-      other/lru.patch \
       other/le9ec-5.14.patch \
       other/0001-aufs-20210906.patch \
       other/0001-clearlinux-patches.patch \
@@ -60,6 +59,10 @@ cat add_noir_version.patch \
       other/0001-v4l2loopback-5.14-merge-v0.12.5.patch \
       other/0001-zen-Allow-MSR-writes-by-default.patch \
       other/0002-PCI-Add-Intel-remapped-NVMe-device-support.patch \
+      other/0001-bcachefs-5.14-introduce-bcachefs-patchset.patch \
+      other/0001-sched-autogroup-Add-kernel-parameter-and-config-opti.patch \
+      other/0001-spadfs-5.13-merge-v1.0.14.patch \
+      other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
       > noir.patch
 ;;
 
