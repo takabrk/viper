@@ -63,6 +63,9 @@ cat add_noir_version.patch \
       other/0001-sched-autogroup-Add-kernel-parameter-and-config-opti.patch \
       other/0001-spadfs-5.13-merge-v1.0.14.patch \
       other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
+      other/prjc_v5.14-r1.patch \
+      other/slub_preempt_rt.patch \
+      other/locking_core_preempt_rt.patch \
       > noir.patch
 ;;
 
