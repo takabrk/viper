@@ -81,8 +81,11 @@ cat add_noir_version.patch \
       other/0001-spadfs-5.13-merge-v1.0.14.patch \
       other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
       other/prjc_v5.14-r1.patch \
-      other/slub_preempt_rt.patch \
-      other/locking_core_preempt_rt.patch \
+      PREEMPT_RT/slub_preempt_rt.patch \
+      PREEMPT_RT/locking_core_preempt_rt.patch \
+      PREEMPT_RT/lazy_preempt_x86_premmpt_rt.patch \
+      PREEMPT_RT/pm-tree_preempt_rt.patch \
+      PREEMPT_RT/sysfs__Add__sys_kernel_realtime_entry.patch \
       > noir.patch
 ;;
 
