@@ -1,12 +1,12 @@
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2021-09-11 09:30:37.757056177 +0900
-+++ .config	2021-09-10 15:36:31.260459000 +0900
+--- /dev/null	2021-09-13 07:28:31.846550084 +0900
++++ .config	2021-09-13 08:22:35.474278000 +0900
 @@ -0,0 +1,10507 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.14.2-noir-v2 Kernel Configuration
++# Linux/x86 5.14.3-noir-v4 Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0"
 +CONFIG_CC_IS_GCC=y
