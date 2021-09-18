@@ -1,12 +1,12 @@
 diff --git a/.config b/.config
 new file mode 100644
 index 000000000000..dcbcaa389249
---- /dev/null	2021-09-16 22:32:15.690550611 +0900
-+++ noir_base/.config	2021-09-16 14:39:49.998771000 +0900
-@@ -0,0 +1,10507 @@
+--- /dev/null	2021-09-18 22:54:03.037025730 +0900
++++ noir_base/.config	2021-09-17 13:33:29.506779000 +0900
+@@ -0,0 +1,10506 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/x86 5.14.4-noir-v1 Kernel Configuration
++# Linux/x86 5.14.5-noir Kernel Configuration
 +#
 +CONFIG_CC_VERSION_TEXT="gcc (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0"
 +CONFIG_CC_IS_GCC=y
@@ -90,7 +90,6 @@ index 000000000000..dcbcaa389249
 +CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR=y
 +CONFIG_GENERIC_IRQ_RESERVATION_MODE=y
 +CONFIG_IRQ_FORCED_THREADING=y
-+# CONFIG_FORCE_IRQ_THREADING is not set
 +CONFIG_SPARSE_IRQ=y
 +# CONFIG_GENERIC_IRQ_DEBUGFS is not set
 +# end of IRQ subsystem
