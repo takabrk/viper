@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSIONPOINT="5.14.6"
+VERSIONPOINT="5.14.7"
 NOIR_VERSION="noir"
 truncate noir.patch --size 0
 truncate noir_base/custom_config.patch --size 0
@@ -51,7 +51,7 @@ cat   linux/patch-$VERSIONPOINT \
       other/0001-bcachefs-5.14-introduce-bcachefs-patchset.patch \
       other/0001-spadfs-5.13-merge-v1.0.14.patch \
       other/0003-block-set-rq_affinity-2-for-full-multithreading-I-O.patch \
-      other/prjc_v5.14-r1.patch \
+      other/prjc_v5.14-r2.patch \
       PREEMPT_RT/0001-mm-slub-don-t-call-flush_all-from-slab_debug_trace_o.patch \
       PREEMPT_RT/0002-mm-slub-allocate-private-object-map-for-debugfs-list.patch \
       PREEMPT_RT/0003-mm-slub-allocate-private-object-map-for-validate_sla.patch \
