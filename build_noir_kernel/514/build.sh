@@ -1,7 +1,7 @@
 #!/bin/sh
 #custom linux kernel build script
 #Created by takamitsu hamada
-#September 27,2021
+#October 1,2021
 
 while getopts e: OPT
 do
@@ -11,10 +11,10 @@ do
   esac
 done
 VERSIONBASE="5.14"
-VERSIONPOINT="5.14.8"
+VERSIONPOINT="5.14.9"
 case $e_num in
     base)
-           wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
+           wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-$VERSIONBASE.tar.xz
            tar -Jxvf linux-$VERSIONBASE.tar.xz
            #wget https://git.kernel.org/torvalds/t/linux-$VERSIONBASE.tar.gz
            #tar -zxvf linux-$VERSIONBASE.tar.gz

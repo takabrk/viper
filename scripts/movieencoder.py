@@ -5,7 +5,7 @@ movie_encoding.py
 Copyright@ takamitu hamada
 version :  20170121
 License      :  BSD License
-Web site URL :  http://valkyrieviper.space
+Web site URL :  http://vsrx.work
 """
 import os,sys
 import subprocess as sp
@@ -80,6 +80,3 @@ class movieencoder(object):
         f1.write('return last')
 if __name__ == "__main__":
     me = movieencoder()
-
-
-
