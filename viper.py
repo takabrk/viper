@@ -47,7 +47,6 @@ class viper(object):
             sudo cp -a ~/viper /etc/skel
             sudo apt-get install synaptic
             sudo apt-get update
-            sudo dpkg -i ~/viper/gksu/*.deb
         """,shell=True)
         self.set_sources_list()
     def suckout(self):

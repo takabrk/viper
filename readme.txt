@@ -1,7 +1,7 @@
 Linux application "Viper Tools"
 Web site URL : http://vsrx.work
 Created by takamitsu hamada
-update:October 1,2021
+update:October 2,2021
 
 詳しいリファレンスは、以下で公開しています。
 
@@ -25,7 +25,6 @@ $ sudo pip install mecab-python3
 ・xfce4-terminal
 
 [主な機能]
-・カーネルビルド機能。
 ・競艇予想や数字選択式宝くじ予想機能
 ・Ubuntu系LinuxディストリビューションをオリジナルのLinuxディストリビューションである「Valkyrie Linux」のデスクトップ環境に変換する機能
 ・OpenJtalkを使ってコンピューターを喋らせる機能
@@ -36,18 +35,6 @@ $ sudo pip install mecab-python3
 ・ChromiumにGoogle Chrome内蔵のWidevineを入れる事が出来る「install widevine」機能
 ・動画ダウンロード機能
 ・VAAPI対応ffmpegとiHD Driverを使ったQSVハードウェアエンコード機能
-
-◇カスタムカーネルをビルドする
-build_noir_kernelディレクトリの直下にあるbuild.shがあります。
-端末上でのコマンド入力による実行も可能です。この機能を使う事でカスタムカーネル「Noir Linux kernel」を半自動で作る事が出来ます。使い方は、エミュレータで以下のコマンドを入力して実行します。
-
-1.公式のlinuxカーネルに、各パッチを当てて、ベースとなるカスタムカーネルのソースコードを作成
-
-$./build.sh -e base
-
-2.カスタムカーネルをビルド
-
-$./build.sh -e core
 
 ◇D-bus版Jackサーバを起動
 $cd scripts
