@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 """
 viper.py
-Copyright@ takamitsu hamada
+This script created by takamitsu hamada
 version :  20200805
 License      :  BSD License
 Web site URL :  http://vsrx.work

@@ -1,4 +1,6 @@
 #!/bin/sh
+#install_libraryapps.py
+#This script created by takamitsu hamada
 sudo apt-get update
 sudo apt-get install -y python python3 python-pip python3-pip xfce4-terminal libglade2-0 bison flex apngasm apngdis
 sudo apt-get install -y python-tk python3-tk python-dev libxml2-dev libxslt-dev python3-dev

@@ -129,7 +129,7 @@
                   <object class="GtkEntry" id="os_name">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Valkyrie Linux 21v12</property>
+                    <property name="text" translatable="yes">Valkyrie Linux 21v13</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -540,7 +540,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20211030)
+Viper Tools(20211129)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>

@@ -1,4 +1,6 @@
 #!/bin/sh
+#intel media driver install script
+#This script created by takamitsu hamada.
 
 sudo apt update
 sudo apt install -y autoconf automake cmake g++ libtool pkg-config libva-dev libdrm-dev libpciaccess-dev libx11-dev vainfo
