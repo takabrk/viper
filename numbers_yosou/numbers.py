@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20210802
+version :  20211220
 License      :  BSD License
 """
 from numbers_list import *
@@ -300,6 +300,13 @@ class numbers3(object):
 #0〜31までの数字を削除
     def del031(self,e):
         for i in range(31):
+            try:
+                e.remove(i)
+            except:e
+        return e
+#0〜15までの数字を削除
+    def del015(self,e):
+        for i in range(15):
             try:
                 e.remove(i)
             except:e
@@ -708,7 +715,8 @@ class allnumbers(object):
         n3=numbers3()
 #mini
         ee = n3.makeMiniNumber1()
-        n3.del031(ee)
+        #n3.del031(ee)
+        n3.del015(ee)
         ee = ee
         n3.delstmini(40,ee)
         n3.delbeforemini(200,ee)
