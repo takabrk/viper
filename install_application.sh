@@ -10,7 +10,7 @@ sudo apt install xfce4-terminal xfce4-taskmanager xfce4-power-manager xfce4-scre
 sudo apt install network-manager-gnome
 sudo apt install gnumeric abiword
 sudo apt install mozc-server mozc-utils-gui
-sudo apt install emacs25-nox emacs-mozc
+sudo apt install emacs emacs-mozc
 sudo apt install fcitx fcitx-mozc
 sudo apt install mousepad
 sudo apt install firefox

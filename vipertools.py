@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-#vipertools.py @takamitsu hamada 20210618
+#vipertools.py @takamitsu hamada 20211225
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -150,7 +150,7 @@ class valkyrie_setting(object):
 #SSB
     def on_ssb_clicked(self,widget):
         Thread(target=lambda : sp.call("./start_server &",shell="True")).start()
-        Thread(target=lambda : sp.call('chromium-browser --disk-cache-dir="/tmp" --app="http://localhost:8000/ssb.html?date=20180822f"',shell="True")).start()
+        Thread(target=lambda : sp.call('google-chrome --disk-cache-dir="/tmp" --app="http://localhost:8000/ssb.html?date=20180822f"',shell="True")).start()
 #Image Tool
     def on_imagetool_clicked(self,widget):
         os.chdir("imagetool")
