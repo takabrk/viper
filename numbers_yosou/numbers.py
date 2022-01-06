@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20211220
+version :  20220103
 License      :  BSD License
 """
 from numbers_list import *
@@ -479,6 +479,20 @@ class numbers3(object):
                 rs3.remove(i)
             except:rs3
         return rs3
+#出現したナンバーズ3のボックス数字削除
+    def del_remove3(self,rs3):
+        rem_num3 = [i[1] for i in remove3]
+        reh3a = [i/100 for i in rem_num3]
+        reh3b = [i%100/10 for i in rem_num3]
+        reh3c = [i%100%10 for i in rem_num3]
+        reh3d = [sorted([reh3a[i],reh3b[i],reh3c[i]]) for i in range(len(rem_num3))]
+        reh3 = [i[0]*100+i[1]*10+i[2] for i in reh3d]
+        for i in reh3:
+            try:
+                rs3.remove(i)
+            except:rs3
+        return rs3
+
 
 #Numbers 4
 #Numbers4クラス
@@ -707,6 +721,21 @@ class numbers4(object):
                 rs.remove(i)
             except:rs
         return rs
+#出現したナンバーズ4のボックス数字削除
+    def del_remove4(self,rs):
+        rem_num4 = [i[1] for i in remove4]
+        reh4a = [i/1000 for i in rem_num4]
+        reh4b = [i%1000/100 for i in rem_num4]
+        reh4c = [i%1000%100/10 for i in rem_num4]
+        reh4d = [i%1000%100%10 for i in rem_num4]
+        reh4e = [sorted([reh4a[i],reh4b[i],reh4c[i],reh4d[i]]) for i in range(len(rem_num4))]
+        reh4 = [i[0]*1000+i[1]*100+i[2]*10+i[3] for i in reh4e]
+        for i in reh4:
+            try:
+                rs.remove(i)
+            except:rs
+        return rs
+
 
 #ナンバーズ予想スクリプト
 class allnumbers(object):
@@ -734,6 +763,7 @@ class allnumbers(object):
         n3.delbox(40,rs3)
         n3.delzoro3(rs3)
         #n3.del_rehearsal3(rs3)
+        n3.del_remove3(rs3)
         #rs3 = set(sorted([random.choice(rs3) for i in range(10)]))
         n3b = sorted(set(zip(rs3,[n3.make_box(n3.full_num3).count(i) for i in rs3])))
 #Numbers4予想
@@ -749,6 +779,7 @@ class allnumbers(object):
         n4.deltriple(rs)
         n4.deldouble(rs)
         #n4.del_rehearsal4(rs)
+        n4.del_remove4(rs)
         #rs = set(sorted([random.choice(rs) for i in range(200)]))
         n4a = sorted(set(zip(rs,[n4.make_box(n4.full_num34).count(i) for i in rs])))
 
