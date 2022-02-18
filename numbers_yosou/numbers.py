@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20220103
+version :  20220212
 License      :  BSD License
 """
 from numbers_list import *
@@ -314,6 +314,14 @@ class numbers3(object):
 #リハーサル数字削除
     def del_rehearsal_mini(self,e):
         reh_mini = [i for i in rehearsal_mini]
+        for i in reh_mini:
+            try:
+                e.remove(i)
+            except:e
+        return e
+#当選したミニ数字削除
+    def del_mini_plus(self,e):
+        reh_mini = [i[1]%100 for i in remove3]
         for i in reh_mini:
             try:
                 e.remove(i)
@@ -751,6 +759,7 @@ class allnumbers(object):
         n3.delbeforemini(200,ee)
         #n3.makeMiniNumber3(ee)
         #n3.del_rehearsal_mini(ee)
+        n3.del_mini_plus(ee)
         e = ee
         #e = sorted(set([random.choice(ee) for i in range(20)]))
         n3a = sorted(set(zip(e,[n3.full_mini.count(i) for i in e])))
@@ -759,7 +768,7 @@ class allnumbers(object):
         #rs3 = n3.make_n3box_many()
         n3.delst(240,rs3)
         #n3.del100plus10(rs3)
-        rs3 = sorted(set(n3.make_box(rs3)))
+        #rs3 = sorted(set(n3.make_box(rs3)))
         n3.delbox(40,rs3)
         n3.delzoro3(rs3)
         #n3.del_rehearsal3(rs3)
@@ -769,11 +778,11 @@ class allnumbers(object):
 #Numbers4予想
         n4 = numbers4()
         rs = n4.make_straight_under3000()
-        #rs = n4.make_straight()
+        rs = n4.make_straight()
         n4.delst(rs)
-        n4.dellow2(50,rs)
-        n4.dellow3(500,rs)
-        rs = sorted(set(n4.make_box(rs)))
+        #n4.dellow2(50,rs)
+        #n4.dellow3(500,rs)
+        #rs = sorted(set(n4.make_box(rs)))
         n4.delbox(240,rs)
         n4.delzoro4(rs)
         n4.deltriple(rs)
