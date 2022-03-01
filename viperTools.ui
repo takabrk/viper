@@ -79,7 +79,7 @@
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">20.04.3</property>
+                    <property name="text" translatable="yes">20.04.4</property>
                     <property name="placeholder_text" translatable="yes">20.04</property>
                   </object>
                   <packing>
@@ -129,7 +129,7 @@
                   <object class="GtkEntry" id="os_name">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Valkyrie Linux 21</property>
+                    <property name="text" translatable="yes">Valkyrie Linux</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -177,7 +177,7 @@
                   <object class="GtkEntry" id="description">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Ubuntu 21.04.3 based</property>
+                    <property name="text" translatable="yes">Ubuntu 21.04.4 based</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -540,7 +540,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20220103)
+Viper Tools(20220301)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>

@@ -129,7 +129,7 @@
                   <object class="GtkEntry" id="os_name">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Valkyrie Linux 21v13</property>
+                    <property name="text" translatable="yes">Valkyrie Linux 21</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
