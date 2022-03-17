@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20220212
+version :  20220318
 License      :  BSD License
 """
 from numbers_list import *
@@ -187,7 +187,7 @@ class numbers3(object):
 
 #当選回数が多いボックス数字
     def make_n3box_many(self):
-        rs3 = sorted(set([89,24,349,157,59,278,169,138,127,459,368,247,234,189,18,279,129,679,589,568,458,14,369,23,389,139,126,237,358,49,379,28,468,178,268,19,137,147,469,179,36,168,135,79,45,57,167,346,245,68,47,16,478,378,37,269,259,579,678,58,26,457,367,124,128,136,236,257,489,479,29,15,159,345,789,289,246,123,69,17,146,347,249,145,66,78,567,35,359,148,248,238,258,67,569,578,267,158,06,34]))
+        rs3 = sorted(set([89,24,349,157,59,278,169,138,127,459,368,247,234,189,18,279,129,679,589,568,458,14,369,23,389,139,126,237,358,49,379,28,468,178,268,19,137,147,469,179,36,168,135,79,45,57,167,346,245,68,47,16,478,378,37,269,259,579,678,58,26,457,367,124,128,136,236,257,489,479,29,15,159,345,789,289,246,123,69,17,146,347,249,145,66,78,567,35,359,148,248,238,258,67,569,578,267,158,6,34]))
         return rs3
 
 #ナンバーズ3ミニ
@@ -307,6 +307,13 @@ class numbers3(object):
 #0〜15までの数字を削除
     def del015(self,e):
         for i in range(15):
+            try:
+                e.remove(i)
+            except:e
+        return e
+#0〜4までの数字を削除
+    def del004(self,e):
+        for i in range(5):
             try:
                 e.remove(i)
             except:e
@@ -752,14 +759,16 @@ class allnumbers(object):
         n3=numbers3()
 #mini
         ee = n3.makeMiniNumber1()
-        #n3.del031(ee)
-        n3.del015(ee)
-        ee = ee
-        n3.delstmini(40,ee)
-        n3.delbeforemini(200,ee)
         #n3.makeMiniNumber3(ee)
+        #n3.del031(ee)
+        #n3.del015(ee)
+        n3.del004(ee)
+        n3.delstmini(60,ee)
+        n3.delbeforemini(200,ee)
+        n3.useGmini(ee)
+        #n3.delboxmini(10,ee)
         #n3.del_rehearsal_mini(ee)
-        n3.del_mini_plus(ee)
+        #n3.del_mini_plus(ee)
         e = ee
         #e = sorted(set([random.choice(ee) for i in range(20)]))
         n3a = sorted(set(zip(e,[n3.full_mini.count(i) for i in e])))
@@ -768,11 +777,11 @@ class allnumbers(object):
         #rs3 = n3.make_n3box_many()
         n3.delst(240,rs3)
         #n3.del100plus10(rs3)
-        #rs3 = sorted(set(n3.make_box(rs3)))
-        n3.delbox(40,rs3)
+        rs3 = sorted(set(n3.make_box(rs3)))
+        n3.delbox(60,rs3)
         n3.delzoro3(rs3)
         #n3.del_rehearsal3(rs3)
-        n3.del_remove3(rs3)
+        #n3.del_remove3(rs3)
         #rs3 = set(sorted([random.choice(rs3) for i in range(10)]))
         n3b = sorted(set(zip(rs3,[n3.make_box(n3.full_num3).count(i) for i in rs3])))
 #Numbers4予想
