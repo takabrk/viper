@@ -219,11 +219,11 @@ echo -n "# Copying boot files"
 	apt-get purge -y gfxboot gfxboot-dev
 fi
 
-cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz
-cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
+#cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz
+#cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
 #cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz.efi
-#cp -f $FSPATH/boot/initrd.img* $ISOPATH/casper/initrd.lz
-#cp -f $FSPATH/boot/vmlinuz* $ISOPATH/casper/vmlinuz
+cp -f $FSPATH/boot/initrd.img*-generic $ISOPATH/casper/initrd.lz
+cp -f $FSPATH/boot/vmlinuz*-generic $ISOPATH/casper/vmlinuz
 #cp -f $FSPATH/boot/vmlinuz* $ISOPATH/casper/vmlinuz.efi
 rm -f $FSPATH/var/cache/apt/pkgcache.bin
 rm -f $FSPATH/var/cache/apt/srcpkgcache.bin) > /dev/null 2>&1

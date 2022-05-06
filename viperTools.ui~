@@ -79,7 +79,7 @@
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">20.04.4</property>
+                    <property name="text" translatable="yes">22.04</property>
                     <property name="placeholder_text" translatable="yes">20.04</property>
                   </object>
                   <packing>
@@ -104,7 +104,7 @@
                   <object class="GtkEntry" id="codename">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">focal</property>
+                    <property name="text" translatable="yes">jammy</property>
                     <property name="placeholder_text" translatable="yes">focal</property>
                   </object>
                   <packing>
@@ -177,7 +177,7 @@
                   <object class="GtkEntry" id="description">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Ubuntu 21.04.4 based</property>
+                    <property name="text" translatable="yes">Ubuntu 22.04 LTS based</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

@@ -1,36 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="viper_tools">
-    <property name="can_focus">False</property>
-    <child type="titlebar">
-      <object class="GtkLabel" id="title">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Viper Tools</property>
-      </object>
-    </child>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkBox" id="mainbox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkBox" id="builder">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox" id="box5">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">Valkyrie Linux Builder</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -41,7 +34,7 @@
                 <child>
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">Name</property>
                   </object>
                   <packing>
@@ -53,9 +46,9 @@
                 <child>
                   <object class="GtkEntry" id="name">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">Ubuntu</property>
-                    <property name="placeholder_text" translatable="yes">ubuntu</property>
+                    <property name="placeholder-text" translatable="yes">ubuntu</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -66,7 +59,7 @@
                 <child>
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">Version</property>
                   </object>
                   <packing>
@@ -78,9 +71,9 @@
                 <child>
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">22.04</property>
-                    <property name="placeholder_text" translatable="yes">20.04</property>
+                    <property name="placeholder-text" translatable="yes">20.04</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -91,7 +84,7 @@
                 <child>
                   <object class="GtkLabel" id="label7">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">Codename</property>
                   </object>
                   <packing>
@@ -103,9 +96,9 @@
                 <child>
                   <object class="GtkEntry" id="codename">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">jammy</property>
-                    <property name="placeholder_text" translatable="yes">focal</property>
+                    <property name="placeholder-text" translatable="yes">focal</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -116,7 +109,7 @@
                 <child>
                   <object class="GtkLabel" id="label8">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">OS name</property>
                   </object>
                   <packing>
@@ -128,7 +121,7 @@
                 <child>
                   <object class="GtkEntry" id="os_name">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">Valkyrie Linux</property>
                   </object>
                   <packing>
@@ -140,7 +133,7 @@
                 <child>
                   <object class="GtkLabel" id="label9">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">URL</property>
                   </object>
                   <packing>
@@ -152,7 +145,7 @@
                 <child>
                   <object class="GtkEntry" id="url">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">http://vsrx.work</property>
                   </object>
                   <packing>
@@ -164,7 +157,7 @@
                 <child>
                   <object class="GtkLabel" id="label10">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">Description</property>
                   </object>
                   <packing>
@@ -176,7 +169,7 @@
                 <child>
                   <object class="GtkEntry" id="description">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">Ubuntu 22.04 LTS based</property>
                   </object>
                   <packing>
@@ -188,7 +181,7 @@
                 <child>
                   <object class="GtkLabel" id="label11">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">ISO</property>
                   </object>
                   <packing>
@@ -200,7 +193,7 @@
                 <child>
                   <object class="GtkFileChooserButton" id="os_chooser">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -212,8 +205,8 @@
                   <object class="GtkButton" id="settings">
                     <property name="label" translatable="yes">Settings</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
                     <signal name="clicked" handler="on_settings_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -225,13 +218,13 @@
                 <child>
                   <object class="GtkBox" id="box6">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkButton" id="console">
                         <property name="label" translatable="yes">Console</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <signal name="clicked" handler="on_console_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -244,8 +237,8 @@
                       <object class="GtkButton" id="synaptic">
                         <property name="label" translatable="yes">Synaptic</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <signal name="clicked" handler="on_synaptic_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -258,8 +251,8 @@
                       <object class="GtkButton" id="extract">
                         <property name="label" translatable="yes">Extract</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <signal name="clicked" handler="on_extract_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -272,8 +265,8 @@
                       <object class="GtkButton" id="build">
                         <property name="label" translatable="yes">Build</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <signal name="clicked" handler="on_build_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -306,12 +299,12 @@
         <child>
           <object class="GtkBox" id="tools">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">System Config</property>
               </object>
               <packing>
@@ -324,8 +317,8 @@
               <object class="GtkButton" id="sound">
                 <property name="label" translatable="yes">Change Login Sound</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_sound_clicked" swapped="no"/>
               </object>
               <packing>
@@ -338,8 +331,8 @@
               <object class="GtkButton" id="system_tune">
                 <property name="label" translatable="yes">System Tuneup</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_system_tune_clicked" swapped="no"/>
               </object>
               <packing>
@@ -352,8 +345,8 @@
               <object class="GtkButton" id="tmpfs">
                 <property name="label" translatable="yes">tmpfs RAM Slider</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_tmpfs_clicked" swapped="no"/>
               </object>
               <packing>
@@ -366,8 +359,8 @@
               <object class="GtkButton" id="application">
                 <property name="label" translatable="yes">Inatall Applications</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_apps_clicked" swapped="no"/>
               </object>
               <packing>
@@ -379,7 +372,7 @@
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Other Tools</property>
               </object>
               <packing>
@@ -392,8 +385,8 @@
               <object class="GtkButton" id="numbers">
                 <property name="label" translatable="yes">ナンバーズ予想</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_numbers_clicked" swapped="no"/>
               </object>
               <packing>
@@ -406,8 +399,8 @@
               <object class="GtkButton" id="kyotei">
                 <property name="label" translatable="yes">競艇予想</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_kyotei_clicked" swapped="no"/>
               </object>
               <packing>
@@ -420,8 +413,8 @@
               <object class="GtkButton" id="reading">
                 <property name="label" translatable="yes">朗読</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_reading_clicked" swapped="no"/>
               </object>
               <packing>
@@ -434,8 +427,8 @@
               <object class="GtkButton" id="downloader">
                 <property name="label" translatable="yes">downloader</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_downloader_clicked" swapped="no"/>
               </object>
               <packing>
@@ -448,8 +441,8 @@
               <object class="GtkButton" id="imagetool">
                 <property name="label" translatable="yes">Image Tool</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_imagetool_clicked" swapped="no"/>
               </object>
               <packing>
@@ -462,8 +455,8 @@
               <object class="GtkButton" id="m2p">
                 <property name="label" translatable="yes">Movie2Pics</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_m2p_clicked" swapped="no"/>
               </object>
               <packing>
@@ -476,8 +469,8 @@
               <object class="GtkButton" id="apng_asvg">
                 <property name="label" translatable="yes">Animation PNG &amp; ASVG</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_apng_asvg_clicked" swapped="no"/>
               </object>
               <packing>
@@ -490,8 +483,8 @@
               <object class="GtkButton" id="movie_enc">
                 <property name="label" translatable="yes">QSV Movie Encode</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_movie_enc_clicked" swapped="no"/>
               </object>
               <packing>
@@ -504,8 +497,8 @@
               <object class="GtkButton" id="ssb">
                 <property name="label" translatable="yes">Specific Site Browser(SSB)</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_ssb_clicked" swapped="no"/>
               </object>
               <packing>
@@ -524,8 +517,8 @@
               <object class="GtkButton" id="cancel">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <signal name="clicked" handler="on_cancel_clicked" swapped="no"/>
               </object>
               <packing>
@@ -537,10 +530,10 @@
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20220421)
+Viper Tools(20220506)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>
@@ -557,6 +550,13 @@ This Program created by takamitsu hamada.</property>
             <property name="position">1</property>
           </packing>
         </child>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkLabel" id="title">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label" translatable="yes">Viper Tools</property>
       </object>
     </child>
   </object>
