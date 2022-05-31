@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20220318
+version :  20220516
 License      :  BSD License
 """
 from numbers_list import *
@@ -763,9 +763,9 @@ class allnumbers(object):
         #n3.del031(ee)
         #n3.del015(ee)
         n3.del004(ee)
-        n3.delstmini(60,ee)
+        n3.delstmini(40,ee)
         n3.delbeforemini(200,ee)
-        n3.useGmini(ee)
+        #n3.useGmini(ee)
         #n3.delboxmini(10,ee)
         #n3.del_rehearsal_mini(ee)
         #n3.del_mini_plus(ee)
