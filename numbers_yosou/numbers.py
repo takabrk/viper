@@ -764,7 +764,7 @@ class allnumbers(object):
         #n3.del015(ee)
         n3.del004(ee)
         n3.delstmini(40,ee)
-        n3.delbeforemini(200,ee)
+        #n3.delbeforemini(200,ee)
         #n3.useGmini(ee)
         #n3.delboxmini(10,ee)
         #n3.del_rehearsal_mini(ee)
@@ -812,7 +812,7 @@ class allnumbers(object):
         #print(str(rs)+"\n")
         with open("numbers.txt","w") as f:
 #ミニ予想数字
-            f.write("◇ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
+            f.write("◇ナンバーズ3ミニ予想数字\n"+ str([i[0] for i in n3a]) + "\n"+str(len([i[0] for i in n3a]))+"個\n")
             #f.write("◇ミニ予想数字\n"+ sssmini + "\n"+str(len([i[0] for i in n3a]))+"個\n")
             #f.write("◇ミニ予想数字 "+ str(n3a) + "\n")
 #Numbers3予想数字
