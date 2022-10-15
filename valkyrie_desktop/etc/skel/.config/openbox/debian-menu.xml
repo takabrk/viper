@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Automatically generated file. Do not edit (see /usr/share/doc/menu/html) -->
+
+<openbox_menu xmlns="http://openbox.org/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://openbox.org/
+                file:///usr/share/openbox/menu.xsd">
+
+<menu id='/Debian' label='Debian'>
+  <menu id='/Debian/アプリケーション' label='アプリケーション'>
+    <menu id='/Debian/アプリケーション/アクセシビリティ' label='アクセシビリティ'>
+      <item label='Xmag'>
+        <action name='Execute'><execute>xmag</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/エディタ' label='エディタ'>
+      <item label='Xedit'>
+        <action name='Execute'><execute>xedit</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/エミュレータ' label='エミュレータ'>
+      <item label='Yabause Qt'>
+        <action name='Execute'><execute>yabause-qt</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/グラフィック' label='グラフィック'>
+      <item label='X Window Snapshot'>
+        <action name='Execute'><execute>xwd | xwud</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/サウンド' label='サウンド'>
+      <item label='GNOME ALSA Mixer' icon='/usr/share/pixmaps/gnome-alsamixer/gnome-alsamixer-icon.xpm'>
+        <action name='Execute'><execute>/usr/bin/gnome-alsamixer</execute></action>
+      </item>
+      <item label='jack'>
+        <action name='Execute'><execute>x-terminal-emulator  -T &quot;jack&quot; -e sh -c &quot;/usr/bin/jack -Q -D --wait&quot;</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/シェル' label='シェル'>
+      <item label='Bash'>
+        <action name='Execute'><execute>x-terminal-emulator  -T &quot;Bash&quot; -e sh -c &quot;/bin/bash --login&quot;</execute></action>
+      </item>
+      <item label='Dash'>
+        <action name='Execute'><execute>x-terminal-emulator  -T &quot;Dash&quot; -e sh -c &quot;/bin/dash -i&quot;</execute></action>
+      </item>
+      <item label='Sh'>
+        <action name='Execute'><execute>x-terminal-emulator  -T &quot;Sh&quot; -e sh -c &quot;/bin/sh --login&quot;</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/システム' label='システム'>
+      <menu id='/Debian/アプリケーション/システム/システム管理' label='システム管理'>
+        <item label='Debian Task selector'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Debian Task selector&quot; -e sh -c &quot;su-to-root -c tasksel&quot;</execute></action>
+        </item>
+        <item label='DSL/PPPoE configuration tool' icon='/usr/share/pixmaps/pppoeconf.xpm'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;DSL/PPPoE configuration tool&quot; -e sh -c &quot;/usr/sbin/pppoeconf&quot;</execute></action>
+        </item>
+        <item label='Editres'>
+          <action name='Execute'><execute>editres</execute></action>
+        </item>
+        <item label='Logout (obsession)'>
+          <action name='Execute'><execute>/usr/bin/obsession-logout</execute></action>
+        </item>
+        <item label='Orphaner (all)'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Orphaner (all)&quot; -e sh -c &quot;su-to-root -c &apos;/usr/sbin/orphaner -a&apos;&quot;</execute></action>
+        </item>
+        <item label='Orphaner - editkeep'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Orphaner - editkeep&quot; -e sh -c &quot;su-to-root -c &apos;/usr/sbin/editkeep&apos;&quot;</execute></action>
+        </item>
+        <item label='Orphaner (libs)'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Orphaner (libs)&quot; -e sh -c &quot;su-to-root -c /usr/sbin/orphaner&quot;</execute></action>
+        </item>
+        <item label='pppconfig'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;pppconfig&quot; -e sh -c &quot;su-to-root -p root -c /usr/sbin/pppconfig&quot;</execute></action>
+        </item>
+        <item label='stalonetray'>
+          <action name='Execute'><execute>/usr/bin/stalonetray</execute></action>
+        </item>
+        <item label='UNetbootin' icon='/usr/share/pixmaps/unetbootin.xpm'>
+          <action name='Execute'><execute>/usr/bin/unetbootin</execute></action>
+        </item>
+        <item label='Xclipboard'>
+          <action name='Execute'><execute>xclipboard</execute></action>
+        </item>
+        <item label='Xfontsel'>
+          <action name='Execute'><execute>xfontsel</execute></action>
+        </item>
+        <item label='Xkill'>
+          <action name='Execute'><execute>xkill</execute></action>
+        </item>
+        <item label='Xrefresh'>
+          <action name='Execute'><execute>xrefresh</execute></action>
+        </item>
+      </menu>
+      <menu id='/Debian/アプリケーション/システム/セキュリティ' label='セキュリティ'>
+        <item label='light-locker-settings'>
+          <action name='Execute'><execute>light-locker-settings</execute></action>
+        </item>
+      </menu>
+      <menu id='/Debian/アプリケーション/システム/ハードウェア' label='ハードウェア'>
+        <item label='Xvidtune'>
+          <action name='Execute'><execute>xvidtune</execute></action>
+        </item>
+      </menu>
+      <menu id='/Debian/アプリケーション/システム/パッケージ管理' label='パッケージ管理'>
+        <item label='Aptitude Package Manager (text)'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Aptitude Package Manager (text)&quot; -e sh -c &quot;/usr/bin/aptitude-curses&quot;</execute></action>
+        </item>
+        <item label='Synaptic Package Manager' icon='/usr/share/synaptic/pixmaps/synaptic_32x32.xpm'>
+          <action name='Execute'><execute>x-terminal-emulator -e synaptic-pkexec</execute></action>
+        </item>
+      </menu>
+      <menu id='/Debian/アプリケーション/システム/モニタリング' label='モニタリング'>
+        <item label='Pstree' icon='/usr/share/pixmaps/pstree16.xpm'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Pstree&quot; -e sh -c &quot;/usr/bin/pstree.x11&quot;</execute></action>
+        </item>
+        <item label='Top'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Top&quot; -e sh -c &quot;/usr/bin/top&quot;</execute></action>
+        </item>
+        <item label='Xconsole'>
+          <action name='Execute'><execute>xconsole -file /dev/xconsole</execute></action>
+        </item>
+        <item label='Xev'>
+          <action name='Execute'><execute>x-terminal-emulator -e xev</execute></action>
+        </item>
+        <item label='Xload'>
+          <action name='Execute'><execute>xload</execute></action>
+        </item>
+      </menu>
+    </menu>
+    <menu id='/Debian/アプリケーション/ターミナルエミュレータ' label='ターミナルエミュレータ'>
+      <item label='X-Terminal as root (GKsu)' icon='/usr/share/pixmaps/gksu-debian.xpm'>
+        <action name='Execute'><execute>/usr/bin/gksu -u root /usr/bin/x-terminal-emulator</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/テキスト' label='テキスト'>
+      <item label='EBView' icon='/usr/share/pixmaps/ebview.xpm'>
+        <action name='Execute'><execute>/usr/bin/ebview</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/ネットワーク' label='ネットワーク'>
+      <item label='VNC Viewer'>
+        <action name='Execute'><execute>xvnc4viewer</execute></action>
+      </item>
+      <menu id='/Debian/アプリケーション/ネットワーク/ウェブブラウジング' label='ウェブブラウジング'>
+        <item label='Lynx'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Lynx&quot; -e sh -c &quot;lynx&quot;</execute></action>
+        </item>
+      </menu>
+      <menu id='/Debian/アプリケーション/ネットワーク/コミュニケーション' label='コミュニケーション'>
+        <item label='Telnet'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Telnet&quot; -e sh -c &quot;/usr/bin/telnet.netkit&quot;</execute></action>
+        </item>
+        <item label='Xbiff'>
+          <action name='Execute'><execute>xbiff</execute></action>
+        </item>
+      </menu>
+    </menu>
+    <menu id='/Debian/アプリケーション/ビュワー' label='ビュワー'>
+      <item label='mcomix'>
+        <action name='Execute'><execute>/usr/bin/mcomix</execute></action>
+      </item>
+      <item label='Xditview'>
+        <action name='Execute'><execute>xditview</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/プログラミング' label='プログラミング'>
+      <item label='distcc monitor'>
+        <action name='Execute'><execute>/usr/bin/distccmon-gnome</execute></action>
+      </item>
+      <item label='GDB'>
+        <action name='Execute'><execute>x-terminal-emulator  -T &quot;GDB&quot; -e sh -c &quot;/usr/bin/gdb&quot;</execute></action>
+      </item>
+      <item label='Tclsh8.6'>
+        <action name='Execute'><execute>x-terminal-emulator  -T &quot;Tclsh8.6&quot; -e sh -c &quot;/usr/bin/tclsh8.6&quot;</execute></action>
+      </item>
+      <item label='TkWish8.6'>
+        <action name='Execute'><execute>x-terminal-emulator -e /usr/bin/wish8.6</execute></action>
+      </item>
+    </menu>
+    <menu id='/Debian/アプリケーション/科学' label='科学'>
+      <menu id='/Debian/アプリケーション/科学/数学' label='数学'>
+        <item label='Bc'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Bc&quot; -e sh -c &quot;/usr/bin/bc&quot;</execute></action>
+        </item>
+        <item label='Dc'>
+          <action name='Execute'><execute>x-terminal-emulator  -T &quot;Dc&quot; -e sh -c &quot;/usr/bin/dc&quot;</execute></action>
+        </item>
+        <item label='galculator' icon='/usr/share/pixmaps/galculator.xpm'>
+          <action name='Execute'><execute>/usr/bin/galculator</execute></action>
+        </item>
+        <item label='Xcalc'>
+          <action name='Execute'><execute>xcalc</execute></action>
+        </item>
+      </menu>
+    </menu>
+  </menu>
+  <menu id='/Debian/ゲーム' label='ゲーム'>
+    <menu id='/Debian/ゲーム/おもちゃ' label='おもちゃ'>
+      <item label='Oclock'>
+        <action name='Execute'><execute>oclock</execute></action>
+      </item>
+      <item label='Xclock (analog)'>
+        <action name='Execute'><execute>xclock -analog</execute></action>
+      </item>
+      <item label='Xclock (digital)'>
+        <action name='Execute'><execute>xclock -digital -update 1</execute></action>
+      </item>
+      <item label='Xeyes'>
+        <action name='Execute'><execute>xeyes</execute></action>
+      </item>
+      <item label='Xlogo'>
+        <action name='Execute'><execute>xlogo</execute></action>
+      </item>
+    </menu>
+  </menu>
+  <menu id='/Debian/ヘルプ' label='ヘルプ'>
+    <item label='Info'>
+      <action name='Execute'><execute>x-terminal-emulator  -T &quot;Info&quot; -e sh -c &quot;info&quot;</execute></action>
+    </item>
+    <item label='Xman'>
+      <action name='Execute'><execute>xman</execute></action>
+    </item>
+  </menu>
+</menu>
+
+</openbox_menu>

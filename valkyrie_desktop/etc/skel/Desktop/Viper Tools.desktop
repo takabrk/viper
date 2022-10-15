@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Viper Tools
+Comment=Original Application
+Exec=xfce4-terminal --hide-menubar -x sh -c 'cd ~/viper && python3 vipertools.py; read'
+Icon=/usr/share/icons/vipertools_icon.png
+Terminal=false
+Type=Application
+Categories=Other;

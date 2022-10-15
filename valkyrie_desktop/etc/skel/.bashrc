@@ -120,7 +120,40 @@ export USE_CCACHE=1
 export CCACHE_DIR=/root/.ccache
 export CC='ccache gcc'
 export CXX='ccache g++'
+#export CC='ccache clang'
+#export HOSTCC='ccache clang'
 export LD_LIBRARY_PATH="/usr/local/lib"
+
+#export CCPREFIX=${HOME}/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin/arm-bcm2708hardfp-linux-gnueabi-
+
+export PATH="/snap/bin:$PATH"
+
+#export LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri
+export LIBVA_DRIVER_NAME=iHD
+#export LIBVA_DRIVER_NAME=i965
+#export DRI_PRIME=1
+
+#export AMDAPPSDKROOT=/opt/rocm/opencl 
+#export AMDAPPSDK=/opt/rocm/opencl
+#export ROCM_HOME=/opt/rocm/bin
+#export ROCM_PATH=/opt/rocm
+#export HCC_HOME=/opt/rocm/hcc
+#export HIP_PATH=/opt/rocm/hip
+#export PATH=$HCC_HOME/bin:$HIP_PATH/bin:$PATH
+#export PATH=/usr/local/bin:$HCC_HOME/bin:$HIP_PATH/bin:$ROCM_HOME:$PATH:/opt/rocm/opencl/bin/x86_64
+#export LD_LIBRARY=$LD_LIBRARY:/opt/rocm/opencl/lib/x86_64
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/rocm/hsa/lib
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/rocm/hiprand/lib
+#export HIP_VISIBLE_DEVICES=0
+
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export XDG_MENU_PREFIX=lxqt-
+export XDG_CURRENT_DESKTOP=LXQt
+
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+
+
 
 
 

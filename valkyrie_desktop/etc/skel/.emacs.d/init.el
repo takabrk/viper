@@ -3,6 +3,10 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
+(require 'package)
+(setq package-archives
+    '(("melpa" . "http://melpa.org/packages/")
+      ("melpa-stable" . "http://stable.melpa.org/packages/")))
 (package-initialize)
 
 (custom-set-variables
@@ -10,7 +14,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cua-mode t nil (cua-base)))
+ '(cua-mode t nil (cua-base))
+ '(package-selected-packages '(flycheck flymake swiper counsel ivy web-mode company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -24,6 +29,11 @@
   (lambda()
     (define-key mozc-mode-map (kbd "<zenkaku-hankaku>") 'toggle-input-method)))
 
+;;line number
+(global-linum-mode t)
+(setq linum-format "%d ")
+
+;;MOZC
 (require 'mozc)
 
 (set-language-environment "Japanese")
@@ -40,10 +50,12 @@
 
 (electric-indent-mode -1)
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(fset 'package-desc-vers 'package--ac-desc-version)
+;;company
+(global-company-mode t)
+(global-set-key (kbd "C-f") 'company-complete)
+
+;;ivy
+(ivy-mode 1)
 
 ;;
 ;; whitespace
@@ -62,4 +74,6 @@
 
 (global-whitespace-mode 1)
 
-
+;;flycheck
+(setq flycheck-check-syntax-automatically
+  '(save idle-change mode-enabled))

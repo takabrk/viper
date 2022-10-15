@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Install Custom Kernel
+Comment=Install Custom Kernel
+Exec=xfce4-terminal --hide-menubar -x sh -c 'cd /opt/custom_kernel && sudo dpkg -i *.deb; read'
+Icon=/usr/share/icons/suru-plus-master/apps/64/application-default-icon.svg
+Terminal=false
+Type=Application
+Categories=Other;

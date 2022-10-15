@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Install Google Chrome
+Comment=Install Google Chrome
+Exec=xfce4-terminal --hide-menubar -x sh -c 'sudo apt install google-chrome-stable; read'
+Icon=/usr/share/icons/suru-plus-master/apps/64/chrome.svg
+Terminal=false
+Type=Application
+Categories=Other;

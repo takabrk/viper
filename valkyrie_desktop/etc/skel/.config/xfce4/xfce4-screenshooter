@@ -1,8 +1,8 @@
 delay=2
-region=2
+region=1
 action=1
 show_mouse=0
-screenshot_dir=file:/home/valkyrie/Pictures
-app=lximage-qt
+screenshot_dir=file:/home/valkyrie/ピクチャ
+app=comix
 last_user=
 

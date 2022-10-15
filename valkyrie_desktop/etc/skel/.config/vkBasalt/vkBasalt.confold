@@ -1,0 +1,569 @@
+#cas    - Contrast Adaptive Sharpening
+#dls    - Denoised Luma Sharpening
+#fxaa   - Fast Approximate Anti-Aliasing
+#smaa   - Enhanced Subpixel Morphological Antialiasing
+#lut    - Color LookUp Table
+
+
+reshadeTexturePath = "./reshade-shaders-master/Textures"
+reshadeIncludePath = "./reshade-shaders-master/Shaders"
+
+AmbientLight = ./reshade-shaders-master/Shaders/AmbientLight.fx
+colorfulness = ./reshade-shaders-master/Shaders/Colourfulness.fx
+denoise = ./reshade-shaders-master/Shaders/Denoise.fx
+hdr = ./reshade-shaders-master/Shaders/FakeHDR.fx
+finesharp = ./reshade-shaders-master/Shaders/FineSharp.fx
+curves = ./reshade-shaders-master/Shaders/Curves.fx
+clarity = ./reshade-shaders-master/Shaders/Clarity.fx
+dpx = ./reshade-shaders-master/Shaders/DPX.fx
+mxao = ./reshade-shaders-master/Shaders/MXAO.fx
+filmicpass = ./reshade-shaders-master/Shaders/FilmicPass.fx
+broom = ./reshade-shaders-master/Shaders/Bloom.fx
+eyeadaption = ./reshade-shaders-master/Shaders/EyeAdaption.fx
+ReflectiveBumpMapping = ./reshade-shaders-master/Shaders/ReflectiveBumpMapping.fx
+MagicBloom = ./reshade-shaders-master/Shaders/MagicBloom.fx
+CinematicDOF = ./reshade-shaders-master/Shaders/CinematicDOF.fx
+DOF = ./reshade-shaders-master/Shaders/DOF.fx
+vibrance = ./reshade-shaders-master/Shaders/Vibrance.fx
+AdaptiveFog = ./reshade-shaders-master/Shaders/AdaptiveFog.fx
+filmgrain = ./reshade-shaders-master/Shaders/FilmGrain2.fx
+lift_gamma_gain = ./reshade-shaders-master/Shaders/LiftGammaGain.fx
+hls_shift = ./reshade-shaders-master/Shaders/HSLShift.fx
+display_depth = ./reshade-shaders-master/Shaders/DisplayDepth.fx
+UIMask_Top = ./reshade-shaders-master/Shaders/UIMask.fx
+PPFXSSDO = ./reshade-shaders-master/Shaders/PPFX_SSDO.fx
+PPFX_Bloom = ./reshade-shaders-master/Shaders/PPFX_Bloom.fx
+PPFX_Godrays = ./reshade-shaders-master/Shaders/PPFX_Godrays.fx
+Deband = ./reshade-shaders-master/Shaders/Deband.fx
+Tonemap = ./reshade-shaders-master/Shaders/Tonemap.fx
+qUINT_bloom = ./reshade-shaders-master/Shaders/qUINT_bloom.fx
+qUINT_lightroom = ./reshade-shaders-master/Shaders/qUINT_lightroom.fx
+qUINT_mxao = ./reshade-shaders-master/Shaders/qUINT_mxao.fx
+qUINT_deband = ./reshade-shaders-master/Shaders/qUINT_deband.fx
+qUINT_dof = ./reshade-shaders-master/Shaders/qUINT_dof.fx
+qUINT_sharp = ./reshade-shaders-master/Shaders/qUINT_sharp.fx
+qUINT_ssr = ./reshade-shaders-master/Shaders/qUINT_ssr.fx
+Technicolor = ./reshade-shaders-master/Shaders/Technicolor.fx
+Technicolor2 = ./reshade-shaders-master/Shaders/Technicolor2.fx
+Sepia = ./reshade-shaders-master/Shaders/Sepia.fx
+
+#Enable effects
+effects = ReflectiveBumpMapping:mxao:AmbientLight:qUINT_bloom:hdr:lut:smaa:qUINT_sharp:AdaptiveFog
+
+depthCapture = off
+
+#toggleKey toggles the effects on/off
+toggleKey = Home
+
+#enableOnLaunch sets if the effects are enabled when started
+enableOnLaunch = True
+
+#casSharpness
+#0.0(less sharp) - 1.0(maximum sharp)
+casSharpness = 0.9
+
+#dlsSharpness
+#0.0(less sharp) - 1.0(maximum sharp)
+dlsSharpness = 0.9
+
+#dlsDenoise
+#0.0(min) -1.0(max)
+dlsDenoise = 0.17
+
+#fxaaQualitySubpix
+#1.00 - upper limit (softer)
+#0.75 - default amount of filtering
+#0.50 - lower limit (sharper, less sub-pixel aliasing removal)
+#0.25 - almost off
+#0.00 - completely off
+fxaaQualitySubpix = 0.75
+
+#fxaaQualityEdgeThreshold
+#0.333 - too little (faster)
+#0.250 - low quality
+#0.166 - default
+#0.125 - high quality 
+#0.063 - overkill (slower)
+fxaaQualityEdgeThreshold = 0.125
+
+#fxaaQualityEdgeThresholdMin
+#0.0833 - upper limit (default, the start of visible unfiltered edges)
+#0.0625 - high quality (faster)
+#0.0312 - visible limit (slower)
+fxaaQualityEdgeThresholdMin = 0.0312
+
+#smaaEdgeDetection
+#luma  - default
+#color - might catch more edges, but is more expensive
+smaaEdgeDetection = luma
+
+#smaaThreshold
+#Range: [0, 0.5]
+#0.1 is a reasonable value, and allows to catch most visible edges.
+#0.05 is a rather overkill value, that allows to catch 'em all.
+smaaThreshold = 0.05
+
+#smaaMaxSearchSteps
+#Range: [0, 112]
+#4  - low
+#8  - medium
+#16 - high
+#32 - ultra
+smaaMaxSearchSteps = 32
+
+#smaaMaxSearchStepsDiag
+#Range: [0, 20]
+#0  - low, medium
+#8  - high
+#16 - ultra
+smaaMaxSearchStepsDiag = 16
+
+#smaaCornerRounding
+#Range: [0, 100]
+#25 is a reasonable value
+smaaCornerRounding = 25
+
+#lutFile
+#supported are .CUBE files and .png with width == height * height
+lutFile = "./custom_LUT/lut2.png"
+
+#ReShade FX Shaders and qUINT Shaders settings
+#AdaptiveFog.fx
+BloomPower=0.000000
+BloomThreshold=0.000000
+BloomWidth=0.000000
+FogColor=0.783784,0.743398,0.668788
+FogCurve=2.420000
+FogStart=0.288000
+MaxFogFactor=0.300000
+
+#AmbientLight.fx
+alDebug=0
+alAdaptBaseMult=1.265625
+alInt=2.656250
+AL_DirtTex=0
+AL_Adaptive=2
+alThreshold=13.281250
+AL_Adaptation=1
+alAdapt=1.000000
+AL_Dirt=1
+alAdaptBaseBlackLvL=1
+alLensThresh=0.500000
+AL_Vibrance=2147483648
+alDirtInt=0.000000
+alDirtOVInt=2.656250
+alLensInt=2.000000
+AL_Lens=0
+
+#CinematicDOF.fx
+AutoFocusPoint=0.500000,0.500000
+AutoFocusTransitionSpeed=0.200000
+BlurQuality=4.000000
+BokehBusyFactor=0.000000
+FarPlaneMaxBlur=1.000000
+FNumber=2.800000
+FocalLength=1000.000000
+FocusCrosshairColor=1.000000,0.000000,1.000000,1.000000
+FocusPlaneColor=0.000000,0.000000,1.000000
+HighlightAnamorphicAlignmentFactor=0.000000
+HighlightAnamorphicFactor=1.000000
+HighlightAnamorphicSpreadFactor=0.000000
+HighlightGainFarPlane=0.400000
+HighlightGainNearPlane=0.200000
+HighlightThresholdFarPlane=0.350000
+HighlightThresholdNearPlane=0.000000
+ManualFocusPlane=8.000000
+NearPlaneMaxBlur=0.000000
+OutOfFocusPlaneColor=0.800000,0.800000,0.800000
+OutOfFocusPlaneColorTransparency=0.700000
+PostBlurSmoothing=0.000000
+ShowCoCValues=0
+ShowOutOfFocusPlaneOnMouseDown=0
+UseAutoFocus=1
+UseMouseDrivenAutoFocus=1
+
+#DOF.fx
+DOF_FARBLURCURVE=2.000000
+fADOF_ShapeCurvatureAmount=0.300000
+DOF_AUTOFOCUS=-1.000000
+DOF_MOUSEDRIVEN_AF=0.000000
+fGPDOFChromaAmount=0.150000
+DOF_INFINITEFOCUS=1.000000
+fGPDOFBiasCurve=2.000000
+DOF_FOCUSPOINT=0.500000,0.500000
+bADOF_ShapeApertureEnable=0.000000
+DOF_FOCUSSAMPLES=6.000000
+DOF_MANUALFOCUSDEPTH=0.020000
+DOF_NEARBLURCURVE=1.600000
+fGPDOFBrightnessMultiplier=2.000000
+bGPDOFPolygonalBokeh=1.000000
+fRingDOFFringe=0.500000
+DOF_FOCUSRADIUS=0.050000
+DOF_BLURRADIUS=15.000000
+fADOF_BokehCurve=4.000000
+iRingDOFSamples=6.000000
+iRingDOFRings=4.000000
+fGPDOFBrightnessThreshold=0.500000
+fRingDOFThreshold=0.700000
+bADOF_ShapeCurvatureEnable=0.000000
+fRingDOFGain=27.000000
+fRingDOFBias=0.000000
+bADOF_ImageChromaEnable=0.000000
+iMagicDOFBlurQuality=8.000000
+fMagicDOFColorCurve=4.000000
+iGPDOFQuality=6.000000
+fADOF_ShapeChromaAmount=0.125000
+fADOF_ShapeRotation=0.000000
+iGPDOFPolygonCount=5.000000
+fGPDOFBias=10.000000
+fADOF_SmootheningAmount=1.000000
+bMatsoDOFChromaEnable=1.000000
+fMatsoDOFChromaPow=1.400000
+fMatsoDOFBokehCurve=8.000000
+iADOF_ShapeQuality=17.000000
+iMatsoDOFBokehQuality=2.000000
+fMatsoDOFBokehAngle=0.000000
+bADOF_RotAnimationEnable=0.000000
+fADOF_RotAnimationSpeed=2.000000
+fADOF_ShapeWeightAmount=1.000000
+fADOF_ShapeApertureAmount=0.010000
+bADOF_ShapeAnamorphEnable=0.000000
+fADOF_ShapeAnamorphRatio=0.200000
+bADOF_ShapeDistortEnable=0.000000
+bADOF_ShapeChromaEnable=0.000000
+fADOF_ShapeWeightCurve=4.000000
+fADOF_ShapeDistortAmount=0.200000
+bADOF_ShapeDiffusionEnable=0.000000
+fADOF_ShapeDiffusionAmount=0.100000
+bADOF_ShapeWeightEnable=0.000000
+iADOF_ImageChromaHues=5.000000
+iADOF_ShapeChromaMode=3.000000
+fADOF_ImageChromaCurve=1.000000
+fADOF_ImageChromaAmount=3.000000
+
+#Clarity.fx
+ClarityBlendIfDark=50
+ClarityBlendIfLight=205
+ClarityBlendMode=0
+ClarityDarkIntensity=0.400000
+ClarityLightIntensity=0.000000
+ClarityOffset=2.000000
+ClarityRadius=3
+ClarityStrength=0.500000
+ClarityViewBlendIfMask=0
+ClarityViewMask=0
+
+#Curves.fx
+Contrast=0.400000
+Formula=6
+Mode=0
+
+#Daltonize.fx
+Type=0
+
+#Deband.fx
+banding_depth=1.000000
+custom_avgdiff=77.000000
+custom_maxdiff=9.900000
+custom_middiff=50.900002
+debug_output=0
+enable_depthbuffer=0
+enable_sdeviation=1
+enable_weber=1
+iterations=2
+range=12.000000
+t1=0.007000
+t2=0.040000
+threshold_preset=1
+
+#DepthHaze.fx
+EffectStrength=1.000000
+FogColor=0.800000,0.800000,0.800000
+FogFactor=0.200000
+FogStart=0.200000
+
+#DisplayDepth.fx
+Advanced_help=0
+bUIShowOffset=0
+bUIUseLivePreview=1
+bUIUsePreprocessorDefs=0
+Depth_help=0
+fUIDepthMultiplier=1.000000
+fUIFarPlane=25.000000
+fUIOffset=0.000000,0.000000
+fUIScale=1.000000,1.000000
+iUILogarithmic=0
+iUIOffset=0,0
+iUIPresentType=2
+iUIReversed=1
+iUIUpsideDown=0
+
+#DPX.fx
+RGB_Curve=11.111111,11.111111,11.111111
+Strength=0.166667
+RGB_C=0.333334,0.333334,0.333334
+Contrast=0.000000
+Saturation=1.000000
+Colorfulness=1.142361
+
+#Levels.fx
+BlackPoint=0
+HighlightClipping=0
+WhitePoint=240
+
+#LUT.fx
+fLUT_AmountChroma=1.000000
+fLUT_AmountLuma=1.000000
+
+#MagicBloom.fx
+f2Adapt_Clip=0.000000,1.000000
+fAdapt_Sensitivity=1.000000
+fAdapt_Speed=0.100000
+fBloom_Intensity=1.456000
+fBloom_Threshold=4.000000
+fDirt_Intensity=0.000000
+fExposure=0.500000
+iAdapt_Precision=2
+iDebug=0
+
+#MXAO.fx
+bMXAODebugViewEnable=0
+bMXAOSmoothNormalsEnable=1
+fMXAOAmbientOcclusionAmount=10.000000
+fMXAOBlurSharpness=2.000000
+fMXAOBlurSteps=2
+fMXAOFadeoutEnd=0.400000
+fMXAOFadeoutStart=0.200000
+fMXAOIndirectLightingAmount=4.000000
+fMXAOIndirectLightingSaturation=1.000000
+fMXAONormalBias=2.000000
+fMXAOSampleRadius=2.500000
+iMXAOBayerDitherLevel=1
+iMXAOSampleCount=24
+
+#PerfectPerspective.fx
+BorderColor=0.027000,0.027000,0.027000,0.000000
+DebugPreview=0
+FOV=90
+MirrorBorders=1
+Projection=0
+ResScale=1920,1920
+Type=0
+Vertical=0.500000
+Zooming=1.000000
+
+#PPFX_Bloom.fx
+pBloomBlendMode=0
+pBloomCurve=3.000000
+pBloomIntensity=0.200000
+pBloomRadius=82.000000
+pBloomSaturation=0.997000
+pBloomThreshold=0.928000
+pEnableHDR=0
+pEnableLensdirt=0
+pLensdirtCurve=1.200000
+pLensdirtIntensity=1.000000
+pTonemapContrast=1.020000
+pTonemapCurve=3.000000
+pTonemapExposure=1.200000
+pTonemapMode=0
+pTonemapSaturateBlacks=0.000000
+
+#PPFX_SSDO.fx
+pSSDOAmount=1.500000
+pSSDOAngleThreshold=0.400000
+pSSDOBounceLOD=0
+pSSDOBounceMultiplier=0.700000
+pSSDOBounceSaturation=0.400000
+pSSDODebugMode=0
+pSSDOFadeEnd=0.150000
+pSSDOFadeStart=0.100000
+pSSDOFilterRadius=2.000000
+pSSDOIntensity=0.425000
+pSSDOSampleAmount=10
+pSSDOSampleRange=70.000000
+pSSDOSourceLOD=0
+
+#qUINT_bloom.fx
+BLOOM_ADAPT_EXPOSURE=0.000000
+BLOOM_ADAPT_SPEED=1.000000
+BLOOM_ADAPT_STRENGTH=0.000000
+BLOOM_CURVE=20.000000
+BLOOM_INTENSITY=1.000000
+BLOOM_LAYER_MULT_1=1.000000
+BLOOM_LAYER_MULT_2=1.000000
+BLOOM_LAYER_MULT_3=1.000000
+BLOOM_LAYER_MULT_4=1.000000
+BLOOM_LAYER_MULT_5=1.000000
+BLOOM_LAYER_MULT_6=1.000000
+BLOOM_LAYER_MULT_7=1.000000
+BLOOM_SAT=2.031000
+BLOOM_TONEMAP_COMPRESSION=10.000000
+
+#qUINT_dof.fx
+bADOF_AutofocusEnable=1
+fADOF_AutofocusCenter=0.000000,0.000000
+fADOF_AutofocusRadius=0.400000
+fADOF_AutofocusSpeed=1.000000
+fADOF_BokehIntensity=0.000000
+fADOF_FarBlurCurve=1.500000
+fADOF_HyperFocus=1.000000
+fADOF_ManualfocusDepth=0.223000
+fADOF_NearBlurCurve=15.000000
+fADOF_RenderResolutionMult=1.000000
+fADOF_ShapeAnamorphRatio=1.000000
+fADOF_ShapeChromaAmount=0.000000
+fADOF_ShapeCurvatureAmount=6.000000
+fADOF_ShapeRadius=1.000000
+fADOF_ShapeRotation=2.000000
+fADOF_ShapeVignetteAmount=1.000000
+fADOF_ShapeVignetteCurve=0.750000
+fADOF_SmootheningAmount=10.000000
+iADOF_BokehMode=2
+iADOF_ShapeChromaMode=1
+iADOF_ShapeQuality=6
+iADOF_ShapeVertices=12
+
+#qUINT_lightroom.fx
+LIGHTROOM_AQUA_EXPOSURE=0.000000
+LIGHTROOM_AQUA_HUESHIFT=0.000000
+LIGHTROOM_AQUA_SATURATION=0.000000
+LIGHTROOM_BLUE_EXPOSURE=0.000000
+LIGHTROOM_BLUE_HUESHIFT=0.000000
+LIGHTROOM_BLUE_SATURATION=0.000000
+LIGHTROOM_ENABLE_CLIPPING_DISPLAY=0
+LIGHTROOM_ENABLE_CURVE_DISPLAY=0
+LIGHTROOM_ENABLE_LUT=0
+LIGHTROOM_ENABLE_VIGNETTE=0
+LIGHTROOM_GLOBAL_BLACKS_CURVE=0.000000
+LIGHTROOM_GLOBAL_BLACK_LEVEL=0.000000
+LIGHTROOM_GLOBAL_CONTRAST=0.000000
+LIGHTROOM_GLOBAL_EXPOSURE=0.000000
+LIGHTROOM_GLOBAL_GAMMA=0.000000
+LIGHTROOM_GLOBAL_HIGHLIGHTS_CURVE=-0.100000
+LIGHTROOM_GLOBAL_MIDTONES_CURVE=-0.150000
+LIGHTROOM_GLOBAL_SATURATION=0.000000
+LIGHTROOM_GLOBAL_SHADOWS_CURVE=-0.150000
+LIGHTROOM_GLOBAL_TEMPERATURE=0.000000
+LIGHTROOM_GLOBAL_TINT=0.000000
+LIGHTROOM_GLOBAL_VIBRANCE=0.050000
+LIGHTROOM_GLOBAL_WHITES_CURVE=0.000000
+LIGHTROOM_GLOBAL_WHITE_LEVEL=255.000000
+LIGHTROOM_GREEN_EXPOSURE=0.000000
+LIGHTROOM_GREEN_HUESHIFT=0.000000
+LIGHTROOM_GREEN_SATURATION=0.000000
+LIGHTROOM_LUT_SCROLL=0
+LIGHTROOM_LUT_TILE_COUNT=8
+LIGHTROOM_LUT_TILE_SIZE=8
+LIGHTROOM_MAGENTA_EXPOSURE=0.000000
+LIGHTROOM_MAGENTA_HUESHIFT=0.000000
+LIGHTROOM_MAGENTA_SATURATION=0.000000
+LIGHTROOM_ORANGE_EXPOSURE=0.000000
+LIGHTROOM_ORANGE_HUESHIFT=0.000000
+LIGHTROOM_ORANGE_SATURATION=0.000000
+LIGHTROOM_RED_EXPOSURE=0.000000
+LIGHTROOM_RED_HUESHIFT=0.000000
+LIGHTROOM_RED_SATURATION=0.000000
+LIGHTROOM_VIGNETTE_AMOUNT=1.000000
+LIGHTROOM_VIGNETTE_BLEND_MODE=1
+LIGHTROOM_VIGNETTE_CURVE=1.000000
+LIGHTROOM_VIGNETTE_HEIGHT=0.000000
+LIGHTROOM_VIGNETTE_RADIUS_INNER=0.000000
+LIGHTROOM_VIGNETTE_RADIUS_OUTER=1.000000
+LIGHTROOM_VIGNETTE_SHOW_RADII=0
+LIGHTROOM_VIGNETTE_WIDTH=0.000000
+LIGHTROOM_YELLOW_EXPOSURE=0.000000
+LIGHTROOM_YELLOW_HUESHIFT=0.000000
+LIGHTROOM_YELLOW_SATURATION=0.000000
+
+#qUINT_mxao.fx
+MXAO_AMOUNT_COARSE=1.000000
+MXAO_AMOUNT_FINE=0.800000
+MXAO_BLEND_TYPE=2
+MXAO_DEBUG_VIEW_ENABLE=0
+MXAO_FADE_DEPTH_END=0.300000
+MXAO_FADE_DEPTH_START=0.000000
+MXAO_GLOBAL_RENDER_SCALE=1.000000
+MXAO_GLOBAL_SAMPLE_QUALITY_PRESET=3
+MXAO_SAMPLE_NORMAL_BIAS=0.500000
+MXAO_SAMPLE_RADIUS=0.500000
+MXAO_SAMPLE_RADIUS_SECONDARY=0.400000
+MXAO_SSAO_AMOUNT=1.000000
+MXAO_SSIL_AMOUNT=4.000000
+MXAO_SSIL_SATURATION=1.000000
+
+#qUINT_sharp.fx
+DEPTH_MASK_ENABLE=1
+RMS_MASK_ENABLE=1
+SHARPEN_MODE=1
+SHARP_STRENGTH=0.258000
+
+#qUINT_ssr.fx
+SSR_ACCEPT_RANGE=1.000000
+SSR_FADE_DIST=1.000000
+SSR_FIELD_OF_VIEW=90.000000
+SSR_FILTER_SIZE=0.100000
+SSR_FRESNEL_EXP=0.100000
+SSR_JITTER_AMOUNT=1.000000
+SSR_RAY_INC=1.000000
+SSR_REFLECTION_INTENSITY=1.500000
+SSR_RELIEF_AMOUNT=1.000000
+SSR_RELIEF_SCALE=5.000000
+
+#Technicolor.fx
+Power=4.000000
+RGBNegativeAmount=0.880000,0.880000,0.880000
+Strength=0.050000
+
+#Technicolor2.fx
+Brightness=1.000000
+ColorStrength=0.200000,0.000000,0.000000
+Saturation=1.000000
+Strength=0.200000
+
+#Tonemap.fx
+Bleach=0.000000
+Defog=0.000000
+Exposure=0.000000
+FogColor=0.000000,0.000000,1.000000
+Gamma=0.931000
+Saturation=0.000000
+
+#FilmicPass.fx
+Strength=0.250000
+Linearization=1.500000
+Fade=0.500000
+Contrast=1.000000
+Bleach=0.000000
+BaseGamma=1.500000
+Saturation=0.000000
+RedCurve=1.000000
+GreenCurve=0.900000
+BlueCurve=0.900000
+BaseCurve=1.000000
+EffectGamma=2.000000
+EffectGammaB=1.333334
+EffectGammaR=1.333334
+EffectGammaG=1.333334
+LumCoeff=0.212656,0.715158,0.072186
+
+#FilmGrain.fx
+Intensity=0.333334
+Variance=0.333334
+Mean=0.500000
+SignalToNoiseRatio=6
+
+#LiftGammaGain.fx
+RGB_Lift=1.007500,0.987500,0.997500
+RGB_Gamma=1.000000,1.000000,1.000000
+RGB_Gain=1.016667,0.991667,0.991667
+
+#HSLShift.fx
+HUERed=0.749020,0.250980,0.250980
+HUEGreen=0.125490,0.749020,0.125490
+HUEOrange=0.750000,0.500000,0.250000
+HUEYellow=0.874510,0.874510,0.250980
+HUECyan=0.250000,0.750000,0.750000
+HUEBlue=0.125490,0.125490,0.749020
+HUEPurple=0.500000,0.250000,0.750000
+HUEMagenta=0.750000,0.250000,0.750000

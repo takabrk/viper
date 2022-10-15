@@ -1,5 +1,0 @@
-#!/bin/sh
-
-apm install web-search
-apm install platformio-ide-terminal
-apm install remote-ftp

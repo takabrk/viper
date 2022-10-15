@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?><openbox_pipe_menu xmlns="http://openbox.org/"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://openbox.org/" ><menu id="openbox-wine-wine" label="Wine" icon="/usr/share/icons/suru-plus-master/apps/16/wine.svg">
+<menu id="openbox-wine-Programs" label="Programs" icon="/usr/share/icons/suru-plus-master/places/16/folder.svg">
+<menu id="openbox-wine-Programs-Dirac DirectShow Filters" label="Dirac DirectShow Filters" icon="/usr/share/icons/suru-plus-master/places/16/folder.svg">
+<item label="Uninstall" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/333980/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/333980/pfx/dosdevices/c:/users/valkyrie/Start\ Menu/Programs/Dirac\ DirectShow\ Filters/Uninstall.lnk]]></command>
+</action></item>
+</menu>
+<menu id="openbox-wine-Programs-ffdshow" label="ffdshow" icon="/usr/share/icons/suru-plus-master/places/16/folder.svg">
+<item label="Audio decoder configuration" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/333980/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/333980/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/ffdshow/Audio\ decoder\ configuration.lnk]]></command>
+</action></item>
+<item label="Uninstall ffdshow" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/333980/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/333980/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/ffdshow/Uninstall\ ffdshow.lnk]]></command>
+</action></item>
+<item label="VFW configuration" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/333980/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/333980/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/ffdshow/VFW\ configuration.lnk]]></command>
+</action></item>
+<item label="Video decoder configuration" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/333980/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/333980/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/ffdshow/Video\ decoder\ configuration.lnk]]></command>
+</action></item>
+</menu>
+<menu id="openbox-wine-Programs-Wondershare" label="Wondershare" icon="/usr/share/icons/suru-plus-master/places/16/folder.svg">
+<menu id="openbox-wine-Programs-Wondershare-Wondershare Filmora" label="Wondershare Filmora" icon="/usr/share/icons/suru-plus-master/places/16/folder.svg">
+<item label="Wondershare Filmora 11" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.wine" wine C:\users\\Public\\Start\ Menu\\Programs\\Wondershare\\Wondershare\ Filmora\\Wondershare\ Filmora\ 11.lnk]]></command>
+</action></item>
+<item label="Wondershare Filmora 11 をアンインストールする" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.wine" wine C:\users\\Public\\Start\ Menu\\Programs\\Wondershare\\Wondershare\ Filmora\\Wondershare\ Filmora\ 11\ をアンインストールする.lnk]]></command>
+</action></item>
+</menu>
+</menu>
+<item label="VRM Automatic Photographing" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.wine" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.wine/dosdevices/c:/users/Public/Start\ Menu/Programs/VRM\ Automatic\ Photographing.lnk]]></command>
+</action></item>
+</menu>
+</menu>
+<menu id="openbox-Accessories" label="アクセサリ" icon="/usr/share/icons/suru-plus-master/apps/16/applications-accessories.svg">
+<item label="Arronax" icon="/usr/share/icons/suru-plus-master/apps/16/arronax.svg"><action name="Execute"><command><![CDATA[arronax]]></command>
+</action></item>
+<item label="compton" icon="/usr/share/icons/suru-plus-master/apps/16/compton.svg"><action name="Execute"><command><![CDATA[compton]]></command>
+</action></item>
+<item label="DB Browser for SQLite" icon="/usr/share/icons/hicolor/scalable/apps/sqlitebrowser.svg"><action name="Execute"><command><![CDATA[sqlitebrowser]]></command>
+</action></item>
+<item label="EBView 辞書ブラウザ" icon="/usr/share/pixmaps/ebview.xpm"><action name="Execute"><command><![CDATA[/usr/bin/ebview]]></command>
+</action></item>
+<item label="Emacs (GUI)" icon="/usr/share/icons/suru-plus-master/apps/16/emacs.svg"><action name="Execute"><command><![CDATA[/usr/bin/emacs]]></command>
+</action></item>
+<item label="Emacs (Terminal)" icon="/usr/share/icons/suru-plus-master/apps/16/emacs.svg"><action name="Execute"><command><![CDATA[xterm -e /usr/bin/emacs -nw]]></command>
+</action></item>
+<item label="Galculator" icon="/usr/share/icons/suru-plus-master/apps/16/galculator.svg"><action name="Execute"><command><![CDATA[galculator]]></command>
+</action></item>
+<item label="KCalc" icon="/usr/share/icons/suru-plus-master/apps/16/accessories-calculator.svg"><action name="Execute"><command><![CDATA[kcalc]]></command>
+</action></item>
+<item label="KeePassXC" icon="/usr/share/icons/suru-plus-master/apps/16/keepassxc.svg"><action name="Execute"><command><![CDATA[keepassxc]]></command>
+</action></item>
+<item label="L3afpad" icon="/usr/share/icons/hicolor/16x16/apps/l3afpad.png"><action name="Execute"><command><![CDATA[l3afpad]]></command>
+</action></item>
+<item label="nitrogen" icon="/usr/share/icons/hicolor/16x16/apps/nitrogen.png"><action name="Execute"><command><![CDATA[nitrogen]]></command>
+</action></item>
+<item label="PCManFM-Qt ファイルマネージャー" icon="/usr/share/icons/suru-plus-master/apps/16/system-file-manager.svg"><action name="Execute"><command><![CDATA[pcmanfm-qt]]></command>
+</action></item>
+<item label="picom" icon="(null)"><action name="Execute"><command><![CDATA[picom]]></command>
+</action></item>
+<item label="PlayOnLinux" icon="/usr/share/icons/suru-plus-master/apps/16/playonlinux.svg"><action name="Execute"><command><![CDATA[/opt/playonlinux/playonlinux]]></command>
+</action></item>
+<item label="Qlipper" icon="/usr/share/icons/suru-plus-master/actions/16/qlipper.svg"><action name="Execute"><command><![CDATA[qlipper]]></command>
+</action></item>
+<item label="TeXInfo" icon="/usr/share/icons/suru-plus-master/actions/16/dialog-information.svg"><action name="Execute"><command><![CDATA[xterm -e info]]></command>
+</action></item>
+<item label="Text Editor" icon="(null)"><action name="Execute"><command><![CDATA[gnome-text-editor]]></command>
+</action></item>
+<item label="Xarchiver" icon="/usr/share/icons/hicolor/16x16/apps/xarchiver.png"><action name="Execute"><command><![CDATA[xarchiver]]></command>
+</action></item>
+<item label="Xfburn" icon="/usr/share/icons/suru-plus-master/actions/16/stock_xfburn.svg"><action name="Execute"><command><![CDATA[xfburn]]></command>
+</action></item>
+<item label="アーカイブマネージャー" icon="(null)"><action name="Execute"><command><![CDATA[file-roller]]></command>
+</action></item>
+<item label="クラシックメニュー・インジケーター" icon="/usr/share/icons/suru-plus-master/apps/16/classicmenu-indicator.svg"><action name="Execute"><command><![CDATA[classicmenu-indicator]]></command>
+</action></item>
+<item label="スクリーンショット" icon="(null)"><action name="Execute"><command><![CDATA[xfce4-screenshooter]]></command>
+</action></item>
+<item label="ディスク" icon="(null)"><action name="Execute"><command><![CDATA[gnome-disks]]></command>
+</action></item>
+<item label="バックアップ" icon="(null)"><action name="Execute"><command><![CDATA[deja-dup]]></command>
+</action></item>
+<item label="フォント" icon="(null)"><action name="Execute"><command><![CDATA[gnome-font-viewer]]></command>
+</action></item>
+<item label="文字マップ" icon="/usr/share/icons/suru-plus-master/apps/16/accessories-character-map.svg"><action name="Execute"><command><![CDATA[gucharmap]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Internet" label="インターネット" icon="/usr/share/icons/suru-plus-master/apps/16/applications-internet.svg">
+<item label="Firefox ウェブ・ブラウザ" icon="/usr/share/icons/suru-plus-master/apps/16/firefox.svg"><action name="Execute"><command><![CDATA[firefox]]></command>
+</action></item>
+<item label="gFTP" icon="/usr/share/icons/hicolor/16x16/apps/gftp.png"><action name="Execute"><command><![CDATA[gftp-gtk]]></command>
+</action></item>
+<item label="Google Chrome" icon="/usr/share/icons/suru-plus-master/apps/16/google-chrome.svg"><action name="Execute"><command><![CDATA[/usr/bin/google-chrome-stable]]></command>
+</action></item>
+<item label="Steam" icon="/usr/share/icons/suru-plus-master/apps/16/steam.svg"><action name="Execute"><command><![CDATA[/usr/games/steam]]></command>
+</action></item>
+<item label="X11VNC Server" icon="/usr/share/icons/suru-plus-master/apps/16/computer.svg"><action name="Execute"><command><![CDATA[x11vnc -gui tray=setpass -rfbport PROMPT -bg -o %%HOME/.x11vnc.log.%%VNCDISPLAY]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Office" label="オフィス" icon="/usr/share/icons/suru-plus-master/apps/16/applications-office.svg">
+<item label="AbiWord" icon="/usr/share/icons/suru-plus-master/apps/16/abiword.svg"><action name="Execute"><command><![CDATA[abiword]]></command>
+</action></item>
+<item label="Gnumeric" icon="/usr/share/icons/suru-plus-master/apps/16/gnumeric.svg"><action name="Execute"><command><![CDATA[gnumeric]]></command>
+</action></item>
+<item label="ドキュメントビューアー" icon="(null)"><action name="Execute"><command><![CDATA[evince]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Graphics" label="グラフィックス" icon="/usr/share/icons/suru-plus-master/apps/16/applications-graphics.svg">
+<item label="Blender" icon="/usr/share/icons/suru-plus-master/apps/16/blender.svg"><action name="Execute"><command><![CDATA[/opt/blender/blender]]></command>
+</action></item>
+<item label="FontForge" icon="(null)"><action name="Execute"><command><![CDATA[fontforge]]></command>
+</action></item>
+<item label="GIMP (GNU Image Manipulation Program)" icon="/usr/share/icons/suru-plus-master/apps/16/gimp.svg"><action name="Execute"><command><![CDATA[gimp-2.10]]></command>
+</action></item>
+<item label="GNU Paint" icon="/usr/share/icons/suru-plus-master/apps/16/gpaint.svg"><action name="Execute"><command><![CDATA[gpaint]]></command>
+</action></item>
+<item label="ImageMagick (color depth=q16)" icon="/usr/share/icons/suru-plus-master/apps/16/display.svg"><action name="Execute"><command><![CDATA[/usr/bin/display-im6.q16 -nostdin]]></command>
+</action></item>
+<item label="LXImage" icon="/usr/share/icons/hicolor/48x48/apps/lximage-qt.png"><action name="Execute"><command><![CDATA[lximage-qt]]></command>
+</action></item>
+<item label="ドキュメントスキャナー" icon="(null)"><action name="Execute"><command><![CDATA[simple-scan]]></command>
+</action></item>
+<item label="ドキュメントビューアー" icon="(null)"><action name="Execute"><command><![CDATA[evince]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Games" label="ゲーム" icon="/usr/share/icons/suru-plus-master/apps/16/applications-games.svg">
+<item label="AKIBA'S TRIP: Undead &amp; Undressed" icon="/home/valkyrie/.local/share/icons/hicolor/16x16/apps/steam_icon_333980.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/333980]]></command>
+</action></item>
+<item label="Dead or Alive 5 Last Round" icon="/home/valkyrie/.local/share/icons/hicolor/32x32/apps/steam_icon_311730.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/311730]]></command>
+</action></item>
+<item label="DEAD OR ALIVE 6" icon="/home/valkyrie/.local/share/icons/hicolor/16x16/apps/steam_icon_838380.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/838380]]></command>
+</action></item>
+<item label="ePSXe" icon="/home/valkyrie/.local/share/ePSXe/ePSXe.svg"><action name="Execute"><command><![CDATA[/home/valkyrie/.local/bin/ePSXe]]></command>
+</action></item>
+<item label="GUILTY GEAR Xrd -SIGN-" icon="/home/valkyrie/.local/share/icons/hicolor/32x32/apps/steam_icon_376300.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/376300]]></command>
+</action></item>
+<item label="MELTY BLOOD Actress Again Current Code" icon="/home/valkyrie/.local/share/icons/hicolor/32x32/apps/steam_icon_411370.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/411370]]></command>
+</action></item>
+<item label="Mitsurugi Kamui Hikae" icon="/home/valkyrie/.local/share/icons/hicolor/16x16/apps/steam_icon_263620.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/263620]]></command>
+</action></item>
+<item label="SOULCALIBUR VI" icon="/home/valkyrie/.local/share/icons/hicolor/16x16/apps/steam_icon_544750.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/544750]]></command>
+</action></item>
+<item label="Steam" icon="/usr/share/icons/suru-plus-master/apps/16/steam.svg"><action name="Execute"><command><![CDATA[/usr/games/steam]]></command>
+</action></item>
+<item label="VRoid Studio" icon="/home/valkyrie/.local/share/icons/hicolor/16x16/apps/steam_icon_1486350.png"><action name="Execute"><command><![CDATA[steam steam://rungameid/1486350]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Multimedia" label="サウンドとビデオ" icon="/usr/share/icons/suru-plus-master/apps/16/applications-multimedia.svg">
+<item label="Asunder CD Ripper" icon="/usr/share/icons/suru-plus-master/apps/16/asunder.svg"><action name="Execute"><command><![CDATA[asunder]]></command>
+</action></item>
+<item label="Audacious" icon="/usr/share/icons/suru-plus-master/apps/16/audacious.svg"><action name="Execute"><command><![CDATA[audacious]]></command>
+</action></item>
+<item label="Audacity" icon="/usr/share/icons/suru-plus-master/apps/16/audacity.svg"><action name="Execute"><command><![CDATA[/opt/Audacity.AppImage]]></command>
+</action></item>
+<item label="Audacity" icon="/usr/share/icons/suru-plus-master/apps/16/audacity.svg"><action name="Execute"><command><![CDATA[env UBUNTU_MENUPROXY=0 GDK_BACKEND=x11 audacity]]></command>
+</action></item>
+<item label="Avidemux" icon="(null)"><action name="Execute"><command><![CDATA[avidemux3_qt5]]></command>
+</action></item>
+<item label="GNOME ALSA Mixer" icon="/usr/share/pixmaps/gnome-alsamixer/gnome-alsamixer-icon.png"><action name="Execute"><command><![CDATA[gnome-alsamixer]]></command>
+</action></item>
+<item label="mpv Media Player" icon="/usr/share/icons/suru-plus-master/apps/16/mpv.svg"><action name="Execute"><command><![CDATA[mpv --player-operation-mode=pseudo-gui --]]></command>
+</action></item>
+<item label="OBS Studio" icon="(null)"><action name="Execute"><command><![CDATA[obs]]></command>
+</action></item>
+<item label="PNMixer" icon="/usr/share/icons/suru-plus-master/apps/16/pnmixer.svg"><action name="Execute"><command><![CDATA[pnmixer]]></command>
+</action></item>
+<item label="PulseAudio 音量調節" icon="/usr/share/icons/suru-plus-master/actions/16/multimedia-volume-control.svg"><action name="Execute"><command><![CDATA[pavucontrol]]></command>
+</action></item>
+<item label="QjackCtl" icon="/usr/share/icons/suru-plus-master/apps/16/qjackctl.svg"><action name="Execute"><command><![CDATA[qjackctl]]></command>
+</action></item>
+<item label="Shotcut" icon="(null)"><action name="Execute"><command><![CDATA[shotcut]]></command>
+</action></item>
+<item label="SMPlayer" icon="/usr/share/icons/suru-plus-master/apps/16/smplayer.svg"><action name="Execute"><command><![CDATA[smplayer]]></command>
+</action></item>
+<item label="SMTube" icon="/usr/share/icons/suru-plus-master/apps/16/smtube.svg"><action name="Execute"><command><![CDATA[smtube]]></command>
+</action></item>
+<item label="Xfburn" icon="/usr/share/icons/suru-plus-master/actions/16/stock_xfburn.svg"><action name="Execute"><command><![CDATA[xfburn]]></command>
+</action></item>
+<item label="サウンド変換" icon="/usr/share/icons/suru-plus-master/apps/16/soundconverter.svg"><action name="Execute"><command><![CDATA[soundconverter]]></command>
+</action></item>
+</menu>
+<menu id="openbox-System" label="システムツール" icon="/usr/share/icons/suru-plus-master/apps/16/applications-system.svg">
+<item label="conky" icon="/usr/share/icons/hicolor/scalable/apps/conky-logomark-violet.svg"><action name="Execute"><command><![CDATA[conky --daemonize --pause=1]]></command>
+</action></item>
+<item label="CPU-X" icon="/usr/share/icons/suru-plus-master/apps/16/cpu.svg"><action name="Execute"><command><![CDATA[cpu-x]]></command>
+</action></item>
+<item label="dconf エディター" icon="(null)"><action name="Execute"><command><![CDATA[dconf-editor]]></command>
+</action></item>
+<item label="Fcitx" icon="/usr/share/icons/suru-plus-master/apps/16/fcitx.svg"><action name="Execute"><command><![CDATA[fcitx]]></command>
+</action></item>
+<item label="gmrun" icon="/usr/share/icons/hicolor/scalable/apps/gmrun.svg"><action name="Execute"><command><![CDATA[gmrun]]></command>
+</action></item>
+<item label="GParted" icon="/usr/share/icons/suru-plus-master/apps/16/gparted.svg"><action name="Execute"><command><![CDATA[/usr/sbin/gparted]]></command>
+</action></item>
+<item label="jgmenu" icon="(null)"><action name="Execute"><command><![CDATA[jgmenu_run]]></command>
+</action></item>
+<item label="jstest-gtk" icon="/usr/share/pixmaps/jstest-gtk.png"><action name="Execute"><command><![CDATA[jstest-gtk]]></command>
+</action></item>
+<item label="Psensor" icon="/usr/share/icons/suru-plus-master/apps/16/psensor.svg"><action name="Execute"><command><![CDATA[psensor]]></command>
+</action></item>
+<item label="qps" icon="/usr/share/icons/suru-plus-master/apps/16/qps.svg"><action name="Execute"><command><![CDATA[qps]]></command>
+</action></item>
+<item label="Radeon Profile" icon="/usr/share/pixmaps/radeon-profile.png"><action name="Execute"><command><![CDATA[radeon-profile]]></command>
+</action></item>
+<item label="System Profiler and Benchmark" icon="/usr/share/hardinfo/pixmaps/logo.png"><action name="Execute"><command><![CDATA[/usr/bin/hardinfo]]></command>
+</action></item>
+<item label="Tint2" icon="/usr/share/icons/hicolor/scalable/apps/tint2.svg"><action name="Execute"><command><![CDATA[tint2]]></command>
+</action></item>
+<item label="UXTerm" icon="(null)"><action name="Execute"><command><![CDATA[uxterm]]></command>
+</action></item>
+<item label="Xfce Terminal" icon="(null)"><action name="Execute"><command><![CDATA[xfce4-terminal]]></command>
+</action></item>
+<item label="XTerm" icon="(null)"><action name="Execute"><command><![CDATA[xterm]]></command>
+</action></item>
+<item label="タスクマネージャー" icon="(null)"><action name="Execute"><command><![CDATA[xfce4-taskmanager]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Other" label="その他" icon="/usr/share/icons/suru-plus-master/actions/16/applications-other.svg">
+<item label="About Valkyrie Linux" icon="(null)"><action name="Execute"><command><![CDATA[xfce4-terminal --hide-menubar -x sh -c 'python3 ~/viper/scripts/info.py;read']]></command>
+</action></item>
+<item label="Check for Updates" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Check\ for\ Updates.lnk]]></command>
+</action></item>
+<item label="Configure Decoder" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Configure\ Decoder.lnk]]></command>
+</action></item>
+<item label="Configure Encoder" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Configure\ Encoder.lnk]]></command>
+</action></item>
+<item label="Install Custom Kernel" icon="/usr/share/icons/suru-plus-master/apps/64/application-default-icon.svg"><action name="Execute"><command><![CDATA[xfce4-terminal --hide-menubar -x sh -c 'cd /opt/custom_kernel && sudo dpkg -i *.deb; read']]></command>
+</action></item>
+<item label="Install Google Chrome" icon="/usr/share/icons/suru-plus-master/apps/64/chrome.svg"><action name="Execute"><command><![CDATA[xfce4-terminal --hide-menubar -x sh -c 'sudo apt install google-chrome-stable; read']]></command>
+</action></item>
+<item label="Nic's FourCC Changer" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Advanced/Nic\'s\ FourCC\ Changer.lnk]]></command>
+</action></item>
+<item label="Nic's MiniCalc" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Advanced/Nic\'s\ MiniCalc.lnk]]></command>
+</action></item>
+<item label="Release Notes" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Release\ Notes.lnk]]></command>
+</action></item>
+<item label="Some Quantization Matrices" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Advanced/Some\ Quantization\ Matrices.lnk]]></command>
+</action></item>
+<item label="StatsReader 2.1" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Advanced/StatsReader\ 2.1.lnk]]></command>
+</action></item>
+<item label="StatsReader Notes" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Advanced/StatsReader\ Notes.lnk]]></command>
+</action></item>
+<item label="Unetbootin" icon="/usr/share/icons/suru-plus-master/apps/64/unetbootin.svg"><action name="Execute"><command><![CDATA[/opt/unetbootin.bin]]></command>
+</action></item>
+<item label="Uninstall Xvid Video Codec" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Uninstall\ Xvid\ Video\ Codec.lnk]]></command>
+</action></item>
+<item label="Viper Tools" icon="/usr/share/icons/vipertools_icon.png"><action name="Execute"><command><![CDATA[xfce4-terminal --hide-menubar -x sh -c 'cd ~/viper && python3 vipertools.py; read']]></command>
+</action></item>
+<item label="xvid_encraw" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Advanced/xvid_encraw.lnk]]></command>
+</action></item>
+<item label="Xvid MiniConvert" icon="(null)"><action name="Execute"><command><![CDATA[env WINEPREFIX="/home/valkyrie/.steam/steamapps/compatdata/411370/pfx" wine C:\windows\\command\\start.exe /Unix /home/valkyrie/.steam/steamapps/compatdata/411370/pfx/dosdevices/c:/ProgramData/Microsoft/Windows/Start\ Menu/Programs/Xvid/Xvid\ MiniConvert.lnk]]></command>
+</action></item>
+</menu>
+<menu id="openbox-Development" label="プログラミング" icon="/usr/share/icons/suru-plus-master/apps/16/applications-development.svg">
+<item label="DB Browser for SQLite" icon="/usr/share/icons/hicolor/scalable/apps/sqlitebrowser.svg"><action name="Execute"><command><![CDATA[sqlitebrowser]]></command>
+</action></item>
+<item label="Devhelp" icon="(null)"><action name="Execute"><command><![CDATA[devhelp]]></command>
+</action></item>
+<item label="distcc monitor" icon="/usr/share/pixmaps/distccmon-gnome.png"><action name="Execute"><command><![CDATA[distccmon-gnome]]></command>
+</action></item>
+<item label="Emacs (GUI)" icon="/usr/share/icons/suru-plus-master/apps/16/emacs.svg"><action name="Execute"><command><![CDATA[/usr/bin/emacs]]></command>
+</action></item>
+<item label="Emacs (Terminal)" icon="/usr/share/icons/suru-plus-master/apps/16/emacs.svg"><action name="Execute"><command><![CDATA[xterm -e /usr/bin/emacs -nw]]></command>
+</action></item>
+<item label="Glade" icon="(null)"><action name="Execute"><command><![CDATA[glade]]></command>
+</action></item>
+<item label="Icon Browser" icon="/usr/share/icons/suru-plus-master/apps/16/yad.svg"><action name="Execute"><command><![CDATA[yad-icon-browser]]></command>
+</action></item>
+<item label="PyCrust" icon="/usr/share/pixmaps/PyCrust.xpm"><action name="Execute"><command><![CDATA[pycrust]]></command>
+</action></item>
+<item label="XRCed" icon="/usr/share/pixmaps/XRCed.xpm"><action name="Execute"><command><![CDATA[xrced]]></command>
+</action></item>
+</menu>
+<separator />
+<menu id="openbox-DesktopSettings" label="設定" icon="/usr/share/icons/suru-plus-master/apps/16/preferences-desktop.svg">
+<menu id="openbox-LXQtSettings" label="LXQt 設定" icon="/usr/share/icons/suru-plus-master/actions/16/preferences-system.svg">
+<separator />
+<item label="Compton ウィンドウ特殊効果" icon="/usr/share/icons/suru-plus-master/apps/16/compton.svg"><action name="Execute"><command><![CDATA[compton-conf]]></command>
+</action></item>
+<item label="Openbox 設定 (Qt 版)" icon="/usr/share/icons/hicolor/48x48/apps/obconf-qt.png"><action name="Execute"><command><![CDATA[obconf-qt]]></command>
+</action></item>
+<item label="デスクトップ" icon="/usr/share/icons/suru-plus-master/apps/16/user-desktop.svg"><action name="Execute"><command><![CDATA[pcmanfm-qt --desktop-pref=general]]></command>
+</action></item>
+</menu>
+<item label="Alternatives Configurator" icon="/usr/share/icons/hicolor/scalable/apps/galternatives.svg"><action name="Execute"><command><![CDATA[/usr/bin/galternatives]]></command>
+</action></item>
+<item label="Bluetooth マネージャー" icon="/usr/share/icons/suru-plus-master/apps/16/blueman.svg"><action name="Execute"><command><![CDATA[blueman-manager]]></command>
+</action></item>
+<item label="Boot Repair" icon="/usr/share/boot-sav/x-boot-repair.png"><action name="Execute"><command><![CDATA[boot-repair-pkexec]]></command>
+</action></item>
+<item label="Fcitx 設定" icon="/usr/share/icons/suru-plus-master/apps/16/fcitx.svg"><action name="Execute"><command><![CDATA[fcitx-configtool]]></command>
+</action></item>
+<item label="Grub Customizer" icon="/usr/share/icons/suru-plus-master/apps/16/grub-customizer.svg"><action name="Execute"><command><![CDATA[grub-customizer]]></command>
+</action></item>
+<item label="IBus の設定" icon="/usr/share/icons/suru-plus-master/apps/16/ibus-setup.svg"><action name="Execute"><command><![CDATA[ibus-setup]]></command>
+</action></item>
+<item label="LightDM GTK+ Greeter の設定" icon="/usr/share/icons/suru-plus-master/apps/16/lightdm-gtk-greeter-settings.svg"><action name="Execute"><command><![CDATA[lightdm-gtk-greeter-settings-pkexec]]></command>
+</action></item>
+<item label="Light Lockerの設定" icon="/usr/share/icons/suru-plus-master/apps/16/preferences-desktop-screensaver.svg"><action name="Execute"><command><![CDATA[/usr/bin/light-locker-settings]]></command>
+</action></item>
+<item label="Mozc の設定" icon="/usr/share/icons/mozc/product_icon_32bpp-128.png"><action name="Execute"><command><![CDATA[/usr/lib/mozc/mozc_tool --mode=config_dialog]]></command>
+</action></item>
+<item label="Openbox Configuration Manager" icon="/usr/share/pixmaps/obconf.png"><action name="Execute"><command><![CDATA[obconf]]></command>
+</action></item>
+<item label="Synaptic パッケージマネージャー" icon="/usr/share/icons/suru-plus-master/apps/16/synaptic.svg"><action name="Execute"><command><![CDATA[xfce4-terminal --hide-menubar -x sh -c 'synaptic-pkexec; read']]></command>
+</action></item>
+<item label="Xfce ターミナル設定" icon="(null)"><action name="Execute"><command><![CDATA[xfce4-terminal --preferences]]></command>
+</action></item>
+<item label="スクリーンセーバー" icon="/usr/share/icons/suru-plus-master/apps/16/xscreensaver.svg"><action name="Execute"><command><![CDATA[xscreensaver-demo]]></command>
+</action></item>
+<item label="ソフトウェア" icon="(null)"><action name="Execute"><command><![CDATA[gnome-software]]></command>
+</action></item>
+<item label="ソフトウェアとアップデート" icon="/usr/share/icons/suru-plus-master/apps/16/software-properties.svg"><action name="Execute"><command><![CDATA[software-properties-gtk]]></command>
+</action></item>
+<item label="パネルマネージャ" icon="/usr/share/icons/hicolor/scalable/apps/tint2conf.svg"><action name="Execute"><command><![CDATA[tint2conf]]></command>
+</action></item>
+<item label="プリンター" icon="/usr/share/icons/suru-plus-master/apps/16/printer.svg"><action name="Execute"><command><![CDATA[system-config-printer]]></command>
+</action></item>
+<item label="ログイン画面" icon="/usr/share/icons/suru-plus-master/apps/16/lightdm-settings.svg"><action name="Execute"><command><![CDATA[pkexec lightdm-settings]]></command>
+</action></item>
+<item label="追加のドライバー" icon="/usr/share/icons/suru-plus-master/apps/16/jockey.svg"><action name="Execute"><command><![CDATA[/usr/bin/software-properties-gtk --open-tab=4]]></command>
+</action></item>
+<item label="電源管理" icon="(null)"><action name="Execute"><command><![CDATA[xfce4-power-manager-settings]]></command>
+</action></item>
+<item label="高度なネットワーク設定" icon="/usr/share/icons/suru-plus-master/apps/16/preferences-system-network.svg"><action name="Execute"><command><![CDATA[nm-connection-editor]]></command>
+</action></item>
+</menu>
+<separator />
+<menu id="openbox-X-Leave" label="終了" icon="/usr/share/icons/suru-plus-master/devices/16/system.svg">
+</menu>
+</openbox_pipe_menu>
+valkyrie@valkyrie-desk

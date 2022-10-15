@@ -2,6 +2,6 @@
 <gconf>
 	<entry name="mixer_slider_toggle_style" mtime="1547537610" type="bool" value="true"/>
 	<entry name="mixer_slider_style" mtime="1547537610" type="bool" value="false"/>
-	<entry name="main_window_width" mtime="1587699753" type="int" value="1239"/>
-	<entry name="main_window_height" mtime="1587699753" type="int" value="672"/>
+	<entry name="main_window_width" mtime="1559971616" type="int" value="1239"/>
+	<entry name="main_window_height" mtime="1559971616" type="int" value="672"/>
 </gconf>

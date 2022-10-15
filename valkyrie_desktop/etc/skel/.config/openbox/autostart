@@ -1,27 +1,17 @@
 #!/bin/sh
-#System sound
 #compton
-compton &
+#compton &
 
-#fbpanel
-#fbpanel -p default &
-
-#lxqt-panel
-lxqt-panel &
-
-#lemonbar
-#( sleep 1s && bash ~/viper/scripts/lemonbar.sh | lemonbar -p -F#FFFFFFFF -B#FF222222 -f "DejaVu Sans Mono"-8 -f FontAwesome-8) &
-
-#plank
-#plank &
+#panel
+#lxqt-panel &
+#xfce4-panel &
+tint2 -c ~/.config/tint2/tint2rc &
 
 #stalonetray
 #stalonetray --dockapp-mode simple &
 
-#xfce4-power-manager
-xfce4-power-manager &
-
-#lxqt-powermanagement
+#power-manager
+#xfce4-power-manager &
 #lxqt-powermanagement &
 
 #network manager
@@ -30,15 +20,26 @@ xfce4-power-manager &
 #fcitx
 fcitx-autostart &
 
+#background picture
+#nitrogen --restore &
+feh --bg-scale /usr/share/backgrounds/vl_bg202208.png &
+
+#dunst
+#dunst &
+
+#radeon-config
+#radeon-profile &
+
+#Dropbox
+#~/.dropbox-dist/dropboxd &
+
 #pcmanfm-qt
-pcmanfm-qt --desktop &
+#pcmanfm-qt --desktop &
 #pcmanfm --desktop &
 
-#spacefm
-#spacefm --desktop &
-
-#nemo
-#nemo &
+#Conky
+#sleep 1;conky -c ~/.config/conky/.conkyrc1 &
+sleep 1;LANG=C conky -c ~/.config/conky/.conkyclock &
 
 #/usr/bin/gnome-keyring-daemon --start --components=gpg &
 #/usr/bin/gnome-keyring-daemon --start --components=ssh &
@@ -51,61 +52,27 @@ pcmanfm-qt --desktop &
 #sh -c 'xrandr --output VGA --mode 1366x768 --rate 59.79'
 #sh -c 'xrandr --output eDP-1 --off'
 
-#nitrogen
-#nitrogen --restore &
-
-#feh
-#feh --bg-scale /usr/share/backgrounds/bg20180511.png
-
-#dunst
-dunst &
-
-#sleep1;ln -s /tmp ~/.cache/chromium &
-
 #Chromium Browser
+#sleep1;ln -s /tmp ~/.cache/chromium &
 #chromium-browser --disk-cache-dir="/tmp" --allow-file-access-from-files &
 #chromium-browser --allow-file-access-from-files &
-
-#Firefox
-#firefox &
 
 #Delete Cache
 rm -r ~/.thumbnails/normal/* &
 rm -r ~/.thumbnails/large/* &
 rm -r ~/.cache/* &
 
-#tint2
-tint2 -c ~/.config/tint2/tint2rc &
-
-#Conky
-#sleep 1;conky -c ~/.config/conky/.conkyrc1 &
-#sleep 1;LANG=C conky -c ~/.config/conky/.conkyclock &
-
-#sudo schedtool -R  -I -n 4 -p 24 `pidof pcsx2` &
-#sudo schedtool -R  -I -n 4 -p 23 `pidof wine` &
-
 #Remmina
 #remmina -i
-
-#Audacious
-#sleep 2;nice -n -1 audacious &
-
-#Sayonara Player
-#sleep 2;nice -n -1 sayonara &
-
-#radeon-config
-#radeon-profile &
-
-#Dropbox
-#~/.dropbox-dist/dropboxd &
 
 #x11vnc
 #x11vnc -auth guess -display :0 -rfbauth /home/$USER/.vnc/passwd -rfbport 5900
  -forever -loop -noxdamage -repeat -shared -geometory 1280x720 &
 
 #Stop tumblerd
-cd ~/viper/scripts && ./stop_tumblerd.sh &
+#cd ~/viper/scripts && ./stop_tumblerd.sh &
 
-
-
-
+lxpolkit &
+#classicmenu-indicator &
+/usr/bin/pnmixer &
+#idesk &
