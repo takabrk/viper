@@ -7,7 +7,7 @@ pacmd set-default-sink jack_out
 pacmd set-default-source jack_in
 #sleep 2;ln -s /usr/bin/pulseaudio /tmp &
 #sleep 5;/tmp/pulseaudio --start & 
-pulseaudio --start & 
+#pulseaudio --start & 
 sleep 5;jack_control start &
 sudo schedtool -R -I -n 4 -p 25 `pidof jackdbus`
 jack_control eps realtime true
