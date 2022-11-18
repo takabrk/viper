@@ -424,20 +424,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="downloader">
-                <property name="label" translatable="yes">downloader</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <signal name="clicked" handler="on_downloader_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">9</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="imagetool">
                 <property name="label" translatable="yes">Image Tool</property>
                 <property name="visible">True</property>
@@ -449,20 +435,6 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="m2p">
-                <property name="label" translatable="yes">Movie2Pics</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <signal name="clicked" handler="on_m2p_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">11</property>
               </packing>
             </child>
             <child>
@@ -480,20 +452,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="movie_enc">
-                <property name="label" translatable="yes">QSV Movie Encode</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <signal name="clicked" handler="on_movie_enc_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">13</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="ssb">
                 <property name="label" translatable="yes">Specific Site Browser(SSB)</property>
                 <property name="visible">True</property>
@@ -504,14 +462,8 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">14</property>
+                <property name="position">15</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
             <child>
               <object class="GtkButton" id="cancel">
@@ -524,7 +476,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">17</property>
+                <property name="position">18</property>
               </packing>
             </child>
             <child>
@@ -533,14 +485,14 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">About this Application
 
-Viper Tools(20220506)
+Viper Tools(20221118)
 http://vsrx.work
 This Program created by takamitsu hamada.</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">20</property>
+                <property name="position">21</property>
               </packing>
             </child>
           </object>

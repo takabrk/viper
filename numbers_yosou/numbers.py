@@ -763,10 +763,10 @@ class allnumbers(object):
         #n3.del031(ee)
         #n3.del015(ee)
         n3.del004(ee)
-        n3.delstmini(30,ee)
-        n3.delbeforemini(200,ee)
+        n3.delstmini(20,ee)
+        #n3.delbeforemini(200,ee)
         #n3.useGmini(ee)
-        n3.delboxmini(30,ee)
+        n3.delboxmini(20,ee)
         #n3.del_rehearsal_mini(ee)
         #n3.del_mini_plus(ee)
         e = ee

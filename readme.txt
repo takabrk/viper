@@ -1,7 +1,7 @@
 Linux application "Viper Tools"
 Web site URL : http://vsrx.work
 Created by takamitsu hamada
-update:October 15,2022
+Updated November 18,2022
 
 詳しいリファレンスは、以下で公開しています。
 
@@ -33,8 +33,6 @@ $ sudo pip install mecab-python3
 ・アプリケーションやライブラリのインストール
 ・OSのリマスター機能
 ・ChromiumにGoogle Chrome内蔵のWidevineを入れる事が出来る「install widevine」機能
-・動画ダウンロード機能
-・VAAPI対応ffmpegとiHD Driverを使ったQSVハードウェアエンコード機能
 
 ◇D-bus版Jackサーバを起動
 $cd scripts

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-#vipertools.py @takamitsu hamada 20211225
+#vipertools.py @takamitsu hamada 20221118
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -44,12 +44,9 @@ class valkyrie_setting(object):
             "on_sound_clicked" : self.on_sound_clicked,
             "on_numbers_clicked" : self.on_numbers_clicked,
             "on_apps_clicked" : self.on_apps_clicked,
-            "on_m2p_clicked" :  self.on_m2p_clicked,
             "on_reading_clicked" : self.on_reading_clicked,
             "on_apng_asvg_clicked" : self.on_apng_asvg_clicked,
             "on_cancel_clicked" : self.on_cancel_clicked,
-            "on_downloader_clicked" : self.on_downloader_clicked,
-            "on_movie_enc_clicked" : self.on_movie_enc_clicked,
             "on_os_chooser" : self.on_os_chooser,
             "on_ssb_clicked" : self.on_ssb_clicked,
             "on_imagetool_clicked" : self.on_imagetool_clicked
@@ -64,11 +61,8 @@ class valkyrie_setting(object):
         self.window = treeObj("sound")
         self.window = treeObj("numbers")
         self.window = treeObj("apps")
-        self.window = treeObj("m2p")
         self.window = treeObj("reading")
         self.window = treeObj("apng_asvg")
-        self.window = treeObj("downloader")
-        self.window = treeObj("movie_enc")
         self.window = treeObj("kyotei")
         self.window = treeObj("imagetool")
         self.window = treeObj("ssb")
@@ -100,9 +94,6 @@ class valkyrie_setting(object):
 #install apps
     def on_apps_clicked(self,widget):
         sp.run("python3 install_apps/install_apps.py".strip().split(" "))
-#movie2pics
-    def on_m2p_clicked(self,widget):
-        sp.run("python3 movie2pics/movie2pics.py".strip().split(" "))
 #alisa
     def on_reading_clicked(self,widget):
         os.chdir("alisa")
@@ -111,16 +102,6 @@ class valkyrie_setting(object):
 #create apng and asvg
     def on_apng_asvg_clicked(self,widget):
         sp.run("python3 alisa/apng_asvg.py".strip().split(" "))
-#downloader
-    def on_downloader_clicked(self,widget):
-        os.chdir("downloader")
-        sp.run("python3 downloader.py".strip().split(" "))
-        os.chdir("../")
-#encode movie with QSV
-    def on_movie_enc_clicked(self,widget):
-        os.chdir("movieencoder")
-        sp.run("python3 movieui.py".strip().split(" "))
-        os.chdir("../")
 #kyotei
     def on_kyotei_clicked(self,widget):
         def kyotei():
