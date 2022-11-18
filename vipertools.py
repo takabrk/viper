@@ -44,7 +44,6 @@ class valkyrie_setting(object):
             "on_sound_clicked" : self.on_sound_clicked,
             "on_numbers_clicked" : self.on_numbers_clicked,
             "on_apps_clicked" : self.on_apps_clicked,
-            "on_reading_clicked" : self.on_reading_clicked,
             "on_apng_asvg_clicked" : self.on_apng_asvg_clicked,
             "on_cancel_clicked" : self.on_cancel_clicked,
             "on_os_chooser" : self.on_os_chooser,
@@ -61,7 +60,6 @@ class valkyrie_setting(object):
         self.window = treeObj("sound")
         self.window = treeObj("numbers")
         self.window = treeObj("apps")
-        self.window = treeObj("reading")
         self.window = treeObj("apng_asvg")
         self.window = treeObj("kyotei")
         self.window = treeObj("imagetool")
@@ -94,14 +92,9 @@ class valkyrie_setting(object):
 #install apps
     def on_apps_clicked(self,widget):
         sp.run("python3 install_apps/install_apps.py".strip().split(" "))
-#alisa
-    def on_reading_clicked(self,widget):
-        os.chdir("alisa")
-        sp.run("python3 alisa.py".strip().split(" "))
-        os.chdir("../")
 #create apng and asvg
     def on_apng_asvg_clicked(self,widget):
-        sp.run("python3 alisa/apng_asvg.py".strip().split(" "))
+        sp.run("python3 apng_asvg/apng_asvg.py".strip().split(" "))
 #kyotei
     def on_kyotei_clicked(self,widget):
         def kyotei():
