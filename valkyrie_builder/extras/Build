@@ -256,4 +256,4 @@ cd $WORKPATH
 md5sum ${DIST//[[:space:]]}-$VERSION-$ARCH.iso > md5sum
 echo "                     [DONE]"
 mv ${DIST//[[:space:]]}-$VERSION-$ARCH.iso ${OSNAME//[[:space:]]}-$OSVERSION-$ARCH.iso
-) | tee -a $WORKPATH/ubuntu-builder.log
+) | tee -a $WORKPATH/valkyrie-builder.log

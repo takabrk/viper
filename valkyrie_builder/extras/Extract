@@ -81,7 +81,7 @@ echo
 if [ -d "$MOUNTPATH/ubuntu" ]; then
 cp $FSPATH/etc/apt/sources.list $FSPATH/etc/apt/sources.list.bak.part
 cp /sources/$ISOVERSION $FSPATH/etc/apt/sources.list
-cp -f /etc/fstab /home/ubuntu-builder/FileSystem/etc/fstab
+cp -f /etc/fstab /home/valkyrie-builder/FileSystem/etc/fstab
 fi) > /dev/null 2>&1
 echo "                   [DONE]"
 
