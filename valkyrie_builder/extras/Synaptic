@@ -1,14 +1,12 @@
 #!/bin/bash
 
-. vsrx_builder/extras/config
+. valkyrie_builder/extras/config
 
 (echo
-echo STARTING DEB INSTALLATION
+echo STARTING SYNAPTIC
 echo
 
-read FILE < $WORKPATH/configs/DEB
-
-cp $FILE $FSPATH/tmp
+xhost +local:
 cp /etc/hosts $FSPATH/etc/
 
 mount --bind /dev $FSPATH/dev
@@ -25,12 +23,17 @@ export LC_ALL=C
 mount none -t proc /proc
 mount none -t sysfs /sys
 mount none -t devpts /dev/pts
-dpkg -i -G -E $FSPATH/tmp/*.deb
-apt-get -f -y install
+
+if [ ! -e /usr/sbin/synaptic ]; then
+	apt-get update -q
+	apt-get install -y synaptic
+fi
 EOF
 ######################### on EXIT #########################
-echo "apt-get clean
+echo "synaptic
+apt clean
 rm -rf /tmp/*
+rm -rf /root/.synaptic/log
 rm -rf /etc/hosts
 umount -lf /proc
 umount -lf /sys
@@ -40,5 +43,6 @@ umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
 
 chroot $FSPATH sh /tmp/script.bash
 umount -l $FSPATH/dev
-zenity --info --text="Installation completed."
-) | tee -a $WORKPATH/ubuntu-builder.log
+
+xhost -local:
+) | tee -a /home/valkyrie-builder/valkyrie-builder.log

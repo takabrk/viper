@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. vsrx_builder/extras/config
+. valkyrie_builder/extras/config
 
 (echo
 echo STARTING TERMINAL
@@ -30,13 +30,13 @@ mount none -t proc /proc
 mount none -t sysfs /sys
 mount none -t devpts /dev/pts
 reset
-echo "# You need to run 'apt-get update' before installing packages"
+echo "# You need to run 'apt update' before installing packages"
 echo "# Type 'exit' to quit chroot console"
 echo
 /bin/bash
 EOF
 ######################### on EXIT #########################
-echo "apt-get clean
+echo "apt clean
 rm -rf /tmp/*
 rm -rf /etc/hosts
 umount -lf /proc
@@ -47,4 +47,4 @@ umount -lf /var/run/dbus" >> $FSPATH/tmp/script.bash
 
 chroot $FSPATH sh /tmp/script.bash
 umount -l $FSPATH/dev
-) | tee -a /home/ubuntu-builder/ubuntu-builder.log
+) | tee -a /home/valkyrie-builder/valkyrie-builder.log

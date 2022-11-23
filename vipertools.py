@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-#vipertools.py @takamitsu hamada 20221118
+#vipertools.py @takamitsu hamada 20221123
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
@@ -66,8 +66,8 @@ class valkyrie_setting(object):
         self.window = treeObj("ssb")
         self.name = treeObj("name")
         self.version = treeObj("version")
-        self.codename = treeObj("codename")
-        self.os_name = treeObj("os_name")
+        self.method = treeObj("method")
+        self.level = treeObj("level")
         self.url = treeObj("url")
         self.description = treeObj("description")
         self.os_chooser = treeObj("os_chooser")
@@ -135,44 +135,44 @@ class valkyrie_setting(object):
     def on_settings_clicked(self,widget):
         msg1 = self.name.get_text()
         msg2 = self.version.get_text()
-        msg3 = self.codename.get_text()
-        msg4 = self.os_name.get_text()
+        msg3 = self.method.get_text()
+        msg4 = self.level.get_text()
         msg5 = self.url.get_text()
         msg6 = self.description.get_text()
         msg7 = self.on_os_chooser(widget)
-        f1 = open("vsrx_builder/configs/DIST","w")
+        f1 = open("valkyrie_builder/configs/OSNAME","w")
         f1.write(msg1)
         f1.close()
-        f2 = open("vsrx_builder/configs/VERSION","w")
+        f2 = open("valkyrie_builder/configs/OSVERSION","w")
         f2.write(msg2)
         f2.close()
-        f3 = open("vsrx_builder/configs/CODENAME","w")
+        f3 = open("valkyrie_builder/configs/COMPRESSIONMETHOD","w")
         f3.write(msg3)
         f3.close()
-        f4 = open("vsrx_builder/configs/DESCRIPTION","w")
+        f4 = open("valkyrie_builder/configs/COMPRESSIONLEVEL","w")
         f4.write(msg4)
         f4.close()
-        f5 = open("vsrx_builder/configs/RELEASENOTES","w")
+        f5 = open("valkyrie_builder/configs/RELEASENOTES","w")
         f5.write(msg5)
         f5.close()
-        f6 = open("vsrx_builder/configs/EXTENDED","w")
+        f6 = open("valkyrie_builder/configs/EXTENDED","w")
         f6.write(msg6)
         f6.close()
-        f7 = open("vsrx_builder/configs/ISOFILE","w")
+        f7 = open("valkyrie_builder/configs/ISOFILE","w")
         f7.write(msg7)
         f7.close()
-        sp.run("""sudo mkdir /home/ubuntu-builder
-        sudo cp -a vsrx_builder/configs /home/ubuntu-builder
+        sp.run("""sudo mkdir /home/valkyrie-builder
+        sudo cp -a valkyrie_builder/configs /home/valkyrie-builder
         """,shell=True)
 #Console
     def on_console_clicked(self,widget):
-        sp.run("xfce4-terminal --hide-menubar -x sh -c 'sudo vsrx_builder/extras/Console; read'",shell=True)
+        sp.run("xfce4-terminal --hide-menubar -x sh -c 'sudo valkyrie_builder/extras/Console; read'",shell=True)
 #Synaptic
     def on_synaptic_clicked(self,widget):
-        sp.run("sudo vsrx_builder/extras/Synaptic",shell=True)
+        sp.run("sudo valkyrie_builder/extras/Synaptic",shell=True)
 #Extract
     def on_extract_clicked(self,widget):
-        os.chdir("vsrx_builder")
+        os.chdir("valkyrie_builder")
         sp.run("sudo extras/Extract",shell=True)
         os.chdir("../")
 #on_os_chooser
@@ -181,7 +181,7 @@ class valkyrie_setting(object):
         return msg_ss
 #Build
     def on_build_clicked(self,widget):
-        sp.run("sudo vsrx_builder/extras/Build",shell=True)
+        sp.run("sudo valkyrie_builder/extras/Build",shell=True)
 
 #Cancel
     def on_cancel_clicked(self,widget):

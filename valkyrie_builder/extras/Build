@@ -2,7 +2,7 @@
 
 export LD_LIBRARY_PATH="/usr/local/lib"
 
-. vsrx_builder/extras/config
+. valkyrie_builder/extras/config
 
 (echo
 echo STARTING BUILDING PROCESS
@@ -39,6 +39,10 @@ echo "                      [DONE]"
 echo -n "# Loading configs"
 read DIST < $WORKPATH/configs/DIST
 read ARCH < $WORKPATH/configs/ARCH
+read OSNAME < $WORKPATH/configs/OSNAME
+read OSVERSION < $WORKPATH/configs/OSVERSION
+read COMPRESSIONMETHOD < $WORKPATH/configs/COMPRESSIONMETHOD
+read COMPRESSIONLEVEL < $WORKPATH/configs/COMPRESSIONLEVEL
 read DESCRIPTION < $WORKPATH/configs/DESCRIPTION
 read RELEASENOTES < $ISOPATH/.disk/release_notes_url
 echo "                       [DONE]"
@@ -56,35 +60,11 @@ rm -f $ISOPATH/casper/filesystem.size
 rm -f $ISOPATH/md5sum.txt
 rm -f $ISOPATH/casper/README.diskdefines
 
-# Check if the Windows related files were selected for deletion and remove them if true
-if [ -e $WORKPATH/configs/WIN ]; then
-	read WIN < $WORKPATH/configs/WIN
-	if [[ "$WIN" = "yes" ]]; then
-		rm -rf $ISOPATH/bin
-		rm -rf $ISOPATH/disctree
-		rm -rf $ISOPATH/pics
-		rm -rf $ISOPATH/programs
-		rm -f $ISOPATH/autorun.inf
-		rm -f $ISOPATH/start.bmp
-		rm -f $ISOPATH/start.exe
-		rm -f $ISOPATH/start.ini
-		rm -f $ISOPATH/ubuntu.ico
-		rm -f $ISOPATH/kubuntu.ico
-		rm -f $ISOPATH/xubuntu.ico
-		rm -f $ISOPATH/lubuntu.ico
-		rm -f $ISOPATH/wubi-cdboot.exe
-		rm -f $ISOPATH/wubi.exe
-		rm -f $ISOPATH/umenu.exe
-		rm -f $ISOPATH/usb-creator.exe
-		rm -f $ISOPATH/mint4win.exe
-	fi
-fi
-
 VERSION=`cat $FSPATH/etc/lsb-release | grep DISTRIB_RELEASE= | sed 's/DISTRIB_RELEASE=//'`
 CDNAME=`cat $FSPATH/etc/lsb-release | grep DISTRIB_CODENAME= | sed 's/DISTRIB_CODENAME=//'`
 case $CDNAME in
-	groovy)
-		CODENAME="Groovy Gorilla"
+	jammy)
+		CODENAME="Jammy Jellyfish"
 		;;
 	focal)
 		CODENAME="Focal Fossa"
@@ -92,17 +72,8 @@ case $CDNAME in
 	bionic)
 		CODENAME="Bionic Beaver"
                 ;;
-	precise)
-		CODENAME="Precise Pangolin"
-		;;
-	quantal)
-		CODENAME="Quantal Quetzal"
-		;;
-	raring)
-		CODENAME="Raring Ringtail"
-		;;
-	saucy)
-		CODENAME="Saucy Salamander"
+	kinetic)
+		CODENAME="Kinetic Kudu"
 		;;
 esac
 
@@ -149,27 +120,27 @@ mount none -t sysfs /sys
 mount none -t devpts /dev/pts
 cp etc/apt/sources.list etc/apt/sources.list.bak.full
 #cp etc/apt/sources.list.bak.part etc/apt/sources.list
-apt-get update -q
+apt update -q
 dbus-uuidgen > /var/lib/dbus/machine-id
 dpkg-divert --local --rename --add /sbin/initctl
 ln -s /bin/true /sbin/initctl
 
 if [ ! -e /boot/vmlinuz* ] || [ ! -e /boot/initrd* ]; then
 	rm initrd.img vmlinuz
-	apt-get purge linux-image-* -qq -y
-	apt-get install linux-image-generic -qq -y
+	apt purge linux-image-* -qq -y
+	apt install linux-image-generic -qq -y
 	update-initramfs -u -k all
 fi
 
 if [ -e /tmp/LOCALE ]; then
 	read LOCALE < /tmp/LOCALE
-	apt-get purge -y language-pack*
-	apt-get install -y language-pack-$LOCALE language-pack-$LOCALE-base
+	apt purge -y language-pack*
+	apt install -y language-pack-$LOCALE language-pack-$LOCALE-base
 	if [ -e usr/bin/gnome-session ] || [ -e usr/bin/xfce4-session ] || [ -e usr/bin/lxsession ]; then
-		apt-get install -y language-pack-gnome-$LOCALE language-pack-gnome-$LOCALE-base
+		apt install -y language-pack-gnome-$LOCALE language-pack-gnome-$LOCALE-base
 	fi
 	if [ -e usr/bin/startkde ]; then
-		apt-get install -y language-pack-kde-$LOCALE language-pack-kde-$LOCALE-base
+		apt install -y language-pack-kde-$LOCALE language-pack-kde-$LOCALE-base
 	fi
 	rm /tmp/LOCALE
 fi
@@ -184,7 +155,7 @@ fi
 
 EOF
 ######################### on EXIT #########################
-echo "apt-get clean
+echo "apt clean
 rm -rf /boot/*.bak
 rm -rf /tmp/*
 rm -rf ~/.bash_history
@@ -208,20 +179,17 @@ echo "     [DONE]"
 echo -n "# Copying boot files"
 (if [ "$LOCALEPURGE" = "yes" ]; then
 	cd $WORKPATH
-	apt-get install -y gfxboot gfxboot-dev
-	apt-get source gfxboot-theme-ubuntu
+	apt install -y gfxboot gfxboot-dev
+	apt source gfxboot-theme-ubuntu
 	tar -xzf gfxboot*.tar.gz
 	cd gfxboot*/
 	make DEFAULT_LANG=$LOCALE
 	cp -rf boot/* $ISOPATH/isolinux/
 	cd ..
 	rm -r gfxboot*
-	apt-get purge -y gfxboot gfxboot-dev
+	apt purge -y gfxboot gfxboot-dev
 fi
 
-#cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz
-#cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
-#cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz.efi
 cp -f $FSPATH/boot/initrd.img*-generic $ISOPATH/casper/initrd.lz
 cp -f $FSPATH/boot/vmlinuz*-generic $ISOPATH/casper/vmlinuz
 #cp -f $FSPATH/boot/vmlinuz* $ISOPATH/casper/vmlinuz.efi
@@ -231,14 +199,20 @@ echo "                    [DONE]"
 
 echo -n "# Creating File System"
 echo
-
-#mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp zstd -Xcompression-level 22 -b 1M -processors 3
-mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp zstd -Xcompression-level 15 -b 1M
-#mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp lz4 -Xhc
-#mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery
-#mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp xz
-#mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery  -b 1M -comp xz -Xdict-size 100% -Xbcj x86
-
+case $COMPRESSIONMETHOD in
+    zstd)
+        mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp zstd  -Xcompression-level $COMPRESSIONLEVEL -b 1M
+;;
+    lz4)
+        mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -comp lz4 -Xhc
+;;
+    xz)
+        mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery -b 1M -comp xz -Xdict-size 100% -Xbcj x86
+;;
+    gz)
+        mksquashfs $FSPATH $ISOPATH/casper/filesystem.squashfs -noappend -no-recovery
+;;
+esac
 printf $(du -sx --block-size=1 $FSPATH | cut -f1) > $ISOPATH/casper/filesystem.size
 echo "                  [DONE]"
 
@@ -263,7 +237,7 @@ echo "#define DISKNAME  ${DIST} - Release ${ARCH}
 #define TOTALNUM  0
 #define TOTALNUM0  1" > $ISOPATH/README.diskdefines
 
-echo "$DIST $VERSION \"$CODENAME\" - Release $ARCH (`date +%Y%m%d`)" > $ISOPATH/.disk/info
+echo "$DIST $OSVERSION \"$CODENAME\" - Release $ARCH (`date +%Y%m%d`)" > $ISOPATH/.disk/info
 echo "           [DONE]"
 
 echo -ne "# Creating ISO, this may take a moment"
@@ -281,26 +255,5 @@ echo -n "# Generating MD5Sum"
 cd $WORKPATH
 md5sum ${DIST//[[:space:]]}-$VERSION-$ARCH.iso > md5sum
 echo "                     [DONE]"
-
-# If usb live was selected in the settings, start the process
-if [ -e $WORKPATH/configs/USB_LIVE ]; then
-	read USB_LIVE < $WORKPATH/configs/USB_LIVE
-	if [ "$USB_LIVE" = "yes" ]; then
-		if [ -e /usr/bin/usb-creator-gtk ]; then
-			usb-creator-gtk -i ${DIST//[[:space:]]}-$VERSION-$ARCH.iso
-		else
-			usb-creator-kde -i ${DIST//[[:space:]]}-$VERSION-$ARCH.iso
-		fi
-	fi
-fi
-
-# If burning image was selected in the settings, start the process
-if [ -e $WORKPATH/configs/BURN ]; then
-	read BURN < $WORKPATH/configs/BURN
-	if [ "$BURN" = "yes" ]; then
-		read ISO < $WORKPATH/configs/ISOCREATED
-		read SOFTWARE < $WORKPATH/configs/SOFTWARE
-		$SOFTWARE $ISO
-	fi
-fi
+mv ${DIST//[[:space:]]}-$VERSION-$ARCH.iso ${OSNAME//[[:space:]]}-$OSVERSION-$ARCH.iso
 ) | tee -a $WORKPATH/ubuntu-builder.log
