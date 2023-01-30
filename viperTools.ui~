@@ -119,7 +119,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="leve">
+                  <object class="GtkEntry" id="level">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="text" translatable="yes">15</property>

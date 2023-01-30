@@ -1,7 +1,7 @@
 Linux application "Viper Tools"
 Web site URL : http://vsrx.work
 Created by takamitsu hamada
-Updated November 23,2022
+Updated January 30,2023
 
 詳しいリファレンスは、以下で公開しています。
 
@@ -27,7 +27,6 @@ $ sudo pip install mecab-python3
 [主な機能]
 ・競艇予想や数字選択式宝くじ予想機能
 ・Ubuntu系LinuxディストリビューションをオリジナルのLinuxディストリビューションである「Valkyrie Linux」のデスクトップ環境に変換する機能
-・OpenJtalkを使ってコンピューターを喋らせる機能
 ・tmpfsのRAMDISK量の調整機能
 ・アニメーションGIFのようなアニメーションSVG、APNGを作成する機能
 ・アプリケーションやライブラリのインストール
@@ -55,9 +54,6 @@ $python viper.py import
 ◇tmpfs_ramdisk_slider.py
 端末から「python vipertools.py」と入力して起動して項目を選択する。
 tmpfsのRAMディスクの容量を変更出来ます。
-
-◇コンピューターに喋らせる機能
-端末から「python vipertools.py」と入力して起動して項目を選択する。
 
 ◇宝くじ予想機能
 端末から「python vipertools.py」と入力して起動して項目を選択する。
