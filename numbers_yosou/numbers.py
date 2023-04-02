@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20220516
+version :  20230402
 License      :  BSD License
 """
 from numbers_list import *
@@ -764,7 +764,7 @@ class allnumbers(object):
         #n3.del015(ee)
         n3.del004(ee)
         n3.delstmini(20,ee)
-        #n3.delbeforemini(200,ee)
+        n3.delbeforemini(200,ee)
         #n3.useGmini(ee)
         n3.delboxmini(20,ee)
         #n3.del_rehearsal_mini(ee)
@@ -778,7 +778,7 @@ class allnumbers(object):
         n3.delst(240,rs3)
         #n3.del100plus10(rs3)
         rs3 = sorted(set(n3.make_box(rs3)))
-        n3.delbox(40,rs3)
+        n3.delbox(20,rs3)
         n3.delzoro3(rs3)
         #n3.del_rehearsal3(rs3)
         #n3.del_remove3(rs3)
@@ -786,18 +786,18 @@ class allnumbers(object):
         n3b = sorted(set(zip(rs3,[n3.make_box(n3.full_num3).count(i) for i in rs3])))
 #Numbers4予想
         n4 = numbers4()
-        rs = n4.make_straight_under3000()
+        #rs = n4.make_straight_under3000()
         rs = n4.make_straight()
         n4.delst(rs)
-        n4.dellow2(50,rs)
-        n4.dellow3(500,rs)
+        #n4.dellow2(50,rs)
+        #n4.dellow3(500,rs)
         rs = sorted(set(n4.make_box(rs)))
-        n4.delbox(240,rs)
+        n4.delbox(60,rs)
         n4.delzoro4(rs)
         n4.deltriple(rs)
         n4.deldouble(rs)
         #n4.del_rehearsal4(rs)
-        n4.del_remove4(rs)
+        #n4.del_remove4(rs)
         #rs = set(sorted([random.choice(rs) for i in range(200)]))
         n4a = sorted(set(zip(rs,[n4.make_box(n4.full_num34).count(i) for i in rs])))
 
@@ -1015,3 +1015,8 @@ class allloto(object):
 if __name__ == "__main__":
     allnumbers()
     allloto()
+    #from download_data import *
+    #dd = download_data()
+    #dd.download_html()
+    #print("Finish")
+    
