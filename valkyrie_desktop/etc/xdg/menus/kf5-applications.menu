@@ -5,7 +5,6 @@
 	<Name>Applications</Name>
 	<Directory>kde-main.directory</Directory>
 	<!-- Search the default locations -->
-	<KDELegacyDirs/>
 	<DefaultAppDirs/>
 	<DefaultDirectoryDirs/>
 	<DefaultLayout>
@@ -137,7 +136,6 @@
 						<Category>Math</Category>
 						<Category>Science</Category>
 						<Category>Teaching</Category>
-						<Category>X-KDE-Edu-Teaching</Category>
 					</Not>
 				</And>
 			</Include>
@@ -158,10 +156,7 @@
 			<Include>
 				<And>
 					<Category>Education</Category>
-					<Or>
-						<Category>Teaching</Category>
-						<Category>X-KDE-Edu-Teaching</Category>
-					</Or>
+					<Category>Teaching</Category>
 				</And>
 			</Include>
 		</Menu>
@@ -242,13 +237,6 @@
 				</Not>
 			</And>
 		</Include>
-		<Menu>
-			<Name>Toys</Name>
-			<Directory>kf5-toys.directory</Directory>
-			<Include>
-				<Category>Amusement</Category>
-			</Include>
-		</Menu>
 	</Menu>
 	<Menu>
 		<Name>Graphics</Name>

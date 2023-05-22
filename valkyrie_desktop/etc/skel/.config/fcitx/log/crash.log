@@ -1,15 +1,1 @@
-=========================
-FCITX 4.2.9.7 -- Get Signal No.: 11
-Date: try "date -d @1650542419" if you are using GNU date ***
-ProcessID: 1946
-/usr/bin/fcitx(+0x1a97)[0x5562390caa97]
-/lib/x86_64-linux-gnu/libc.so.6(+0x46520)[0x7f938967d520]
-/lib/x86_64-linux-gnu/libdbus-1.so.3(dbus_watch_get_enabled+0x9)[0x7f9388f5a0a9]
-/usr/lib/x86_64-linux-gnu/fcitx/fcitx-dbus.so(+0x2c95)[0x7f93898bbc95]
-/usr/lib/x86_64-linux-gnu/fcitx/fcitx-dbus.so(+0x2e93)[0x7f93898bbe93]
-/usr/lib/x86_64-linux-gnu/libfcitx-core.so.0(+0x924a)[0x7f938989c24a]
-/usr/lib/x86_64-linux-gnu/libfcitx-core.so.0(FcitxInstanceRun+0x57)[0x7f938989c9e7]
-/usr/bin/fcitx(+0x1433)[0x5562390ca433]
-/lib/x86_64-linux-gnu/libc.so.6(+0x2dfd0)[0x7f9389664fd0]
-/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x7d)[0x7f938966507d]
-/usr/bin/fcitx(+0x14ae)[0x5562390ca4ae]
+fcitx: BadWindow (invalid Window parameter)

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=About Valkyrie Linux
-Comment=About Valkyrie Linux
-Exec=xfce4-terminal --hide-menubar -x sh -c 'python3 ~/viper/scripts/info.py;read'
-Icon=
-Terminal=false
-Type=Application
-Categories=Other;

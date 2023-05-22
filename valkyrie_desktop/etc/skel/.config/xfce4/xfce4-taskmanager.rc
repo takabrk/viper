@@ -1,5 +1,6 @@
 [Settings]
 ShowAllProcesses=FALSE
+ShowLegend=TRUE
 MorePrecision=TRUE
 FullCommandLine=FALSE
 ShowStatusIcon=FALSE
@@ -12,14 +13,14 @@ RefreshRate=750
 ColumnUID=FALSE
 ColumnPID=TRUE
 ColumnPPID=FALSE
-ColumnState=FALSE
+ColumnState=TRUE
 ColumnVSZ=FALSE
 ColumnRSS=TRUE
 ColumnCPU=TRUE
 ColumnPriority=TRUE
-SortColumn=7
-SortType=0
-WindowWidth=874
+SortColumn=5
+SortType=1
+WindowWidth=882
 WindowHeight=595
-HandlePosition=100
-ProcessTreeView=TRUE
+HandlePosition=108
+ProcessTreeView=FALSE

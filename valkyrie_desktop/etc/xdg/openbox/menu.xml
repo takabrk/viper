@@ -1,271 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<openbox_menu xmlns="http://openbox.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://openbox.org/                 file:///usr/share/openbox/menu.xsd">
-	<menu id="root-menu" label="Openbox 3">
-		<item label="Chromium Browser">
-			<action name="Execute">
-				<execute>chromium-browser --disk-cache-dir=&quot;/tmp&quot; --allow-file-access-from-files --user-agent=&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36&quot; %u</execute>
-			</action>
-		</item>
-		<item label="Firefox">
-			<action name="Execute">
-				<execute>firefox</execute>
-			</action>
-		</item>
-		<item label="Sound Volume">
-			<action name="Execute">
-				<execute>gnome-alsamixer</execute>
-			</action>
-		</item>
-		<separator/>
-		<menu id="root-menu-311947" label="Sound server">
-			<item label="Jack Audio Connection Kit start">
-				<action name="Execute">
-					<execute>qjackctl -s</execute>
-				</action>
-			</item>
-			<item label="PulseAudio Control">
-				<action name="Execute">
-					<execute>pavucontrol</execute>
-				</action>
-			</item>
-			<item label="PulseAudio start">
-				<action name="Execute">
-					<execute>pulseaudio --start</execute>
-				</action>
-			</item>
-			<item label="PulseAudio kill">
-				<action name="Execute">
-					<execute>pulseaudio --k</execute>
-				</action>
-			</item>
-		</menu>
-		<separator/>
-		<item label="Synaptic package manager">
-			<action name="Execute">
-				<execute>gksu synaptic</execute>
-			</action>
-		</item>
-		<item label="PlayOnLinux">
-			<action name="Execute">
-				<execute>playonlinux</execute>
-			</action>
-		</item>
-		<item label="Viper Tools">
-			<action name="Execute">
-				<execute>xfce4-terminal --hide-menubar -x sh -c 'cd ~/viper &amp;&amp; python vipertools.py; read'</execute>
-			</action>
-		</item>
-		<item label="PCManFM">
-			<action name="Execute">
-				<execute>pcmanfm-qt</execute>
-			</action>
-		</item>
-		<item label="Terminal emulator">
-			<action name="Execute">
-				<execute>x-terminal-emulator</execute>
-			</action>
-		</item>
-		<item label="System Monitor">
-			<action name="Execute">
-				<execute>xfce4-taskmanager</execute>
-			</action>
-		</item>
-		<item label="KeepassXC">
-			<action name="Execute">
-				<execute>keepassxc</execute>
-			</action>
-		</item>
-		<item label="Gparted">
-			<action name="Execute">
-				<execute>gksu gparted</execute>
-			</action>
-		</item>
-		<item label="Unetbootin">
-			<action name="Execute">
-				<execute>gksu unetbootin</execute>
-			</action>
-		</item>
-		<separator/>
-		<menu id="root-menu-334956-525419" label="Audio &amp; Video">
-			<item label="GNOME MPV">
-				<action name="Execute">
-					<execute>gnome-mpv</execute>
-				</action>
-			</item>
-			<item label="Audacious">
-				<action name="Execute">
-					<execute>audacious</execute>
-				</action>
-			</item>
-			<item label="Avidemux">
-				<action name="Execute">
-					<execute>avidemux2.7_qt5</execute>
-				</action>
-			</item>
-			<item label="Simple Screen Recorder">
-				<action name="Execute">
-					<execute>simplescreenrecorder</execute>
-				</action>
-			</item>
-			<item label="Shotcut">
-				<action name="Execute">
-					<execute>shotcut</execute>
-				</action>
-			</item>
-			<item label="Handbrake">
-				<action name="Execute">
-					<execute>ghb %f</execute>
-				</action>
-			</item>
-			<item label="Audacity">
-				<action name="Execute">
-					<execute>audacity</execute>
-				</action>
-			</item>
-		</menu>
-		<menu id="root-menu-334956-445128" label="Graphics">
-			<item label="GIMP">
-				<action name="Execute">
-					<execute>gimp</execute>
-				</action>
-			</item>
-			<item label="lximage-qt">
-				<action name="Execute">
-					<execute>lximage-qt</execute>
-				</action>
-			</item>
-		</menu>
-		<menu id="root-menu-334956-315947" label="Game">
-			<item label="PPSSPP">
-				<action name="Execute">
-					<execute>ppsspp</execute>
-				</action>
-			</item>
-			<item label="PCSX2">
-				<action name="Execute">
-					<execute>env GDK_BACKEND=x11 __GL_THREADED_OPTIMIZATIONS=1 PCSX2</execute>
-				</action>
-			</item>
-		</menu>
-		<menu id="root-menu-334956-11549" label="Network">
-			<item label="Remmina">
-				<action name="Execute">
-					<execute>remmina</execute>
-				</action>
-			</item>
-			<item label="X11VNC">
-				<action name="Execute">
-					<execute>x11vnc -gui tray=setpass -rfbport PROMPT -bg -o %%HOME/.x11vnc.log.%%VNCDISPLAY</execute>
-				</action>
-			</item>
-		</menu>
-		<menu id="root-menu-334956-575854" label="Development">
-			<item label="Glade">
-				<action name="Execute">
-					<execute>glade</execute>
-				</action>
-			</item>
-		</menu>
-		<menu id="root-menu-334956-395158" label="Office">
-			<item label="Abiword">
-				<action name="Execute">
-					<execute>abiword</execute>
-				</action>
-			</item>
-			<item label="Gnumeric">
-				<action name="Execute">
-					<execute>gnumeric</execute>
-				</action>
-			</item>
-		</menu>
-		<menu id="root-menu-454350" label="Settings">
-			<item label="Openbox settings">
-				<action name="Execute">
-					<execute>obconf-qt</execute>
-				</action>
-			</item>
-			<item label="lxinput">
-				<action name="Execute">
-					<execute>lxinput</execute>
-				</action>
-			</item>
-			<item label="lxrandr">
-				<action name="Execute">
-					<execute>lxrandr</execute>
-				</action>
-			</item>
-			<item label="lxappearance">
-				<action name="Execute">
-					<execute>lxappearance</execute>
-				</action>
-			</item>
-			<item label="Change to the wallpaper">
-				<action name="Execute">
-					<execute>nitrogen /usr/share/backgrounds</execute>
-				</action>
-			</item>
-			<item label="lxsession edit">
-				<action name="Execute">
-					<execute>lxsession-edit</execute>
-				</action>
-			</item>
-			<item label="LXDE Desktop Settings">
-				<action name="Execute">
-					<execute>pcmanfm-qt --desktop-pref</execute>
-				</action>
-			</item>
-			<item label="Plank">
-				<action name="Execute">
-					<execute>plank --preferences</execute>
-				</action>
-			</item>
-			<item label="lightdm-gtk-greeter-settings">
-				<action name="Execute">
-					<execute>gksu lightdm-gtk-greeter-settings</execute>
-				</action>
-			</item>
-			<item label="Change directory name to English">
-				<action name="Execute">
-					<execute>LANGUAGE=en xdg-user-dirs-update --force</execute>
-				</action>
-			</item>
-		</menu>
-		<separator/>
-		<item label="Edit Openbox Menu">
-			<action name="Execute">
-				<execute>python2 /usr/bin/obmenu</execute>
-			</action>
-		</item>
-		<item label="Reconfigure">
-			<action name="Reconfigure"/>
-		</item>
-		<!-- This requires the presence of the 'menu' package to work -->
-		<separator/>
-		<item label="To Main Site">
-			<action name="Execute">
-				<execute>chromium-browser --disk-cache-dir=&quot;/tmp&quot; --app=&quot;http://valkyrieviper.space&quot;</execute>
-			</action>
-		</item>
-		<item label="Install VSRX-19">
-			<action name="Execute">
-				<execute>~/.config/install_vsrx</execute>
-			</action>
-		</item>
-		<item label="boot-repair">
-			<action name="Execute">
-				<execute>xfce4-terminal --hide-menubar -x sh -c 'boot-repair; read'</execute>
-			</action>
-		</item>
-		<item label="About VSRX-19">
-			<action name="Execute">
-				<execute>~/viper/info.py</execute>
-			</action>
-		</item>
-		<separator/>
-		<item label="Exit">
-			<action name="Execute">
-				<execute>lxsession-logout</execute>
-			</action>
-		</item>
-	</menu>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://openbox.org/
+                file:///usr/share/openbox/menu.xsd">
+
+<menu id="root-menu" label="Openbox 3">
+  <item label="Terminal emulator">
+    <action name="Execute"><execute>x-terminal-emulator</execute></action>
+  </item>
+  <item label="Web browser">
+    <action name="Execute"><execute>x-www-browser</execute></action>
+  </item>
+  <!-- This requires the presence of the 'obamenu' package to work -->
+  <menu id="/Debian" />
+  <separator />
+  <menu id="applications-menu" label="Applications" execute="/usr/bin/obamenu"/>
+  <separator />
+  <item label="ObConf">
+    <action name="Execute"><execute>obconf</execute></action>
+  </item>
+  <item label="Reconfigure">
+    <action name="Reconfigure" />
+  </item>
+  <item label="Restart">
+    <action name="Restart" />
+  </item>
+  <separator />
+  <item label="Exit">
+    <action name="Exit" />
+  </item>
+</menu>
+
 </openbox_menu>

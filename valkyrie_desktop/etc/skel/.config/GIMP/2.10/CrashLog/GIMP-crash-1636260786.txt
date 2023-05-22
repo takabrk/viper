@@ -1,0 +1,629 @@
+
+# Stack traces obtained from PID 41087 - Thread 41087 #
+
+[New LWP 41090]
+[New LWP 41091]
+[New LWP 41092]
+[New LWP 41093]
+[New LWP 41094]
+[New LWP 41095]
+[New LWP 41356]
+[New LWP 42620]
+[New LWP 42621]
+[New LWP 42622]
+[New LWP 42623]
+[New LWP 42870]
+To enable execution of this file add
+	add-auto-load-safe-path /lib/x86_64-linux-gnu/libthread_db.so.1
+line to your configuration file "/home/valkyrie/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/valkyrie/.gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+__GI___libc_read (nbytes=256, buf=0x7fffcd945600, fd=18) at ../sysdeps/unix/sysv/linux/read.c:26
+  Id   Target Id                                       Frame 
+* 1    Thread 0x7f1db53e5e80 (LWP 41087) "gimp-2.10"   __GI___libc_read (nbytes=256, buf=0x7fffcd945600, fd=18) at ../sysdeps/unix/sysv/linux/read.c:26
+  2    Thread 0x7f1db4ab8640 (LWP 41090) "worker"      syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  3    Thread 0x7f1db42b7640 (LWP 41091) "worker"      syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  4    Thread 0x7f1db3ab6640 (LWP 41092) "worker"      syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  5    Thread 0x7f1db2083640 (LWP 41093) "gmain"       0x00007f1db6660cdf in __GI___poll (fds=0x562e80871c70, nfds=2, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+  6    Thread 0x7f1db1882640 (LWP 41094) "gdbus"       0x00007f1db6660cdf in __GI___poll (fds=0x562e80888360, nfds=2, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+  7    Thread 0x7f1d9234f640 (LWP 41095) "async"       syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  8    Thread 0x7f1d8bfff640 (LWP 41356) "swap writer" syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  9    Thread 0x7f1d7d0b8640 (LWP 42620) "gimp-2.10"   __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+  10   Thread 0x7f1d7ebbc640 (LWP 42621) "gimp-2.10"   __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+  11   Thread 0x7f1d982cd640 (LWP 42622) "gimp-2.10"   __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+  12   Thread 0x7f1d90f4d640 (LWP 42623) "gimp-2.10"   __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+  13   Thread 0x7f1d91b4e640 (LWP 42870) "paint"       syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+
+Thread 13 (Thread 0x7f1d91b4e640 (LWP 42870) "paint"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+No locals.
+#1  0x00007f1db68fc623 in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x0000562e7f9a544d in ?? ()
+No symbol table info available.
+#3  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139764975330880, -6103521128756450166, 140736642438910, 140736642438911, 0, 139764966940672, 6156645775475567754, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 12 (Thread 0x7f1d90f4d640 (LWP 42623) "gimp-2.10"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+        sc_cancel_oldtype = 0
+        sc_ret = <optimized out>
+        resultvar = <optimized out>
+        __arg6 = <optimized out>
+        __arg5 = <optimized out>
+        __arg4 = <optimized out>
+        __arg3 = <optimized out>
+        __arg2 = <optimized out>
+        __arg1 = <optimized out>
+        _a6 = <optimized out>
+        _a5 = <optimized out>
+        _a4 = <optimized out>
+        _a3 = <optimized out>
+        _a2 = <optimized out>
+        _a1 = <optimized out>
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:87
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = 393
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = <optimized out>
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x562e84c28cb8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at futex-internal.c:139
+No locals.
+#3  0x00007f1db65dc920 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x562e88b000d0, cond=0x562e84c28c90) at pthread_cond_wait.c:504
+        spin = 0
+        buffer = {__routine = 0x7f1db65dc5f0 <__condvar_cleanup_waiting>, __arg = 0x7f1d90f4bf30, __canceltype = 13, __prev = 0x0}
+        cbuffer = {wseq = 66, cond = 0x562e84c28c90, mutex = 0x562e88b000d0, private = 0}
+        err = <optimized out>
+        g = 0
+        flags = <optimized out>
+        g1_start = <optimized out>
+        maxspin = 0
+        signals = <optimized out>
+        result = 0
+        wseq = 66
+        seq = 33
+        private = <optimized out>
+        maxspin = <optimized out>
+        err = <optimized out>
+        result = <optimized out>
+        wseq = <optimized out>
+        g = <optimized out>
+        seq = <optimized out>
+        flags = <optimized out>
+        private = <optimized out>
+        signals = <optimized out>
+        done = <optimized out>
+        g1_start = <optimized out>
+        spin = <optimized out>
+        buffer = {__routine = <optimized out>, __arg = <optimized out>, __canceltype = <optimized out>, __prev = <optimized out>}
+        cbuffer = {wseq = <optimized out>, cond = <optimized out>, mutex = <optimized out>, private = <optimized out>}
+        s = <optimized out>
+#4  ___pthread_cond_wait (cond=0x562e84c28c90, mutex=0x562e88b000d0) at pthread_cond_wait.c:628
+No locals.
+#5  0x00007f1dab97d88a in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#6  0x00007f1dab975726 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#7  0x00007f1dab973c9e in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#8  0x00007f1dab97c8d1 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#9  0x00007f1dab9762e0 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#10 0x00007f1dabc65187 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#11 0x00007f1dab97c247 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#12 0x00007f1dabc2c23f in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#13 0x00007f1dabc5a53d in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#14 0x00007f1dabc3aaa6 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#15 0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139764962743872, -6103521128756450166, 140736642345982, 140736642345983, 0, 139764960645120, 6156647424206138506, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#16 0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 11 (Thread 0x7f1d982cd640 (LWP 42622) "gimp-2.10"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+        sc_cancel_oldtype = 0
+        sc_ret = <optimized out>
+        resultvar = <optimized out>
+        __arg6 = <optimized out>
+        __arg5 = <optimized out>
+        __arg4 = <optimized out>
+        __arg3 = <optimized out>
+        __arg2 = <optimized out>
+        __arg1 = <optimized out>
+        _a6 = <optimized out>
+        _a5 = <optimized out>
+        _a4 = <optimized out>
+        _a3 = <optimized out>
+        _a2 = <optimized out>
+        _a1 = <optimized out>
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:87
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = 393
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = <optimized out>
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x562e84c28cb8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at futex-internal.c:139
+No locals.
+#3  0x00007f1db65dc920 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x562e88b000d0, cond=0x562e84c28c90) at pthread_cond_wait.c:504
+        spin = 0
+        buffer = {__routine = 0x7f1db65dc5f0 <__condvar_cleanup_waiting>, __arg = 0x7f1d982cbf30, __canceltype = 13, __prev = 0x0}
+        cbuffer = {wseq = 70, cond = 0x562e84c28c90, mutex = 0x562e88b000d0, private = 0}
+        err = <optimized out>
+        g = 0
+        flags = <optimized out>
+        g1_start = <optimized out>
+        maxspin = 0
+        signals = <optimized out>
+        result = 0
+        wseq = 70
+        seq = 35
+        private = <optimized out>
+        maxspin = <optimized out>
+        err = <optimized out>
+        result = <optimized out>
+        wseq = <optimized out>
+        g = <optimized out>
+        seq = <optimized out>
+        flags = <optimized out>
+        private = <optimized out>
+        signals = <optimized out>
+        done = <optimized out>
+        g1_start = <optimized out>
+        spin = <optimized out>
+        buffer = {__routine = <optimized out>, __arg = <optimized out>, __canceltype = <optimized out>, __prev = <optimized out>}
+        cbuffer = {wseq = <optimized out>, cond = <optimized out>, mutex = <optimized out>, private = <optimized out>}
+        s = <optimized out>
+#4  ___pthread_cond_wait (cond=0x562e84c28c90, mutex=0x562e88b000d0) at pthread_cond_wait.c:628
+No locals.
+#5  0x00007f1dab97d88a in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#6  0x00007f1dab975726 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#7  0x00007f1dab973c9e in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#8  0x00007f1dab97c8d1 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#9  0x00007f1dab9762e0 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#10 0x00007f1dabc65187 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#11 0x00007f1dab97c247 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#12 0x00007f1dabc2c23f in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#13 0x00007f1dabc5a53d in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#14 0x00007f1dabc3aaa6 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#15 0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139765083854400, -6103521128756450166, 140736642345982, 140736642345983, 0, 139765081755648, 6156666459501194378, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#16 0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 10 (Thread 0x7f1d7ebbc640 (LWP 42621) "gimp-2.10"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+        sc_cancel_oldtype = 0
+        sc_ret = <optimized out>
+        resultvar = <optimized out>
+        __arg6 = <optimized out>
+        __arg5 = <optimized out>
+        __arg4 = <optimized out>
+        __arg3 = <optimized out>
+        __arg2 = <optimized out>
+        __arg1 = <optimized out>
+        _a6 = <optimized out>
+        _a5 = <optimized out>
+        _a4 = <optimized out>
+        _a3 = <optimized out>
+        _a2 = <optimized out>
+        _a1 = <optimized out>
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:87
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = 393
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = <optimized out>
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x562e84c28cb8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at futex-internal.c:139
+No locals.
+#3  0x00007f1db65dc920 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x562e88b000d0, cond=0x562e84c28c90) at pthread_cond_wait.c:504
+        spin = 0
+        buffer = {__routine = 0x7f1db65dc5f0 <__condvar_cleanup_waiting>, __arg = 0x7f1d7ebbaf30, __canceltype = 13, __prev = 0x0}
+        cbuffer = {wseq = 64, cond = 0x562e84c28c90, mutex = 0x562e88b000d0, private = 0}
+        err = <optimized out>
+        g = 0
+        flags = <optimized out>
+        g1_start = <optimized out>
+        maxspin = 0
+        signals = <optimized out>
+        result = 0
+        wseq = 64
+        seq = 32
+        private = <optimized out>
+        maxspin = <optimized out>
+        err = <optimized out>
+        result = <optimized out>
+        wseq = <optimized out>
+        g = <optimized out>
+        seq = <optimized out>
+        flags = <optimized out>
+        private = <optimized out>
+        signals = <optimized out>
+        done = <optimized out>
+        g1_start = <optimized out>
+        spin = <optimized out>
+        buffer = {__routine = <optimized out>, __arg = <optimized out>, __canceltype = <optimized out>, __prev = <optimized out>}
+        cbuffer = {wseq = <optimized out>, cond = <optimized out>, mutex = <optimized out>, private = <optimized out>}
+        s = <optimized out>
+#4  ___pthread_cond_wait (cond=0x562e84c28c90, mutex=0x562e88b000d0) at pthread_cond_wait.c:628
+No locals.
+#5  0x00007f1dab97d88a in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#6  0x00007f1dab975726 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#7  0x00007f1dab973c9e in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#8  0x00007f1dab97c8d1 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#9  0x00007f1dab9762e0 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#10 0x00007f1dabc65187 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#11 0x00007f1dab97c247 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#12 0x00007f1dabc2c23f in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#13 0x00007f1dabc5a53d in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#14 0x00007f1dabc3aaa6 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#15 0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139764657014336, -6103521128756450166, 140736642345982, 140736642345983, 0, 139764648624128, 6156722680086228106, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#16 0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 9 (Thread 0x7f1d7d0b8640 (LWP 42620) "gimp-2.10"):
+#0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:57
+        sc_cancel_oldtype = 0
+        sc_ret = <optimized out>
+        resultvar = <optimized out>
+        __arg6 = <optimized out>
+        __arg5 = <optimized out>
+        __arg4 = <optimized out>
+        __arg3 = <optimized out>
+        __arg2 = <optimized out>
+        __arg1 = <optimized out>
+        _a6 = <optimized out>
+        _a5 = <optimized out>
+        _a4 = <optimized out>
+        _a3 = <optimized out>
+        _a2 = <optimized out>
+        _a1 = <optimized out>
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x562e84c28cb8) at futex-internal.c:87
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = 393
+        err = <optimized out>
+        clockbit = <optimized out>
+        op = <optimized out>
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x562e84c28cb8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at futex-internal.c:139
+No locals.
+#3  0x00007f1db65dc920 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x562e88b000d0, cond=0x562e84c28c90) at pthread_cond_wait.c:504
+        spin = 0
+        buffer = {__routine = 0x7f1db65dc5f0 <__condvar_cleanup_waiting>, __arg = 0x7f1d7d0b6f30, __canceltype = 13, __prev = 0x0}
+        cbuffer = {wseq = 68, cond = 0x562e84c28c90, mutex = 0x562e88b000d0, private = 0}
+        err = <optimized out>
+        g = 0
+        flags = <optimized out>
+        g1_start = <optimized out>
+        maxspin = 0
+        signals = <optimized out>
+        result = 0
+        wseq = 68
+        seq = 34
+        private = <optimized out>
+        maxspin = <optimized out>
+        err = <optimized out>
+        result = <optimized out>
+        wseq = <optimized out>
+        g = <optimized out>
+        seq = <optimized out>
+        flags = <optimized out>
+        private = <optimized out>
+        signals = <optimized out>
+        done = <optimized out>
+        g1_start = <optimized out>
+        spin = <optimized out>
+        buffer = {__routine = <optimized out>, __arg = <optimized out>, __canceltype = <optimized out>, __prev = <optimized out>}
+        cbuffer = {wseq = <optimized out>, cond = <optimized out>, mutex = <optimized out>, private = <optimized out>}
+        s = <optimized out>
+#4  ___pthread_cond_wait (cond=0x562e84c28c90, mutex=0x562e88b000d0) at pthread_cond_wait.c:628
+No locals.
+#5  0x00007f1dab97d88a in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#6  0x00007f1dab975726 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#7  0x00007f1dab973c9e in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#8  0x00007f1dab97c8d1 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#9  0x00007f1dab9762e0 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#10 0x00007f1dabc65187 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#11 0x00007f1dab97c247 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#12 0x00007f1dabc2c23f in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#13 0x00007f1dabc5a53d in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#14 0x00007f1dabc3aaa6 in ?? () from /usr/lib/x86_64-linux-gnu/librsvg-2.so.2
+No symbol table info available.
+#15 0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139764628686400, -6103521128756450166, 140736642345982, 140736642345983, 0, 139764620296192, 6156726122502515850, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#16 0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 8 (Thread 0x7f1d8bfff640 (LWP 41356) "swap writer"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+No locals.
+#1  0x00007f1db68fc623 in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007f1db6dfcaad in ?? () from /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+No symbol table info available.
+#3  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139764879586880, -6103521128756450166, 140736642436014, 140736642436015, 0, 139764871196672, 6156693510278966410, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 7 (Thread 0x7f1d9234f640 (LWP 41095) "async"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+No locals.
+#1  0x00007f1db68fc623 in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x0000562e7fbfbd84 in ?? ()
+No symbol table info available.
+#3  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139764983723584, -6103521128756450166, 140736642441470, 140736642441471, 0, 139764975333376, 6156644676500810890, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 6 (Thread 0x7f1db1882640 (LWP 41094) "gdbus"):
+#0  0x00007f1db6660cdf in __GI___poll (fds=0x562e80888360, nfds=2, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+        sc_ret = -516
+        sc_cancel_oldtype = 0
+        sc_ret = <optimized out>
+#1  0x00007f1db68af36e in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007f1db68af6f3 in g_main_loop_run () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#3  0x00007f1db6b40f8a in ?? () from /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#5  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139765509269056, -6103521128756450166, 140736642441598, 140736642441599, 0, 139765500878848, 6156575511958088842, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#6  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 5 (Thread 0x7f1db2083640 (LWP 41093) "gmain"):
+#0  0x00007f1db6660cdf in __GI___poll (fds=0x562e80871c70, nfds=2, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+        sc_ret = -516
+        sc_cancel_oldtype = 0
+        sc_ret = <optimized out>
+#1  0x00007f1db68af36e in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007f1db68af4a3 in g_main_context_iteration () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#3  0x00007f1db68af4f1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#5  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139765517661760, -6103521128756450166, 140736642441166, 140736642441167, 0, 139765509271552, 6156574412983331978, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#6  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 4 (Thread 0x7f1db3ab6640 (LWP 41092) "worker"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+No locals.
+#1  0x00007f1db68fc623 in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007f1db6dc46fb in ?? () from /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+No symbol table info available.
+#3  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139765545133632, -6103521128756450166, 140736642441390, 140736642441391, 0, 139765536743424, 6156570815411350666, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 3 (Thread 0x7f1db42b7640 (LWP 41091) "worker"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+No locals.
+#1  0x00007f1db68fc623 in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007f1db6dc46fb in ?? () from /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+No symbol table info available.
+#3  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139765553526336, -6103521128756450166, 140736642441390, 140736642441391, 0, 139765545136128, 6156569716436593802, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 2 (Thread 0x7f1db4ab8640 (LWP 41090) "worker"):
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+No locals.
+#1  0x00007f1db68fc623 in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007f1db6dc46fb in ?? () from /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+No symbol table info available.
+#3  0x00007f1db68d8ad1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007f1db65dd927 in start_thread (arg=<optimized out>) at pthread_create.c:435
+        ret = <optimized out>
+        pd = <optimized out>
+        out = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {139765561919040, -6103521128756450166, 140736642441390, 140736642441391, 0, 139765553528832, 6156568617461836938, 6156565158946499722}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f1db666d9e4 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:100
+No locals.
+
+Thread 1 (Thread 0x7f1db53e5e80 (LWP 41087) "gimp-2.10"):
+#0  __GI___libc_read (nbytes=256, buf=0x7fffcd945600, fd=18) at ../sysdeps/unix/sysv/linux/read.c:26
+        sc_ret = -512
+        sc_cancel_oldtype = 0
+        __arg3 = <optimized out>
+        _a2 = <optimized out>
+        sc_ret = <optimized out>
+        __value = <optimized out>
+        sc_ret = <optimized out>
+        __arg1 = <optimized out>
+        _a3 = <optimized out>
+        resultvar = <optimized out>
+        __arg2 = <optimized out>
+        _a1 = <optimized out>
+#1  __GI___libc_read (fd=18, buf=0x7fffcd945600, nbytes=256) at ../sysdeps/unix/sysv/linux/read.c:24
+No locals.
+#2  0x00007f1db724cdd7 in gimp_stack_trace_print () from /usr/lib/libgimpbase-2.0.so.0
+No symbol table info available.
+#3  0x0000562e7f9085ae in ?? ()
+No symbol table info available.
+#4  0x0000562e7f9089ee in gimp_fatal_error ()
+No symbol table info available.
+#5  0x0000562e7f90908d in ?? ()
+No symbol table info available.
+#6  <signal handler called>
+No locals.
+#7  __pthread_kill_implementation (no_tid=0, signo=6, threadid=139765571542656) at pthread_kill.c:44
+        tid = 41087
+        ret = 0
+        pd = 0x7f1db53e5e80
+        old_mask = {__val = {94758345972780, 0, 0, 0, 0, 0, 553204867088, 139765590016201, 0, 0, 0, 17892804270655857152, 18446744073709551615, 17892804270655857152, 139765591959168, 140736642441216}}
+        ret = <optimized out>
+        pd = <optimized out>
+        old_mask = {__val = {<optimized out> <repeats 16 times>}}
+        ret = <optimized out>
+        tid = <optimized out>
+        ret = <optimized out>
+        resultvar = <optimized out>
+        resultvar = <optimized out>
+        __arg2 = <optimized out>
+        __arg1 = <optimized out>
+        _a2 = <optimized out>
+        _a1 = <optimized out>
+        __futex = <optimized out>
+        resultvar = <optimized out>
+        __arg3 = <optimized out>
+        __arg2 = <optimized out>
+        __arg1 = <optimized out>
+        _a3 = <optimized out>
+        _a2 = <optimized out>
+        _a1 = <optimized out>
+        __futex = <optimized out>
+        __private = <optimized out>
+        __oldval = <optimized out>
+        result = <optimized out>
+#8  __pthread_kill_internal (signo=6, threadid=139765571542656) at pthread_kill.c:80
+No locals.
+#9  __GI___pthread_kill (threadid=139765571542656, signo=signo@entry=6) at pthread_kill.c:91
+No locals.
+#10 0x00007f1db658b476 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
+        ret = <optimized out>
+#11 0x00007f1db65717b7 in __GI_abort () at abort.c:79
+        save_stage = 1
+        act = {__sigaction_handler = {sa_handler = 0x562ea58d1b00, sa_sigaction = 0x562ea58d1b00}, sa_mask = {__val = {7089642383338533679, 94757723467072, 0, 0, 47244644352, 0, 17892804270655857152, 140733193388034, 18446744073709550464, 11, 139765589165763, 260, 139765589166168, 139765604238208, 139765590449381, 139765564130790}}, sa_flags = -1235451345, sa_restorer = 0x7f1db64b4b10}
+        sigs = {__val = {32, 260, 139765589166168, 139765604238208, 139765564130790, 139765590292847, 206158430224, 140736642441456, 206158430224, 140736642441488, 140736642441280, 17892804270655857152, 140736642451574, 139765591706852, 94758345287680, 0}}
+#12 0x00007f1db65716db in __assert_fail_base (fmt=0x7f1db4cd45e6 "%s%s%s:%u: %s%sアサーション `%s' に失敗しました。\n%n", assertion=0x7f1db64b4858 "!xcb_xlib_threads_sequence_lost", file=0x7f1db64b46c3 "../../src/xcb_io.c", line=260, function=<optimized out>) at assert.c:92
+        str = 0x562ea582a800 "ʸd\307+V"
+        total = 4096
+#13 0x00007f1db6582e26 in __GI___assert_fail (assertion=0x7f1db64b4858 "!xcb_xlib_threads_sequence_lost", file=0x7f1db64b46c3 "../../src/xcb_io.c", line=260, function=0x7f1db64b4b10 "poll_for_event") at assert.c:101
+No locals.
+#14 0x00007f1db6440643 in ?? () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#15 0x00007f1db64406ed in ?? () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#16 0x00007f1db64409ea in _XEventsQueued () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#17 0x00007f1db6432211 in XPending () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#18 0x00007f1db73143ef in ?? () from /usr/lib/x86_64-linux-gnu/libgdk-x11-2.0.so.0
+No symbol table info available.
+#19 0x00007f1db68aeda1 in g_main_context_check () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#20 0x00007f1db68af312 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#21 0x00007f1db68af6f3 in g_main_loop_run () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#22 0x0000562e7f907ceb in app_run ()
+No symbol table info available.
+#23 0x0000562e7f9075ae in main ()
+No symbol table info available.
+[Inferior 1 (process 41087) detached]

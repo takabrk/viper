@@ -1,0 +1,10 @@
+# GIMP gimp-gradient-tool options
+
+(foreground (color-rgb 1 1 1))
+(background (color-rgb 0 0.59607845544815063 1))
+(gradient "Golden")
+(brush-size 51)
+(brush-hardness 0.5)
+(gradient-blend-color-space rgb-linear)
+
+# end of gimp-gradient-tool options

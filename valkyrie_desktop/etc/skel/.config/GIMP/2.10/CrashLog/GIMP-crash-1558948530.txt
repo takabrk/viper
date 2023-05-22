@@ -1,0 +1,202 @@
+
+# Stack traces obtained from PID 31318 - Thread 31318 #
+
+[New LWP 31320]
+[New LWP 31321]
+[New LWP 31322]
+[New LWP 31323]
+[New LWP 31324]
+[New LWP 31325]
+[New LWP 31354]
+[New LWP 31470]
+[New LWP 32272]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+0x00007fc0a31b1d94 in read () from /lib/x86_64-linux-gnu/libpthread.so.0
+  Id   Target Id         Frame 
+* 1    Thread 0x7fc09ee28e00 (LWP 31318) "gimp-2.10" 0x00007fc0a31b1d94 in read () from /lib/x86_64-linux-gnu/libpthread.so.0
+  2    Thread 0x7fc099c48700 (LWP 31320) "gmain" 0x00007fc0a30c3729 in poll () from /lib/x86_64-linux-gnu/libc.so.6
+  3    Thread 0x7fc09771f700 (LWP 31321) "gdbus" 0x00007fc0a30c3729 in poll () from /lib/x86_64-linux-gnu/libc.so.6
+  4    Thread 0x7fc079045700 (LWP 31322) "async" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+  5    Thread 0x7fc078844700 (LWP 31323) "worker" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+  6    Thread 0x7fc078043700 (LWP 31324) "worker" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+  7    Thread 0x7fc077842700 (LWP 31325) "worker" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+  8    Thread 0x7fc07599b700 (LWP 31354) "swap writer" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+  9    Thread 0x7fc077041700 (LWP 31470) "paint" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+  10   Thread 0x7fc0677fe700 (LWP 32272) "pool-gimp-2.10" 0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 10 (Thread 0x7fc0677fe700 (LWP 32272)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33adb9a in g_cond_wait_until () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007fc0a33340c1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#3  0x00007fc0a3334681 in g_async_queue_timeout_pop () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a338c3f1 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#5  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#6  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#7  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 9 (Thread 0x7fc077041700 (LWP 31470)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33ada7f in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x000055b1923c9cdd in ?? ()
+No symbol table info available.
+#3  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#5  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 8 (Thread 0x7fc07599b700 (LWP 31354)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33ada7f in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007fc0a4241e99 in ?? () from /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+No symbol table info available.
+#3  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#5  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 7 (Thread 0x7fc077842700 (LWP 31325)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33ada7f in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x000055b1925fc423 in ?? ()
+No symbol table info available.
+#3  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#5  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 6 (Thread 0x7fc078043700 (LWP 31324)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33ada7f in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x000055b1925fc423 in ?? ()
+No symbol table info available.
+#3  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#5  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 5 (Thread 0x7fc078844700 (LWP 31323)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33ada7f in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x000055b1925fc423 in ?? ()
+No symbol table info available.
+#3  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#5  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 4 (Thread 0x7fc079045700 (LWP 31322)):
+#0  0x00007fc0a30c92e9 in syscall () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a33ada7f in g_cond_wait () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x000055b1925fc66c in ?? ()
+No symbol table info available.
+#3  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#5  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 3 (Thread 0x7fc09771f700 (LWP 31321)):
+#0  0x00007fc0a30c3729 in poll () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a3362cb6 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007fc0a3363042 in g_main_loop_run () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#3  0x00007fc0a3f24c76 in ?? () from /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#5  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#6  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 2 (Thread 0x7fc099c48700 (LWP 31320)):
+#0  0x00007fc0a30c3729 in poll () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#1  0x00007fc0a3362cb6 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#2  0x00007fc0a3362ddc in g_main_context_iteration () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#3  0x00007fc0a3362e21 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#4  0x00007fc0a338b98d in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#5  0x00007fc0a31a8182 in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#6  0x00007fc0a30cfb1f in clone () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+
+Thread 1 (Thread 0x7fc09ee28e00 (LWP 31318)):
+#0  0x00007fc0a31b1d94 in read () from /lib/x86_64-linux-gnu/libpthread.so.0
+No symbol table info available.
+#1  0x00007fc0a58017d4 in gimp_stack_trace_print () from /usr/lib/libgimpbase-2.0.so.0
+No symbol table info available.
+#2  0x000055b1923374a0 in ?? ()
+No symbol table info available.
+#3  0x000055b1923378d8 in gimp_fatal_error ()
+No symbol table info available.
+#4  0x000055b192338037 in ?? ()
+No symbol table info available.
+#5  <signal handler called>
+No symbol table info available.
+#6  0x00007fc0a2ff5ed7 in raise () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#7  0x00007fc0a2fd7535 in abort () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#8  0x00007fc0a2fd740f in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#9  0x00007fc0a2fe7012 in __assert_fail () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#10 0x00007fc0a2eaf5db in ?? () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#11 0x00007fc0a2eaf680 in ?? () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#12 0x00007fc0a2eaf97d in _XEventsQueued () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#13 0x00007fc0a2ea16d7 in XPending () from /usr/lib/x86_64-linux-gnu/libX11.so.6
+No symbol table info available.
+#14 0x00007fc0a58be085 in ?? () from /usr/lib/x86_64-linux-gnu/libgdk-x11-2.0.so.0
+No symbol table info available.
+#15 0x00007fc0a3362691 in g_main_context_check () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#16 0x00007fc0a3362c60 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#17 0x00007fc0a3363042 in g_main_loop_run () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+No symbol table info available.
+#18 0x000055b192336cb7 in app_run ()
+No symbol table info available.
+#19 0x000055b1923365b5 in main ()
+No symbol table info available.

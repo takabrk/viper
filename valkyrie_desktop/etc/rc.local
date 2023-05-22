@@ -11,13 +11,7 @@
 #
 # By default this script does nothing.
 
-#mount -t tmpfs -w -o size=512m tmpfs /tmp
-echo deadline >/sys/block/xvda/queue/scheduler
-echo 0 >/sys/block/xvda/queue/iosched/front_merges
-echo 1 >/sys/block/xvda/queue/iosched/fifo_batch
-echo 10 >/sys/block/xvda/queue/iosched/writes_starved 
-echo 50 >/sys/block/xvda/queue/iosched/read_expire
-echo 300000 >/sys/block/xvda/queue/iosched/write_expire
-echo 256 > /sys/block/xvda/queue/nr_requests
+#mount -t tmpfs -w -o size=1000m tmpfs /tmp
+alsactl restore
 exit 0
             

@@ -792,7 +792,7 @@ class allnumbers(object):
         #n4.dellow2(50,rs)
         #n4.dellow3(500,rs)
         rs = sorted(set(n4.make_box(rs)))
-        n4.delbox(60,rs)
+        n4.delbox(120,rs)
         n4.delzoro4(rs)
         n4.deltriple(rs)
         n4.deldouble(rs)

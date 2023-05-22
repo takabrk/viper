@@ -1,0 +1,166 @@
+
+# Stack traces obtained from PID 10694 - Thread 10694 #
+
+[New LWP 10695]
+[New LWP 10696]
+[New LWP 10697]
+[New LWP 10698]
+[New LWP 10699]
+[New LWP 10700]
+[New LWP 10727]
+[New LWP 10769]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+0x00007f7176c94384 in __libc_read (fd=41, buf=0x7fffa0f8a690, nbytes=256) at ../sysdeps/unix/sysv/linux/read.c:27
+  Id   Target Id                                       Frame 
+* 1    Thread 0x7f717bab3e00 (LWP 10694) "gimp-2.10"   0x00007f7176c94384 in __libc_read (fd=41, buf=0x7fffa0f8a690, nbytes=256) at ../sysdeps/unix/sysv/linux/read.c:27
+  2    Thread 0x7f716cff7700 (LWP 10695) "worker"      syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  3    Thread 0x7f71647f6700 (LWP 10696) "worker"      syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  4    Thread 0x7f7167fff700 (LWP 10697) "worker"      syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  5    Thread 0x7f716614f700 (LWP 10698) "gmain"       0x00007f71769a6bf9 in __GI___poll (fds=0x56313745de30, nfds=2, timeout=4969) at ../sysdeps/unix/sysv/linux/poll.c:29
+  6    Thread 0x7f716594e700 (LWP 10699) "gdbus"       0x00007f71769a6bf9 in __GI___poll (fds=0x563137474b30, nfds=3, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+  7    Thread 0x7f7145fc3700 (LWP 10700) "async"       syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  8    Thread 0x7f713fee6700 (LWP 10727) "swap writer" syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+  9    Thread 0x7f7133fff700 (LWP 10769) "pool"        syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+
+Thread 9 (Thread 0x7f7133fff700 (LWP 10769)):
+#0  0x00007f71769ad839 in syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00007f71774d689a in g_cond_wait_until () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f7177463571 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#3  0x00007f7177463b2c in g_async_queue_timeout_pop () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f71774b8c3e in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#5  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#6  0x00007f7176c8a6db in start_thread (arg=0x7f7133fff700) at pthread_create.c:463
+        pd = 0x7f7133fff700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140124180444928, 7476074514304784930, 140124180441344, 0, 94769485652288, 140735894033152, -7412294043138467294, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#7  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 8 (Thread 0x7f713fee6700 (LWP 10727)):
+#0  0x00007f71769ad839 in syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00007f71774d677f in g_cond_wait () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f7178b44dad in  () at /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+#3  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f7176c8a6db in start_thread (arg=0x7f713fee6700) at pthread_create.c:463
+        pd = 0x7f713fee6700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140124380620544, 7476074514304784930, 140124380616960, 0, 94769436580400, 140735894035184, -7412320299884160478, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 7 (Thread 0x7f7145fc3700 (LWP 10700)):
+#0  0x00007f71769ad839 in syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00007f71774d677f in g_cond_wait () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00005631350f936c in  ()
+#3  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f7176c8a6db in start_thread (arg=0x7f7145fc3700) at pthread_create.c:463
+        pd = 0x7f7145fc3700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140124482189056, 7476074514304784930, 140124482185472, 0, 94769382421200, 140735894041376, -7412131339039876574, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 6 (Thread 0x7f716594e700 (LWP 10699)):
+#0  0x00007f71769a6bf9 in __GI___poll (fds=0x563137474b30, nfds=3, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+        resultvar = 18446744073709551100
+        sc_cancel_oldtype = 0
+#1  0x00007f71774905c9 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f7177490962 in g_main_loop_run () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#3  0x00007f71786190e6 in  () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#4  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#5  0x00007f7176c8a6db in start_thread (arg=0x7f716594e700) at pthread_create.c:463
+        pd = 0x7f716594e700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140125012289280, 7476074514304784930, 140125012285696, 0, 94769379770448, 140735894041456, -7412202604895348190, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#6  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 5 (Thread 0x7f716614f700 (LWP 10698)):
+#0  0x00007f71769a6bf9 in __GI___poll (fds=0x56313745de30, nfds=2, timeout=4969) at ../sysdeps/unix/sysv/linux/poll.c:29
+        resultvar = 18446744073709551100
+        sc_cancel_oldtype = 0
+#1  0x00007f71774905c9 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f71774906dc in g_main_context_iteration () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#3  0x00007f7177490721 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#5  0x00007f7176c8a6db in start_thread (arg=0x7f716614f700) at pthread_create.c:463
+        pd = 0x7f716614f700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140125020681984, 7476074514304784930, 140125020678400, 0, 94769379775344, 140735894041072, -7412197105726596574, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#6  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 4 (Thread 0x7f7167fff700 (LWP 10697)):
+#0  0x00007f71769ad839 in syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00007f71774d677f in g_cond_wait () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f7178b0cfc3 in  () at /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+#3  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f7176c8a6db in start_thread (arg=0x7f7167fff700) at pthread_create.c:463
+        pd = 0x7f7167fff700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140125052860160, 7476074514304784930, 140125052856576, 0, 94769379774624, 140735894041264, -7412197286115223006, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 3 (Thread 0x7f71647f6700 (LWP 10696)):
+#0  0x00007f71769ad839 in syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00007f71774d677f in g_cond_wait () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f7178b0cfc3 in  () at /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+#3  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f7176c8a6db in start_thread (arg=0x7f71647f6700) at pthread_create.c:463
+        pd = 0x7f71647f6700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140124994103040, 7476074514304784930, 140124994099456, 0, 94769379774544, 140735894041264, -7412200581965751774, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 2 (Thread 0x7f716cff7700 (LWP 10695)):
+#0  0x00007f71769ad839 in syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x00007f71774d677f in g_cond_wait () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x00007f7178b0cfc3 in  () at /usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0
+#3  0x00007f71774b8195 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007f7176c8a6db in start_thread (arg=0x7f716cff7700) at pthread_create.c:463
+        pd = 0x7f716cff7700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140125136713472, 7476074514304784930, 140125136709888, 0, 94769379774464, 140735894041264, -7412217073029555678, -7412160034081547742}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#5  0x00007f71769b388f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 1 (Thread 0x7f717bab3e00 (LWP 10694)):
+#0  0x00007f7176c94384 in __libc_read (fd=41, buf=0x7fffa0f8a690, nbytes=256) at ../sysdeps/unix/sysv/linux/read.c:27
+        resultvar = 18446744073709551104
+        sc_cancel_oldtype = 1
+        sc_ret = <optimized out>
+        sc_ret = <optimized out>
+        nbytes = 256
+        fd = 41
+        buf = 0x7fffa0f8a690
+#1  0x00007f717a105da0 in gimp_stack_trace_print () at /usr/lib/libgimpbase-2.0.so.0
+#2  0x0000563134e24ab4 in  ()
+#3  0x0000563134e250b8 in  ()
+#4  0x0000563134e257c7 in  ()
+#5  0x00007f7176c95890 in <signal handler called> () at /lib/x86_64-linux-gnu/libpthread.so.0
+#6  0x00007f71768d0e97 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51
+        set = {__val = {0, 94769485062336, 140125369233440, 140125297288767, 140127530483712, 94769485062336, 94769485062437, 94769485062336, 94769485062336, 94769485062465, 94769485062636, 94769485062336, 94769485062636, 0, 0, 0}}
+        pid = <optimized out>
+        tid = <optimized out>
+#7  0x00007f71768d2801 in __GI_abort () at abort.c:79
+        save_stage = 1
+        act = {__sigaction_handler = {sa_handler = 0x56313d84a930, sa_sigaction = 0x56313d84a930}, sa_mask = {__val = {0, 3327649050062240304, 7089642383338533679, 0, 0, 140735894041016, 0, 140735894040848, 94769379463360, 21474836480, 94769379463360, 0, 3815132665546108928, 140125298515220, 0, 140125382404658}}, sa_flags = 1983925939, sa_restorer = 0x7f7176405048}
+        sigs = {__val = {32, 0 <repeats 15 times>}}
+#8  0x00007f71768c239a in __assert_fail_base (fmt=0x7f717ba46a32 "%s%s%s:%u: %s%sアサーション `%s' に失敗しました。\n%n", assertion=assertion@entry=0x7f7176405048 "!xcb_xlib_threads_sequence_lost", file=file@entry=0x7f7176404eb3 "../../src/xcb_io.c", line=line@entry=259, function=function@entry=0x7f71764052f8 "poll_for_event") at assert.c:92
+        str = 0x56313d84a930 "\360\340\242\071\061V"
+        total = 4096
+#9  0x00007f71768c2412 in __GI___assert_fail (assertion=0x7f7176405048 "!xcb_xlib_threads_sequence_lost", file=0x7f7176404eb3 "../../src/xcb_io.c", line=259, function=0x7f71764052f8 "poll_for_event") at assert.c:101
+#10 0x00007f7176393e7a in  () at /usr/lib/x86_64-linux-gnu/libX11.so.6
+#11 0x00007f7176393f1e in  () at /usr/lib/x86_64-linux-gnu/libX11.so.6
+#12 0x00007f717639420d in _XEventsQueued () at /usr/lib/x86_64-linux-gnu/libX11.so.6
+#13 0x00007f7176385d3d in XPending () at /usr/lib/x86_64-linux-gnu/libX11.so.6
+#14 0x00007f717adb7085 in  () at /usr/lib/x86_64-linux-gnu/libgdk-x11-2.0.so.0
+#15 0x00007f717748ffe1 in g_main_context_check () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#16 0x00007f7177490570 in  () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#17 0x00007f7177490962 in g_main_loop_run () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#18 0x0000563134e24470 in app_run ()
+#19 0x0000563134e23d3c in main ()
+[Inferior 1 (process 10694) detached]

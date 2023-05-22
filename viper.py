@@ -51,18 +51,16 @@ class viper(object):
         self.set_sources_list()
     def suckout(self):
         sp.call("""
+            rm -r valkyrie_desktop/etc/skel
+            mkdir valkyrie_desktop/etc/skel
             cp -a ~/.config/openbox valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/fbpanel valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/tint2 valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/conky valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/nitrogen valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/gtk-2.0 valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/gtk-3.0 valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/Thunar valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/fcitx valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/fontconfig valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/jack valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/plank valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/xfce4 valkyrie_desktop/etc/skel/.config
             cp -a ~/.config/lxqt valkyrie_desktop/etc/skel/.config
             cp -a ~/.gtkrc-2.0 valkyrie_desktop/etc/skel
@@ -70,6 +68,8 @@ class viper(object):
             cp -a ~/.emacs.d valkyrie_desktop/etc/skel
             cp -a ~/.gconf valkyrie_desktop/etc/skel
             cp -a ~/.themes valkyrie_desktop/etc/skel
+            cp -a ~/.config/blender valkyrie_desktop/etc/skel/.config
+            cp -a ~/.config/GIMP valkyrie_desktop/etc/skel/.config
             rm -r valkyrie_desktop/usr/share/backgrounds
             cp -a /usr/share/backgrounds valkyrie_desktop/usr/share
             rm -r valkyrie_desktop/etc/apt/sources.list.d
@@ -77,7 +77,6 @@ class viper(object):
             rm -r valkyrie_desktop/etc/xdg
             cp -a /etc/xdg valkyrie_desktop/etc
             cp -a /etc/lsb-release valkyrie_desktop/etc/lsb-release
-            cp -a /etc/pulse/daemon.conf valkyrie_desktop/etc/pulse
             cp -a /etc/rc.local valkyrie_desktop/etc
         """,shell=True)
         print("Finished")

@@ -49,7 +49,7 @@ echo "                       [DONE]"
 
 # Delete old ISO files
 echo -n "# Deleting obsolete files"
-rm -f $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH
+rm -f $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH
 rm -f $ISOPATH/casper/filesystem.squashfs
 rm -f $ISOPATH/casper/initrd
 rm -f $ISOPATH/casper/vmlinuz
@@ -227,7 +227,7 @@ done
 echo "               [DONE]"
 
 echo -n "# Gathering information files"
-echo "#define DISKNAME  ${DIST} - Release ${ARCH}
+echo "#define DISKNAME  ${DESCRIPTION} - Release ${ARCH}
 #define TYPE  binary
 #define TYPEbinary  1
 #define ARCH  ${ARCH}
@@ -242,18 +242,18 @@ echo "           [DONE]"
 
 echo -ne "# Creating ISO, this may take a moment"
 cd $ISOPATH
-genisoimage -r -V "${DIST//[[:space:]]}-$VERSION-$ARCH" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table -o $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH.iso -input-charset utf-8 .
+genisoimage -allow-limited-size -r -iso-level 3 -V "${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table -o $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso -input-charset utf-8 .
 
-chmod 755 $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH.iso
-echo $WORKPATH/${DIST//[[:space:]]}-$VERSION-$ARCH.iso > $WORKPATH/configs/ISOCREATED
+chmod 755 $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso
+echo $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso > $WORKPATH/configs/ISOCREATED
 cp $FSPATH/etc/apt/sources.list.bak.full $FSPATH/etc/apt/sources.list
 echo "  [DONE]"
 
-zenity --info --text "${DIST//[[:space:]]}-$VERSION-$ARCH successfully created. You can test it with QEMU."
+zenity --info --text "${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH successfully created. You can test it with QEMU."
 
 echo -n "# Generating MD5Sum"
 cd $WORKPATH
-md5sum ${DIST//[[:space:]]}-$VERSION-$ARCH.iso > md5sum
+md5sum ${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso > md5sum
 echo "                     [DONE]"
-mv ${DIST//[[:space:]]}-$VERSION-$ARCH.iso ${OSNAME//[[:space:]]}-$OSVERSION-$ARCH.iso
+mv ${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso ${OSNAME//[[:space:]]}-$OSVERSION-$ARCH.iso
 ) | tee -a $WORKPATH/valkyrie-builder.log

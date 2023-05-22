@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='utf-8'?>
+<openbox_menu xmlns="http://openbox.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://openbox.org/                 file:///usr/share/openbox/menu.xsd">
+  <menu id="root-menu" label="Valkyrie Linux Menu">
+    <separator label="Valkyrie Linux" />
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/firefox.svg" label="Firefox">
+      <action name="Execute">
+        <execute>firefox</execute>
+      </action>
+    </item>
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/synaptic.svg" label="Synaptic package manager">
+      <action name="Execute">
+        <execute>xfce4-terminal --hide-menubar -x sh -c 'synaptic-pkexec; read'</execute>
+      </action>
+    </item>
+    <menu id="pipe-3774772" label="Applications" execute="obmenu-generator -i -p" />
+    <item icon="/usr/share/icons/vipertools_icon.png" label="Viper Tools">
+      <action name="Execute">
+        <execute>xfce4-terminal --hide-menubar -x sh -c 'cd ~/viper &amp;&amp; python3 vipertools.py; read'</execute>
+      </action>
+    </item>
+    <separator />
+    <menu id="menu-1397362" label="Accessaories" icon="/usr/share/icons/suru-plus-master/apps/22/accerciser.svg">
+      <item label="Emacs" icon="/usr/share/icons/suru-plus-master/apps/22/emacs.svg">
+        <action name="Execute">
+          <execute>emacs</execute>
+        </action>
+      </item>
+      <item label="System Monitor" icon="/usr/share/icons/suru-plus-master/apps/22/system-monitor-app.svg">
+        <action name="Execute">
+          <execute>xfce4-taskmanager</execute>
+        </action>
+      </item>
+      <item label="Termional Emulator" icon="/usr/share/icons/suru-plus-master/apps/22/terminal.svg">
+        <action name="Execute">
+          <execute>x-terminal-emulator</execute>
+        </action>
+      </item>
+      <item label="Kcalc" icon="/usr/share/icons/suru-plus-master/apps/22/kcalc.svg">
+        <action name="Execute">
+          <execute>kcalc</execute>
+        </action>
+      </item>
+      <item label="Keepass" icon="/usr/share/icons/suru-plus-master/apps/22/keepassxc.svg">
+        <action name="Execute">
+          <execute>keepassxc</execute>
+        </action>
+      </item>
+      <item label="Abiword" icon="/usr/share/icons/suru-plus-master/apps/22/abiword.svg">
+        <action name="Execute">
+          <execute>abiword</execute>
+        </action>
+      </item>
+      <item label="Gnumeric" icon="/usr/share/icons/suru-plus-master/apps/22/gnumeric.svg">
+        <action name="Execute">
+          <execute>gnumeric</execute>
+        </action>
+      </item>
+      <item label="l3afpad" icon="/usr/share/icons/suru-plus-master/apps/22/leafpad.svg">
+        <action name="Execute">
+          <execute>l3afpad</execute>
+        </action>
+      </item>
+      <item label="Radeon Profile">
+        <action name="Execute">
+          <execute>radeon-profile</execute>
+        </action>
+      </item>
+    </menu>
+    <menu icon="/usr/share/icons/suru-plus-master/apps/22/image.svg" id="root-menu-334956-445128" label="Media">
+      <item label="Blender" icon="/usr/share/icons/suru-plus-master/apps/22/blender.svg">
+        <action name="Execute">
+          <execute>/opt/blender/blender</execute>
+        </action>
+      </item>
+      <item icon="/usr/share/icons/suru-plus-master/apps/22/gimp.svg" label="GIMP">
+        <action name="Execute">
+          <execute>gimp</execute>
+        </action>
+      </item>
+      <item label="OBS Studio">
+        <action name="Execute">
+          <execute>obs</execute>
+        </action>
+      </item>
+      <item label="Shotcut">
+        <action name="Execute">
+          <execute>shotcut</execute>
+        </action>
+      </item>
+      <item label="Audacious" icon="/usr/share/icons/suru-plus-master/apps/22/audacious.svg">
+        <action name="Execute">
+          <execute>audacious</execute>
+        </action>
+      </item>
+      <item label="Audacity" icon="/usr/share/icons/suru-plus-master/apps/22/audacity.svg">
+        <action name="Execute">
+          <execute>audacity</execute>
+        </action>
+      </item>
+      <item label="SoundConverter" icon="/usr/share/icons/suru-plus-master/apps/22/soundconverter.svg">
+        <action name="Execute">
+          <execute>soundconverter</execute>
+        </action>
+      </item>
+    </menu>
+    <menu icon="/usr/share/icons/suru-plus-master/apps/22/network.svg" id="root-menu-334956-11549" label="Network">
+      <item label="Network Manager" icon="/usr/share/icons/suru-plus-master/apps/22/networkmanager.svg">
+        <action name="Execute">
+          <execute>nm-connection-editor</execute>
+        </action>
+      </item>
+      <item icon="/usr/share/icons/suru-plus-master/apps/22/remmina.svg" label="Remmina">
+        <action name="Execute">
+          <execute>remmina</execute>
+        </action>
+      </item>
+      <item icon="/usr/share/icons/suru-plus-master/apps/22/X11VNC.svg" label="X11VNC">
+        <action name="Execute">
+          <execute>x11vnc -gui tray=setpass -rfbport PROMPT -bg -o %%HOME/.x11vnc.log.%%VNCDISPLAY</execute>
+        </action>
+      </item>
+      <item label="Blueman">
+        <action name="Execute">
+          <execute>blueman-applet</execute>
+        </action>
+      </item>
+    </menu>
+    <menu icon="/usr/share/icons/suru-plus-master/apps/22/eclipse.svg" id="root-menu-334956-575854" label="Development">
+      <item label="DB_Browser_for_SQLite">
+        <action name="Execute">
+          <execute>sqlitebrowser</execute>
+        </action>
+      </item>
+      <item icon="/usr/share/icons/suru-plus-master/apps/22/glade.svg" label="Glade">
+        <action name="Execute">
+          <execute>glade</execute>
+        </action>
+      </item>
+    </menu>
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/file-manager.svg" label="PCManFM Qt">
+      <action name="Execute">
+        <execute>pcmanfm-qt</execute>
+      </action>
+    </item>
+    <item label="Thunar" icon="/usr/share/icons/suru-plus-master/apps/22/thunar.svg">
+      <action name="Execute">
+        <execute>thunar</execute>
+      </action>
+    </item>
+    <item label="Steam" icon="/usr/share/icons/suru-plus-master/apps/22/steam.svg">
+      <action name="Execute">
+        <execute>steam</execute>
+      </action>
+    </item>
+    <separator />
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/unetbootin.svg" label="UNetbootin">
+      <action name="Execute">
+        <execute>/opt/unetbootin.bin</execute>
+      </action>
+    </item>
+    <item label="GParted" icon="/usr/share/icons/suru-plus-master/apps/22/gparted.svg">
+      <action name="Execute">
+        <execute>gksu gparted</execute>
+      </action>
+    </item>
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/boot-repair.svg" label="boot-repair">
+      <action name="Execute">
+        <execute>xfce4-terminal --hide-menubar -x sh -c 'boot-repair-pkexec;read'</execute>
+      </action>
+    </item>
+    <separator />
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/ubiquity.svg" label="Install Valkyrie Linux">
+      <action name="Execute">
+        <execute>ubiquity</execute>
+      </action>
+    </item>
+    <item label="Install Custom Kernel">
+      <action name="Execute">
+        <execute>xfce4-terminal --hide-menubar -x sh -c 'cd /opt/custom_kernel &amp;&amp; sudo dpkg -i *.deb; read'</execute>
+      </action>
+    </item>
+    <item label="Install Google Chrome" icon="/usr/share/icons/suru-plus-master/apps/22/google-chrome-stable.svg">
+      <action name="Execute">
+        <execute>xfce4-terminal --hide-menubar -x sh -c 'sudo apt install google-chrome-stable; read'</execute>
+      </action>
+    </item>
+    <separator />
+    <item label="Openbox settings">
+      <action name="Execute">
+        <execute>obconf-qt</execute>
+      </action>
+    </item>
+    <item label="Openbox Menu Editor">
+      <action name="Execute">
+        <execute>/opt/obmenu2/obmenu2</execute>
+      </action>
+    </item>
+    <item label="Openbox Reconfigure">
+      <action name="Reconfigure" />
+    </item>
+    <item label="Tint2 settings">
+      <action name="Execute">
+        <execute>tint2conf</execute>
+      </action>
+    </item>
+    <item label="gtk+テーマ変更">
+      <action name="Execute">
+        <execute>lxappearance</execute>
+      </action>
+    </item>
+    <item label="dconf-editor">
+      <action name="Execute">
+        <execute>dconf-editor</execute>
+      </action>
+    </item>
+    <item label="lxappearance">
+      <action name="Execute">
+        <execute>lxappearance</execute>
+      </action>
+    </item>
+    <item label="qt5ct">
+      <action name="Execute">
+        <execute>qt5ct</execute>
+      </action>
+    </item>
+    <item label="LXQtコンフィグレーションセンター">
+      <action name="Execute">
+        <execute>lxqt-config</execute>
+      </action>
+    </item>
+    <item label="xfce4-power-manager-settings" icon="/usr/share/icons/suru-plus-master/apps/22/xfce4-power-manager-settings.svg">
+      <action name="Execute">
+        <execute>xfce4-power-manager-settings</execute>
+      </action>
+    </item>
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/file-manager.svg" label="PCMan FM-Qt　デスクトップモード">
+      <action name="Execute">
+        <execute>pcmanfm-qt --desktop 1</execute>
+      </action>
+    </item>
+    <separator />
+    <item label="Monitor Off">
+      <action name="Execute">
+        <execute>xset dpms force standby</execute>
+      </action>
+    </item>
+    <item label="About Valkyrie Linux">
+      <action name="Execute">
+        <execute>xfce4-terminal --hide-menubar -x sh -c 'python3 ~/viper/scripts/info.py;read'</execute>
+      </action>
+    </item>
+    <separator />
+    <item icon="/usr/share/icons/suru-plus-master/apps/22/lxsession-logout.svg" label="Exit">
+      <action name="Execute">
+        <execute>lxsession-logout</execute>
+      </action>
+    </item>
+  </menu>
+</openbox_menu>

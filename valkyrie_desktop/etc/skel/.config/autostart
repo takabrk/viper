@@ -1,0 +1,78 @@
+#!/bin/sh
+#picom(composite manager)
+picom -b &
+#panel
+#lxqt-panel &
+#xfce4-panel &
+tint2 -c ~/.config/tint2/tint2rc &
+
+#stalonetray
+#stalonetray --dockapp-mode simple &
+
+#power-manager
+xfce4-power-manager &
+#lxqt-powermanagement &
+
+#network manager
+nm-applet --sm-disable &
+
+#fcitx
+fcitx-autostart &
+
+#background picture
+#nitrogen --restore &
+feh --bg-scale /usr/share/backgrounds/vl_bg202302.png &
+
+#dunst
+dunst &
+
+#radeon-config
+radeon-profile &
+
+#Dropbox
+~/.dropbox-dist/dropboxd &
+
+#pcmanfm-qt
+#pcmanfm-qt --desktop &
+#pcmanfm --desktop &
+
+#Conky
+#sleep 1;conky -c ~/.config/conky/.conkyrc1 &
+sleep 1;LANG=C conky -c ~/.config/conky/.conkyclock &
+
+#/usr/bin/gnome-keyring-daemon --start --components=gpg &
+#/usr/bin/gnome-keyring-daemon --start --components=ssh &
+#blueman-applet &
+
+#JACK+PulseAudio
+#$HOME/viper/scripts/jack_start &
+
+#xrandr
+#sh -c 'xrandr --output VGA --mode 1366x768 --rate 59.79'
+#sh -c 'xrandr --output eDP-1 --off'
+
+#Chromium Browser
+#sleep1;ln -s /tmp ~/.cache/chromium &
+#chromium-browser --disk-cache-dir="/tmp" --allow-file-access-from-files &
+#chromium-browser --allow-file-access-from-files &
+
+#Delete Cache
+rm -r ~/.thumbnails/normal/* &
+rm -r ~/.thumbnails/large/* &
+rm -r ~/.cache/* &
+
+#Remmina
+#remmina -i
+
+#x11vnc
+#x11vnc -auth guess -display :0 -rfbauth /home/$USER/.vnc/passwd -rfbport 5900
+ -forever -loop -noxdamage -repeat -shared -geometory 1280x720 &
+
+#Stop tumblerd
+#cd ~/viper/scripts && ./stop_tumblerd.sh &
+
+lxpolkit &
+#classicmenu-indicator &
+/usr/bin/pnmixer &
+#idesk &
+psensor &

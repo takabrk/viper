@@ -1,0 +1,10 @@
+# GIMP gimp-crop-tool options
+
+(aspect-denominator 16)
+(aspect-numerator 16)
+(overridden-fixed-aspect yes)
+(foreground (color-rgb 1 1 1))
+(background (color-rgb 0 0.59607845544815063 1))
+(pattern "tartan_check コピー")
+
+# end of gimp-crop-tool options

@@ -1,0 +1,12 @@
+[Bookmarks]
+[Recent]
+/home/valkyrie/Documents/unity_project/VRM/alisa/
+/home/valkyrie/Documents/unity_project/VRM/alisa/base/
+/home/valkyrie/Documents/unity_project/VRM/momoka/
+/home/valkyrie/Documents/unity_project/VRM/momoka/base/
+/home/valkyrie/Documents/unity_project/VRM/VRM_texture/桃香/
+/home/valkyrie/Documents/unity_project/blender_file/
+/home/valkyrie/Documents/unity_project/VRM/military_girl/
+/home/valkyrie/Documents/unity_project/VRM/fina/
+/home/valkyrie/Documents/unity_project/VRM/VRM_texture/アリサ/
+/home/valkyrie/Documents/unity_project/VRM/ema/

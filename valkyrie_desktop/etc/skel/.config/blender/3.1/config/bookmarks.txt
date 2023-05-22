@@ -1,0 +1,10 @@
+[Bookmarks]
+[Recent]
+/home/valkyrie/Documents/unity_project/VRM/goblin/
+/home/valkyrie/Documents/unity_project/blender_file/
+/home/valkyrie/Documents/unity_project/vroid_texture/
+/home/valkyrie/Documents/unity_project/VRM/alisa/
+/home/valkyrie/Documents/unity_project/vroid_texture/katana/
+/home/valkyrie/Documents/doa5xxx_mod/Dead or Alive 5 Last Round/tools/for_blender/
+/home/valkyrie/Documents/unity_project/VRM/fina/
+/home/valkyrie/Downloads/
