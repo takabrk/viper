@@ -1,2 +1,2 @@
 #!/bin/sh
-python3.6 vipertools.py
+python3 vipertools.py

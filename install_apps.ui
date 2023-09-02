@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="window1">
-    <property name="can_focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkBox" id="box2">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_right">139</property>
+            <property name="can-focus">False</property>
+            <property name="margin-right">139</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Add Application and PPA</property>
               </object>
               <packing>
@@ -33,10 +30,10 @@
               <object class="GtkCheckButton" id="checkbutton11">
                 <property name="label" translatable="yes">Add PPA</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -48,10 +45,10 @@
               <object class="GtkCheckButton" id="checkbutton4">
                 <property name="label" translatable="yes">Install Applications and Library</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -63,9 +60,9 @@
               <object class="GtkCheckButton" id="checkbutton5">
                 <property name="label" translatable="yes">Install Extra Applications</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -77,73 +74,73 @@
               <object class="GtkCheckButton" id="checkbutton8">
                 <property name="label" translatable="yes">Change to the lightweight desktop environment</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">11</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
               <object class="GtkCheckButton" id="checkbutton9">
                 <property name="label" translatable="yes">Install grive and onedrive-d</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">12</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
               <object class="GtkCheckButton" id="checkbutton10">
                 <property name="label" translatable="yes">Install Penetration tools</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">13</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
               <object class="GtkCheckButton" id="checkbutton12">
                 <property name="label" translatable="yes">Install Widevine</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">14</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
               <object class="GtkBox" id="box4">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkButton" id="button1">
                     <property name="label" translatable="yes">OK</property>
-                    <property name="use_action_appearance">True</property>
+                    <property name="use-action-appearance">True</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
                     <signal name="clicked" handler="on_button1_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -155,10 +152,10 @@
                 <child>
                   <object class="GtkButton" id="button2">
                     <property name="label" translatable="yes">close</property>
-                    <property name="use_action_appearance">True</property>
+                    <property name="use-action-appearance">True</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
                     <signal name="clicked" handler="on_button2_clicked" swapped="no"/>
                   </object>
                   <packing>

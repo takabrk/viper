@@ -128,7 +128,7 @@ class valkyrie_setting(object):
         #os.chdir("../")
 #install apps
     def on_apps_clicked(self,widget):
-        sp.run("python3 install_apps/install_apps.py".strip().split(" "))
+        sp.run("python3 install_apps.py".strip().split(" "))
 #create apng and asvg
     def on_apng_asvg_clicked(self,widget):
         sp.run("python3 apng_asvg/apng_asvg.py".strip().split(" "))
@@ -167,7 +167,7 @@ class valkyrie_setting(object):
         os.chdir("imagetool")
         sp.run("python3 imagetool.py".strip().split(" "))
         os.chdir("../")
-#Valkyrie Linux builder
+#UBOLD-OP builder
 #settings
     def on_settings_clicked(self,widget):
         msg1 = self.name.get_text()

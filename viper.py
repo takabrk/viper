@@ -166,13 +166,13 @@ sudo apt-get update""",shell=True)
 "fakeroot","build-essential","git",
 "python3-pip","python-pip"]
     def installExtraApplications(self):
-        ba = [
-"stalonetray",
-"libapache2-mod-php7.0","mysql-common",
-"php7.0-mysql","libmysqlclient20","mysql-server-5.7",
-"gnumeric","abiword",
-"open-jtalk","mecab","mecab-utils","mecab-naist-jdic","mecab-naist-jdic-eucjp","mecab-jumandic",
-"ppsspp"]
+        ba = ["google-chrome-stable","unity-hub","scribus","obs-studio",
+"python-tk","python3-tk","python3-sphinx",
+"libllvm9","libjpeg8","libjpeg8-dev","zlib1g-dev",
+"libfreetype6","libfreetype6-dev","apache2",
+"libncurses5-dev",
+"fakeroot","build-essential","git",
+"python3-pip","open-jtalk","mecab","mecab-utils","mecab-naist-jdic","mecab-naist-jdic-eucjp","mecab-jumandic"]
         for i in ba:
             sp.call("sudo apt-get install -y %s" % (i),shell=True)
     def installPythonModules(self):
