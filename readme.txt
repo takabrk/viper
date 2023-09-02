@@ -32,6 +32,8 @@ $ sudo pip install mecab-python3
 ・アプリケーションやライブラリのインストール
 ・OSのリマスター機能
 ・ChromiumにGoogle Chrome内蔵のWidevineを入れる事が出来る「install widevine」機能
+・人工音声で朗読する機能
+・YouTubeなどで公開されている動画をダウンロードする機能
 
 ◇D-bus版Jackサーバを起動
 $cd scripts

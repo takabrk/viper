@@ -22,6 +22,6 @@ def information():
     #ret4 = sp.check_output(cmd4,shell=True)
     #ret5 = sp.check_output(cmd5,shell=True)
     #ret6 = sp.check_output(cmd6,shell=True)
-    msb.showinfo("About Valkyrie Linux",ret1+ ret2 + ret3)
+    msb.showinfo("About UBOLD-OP",ret1+ ret2 + ret3)
 if __name__ == "__main__":
     information()
