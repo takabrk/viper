@@ -371,7 +371,7 @@ September 2,2023</property>
             </child>
             <child>
               <object class="GtkButton" id="application">
-                <property name="label" translatable="yes">Inatall Applications</property>
+                <property name="label" translatable="yes">Install Applications</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
