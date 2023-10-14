@@ -3,7 +3,7 @@
 """
 viper.py
 This script created by takamitsu hamada
-version :  20200805
+version :  20231014
 License      :  BSD License
 Web site URL :  http://vsrx.work
 """
@@ -176,7 +176,7 @@ sudo apt-get update""",shell=True)
         for i in ba:
             sp.call("sudo apt-get install -y %s" % (i),shell=True)
     def installPythonModules(self):
-        list2 = ["scipy","numpy","pandas","seaborn","mecab-python3","mecab-python","scikit-learn","statsmodels","beautifulsoup4","matplotlib"]
+        list2 = ["scipy","numpy","pandas","seaborn","mecab-python3","mecab-python","scikit-learn","statsmodels","beautifulsoup4","matplotlib","rembg"]
         for i in list2:
             sp.call("sudo pip2 install --no-cache-dir -I %s" % (i),shell=True)
             sp.call("sudo pip3 install --no-cache-dir -I %s" % (i),shell=True)

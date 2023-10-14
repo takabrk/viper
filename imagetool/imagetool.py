@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-#imagetool.py @takamitu hamada 20170706
+#imagetool.py @takamitu hamada 20231014
 import os,os.path,sys
 import subprocess as sp
+from rembg import remove
+from PIL import Image
 
 try:
     import gi
@@ -26,7 +28,8 @@ class imagetool(object):
             "on_button7_clicked" : self.on_button7_clicked,
             "on_button8_clicked" : self.on_button8_clicked,
             "on_button9_clicked" : self.on_button9_clicked,
-            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set
+            "on_filechooserbutton1_file_set" : self.on_filechooserbutton1_file_set,
+            "on_clipping_clicked" : self.on_clipping_clicked
         }
         treeObj = self.tree.get_object;
         self.tree.connect_signals(dic)
@@ -48,6 +51,7 @@ class imagetool(object):
         self.entry5 = treeObj("entry5")
         self.entry6 = treeObj("entry6")
         self.entry7 = treeObj("entry7")
+        self.window = treeObj("clipping")
         self.window = treeObj("window1")
         self.window.show_all()
         if(self.window):
@@ -138,6 +142,15 @@ class imagetool(object):
         msg2 = self.entry9.get_text();
         cmdgu = "./guetzli_linux_x86-64 %s %s" % (msg1,msg2)
         sp.call(cmdgu.strip().split(" "))
+    def on_clipping_clicked(self,widget):
+        msg1 = self.on_filechooserbutton1_file_set(widget)
+        msg2 = self.entry2.get_text()
+        input_path = msg1
+        output_path = msg2
+        input = Image.open(input_path)
+        output = remove(input)
+        output.save(output_path)
+        print("Completed Clipping")
 #Cancel button
     def on_button7_clicked(self,widget):
         Gtk.main_quit()

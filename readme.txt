@@ -1,7 +1,7 @@
 Linux application "Viper Tools"
 Web site URL : http://vsrx.work
 Created by takamitsu hamada
-Updated September 3,2023
+Updated October 14,2023
 
 詳しいリファレンスは、以下で公開しています。
 
@@ -18,8 +18,8 @@ $ sudo apt install open-jtalk open-jtalk-mecab-naist-jdic mecab
 $ sudo pip install mecab-python3
 
 [動作環境]
-・Ubuntu 22.04.2 LTS
-・Python 3.10.6,Python2.7
+・Ubuntu 22.04.3 LTS
+・Python 3.10,Python2.7
 ・GTK+3
 ・libglade
 ・xfce4-terminal
@@ -34,6 +34,7 @@ $ sudo pip install mecab-python3
 ・ChromiumにGoogle Chrome内蔵のWidevineを入れる事が出来る「install widevine」機能
 ・人工音声で朗読する機能
 ・YouTubeなどで公開されている動画をダウンロードする機能
+・画像切り抜き機能
 
 ◇D-bus版Jackサーバを起動
 $cd scripts
