@@ -72,7 +72,7 @@
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">202309</property>
+                    <property name="text" translatable="yes">202312</property>
                     <property name="placeholder-text" translatable="yes">20.04</property>
                   </object>
                   <packing>
@@ -295,7 +295,7 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Viper Tools
 Created by takamitsu hamada
-September 2,2023</property>
+November 2,2023</property>
               </object>
               <packing>
                 <property name="expand">False</property>
