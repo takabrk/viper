@@ -51,7 +51,7 @@ echo "                       [DONE]"
 echo -n "# Deleting obsolete files"
 rm -f $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH
 rm -f $ISOPATH/casper/filesystem.squashfs
-rm -f $ISOPATH/casper/initrd
+rm -f $ISOPATH/casper/initrd.lz
 rm -f $ISOPATH/casper/vmlinuz
 rm -f $ISOPATH/casper/vmlinuz.efi*
 rm -f $ISOPATH/casper/filesystem.manifest
@@ -189,18 +189,13 @@ echo -n "# Copying boot files"
 	rm -r gfxboot*
 	apt purge -y gfxboot gfxboot-dev
 fi
-if [ -e /boot/vmlinuz*-generic ] || [ -e /boot/initrd*-generic ]; then
-    cp -f $FSPATH/boot/initrd.img*-generic $ISOPATH/casper/initrd.lz
-    cp -f $FSPATH/boot/vmlinuz*-generic $ISOPATH/casper/vmlinuz
-fi
-if [ -e /boot/vmlinuz*-rt5 ] || [ -e /boot/initrd*-rt5 ]; then
-    cp -f $FSPATH/boot/initrd.img*-rt5 $ISOPATH/casper/initrd.lz
-    cp -f $FSPATH/boot/vmlinuz*-rt5 $ISOPATH/casper/vmlinuz
-fi
-if [ -e /boot/vmlinuz*-lowlatency ] || [ -e /boot/initrd*-lowlatency ]; then
-    cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz
-    cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
-fi
+#cp -f $FSPATH/boot/initrd.img*-generic $ISOPATH/casper/initrd.lz
+#cp -f $FSPATH/boot/vmlinuz*-generic $ISOPATH/casper/vmlinuz
+cp -f $FSPATH/boot/initrd.img*-rt5 $ISOPATH/casper/initrd.lz
+cp -f $FSPATH/boot/vmlinuz*-rt5 $ISOPATH/casper/vmlinuz
+#cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz
+#cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
+
 rm -f $FSPATH/var/cache/apt/pkgcache.bin
 rm -f $FSPATH/var/cache/apt/srcpkgcache.bin) > /dev/null 2>&1
 echo "                    [DONE]"
