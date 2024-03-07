@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 year = 2024
-month = 2
+month = 3
 day = 1
 #ナンバーズ3の百の位
 continuation3 = [1,3,4,5,7,9]
