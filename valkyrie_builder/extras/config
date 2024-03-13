@@ -12,4 +12,8 @@ YOURARCH=$(uname -m)
 # Define Wizard variables
 APPS=/home/valkyrie-builder/configs/PACKAGES
 
+#Kernel Version
+
+VERSIONPOINT=6.8.0-zen1-noir
+
 

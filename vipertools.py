@@ -80,6 +80,7 @@ class valkyrie_setting(object):
         self.url = treeObj("url")
         self.description = treeObj("description")
         self.os_chooser = treeObj("os_chooser")
+        self.kernel_version = treeObj("kernel_version")
         self.window = treeObj("viper_tools")
         #self.vte1 = treeObj("vte1")
         #bigbox = Gtk.Box()
@@ -177,6 +178,7 @@ class valkyrie_setting(object):
         msg5 = self.url.get_text()
         msg6 = self.description.get_text()
         msg7 = self.on_os_chooser(widget)
+        msg8 = self.kernel_version.get_text()
         f1 = open("valkyrie_builder/configs/OSNAME","w")
         f1.write(msg1)
         f1.close()
@@ -198,6 +200,26 @@ class valkyrie_setting(object):
         f7 = open("valkyrie_builder/configs/ISOFILE","w")
         f7.write(msg7)
         f7.close()
+        f8 = open("/opt/viper/valkyrie_builder/extras/config","w")
+        f8.write("""
+#/usr/bin/bash
+
+# Define common variables
+WORKPATH=/home/valkyrie-builder
+ISOPATH=/home/valkyrie-builder/ISO
+FSPATH=/home/valkyrie-builder/FileSystem
+
+# Define Extract variables
+MOUNTPATH=/media/ISO
+YOURARCH=$(uname -m)
+
+# Define Wizard variables
+APPS=/home/valkyrie-builder/configs/PACKAGES
+
+#Kernel Version
+
+VERSIONPOINT=""" +msg8)
+        f8.close()
         sp.run("""sudo mkdir /home/valkyrie-builder
         sudo cp -a valkyrie_builder/configs /home/valkyrie-builder
         """,shell=True)

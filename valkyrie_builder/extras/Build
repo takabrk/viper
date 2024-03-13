@@ -189,19 +189,34 @@ echo -n "# Copying boot files"
 	rm -r gfxboot*
 	apt purge -y gfxboot gfxboot-dev
 fi
-#cp -f $FSPATH/boot/initrd.img*-generic $ISOPATH/casper/initrd.lz
-#cp -f $FSPATH/boot/vmlinuz*-generic $ISOPATH/casper/vmlinuz
-cp -f $FSPATH/boot/initrd.img*-rt5 $ISOPATH/casper/initrd.lz
-cp -f $FSPATH/boot/vmlinuz*-rt5 $ISOPATH/casper/vmlinuz
-#cp -f $FSPATH/boot/initrd.img*-lowlatency $ISOPATH/casper/initrd.lz
-#cp -f $FSPATH/boot/vmlinuz*-lowlatency $ISOPATH/casper/vmlinuz
+if [ -e /boot/vmlinuz-$VERSIONPOINT-generic ] || [ -e /boot/initrd-$VERSIONPOINT-generic ]; then
+    cp -f $FSPATH/boot/initrd.img-$VERSIONPOINT-generic $ISOPATH/casper/initrd.lz
+    cp -f $FSPATH/boot/vmlinuz-$VERSIONPOINT-generic $ISOPATH/casper/vmlinuz
+fi
+if [ -e /boot/vmlinuz-$VERSIONPOINT-lowlatency ] || [ -e /boot/initrd-$VERSIONPOINT-lowlatency ]; then
+    cp -f $FSPATH/boot/initrd.img-$VERSIONPOINT-lowlatency $ISOPATH/casper/initrd.lz
+    cp -f $FSPATH/boot/vmlinuz-$VERSIONPOINT-lowlatency $ISOPATH/casper/vmlinuz
+fi
+if [ -e /boot/vmlinuz-$VERSIONPOINT-rt7 ] || [ -e /boot/initrd-$VERSIONPOINT-rt7 ]; then
+    cp -f $FSPATH/boot/initrd.img-$VERSIONPOINT-rt7 $ISOPATH/casper/initrd.lz
+    cp -f $FSPATH/boot/vmlinuz-$VERSIONPOINT-rt7 $ISOPATH/casper/vmlinuz
+fi
 rm -r initrd.img
 rm -r initrd.img.old
 rm -r vmlinuz
 rm -r vmlinuz.old
-ln -s initrd.img*-rt5 initrd.img
-ln -s vmlinuz*-rt5 vmlinuz
-
+if [ -e /boot/vmlinuz-$VERSIONPOINT-generic]; then
+    ln -s initrd.img-$VERSIONPOINT-generic initrd.img
+    ln -s vmlinuz-$VERSIONPOINT-generic vmlinuz
+fi
+if [ -e /boot/vmlinuz-$VERSIONPOINT-lowlatency]; then
+    ln -s initrd.img-$VERSIONPOINT-lowlatency initrd.img
+    ln -s vmlinuz-$VERSIONPOINT-lowlatency vmlinuz
+fi
+if [ -e /boot/vmlinuz-$VERSIONPOINT-rt7]; then
+    ln -s initrd.img-$VERSIONPOINT-rt7 initrd.img
+    ln -s vmlinuz-$VERSIONPOINT-rt7 vmlinuz
+fi
 rm -f $FSPATH/var/cache/apt/pkgcache.bin
 rm -f $FSPATH/var/cache/apt/srcpkgcache.bin) > /dev/null 2>&1
 echo "                    [DONE]"

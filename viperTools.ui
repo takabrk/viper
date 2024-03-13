@@ -72,7 +72,7 @@
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">202403a</property>
+                    <property name="text" translatable="yes">202404</property>
                     <property name="placeholder-text" translatable="yes">20.04</property>
                   </object>
                   <packing>
@@ -202,6 +202,29 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Kernel Version</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">15</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="kernel_version">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">16</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkButton" id="settings">
                     <property name="label" translatable="yes">Settings</property>
                     <property name="visible">True</property>
@@ -212,7 +235,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">15</property>
+                    <property name="position">17</property>
                   </packing>
                 </child>
                 <child>
@@ -279,7 +302,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">16</property>
+                    <property name="position">20</property>
                   </packing>
                 </child>
               </object>
@@ -295,7 +318,7 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Viper Tools
 Created by takamitsu hamada
-March 7,2024</property>
+March 13,2024</property>
               </object>
               <packing>
                 <property name="expand">False</property>
