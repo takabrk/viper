@@ -201,8 +201,7 @@ class valkyrie_setting(object):
         f7.write(msg7)
         f7.close()
         f8 = open("/opt/viper/valkyrie_builder/extras/config","w")
-        f8.write("""
-#/usr/bin/bash
+        f8.write("""#/usr/bin/bash
 
 # Define common variables
 WORKPATH=/home/valkyrie-builder
@@ -220,9 +219,6 @@ APPS=/home/valkyrie-builder/configs/PACKAGES
 
 VERSIONPOINT=""" +msg8)
         f8.close()
-        sp.run("""sudo mkdir /home/valkyrie-builder
-        sudo cp -a valkyrie_builder/configs /home/valkyrie-builder
-        """,shell=True)
 #Console
     def on_console_clicked(self,widget):
         sp.run("xfce4-terminal --hide-menubar -x sh -c 'sudo valkyrie_builder/extras/Console; read'",shell=True)
