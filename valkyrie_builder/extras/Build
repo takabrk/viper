@@ -63,17 +63,14 @@ rm -f $ISOPATH/casper/README.diskdefines
 VERSION=`cat $FSPATH/etc/lsb-release | grep DISTRIB_RELEASE= | sed 's/DISTRIB_RELEASE=//'`
 CDNAME=`cat $FSPATH/etc/lsb-release | grep DISTRIB_CODENAME= | sed 's/DISTRIB_CODENAME=//'`
 case $CDNAME in
+        noble)
+                CODENAME="⁠Noble Numbat⁠"
+		;;
 	jammy)
 		CODENAME="Jammy Jellyfish"
 		;;
 	focal)
 		CODENAME="Focal Fossa"
-		;;
-	bionic)
-		CODENAME="Bionic Beaver"
-                ;;
-	kinetic)
-		CODENAME="Kinetic Kudu"
 		;;
 esac
 
@@ -204,11 +201,11 @@ if [ -e vmlinuz-$VERSIONPOINT-lowlatency ]; then
     cp -a initrd.img-$VERSIONPOINT-lowlatency $ISOPATH/casper/initrd.lz
     cp -a vmlinuz-$VERSIONPOINT-lowlatency $ISOPATH/casper/vmlinuz
 fi
-if [ -e vmlinuz-$VERSIONPOINT-rt11 ]; then
-    ln -s initrd.img-$VERSIONPOINT-rt11 initrd.img
-    ln -s vmlinuz-$VERSIONPOINT-rt11 vmlinuz
-    cp -a initrd.img-$VERSIONPOINT-rt11 $ISOPATH/casper/initrd.lz
-    cp -a vmlinuz-$VERSIONPOINT-rt11 $ISOPATH/casper/vmlinuz
+if [ -e vmlinuz-$VERSIONPOINT-rt5 ]; then
+    ln -s initrd.img-$VERSIONPOINT-rt5 initrd.img
+    ln -s vmlinuz-$VERSIONPOINT-rt5 vmlinuz
+    cp -a initrd.img-$VERSIONPOINT-rt5 $ISOPATH/casper/initrd.lz
+    cp -a vmlinuz-$VERSIONPOINT-rt5 $ISOPATH/casper/vmlinuz
 fi
 cd ..
 
@@ -261,18 +258,18 @@ echo "           [DONE]"
 
 echo -ne "# Creating ISO, this may take a moment"
 cd $ISOPATH
-genisoimage -allow-limited-size -r -iso-level 3 -V "${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table -o $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso -input-charset utf-8 .
+genisoimage -allow-limited-size -r -iso-level 3 -V "${OSNAME//[[:space:]]}-$VERSION-$ARCH" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table -o $WORKPATH/${OSNAME//[[:space:]]}-$VERSION-$ARCH.iso -input-charset utf-8 .
 
-chmod 755 $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso
-echo $WORKPATH/${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso > $WORKPATH/configs/ISOCREATED
+chmod 755 $WORKPATH/${OSNAME//[[:space:]]}-$VERSION-$ARCH.iso
+echo $WORKPATH/${OSNAME//[[:space:]]}-$VERSION-$ARCH.iso > $WORKPATH/configs/ISOCREATED
 cp $FSPATH/etc/apt/sources.list.bak.full $FSPATH/etc/apt/sources.list
 echo "  [DONE]"
 
-zenity --info --text "${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH successfully created. You can test it with QEMU."
+zenity --info --text "${OSNAME//[[:space:]]}-$VERSION-$ARCH successfully created. You can test it with QEMU."
 
 echo -n "# Generating MD5Sum"
 cd $WORKPATH
-md5sum ${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso > md5sum
+md5sum ${OSNAME//[[:space:]]}-$VERSION-$ARCH.iso > md5sum
 echo "                     [DONE]"
-mv ${DESCRIPTION//[[:space:]]}-$VERSION-$ARCH.iso ${OSNAME//[[:space:]]}-$OSVERSION-$ARCH.iso
+mv ${OSNAME//[[:space:]]}-$VERSION-$ARCH.iso ${OSNAME//[[:space:]]}-$OSVERSION-$ARCH.iso
 ) | tee -a $WORKPATH/valkyrie-builder.log
