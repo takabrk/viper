@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  20240201
+version :  May 31,2024
 License      :  BSD License
 """
 from numbers_list import *
@@ -539,9 +539,9 @@ class numbers4(object):
         rs = [i for i in range(10000)]
         return rs
 
-#3000未満の数字を除外したベース数字
-    def make_straight_under3000(self):
-        rs = [i for i in range(3000,10000)]
+#5000未満の数字を除外したベース数字
+    def make_straight_under5000(self):
+        rs = [i for i in range(5000,10000)]
         return rs
 
 #全ボックス番号
@@ -763,10 +763,10 @@ class allnumbers(object):
         #n3.del031(ee)
         #n3.del015(ee)
         #n3.del004(ee)
-        n3.delstmini(20,ee)
+        n3.delstmini(110,ee)
         n3.delbeforemini(200,ee)
         #n3.useGmini(ee)
-        n3.delboxmini(20,ee)
+        #n3.delboxmini(20,ee)
         #n3.del_rehearsal_mini(ee)
         #n3.del_mini_plus(ee)
         e = ee
@@ -786,19 +786,19 @@ class allnumbers(object):
         n3b = sorted(set(zip(rs3,[n3.make_box(n3.full_num3).count(i) for i in rs3])))
 #Numbers4予想
         n4 = numbers4()
-        #rs = n4.make_straight_under3000()
+        #rs = n4.make_straight_under5000()
         rs = n4.make_straight()
         n4.delst(rs)
-        n4.dellow2(20,rs)
-        n4.dellow3(20,rs)
-        #rs = sorted(set(n4.make_box(rs)))
-        n4.delbox(120,rs)
+        n4.dellow2(110,rs)
+        n4.dellow3(432,rs)
+        n4.delbox(249,rs)
         n4.delzoro4(rs)
         n4.deltriple(rs)
         n4.deldouble(rs)
+        #rs = sorted(set(n4.make_box(rs)))
         #n4.del_rehearsal4(rs)
         #n4.del_remove4(rs)
-        #rs = set(sorted([random.choice(rs) for i in range(200)]))
+        rs = set(sorted([random.choice(rs) for i in range(450)]))
         n4a = sorted(set(zip(rs,[n4.make_box(n4.full_num34).count(i) for i in rs])))
 
 #File writing

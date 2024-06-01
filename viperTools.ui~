@@ -97,7 +97,7 @@
                   <object class="GtkEntry" id="codename">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">noble</property>
+                    <property name="text" translatable="yes">jammy</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
