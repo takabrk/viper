@@ -3,7 +3,7 @@
 """
 numbers.py
 Copyright@ takamitu_hamada
-version :  May 31,2024
+version :  July 1,2024
 License      :  BSD License
 """
 from numbers_list import *
@@ -763,7 +763,7 @@ class allnumbers(object):
         #n3.del031(ee)
         #n3.del015(ee)
         #n3.del004(ee)
-        n3.delstmini(110,ee)
+        n3.delstmini(100,ee)
         n3.delbeforemini(200,ee)
         #n3.useGmini(ee)
         #n3.delboxmini(20,ee)
@@ -791,11 +791,11 @@ class allnumbers(object):
         n4.delst(rs)
         n4.dellow2(110,rs)
         n4.dellow3(432,rs)
-        n4.delbox(249,rs)
+        n4.delbox(20,rs)
         n4.delzoro4(rs)
         n4.deltriple(rs)
         n4.deldouble(rs)
-        #rs = sorted(set(n4.make_box(rs)))
+        rs = sorted(set(n4.make_box(rs)))
         #n4.del_rehearsal4(rs)
         #n4.del_remove4(rs)
         rs = set(sorted([random.choice(rs) for i in range(450)]))
