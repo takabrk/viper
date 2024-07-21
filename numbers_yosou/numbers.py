@@ -777,7 +777,7 @@ class allnumbers(object):
         #rs3 = n3.make_n3box_many()
         n3.delst(240,rs3)
         #n3.del100plus10(rs3)
-        #rs3 = sorted(set(n3.make_box(rs3)))
+        rs3 = sorted(set(n3.make_box(rs3)))
         n3.delbox(20,rs3)
         n3.delzoro3(rs3)
         #n3.del_rehearsal3(rs3)

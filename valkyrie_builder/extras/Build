@@ -201,11 +201,11 @@ if [ -e vmlinuz-$VERSIONPOINT-lowlatency ]; then
     cp -a initrd.img-$VERSIONPOINT-lowlatency $ISOPATH/casper/initrd.lz
     cp -a vmlinuz-$VERSIONPOINT-lowlatency $ISOPATH/casper/vmlinuz
 fi
-if [ -e vmlinuz-$VERSIONPOINT-rt5 ]; then
-    ln -s initrd.img-$VERSIONPOINT-rt5 initrd.img
-    ln -s vmlinuz-$VERSIONPOINT-rt5 vmlinuz
-    cp -a initrd.img-$VERSIONPOINT-rt5 $ISOPATH/casper/initrd.lz
-    cp -a vmlinuz-$VERSIONPOINT-rt5 $ISOPATH/casper/vmlinuz
+if [ -e vmlinuz-$VERSIONPOINT-rt11 ]; then
+    ln -s initrd.img-$VERSIONPOINT-rt11 initrd.img
+    ln -s vmlinuz-$VERSIONPOINT-rt11 vmlinuz
+    cp -a initrd.img-$VERSIONPOINT-rt11 $ISOPATH/casper/initrd.lz
+    cp -a vmlinuz-$VERSIONPOINT-rt11 $ISOPATH/casper/vmlinuz
 fi
 cd ..
 
