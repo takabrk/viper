@@ -241,7 +241,7 @@
                   <object class="GtkEntry" id="kernel_version">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">6.10-noir</property>
+                    <property name="text" translatable="yes">6.10.0-noir</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

@@ -72,7 +72,7 @@
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">202407</property>
+                    <property name="text" translatable="yes">202410</property>
                     <property name="placeholder-text" translatable="yes">20.04</property>
                   </object>
                   <packing>
@@ -194,7 +194,7 @@
                   <object class="GtkEntry" id="description">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">Ubuntu 22.04.4 LTS based</property>
+                    <property name="text" translatable="yes">Ubuntu 22.04.5 LTS based</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -241,7 +241,7 @@
                   <object class="GtkEntry" id="kernel_version">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">6.10.0-noir</property>
+                    <property name="text" translatable="yes">6.11.0-zen1-noir</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -343,7 +343,7 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Viper Tools
 Created by takamitsu hamada
-July 19,2024</property>
+September 18,2024</property>
               </object>
               <packing>
                 <property name="expand">False</property>
