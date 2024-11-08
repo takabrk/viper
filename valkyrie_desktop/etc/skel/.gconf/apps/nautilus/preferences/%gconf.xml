@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="confirm_trash" mtime="1434038106" type="bool" value="true"/>
-	<entry name="sidebar_width" mtime="1337684425" type="int" value="188"/>
-	<entry name="show_desktop" mtime="1333457017" type="bool" value="false"/>
-	<entry name="navigation_window_saved_maximized" mtime="1337685837" type="bool" value="true"/>
-	<entry name="start_with_sidebar" mtime="1337685836" type="bool" value="true"/>
-</gconf>

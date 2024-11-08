@@ -2,14 +2,13 @@
 #-*-coding:utf-8 -*-
 #vipertools.py
 #Created by takamitsu hamada
-#June 29,2023
+#NOvember 8,2024
 #mainsite : http://vsrx.work
 
 import sys,os,os.path,json
 import subprocess as sp
 from threading import Thread
 import codecs
-#from MyTerm import MyTerm
 try:
     import gi
     gi.require_version("Gtk","3.0")
@@ -35,7 +34,6 @@ class valkyrie_setting(object):
         self.tree = Gtk.Builder()
         self.tree.add_from_file(os.path.dirname(os.path.abspath(__file__)) + "/" + gladefile)
         dic = {
-            "on_kyotei_clicked" : self.on_kyotei_clicked,
             "on_tmpfs_clicked" : self.on_tmpfs_clicked,
             "on_system_tune_clicked" : self.on_system_tune_clicked,
             "on_settings_clicked" : self.on_settings_clicked,
@@ -49,12 +47,11 @@ class valkyrie_setting(object):
             "on_apng_asvg_clicked" : self.on_apng_asvg_clicked,
             "on_cancel_clicked" : self.on_cancel_clicked,
             "on_os_chooser" : self.on_os_chooser,
-            "on_ssb_clicked" : self.on_ssb_clicked,
             "on_imagetool_clicked" : self.on_imagetool_clicked,
             "on_ydown_clicked" : self.on_ydown_clicked,
             "on_HLSdown_clicked" : self.on_HLSdown_clicked,
             "on_install_driver_clicked" : self.on_install_driver_clicked,
-            "on_button111_clicked" : self.on_button111_clicked,
+            "on_convert_clicked" : self.on_convert_clicked,
             "on_talk_text_clicked" : self.on_talk_text_clicked,
             "on_talk_text_file_clicked" : self.on_talk_text_file_clicked,
             "on_vaapi1_clicked" : self.on_vaapi1_clicked
@@ -70,9 +67,7 @@ class valkyrie_setting(object):
         self.window = treeObj("numbers")
         self.window = treeObj("apps")
         self.window = treeObj("apng_asvg")
-        self.window = treeObj("kyotei")
         self.window = treeObj("imagetool")
-        self.window = treeObj("ssb")
         self.name = treeObj("name")
         self.version = treeObj("version")
         self.method = treeObj("method")
@@ -83,17 +78,12 @@ class valkyrie_setting(object):
         self.kernel_version = treeObj("kernel_version")
         self.codename = treeObj("codename")
         self.window = treeObj("viper_tools")
-        #self.vte1 = treeObj("vte1")
-        #bigbox = Gtk.Box()
-        #self.vte1.add(bigbox)
-        #bigbox.add(MyTerm())
         self.downloader = treeObj("downloader")
         self.hls_url = treeObj("hls_url")
         self.output = treeObj("output")
         self.window = treeObj("ydown")
         self.window = treeObj("HLSdown")
         self.window = treeObj("install_driver")
-#        self.fcb1 = treeObj("filechooserbutton1")
         self.entry0 = treeObj("entry0")
         self.entry1 = treeObj("entry1")
         self.combo1 = treeObj("comboboxtext1")
@@ -134,13 +124,6 @@ class valkyrie_setting(object):
 #create apng and asvg
     def on_apng_asvg_clicked(self,widget):
         sp.run("python3 apng_asvg/apng_asvg.py".strip().split(" "))
-#kyotei
-    def on_kyotei_clicked(self,widget):
-        def kyotei():
-            os.chdir("kyotei")
-            sp.run("./kyotei.sh".strip().split(" "))
-            os.chdir("../")
-        Thread(target=kyotei).start()
 #change the settings of tmpfs 
     def on_tmpfs_clicked(self,widget):
         def ramdisk():
@@ -160,10 +143,6 @@ class valkyrie_setting(object):
         sp.run("sudo python3 viper.py faststart".strip().split(" "))
         sp.run("sudo python3 viper.py valkyrie".strip().split(" "))
         print("Finish Settings")
-#SSB
-    def on_ssb_clicked(self,widget):
-        Thread(target=lambda : sp.call("./start_server &",shell="True")).start()
-        Thread(target=lambda : sp.call('google-chrome --disk-cache-dir="/tmp" --app="http://localhost:8000/ssb.html?date=20180822f"',shell="True")).start()
 #Image Tool
     def on_imagetool_clicked(self,widget):
         os.chdir("imagetool")
@@ -316,14 +295,11 @@ VERSIONPOINT=""" +msg8)
         cmd = "./qsv_enc.sh %s %s %s %s %s %s %s %s %s" % (msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8,msg9)
         print(cmd)
         sp.call(cmd.strip().split(" "))
-#    def on_filechooserbutton1_file_set(self,widget):
-#        msg1 = self.fcb1.get_filename()
-#        return msg1
     def on_install_driver_clicked(self,widget):
         cmd = "./build_media_driver.sh"
         sp.call(cmd.strip().split(" "))
 #ffmpeg
-    def on_button111_clicked(self,widget):
+    def on_convert_clicked(self,widget):
         msg1 = self.entry_ffmpeg_input.get_text()
         msg2 = self.entry_ffmpeg_output.get_text()
         msg3 = self.entry_ffmpeg_start.get_text()

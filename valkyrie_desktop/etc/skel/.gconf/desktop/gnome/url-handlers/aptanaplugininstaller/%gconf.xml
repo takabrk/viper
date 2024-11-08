@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="needs_terminal" mtime="1351784398" type="bool" value="false"/>
-	<entry name="enabled" mtime="1351784397" type="bool" value="true"/>
-	<entry name="command" mtime="1351784397" type="string">
-		<stringvalue>&quot;/usr/lib/eclipse/eclipse&quot; -application com.aptana.ide.desktop.integration.Application -handleURL &quot;%s&quot;</stringvalue>
-	</entry>
-</gconf>

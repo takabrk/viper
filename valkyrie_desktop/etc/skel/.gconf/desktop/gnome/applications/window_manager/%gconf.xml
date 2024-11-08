@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="current" mtime="1333102696" type="string">
-		<stringvalue>gnome-shell</stringvalue>
-	</entry>
-</gconf>

@@ -14,4 +14,4 @@ APPS=/home/valkyrie-builder/configs/PACKAGES
 
 #Kernel Version
 
-VERSIONPOINT=6.11.0-zen1-noir
+VERSIONPOINT=6.11.6-noir

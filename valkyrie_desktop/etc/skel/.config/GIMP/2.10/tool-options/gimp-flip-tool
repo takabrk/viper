@@ -1,6 +1,0 @@
-# GIMP gimp-flip-tool options
-
-(background (color-rgb 0 0.59607845544815063 1))
-(interpolation linear)
-
-# end of gimp-flip-tool options

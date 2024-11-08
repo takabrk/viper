@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="ATI_R6xx_HDMI" mtime="1547537610" type="bool" value="true"/>
-	<entry name="Realtek_ALC887-VD" mtime="1547537610" type="bool" value="true"/>
-	<entry name="Intel_Haswell_HDMI" mtime="1471261070" type="bool" value="true"/>
-</gconf>

@@ -3,7 +3,7 @@
 """
 viper.py
 This script created by takamitsu hamada
-version :  20231014
+version :  20241108
 License      :  BSD License
 Web site URL :  http://vsrx.work
 """
@@ -23,95 +23,6 @@ homedir = os.environ['HOME']+"/viper/"
 class viper(object):
     def __init__(self):
         pass
-#VSRX Desktop
-    def setupValkyrie(self):
-        sp.call("""
-            sudo cp -a valkyrie_desktop/etc/skel /etc
-            sudo chown -R root /etc/skel
-            sudo chgrp -R root /etc/skel
-            sudo chmod -R 755 /etc/skel
-            sudo cp -a valkyrie_desktop/usr/share /usr
-            sudo chown -R root /usr/share/backgrounds
-            sudo chgrp -R root /usr/share/backgrounds
-            sudo chmod -R 755 /usr/share/backgrounds
-            sudo chown -R root /usr/share/icons
-            sudo chgrp -R root /usr/share/icons
-            sudo chmod -R 755 /usr/share/icons
-            sudo chown -R root /usr/share/xsessions
-            sudo chgrp -R root /usr/share/xsessions
-            sudo chmod -R 755 /usr/share/xsessions
-            sudo cp -a valkyrie_desktop/etc/xdg /etc
-            sudo chown -R root /etc/xdg
-            sudo chgrp -R root /etc/xdg
-            sudo chmod 755 /etc/xdg
-            sudo cp -a ~/viper /etc/skel
-            sudo apt-get install synaptic
-            sudo apt-get update
-        """,shell=True)
-        self.set_sources_list()
-    def suckout(self):
-        sp.call("""
-            rm -r valkyrie_desktop/etc/skel
-            mkdir valkyrie_desktop/etc/skel
-            cp -a ~/.config/openbox valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/tint2 valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/conky valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/gtk-2.0 valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/gtk-3.0 valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/fcitx valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/fontconfig valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/jack valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/xfce4 valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/lxqt valkyrie_desktop/etc/skel/.config
-            cp -a ~/.gtkrc-2.0 valkyrie_desktop/etc/skel
-            cp -a ~/.Xdefaults valkyrie_desktop/etc/skel
-            cp -a ~/.emacs.d valkyrie_desktop/etc/skel
-            cp -a ~/.gconf valkyrie_desktop/etc/skel
-            cp -a ~/.themes valkyrie_desktop/etc/skel
-            cp -a ~/.config/blender valkyrie_desktop/etc/skel/.config
-            cp -a ~/.config/GIMP valkyrie_desktop/etc/skel/.config
-            rm -r valkyrie_desktop/usr/share/backgrounds
-            cp -a /usr/share/backgrounds valkyrie_desktop/usr/share
-            rm -r valkyrie_desktop/etc/apt/sources.list.d
-            cp -a /etc/apt valkyrie_desktop/etc
-            rm -r valkyrie_desktop/etc/xdg
-            cp -a /etc/xdg valkyrie_desktop/etc
-            cp -a /etc/lsb-release valkyrie_desktop/etc/lsb-release
-            cp -a /etc/rc.local valkyrie_desktop/etc
-        """,shell=True)
-        print("Finished")
-    def set_plymouth(self):
-        sp.call("""
-            sudo apt-get install plymouth
-            sudo apt-get install plymouth-theme-solar
-            sudo cp -a valkyrie_desktop/lib/plymouth /lib
-            sudo chown -R root /lib/plymouth
-            sudo chgrp -R root /lib/plymouth
-            sudo chmod -R 755 /lib/plymouth
-            sudo update-alternatives --config default.plymouth
-        """,shell=True)
-    def set_sources_list(self):
-        sp.call("""
-            sudo cp -a valkyrie_desktop/etc/apt/* /etc/apt
-            sudo apt-get update
-            #sudo dpkg --set-selections < synaptic_list.txt
-            #sudo apt-get dselect-upgrade
-            sudo apt-get upgrade
-        """,shell=True)
-    def set_wireless_poweroff(self):
-        sp.call("""
-            sudo cp -a valkyrie_desktop/etc/pm/power.d/wireless /etc/pm/power.d
-            sudo chown -R root /etc/pm/power.d/wireless
-            sudo chgrp -R root /etc/pm/power.d/wireless
-            sudo chmod -R 755 /etc/pm/power.d/wireless
-        """,shell=True)
-    def set_blacklist(self):
-        sp.call("""
-            sudo cp -a valkyrie_desktop/etc/modprobe.d/blacklist.conf /etc/modprobe.d
-            sudo chown -R root /etc/modprobe.d/blacklist.conf
-            sudo chgrp -R root /etc/modprobe.d/blacklist.conf
-            sudo chmod -R root /etc/modprobe.d/blacklist.conf
-        """,shell=True)
     def del_dpkg_info(self):
         sp.call("""
             sudo rm -r /var/lib/dpkg/info/*.postinst
@@ -132,46 +43,8 @@ class viper(object):
             sysv-rc-conf plymouth off
             sysv-rc-conf rsync off
         """,shell=True)
-    def addPPA(self):
-        sp.call("""sudo add-apt-repository ppa:xorg-edgers/ppa
-sudo add-apt-repository ppa:canonical-kernel-team/ppa
-sudo add-apt-repository ppa:otto-kesselgulasch/gimp
-sudo add-apt-repository ppa:alexlarsson/flatpak
-sudo apt-add-repository ppa:ppsspp/stable
-sudo add-apt-repository ppa:ubuntuhandbook1/avidemux
-sudo add-apt-repository ppa:alexlarsson/flatpak
-sudo add-apt-repository ppa.launchpad.net/haraldhv/shotcut/ubuntu
-sudo add-apt-repository ppa.launchpad.net/lucioc/sayonara/ubuntu
-sudo add-apt-repository ppa.launchpad.net/ubuntu-x-swat/updates/ubuntu
-sudo add-apt-repository [arch=amd64,i386] http://repo.steampowered.com/steam/
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable test edge"
-sudo apt-get update""",shell=True)
     def installApplications(self):
-        base = ["lxqt-core","obconf-qt","lxappearance","lxrandr","lxinput",
-"dunst","tint2","gmrun",
-"xfce4-terminal","xfce4-taskmanager","xfce4-power-manager",
-"network-manager-gnome",
-"emacs25-nox","leafpad",
-"pulseaudio","pavucontrol","pulseaudio-utils",
-"pulseaudio-module-jack","jackd","jackd2","qjackctl",
-"alsamixergui","gnome-alsamixer",
-"mpv","imagemagick","firefox",
-"ffmpeg","obs-studio",
-"python-tk","python3-tk","python3-sphinx",
-"libllvm9","libjpeg8","libjpeg8-dev","zlib1g-dev",
-"libfreetype6","libfreetype6-dev","apache2",
-"libncurses5-dev",
-"fakeroot","build-essential","git",
-"python3-pip","python-pip"]
-    def installExtraApplications(self):
-        ba = ["google-chrome-stable","unity-hub","scribus","obs-studio",
-"python-tk","python3-tk","python3-sphinx",
-"libllvm9","libjpeg8","libjpeg8-dev","zlib1g-dev",
-"libfreetype6","libfreetype6-dev","apache2",
-"libncurses5-dev",
-"fakeroot","build-essential","git",
+        ba = ["python-tk","python3-tk","python3-sphinx","fakeroot","build-essential","git",
 "python3-pip","open-jtalk","mecab","mecab-utils","mecab-naist-jdic","mecab-naist-jdic-eucjp","mecab-jumandic"]
         for i in ba:
             sp.call("sudo apt-get install -y %s" % (i),shell=True)

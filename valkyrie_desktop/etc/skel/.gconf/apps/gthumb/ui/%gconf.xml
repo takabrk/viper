@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="properties_height" mtime="1341753061" type="int" value="381"/>
-	<entry name="browser_sidebar_width" mtime="1402157859" type="int" value="255"/>
-	<entry name="window_height" mtime="1402157859" type="int" value="697"/>
-	<entry name="window_width" mtime="1402157859" type="int" value="1364"/>
-	<entry name="filterbar_visible" mtime="1402157047" type="bool" value="true"/>
-</gconf>

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="default_extension" mtime="1338455818" type="string">
-		<stringvalue>.zip</stringvalue>
-	</entry>
-	<entry name="volume_size" mtime="1337192806" type="int" value="0"/>
-</gconf>

@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="ProvidersAcceptDrops" mtime="1407053942" type="bool" value="true"/>
-	<entry name="LockDrags" mtime="1407053942" type="bool" value="false"/>
-</gconf>

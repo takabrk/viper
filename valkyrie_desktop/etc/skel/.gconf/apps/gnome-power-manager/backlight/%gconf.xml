@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="brightness_dim_battery" mtime="1334123863" type="int" value="50"/>
-	<entry name="brightness_ac" mtime="1334123863" type="int" value="100"/>
-</gconf>
