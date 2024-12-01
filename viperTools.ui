@@ -72,7 +72,7 @@
                   <object class="GtkEntry" id="version">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">202411</property>
+                    <property name="text" translatable="yes">202412</property>
                     <property name="placeholder-text" translatable="yes">20.04</property>
                   </object>
                   <packing>
