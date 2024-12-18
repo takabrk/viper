@@ -1,4 +1,4 @@
 #!/bin/sh
-sudo su
-echo bfq > /sys/block/sda/queue/scheduler
+sudo echo $1 > /sys/block/sda/queue/scheduler
 cat /sys/block/sda/queue/scheduler
+echo "changed " $1
