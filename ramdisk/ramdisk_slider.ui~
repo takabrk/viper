@@ -26,10 +26,12 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <items>
-              <item id="256M" translatable="yes">256MB</item>
-              <item id="512M" translatable="yes">512MB</item>
+              <item id="200M" translatable="yes">200MB</item>
+              <item id="500M" translatable="yes">500MB</item>
               <item id="1G" translatable="yes">1GB</item>
-              <item id="3G" translatable="yes">2GB</item>
+              <item id="15G" translatable="yes">1.5GB</item>
+              <item id="2G" translatable="yes">2GB</item>
+              <item id="3G" translatable="yes">3GB</item>
               <item id="4G" translatable="yes">4GB</item>
               <item id="8G" translatable="yes">8GB</item>
             </items>
