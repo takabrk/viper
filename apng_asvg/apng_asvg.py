@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
 #apng_asvg.py @takamitsu hamada 20190704
-#mainsite : http://vsrx.site
+#mainsite : http://vsrx.work
 
 import sys,os,os.path,json
 from urllib.request import urlopen
